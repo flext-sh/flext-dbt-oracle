@@ -3,7 +3,6 @@
 Provides pytest fixtures and configuration for testing dbt Oracle adapter functionality
 using real Oracle connections and dbt-core patterns.
 """
-
 from __future__ import annotations
 
 import os
@@ -13,8 +12,6 @@ import pytest
 
 if TYPE_CHECKING:
     from collections.abc import Generator
-
-
 # Test environment setup
 @pytest.fixture(autouse=True)
 def set_test_environment() -> Generator[None]:
@@ -22,7 +19,6 @@ def set_test_environment() -> Generator[None]:
     os.environ["FLEXT_ENV"] = "test"
     os.environ["FLEXT_LOG_LEVEL"] = "debug"
     import tempfile
-
     temp_dir = tempfile.mkdtemp(prefix="dbt_profiles_")
     os.environ["DBT_PROFILES_DIR"] = temp_dir
     os.environ["DBT_TEST_USER_1"] = "dbt_test_user_1"
@@ -36,8 +32,6 @@ def set_test_environment() -> Generator[None]:
     os.environ.pop("DBT_TEST_USER_1", None)
     os.environ.pop("DBT_TEST_USER_2", None)
     os.environ.pop("DBT_TEST_USER_3", None)
-
-
 # dbt configuration fixtures
 @pytest.fixture
 def dbt_oracle_profile() -> dict[str, Any]:
@@ -80,8 +74,6 @@ def dbt_oracle_profile() -> dict[str, Any]:
             "target": "default",
         },
     }
-
-
 @pytest.fixture
 def dbt_project_config() -> dict[str, Any]:
     """Dbt project configuration for testing."""
@@ -114,8 +106,6 @@ def dbt_project_config() -> dict[str, Any]:
             "enable_oracle_features": True,
         },
     }
-
-
 # Oracle adapter fixtures
 @pytest.fixture
 def oracle_adapter_config() -> dict[str, Any]:
@@ -140,15 +130,12 @@ def oracle_adapter_config() -> dict[str, Any]:
             "enable_compression": False,
         },
     }
-
-
 @pytest.fixture
 def dbt_model_definitions() -> dict[str, str]:
     """Dbt model SQL definitions for testing."""
     return {
         "staging_customers": """
             {{ config(materialized='view') }}
-
             SELECT
                 customer_id,
                 customer_name,
@@ -163,7 +150,6 @@ def dbt_model_definitions() -> dict[str, str]:
                 materialized='table',
                 oracle={'tablespace': 'USERS', 'parallel': 2}
             ) }}
-
             SELECT
                 customer_id,
                 customer_name,
@@ -183,7 +169,6 @@ def dbt_model_definitions() -> dict[str, str]:
                 unique_key='order_id',
                 oracle={'merge_update_columns': ['order_status', 'total_amount']}
             ) }}
-
             SELECT
                 order_id,
                 customer_id,
@@ -193,14 +178,11 @@ def dbt_model_definitions() -> dict[str, str]:
                 created_at,
                 updated_at
             FROM {{ source('raw', 'orders') }}
-
             {% if is_incremental() %}
                 WHERE updated_at > (SELECT MAX(updated_at) FROM {{ this }})
             {% endif %}
         """,
     }
-
-
 @pytest.fixture
 def dbt_macro_definitions() -> dict[str, str]:
     """Dbt macro definitions for testing."""
@@ -246,8 +228,6 @@ def dbt_macro_definitions() -> dict[str, str]:
             {%- endmacro %}
         """,
     }
-
-
 # dbt test fixtures
 @pytest.fixture
 def dbt_test_definitions() -> dict[str, str]:
@@ -271,8 +251,6 @@ def dbt_test_definitions() -> dict[str, str]:
             AND customer_email IS NOT NULL
         """,
     }
-
-
 @pytest.fixture
 def dbt_source_definitions() -> dict[str, Any]:
     """Dbt source definitions for testing."""
@@ -323,8 +301,6 @@ def dbt_source_definitions() -> dict[str, Any]:
             },
         ],
     }
-
-
 # Oracle SQL fixtures
 @pytest.fixture
 def oracle_sql_queries() -> dict[str, str]:
@@ -374,8 +350,6 @@ def oracle_sql_queries() -> dict[str, str]:
             SELECT * FROM dual
         """,
     }
-
-
 # dbt execution fixtures
 @pytest.fixture
 def dbt_run_config() -> dict[str, Any]:
@@ -391,8 +365,6 @@ def dbt_run_config() -> dict[str, Any]:
         },
         "full_refresh": False,
     }
-
-
 @pytest.fixture
 def dbt_test_config() -> dict[str, Any]:
     """Dbt test configuration for testing."""
@@ -404,8 +376,6 @@ def dbt_test_config() -> dict[str, Any]:
         "schema": True,
         "store_failures": True,
     }
-
-
 # Performance test fixtures
 @pytest.fixture
 def performance_test_config() -> dict[str, Any]:
@@ -417,8 +387,6 @@ def performance_test_config() -> dict[str, Any]:
         "execution_time_threshold": 300,  # 5 minutes
         "parallel_threads": [1, 2, 4, 8],
     }
-
-
 # Error handling fixtures
 @pytest.fixture
 def dbt_error_scenarios() -> list[dict[str, Any]]:
@@ -449,8 +417,6 @@ def dbt_error_scenarios() -> list[dict[str, Any]]:
             "expected_behavior": "clear_error_message",
         },
     ]
-
-
 # Pytest markers for test categorization
 def pytest_configure(config: pytest.Config) -> None:
     """Configure pytest markers."""
@@ -463,19 +429,15 @@ def pytest_configure(config: pytest.Config) -> None:
     config.addinivalue_line("markers", "materialization: Materialization tests")
     config.addinivalue_line("markers", "macro: Macro tests")
     config.addinivalue_line("markers", "slow: Slow tests")
-
-
 # Mock services
 @pytest.fixture
 def mock_dbt_oracle_adapter() -> object:
     """Mock dbt Oracle adapter for testing."""
-
     class MockDbtOracleAdapter:
         def __init__(self, config: dict[str, Any]) -> None:
             self.config = config
             self.connections: dict[str, Any] = {}
             self.compiled_models: dict[str, Any] = {}
-
         def open_connection(self, name: str) -> dict[str, Any]:
             """Open database connection."""
             connection = {
@@ -486,13 +448,11 @@ def mock_dbt_oracle_adapter() -> object:
             }
             self.connections[name] = connection
             return connection
-
         def close_connection(self, name: str) -> None:
             """Close database connection."""
             if name in self.connections:
                 self.connections[name]["state"] = "closed"
                 del self.connections[name]
-
         def execute(self, sql: str, auto_begin: bool = True) -> tuple[str, list[Any]]:
             """Execute SQL statement."""
             # Mock execution results
@@ -503,16 +463,13 @@ def mock_dbt_oracle_adapter() -> object:
             if "SELECT" in sql:
                 return "SELECT", [{"column1": "value1", "column2": "value2"}]
             return "UNKNOWN", []
-
         def compile_model(self, model_sql: str, context: dict[str, Any]) -> str:
             """Compile dbt model SQL."""
             # Simple mock compilation
             compiled = model_sql
             for var, value in context.get("vars", {}).items():
                 compiled = compiled.replace(f"{{{{ var('{var}') }}}}", str(value))
-
             return compiled
-
         def get_relation(
             self,
             database: str,
@@ -526,32 +483,25 @@ def mock_dbt_oracle_adapter() -> object:
                 "identifier": identifier,
                 "type": "table",
             }
-
         def list_relations_without_caching(self, schema: str) -> list[dict[str, str]]:
             """List relations in schema."""
             return [
                 {"schema": schema, "identifier": "customers", "type": "table"},
                 {"schema": schema, "identifier": "orders", "type": "table"},
             ]
-
     return MockDbtOracleAdapter
-
-
 @pytest.fixture
 def mock_dbt_runner() -> object:
     """Mock dbt runner for testing."""
-
     class MockDbtRunner:
         def __init__(self, project_dir: str, profiles_dir: str) -> None:
             self.project_dir = project_dir
             self.profiles_dir = profiles_dir
             self.results: dict[str, Any] = {}
-
         def run_models(self, models: list[str] | None = None) -> dict[str, Any]:
             """Run dbt models."""
             results = []
             models = models or ["dim_customers", "fact_orders"]
-
             for model in models:
                 result = {
                     "unique_id": f"model.test.{model}",
@@ -560,14 +510,11 @@ def mock_dbt_runner() -> object:
                     "rows_affected": 1000,
                 }
                 results.append(result)
-
             return {"results": results, "elapsed_time": 10.5}
-
         def run_tests(self, models: list[str] | None = None) -> dict[str, Any]:
             """Run dbt tests."""
             results = []
             tests = ["test_unique_customer_id", "test_not_null_order_id"]
-
             for test in tests:
                 result = {
                     "unique_id": f"test.test.{test}",
@@ -576,18 +523,13 @@ def mock_dbt_runner() -> object:
                     "failures": 0,
                 }
                 results.append(result)
-
             return {"results": results, "elapsed_time": 5.0}
-
         def compile(self, models: list[str] | None = None) -> dict[str, Any]:
             """Compile dbt models."""
             compiled = {}
             models = models or ["dim_customers", "fact_orders"]
-
             for model in models:
                 # Mock compiled SQL - not executed, just template
                 compiled[model] = f"SELECT * FROM compiled_{model}"  # noqa: S608
-
             return {"compiled": compiled}
-
     return MockDbtRunner
