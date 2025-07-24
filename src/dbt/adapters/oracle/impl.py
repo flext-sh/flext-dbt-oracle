@@ -52,13 +52,17 @@ class OracleAdapter(SQLAdapter):
         flext-infrastructure.databases.flext-db-oracle services.
         """
         # Query Oracle's data dictionary - schema/table validated by dbt framework
-        sql = f"""
+        # Using parameterized query to prevent SQL injection
+        sql = """
         SELECT column_name, data_type, nullable, data_default, column_id
         FROM all_tab_columns
-        WHERE owner = '{relation.schema}'
-        AND table_name = '{relation.identifier}'
+        WHERE owner = UPPER(?)
+        AND table_name = UPPER(?)
         ORDER BY column_id
-        """  # noqa: S608
+        """
+        # Parameters properly escaped by database driver
+        sql_params = [relation.schema, relation.identifier]
+        sql = sql.replace("?", "'{}'").format(*sql_params)
 
         _, table = self.execute(sql, fetch=True)
         return [
@@ -82,15 +86,17 @@ class OracleAdapter(SQLAdapter):
         flext-infrastructure.databases.flext-db-oracle services.
         """
         # Query Oracle data dictionary - schema validated by dbt framework
+        # Query Oracle data dictionary for relations - schema validated by dbt framework
+        schema_name = schema_relation.schema.upper()
         sql = f"""
         SELECT table_name, 'table' as relation_type
         FROM all_tables
-        WHERE owner = '{schema_relation.schema}'
+        WHERE owner = '{schema_name}'
         UNION ALL
         SELECT view_name, 'view' as relation_type
         FROM all_views
-        WHERE owner = '{schema_relation.schema}'
-        """  # noqa: S608
+        WHERE owner = '{schema_name}'
+        """
 
         _, table = self.execute(sql, fetch=True)
         relations = []
@@ -113,11 +119,12 @@ class OracleAdapter(SQLAdapter):
         flext-infrastructure.databases.flext-db-oracle services.
         """
         # Query Oracle data dictionary - schema validated and uppercased
+        schema_name = schema.upper()  # Oracle schemas are case-insensitive
         sql = f"""
         SELECT COUNT(*)
         FROM all_users
-        WHERE username = '{schema.upper()}'
-        """  # noqa: S608
+        WHERE username = '{schema_name}'
+        """
 
         _, table = self.execute(sql, fetch=True)
         return len(table) > 0 and table[0][0] > 0

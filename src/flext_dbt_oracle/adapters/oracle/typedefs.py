@@ -18,45 +18,51 @@ if TYPE_CHECKING:
 
     # TODO: Create flext_core.domain.typedefs module when implementing Oracle types
     # try:
-    #     from flext_core.domain.typedefs import (
-    #         OracleArraySize,
-    #         OracleColumnName,
-    #         # Configuration types
-    #         OracleConnectionTimeout,
-    #         OracleFetchSize,
-    #         # Core Oracle types
-    #         OracleHost,
-    #         OracleIdentifier,
-    #         OraclePassword,
-    #         OraclePort,
-    #         OracleQueryTimeout,
-    #         OracleSchema,
-    #         OracleServiceName,
-    #         OracleSID,
-    #         OracleTableName,
-    #         OracleUsername,
-    #         PositiveInt,
-    #     )
-    # except ImportError:
-    #     # Fallback types when flext-core types are not available
-    #     pass
+    #     # 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_dbt_oracle.infrastructure.di_container import get_service_result, get_domain_entity, get_field, get_domain_value_object, get_base_config
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
+#         OracleArraySize,
+#         OracleColumnName,
+#         # Configuration types
+#         OracleConnectionTimeout,
+#         OracleFetchSize,
+#         # Core Oracle types
+#         OracleHost,
+#         OracleIdentifier,
+#         OraclePassword,
+#         OraclePort,
+#         OracleQueryTimeout,
+#         OracleSchema,
+#         OracleServiceName,
+#         OracleSID,
+#         OracleTableName,
+#         OracleUsername,
+#         PositiveInt,
+#     )
+# except ImportError:
+#     # Fallback types when flext-core types are not available
+#     pass
 
-    # Temporarily define types directly until flext-core module is implemented
-    OracleArraySize = Annotated[int, Field(ge=1, le=10000)]
-    OracleColumnName = Annotated[str, StringConstraints(max_length=128)]
-    OracleConnectionTimeout = Annotated[int, Field(ge=1, le=300)]
-    OracleFetchSize = Annotated[int, Field(ge=1, le=10000)]
-    OracleHost = Annotated[str, StringConstraints(max_length=255)]
-    OracleIdentifier = Annotated[str, StringConstraints(max_length=128)]
-    OraclePassword = str
-    OraclePort = Annotated[int, Field(ge=1, le=65535)]
-    OracleQueryTimeout = Annotated[int, Field(ge=1, le=7200)]
-    OracleSchema = Annotated[str, StringConstraints(max_length=128)]
-    OracleServiceName = Annotated[str, StringConstraints(max_length=128)]
-    OracleSID = Annotated[str, StringConstraints(max_length=128)]
-    OracleTableName = Annotated[str, StringConstraints(max_length=128)]
-    OracleUsername = Annotated[str, StringConstraints(max_length=128)]
-    PositiveInt = Annotated[int, Field(ge=1)]
+# Temporarily define types directly until flext-core module is implemented
+OracleArraySize = Annotated[int, Field(ge=1, le=10000)]
+OracleColumnName = Annotated[str, StringConstraints(max_length=128)]
+OracleConnectionTimeout = Annotated[int, Field(ge=1, le=300)]
+OracleFetchSize = Annotated[int, Field(ge=1, le=10000)]
+OracleHost = Annotated[str, StringConstraints(max_length=255)]
+OracleIdentifier = Annotated[str, StringConstraints(max_length=128)]
+OraclePassword = str
+OraclePort = Annotated[int, Field(ge=1, le=65535)]
+OracleQueryTimeout = Annotated[int, Field(ge=1, le=7200)]
+OracleSchema = Annotated[str, StringConstraints(max_length=128)]
+OracleServiceName = Annotated[str, StringConstraints(max_length=128)]
+OracleSID = Annotated[str, StringConstraints(max_length=128)]
+OracleTableName = Annotated[str, StringConstraints(max_length=128)]
+OracleUsername = Annotated[str, StringConstraints(max_length=128)]
+PositiveInt = Annotated[int, Field(ge=1)]
 else:
     # Runtime definitions (same as TYPE_CHECKING block)
     OracleArraySize = int
@@ -85,12 +91,14 @@ DBTConnectionType = Literal["oracle"]
 DBTProfileType = Literal["oracle"]
 
 # DBT Materialization Types
-DBTMaterialization = Literal["table", "view", "incremental", "snapshot", "ephemeral"]
+DBTMaterialization = Literal["table", "view",
+                             "incremental", "snapshot", "ephemeral"]
 DBTIncrementalStrategy = Literal["append", "merge", "delete+insert"]
 DBTSnapshotStrategy = Literal["timestamp", "check"]
 
 # DBT Thread and Execution Types
-DBTThreadCount = Annotated[int, Field(ge=1, le=16, description="Number of DBT threads")]
+DBTThreadCount = Annotated[int, Field(
+    ge=1, le=16, description="Number of DBT threads")]
 DBTTargetName = Annotated[
     str,
     StringConstraints(

@@ -16,7 +16,13 @@ from pydantic import Field, StringConstraints
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-    from flext_core.domain.typedefs import (
+    # 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_dbt_oracle.infrastructure.di_container import get_service_result, get_domain_entity, get_field, get_domain_value_object, get_base_config
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
         OracleArraySize,
         OracleColumnName,
         # Configuration types

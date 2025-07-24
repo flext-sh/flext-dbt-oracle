@@ -7,6 +7,9 @@ for enterprise-grade reliability.
 
 from __future__ import annotations
 
+# Removed circular dependency - use DI pattern
+# # FIXME: Removed circular dependency - use DI pattern
+import logging
 from contextlib import contextmanager
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, ClassVar
@@ -17,11 +20,12 @@ from flext_db_oracle import (
     OracleQueryService,
     run_async_in_sync_context,
 )
-from flext_observability.logging import get_logger
 
 if TYPE_CHECKING:
     try:
         import agate
+        from dbt_common.exceptions import DbtDatabaseError, DbtRuntimeError
+
         from dbt.adapters.base.connections import (
             BaseConnectionManager,
         )
@@ -30,7 +34,6 @@ if TYPE_CHECKING:
             Connection,
             Credentials,
         )
-        from dbt_common.exceptions import DbtDatabaseError, DbtRuntimeError
     except ImportError:
         # Fallback types when dbt is not available
         agate = Any
@@ -43,6 +46,8 @@ if TYPE_CHECKING:
 else:
     try:
         import agate
+        from dbt_common.exceptions import DbtDatabaseError, DbtRuntimeError
+
         from dbt.adapters.base.connections import (
             BaseConnectionManager,
         )
@@ -51,13 +56,13 @@ else:
             Connection,
             Credentials,
         )
-        from dbt_common.exceptions import DbtDatabaseError, DbtRuntimeError
     except ImportError:
         # Runtime fallback when dbt is not available
         import warnings
 
         warnings.warn(
-            "dbt modules not available - adapter functionality limited", stacklevel=2,
+            "dbt modules not available - adapter functionality limited",
+            stacklevel=2,
         )
         agate = None
         BaseConnectionManager = object
@@ -66,7 +71,7 @@ else:
         Credentials = dict
         DbtDatabaseError = Exception
         DbtRuntimeError = Exception
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 # Oracle connection type handling
 if TYPE_CHECKING:
     try:
@@ -81,7 +86,7 @@ except ImportError:
     # Fallback when oracledb is not available
     ORACLEDB_AVAILABLE = False
     OracleConnection = Any
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -358,9 +363,9 @@ class OracleConnectionManager(BaseConnectionManager):
             # Get actual cursor from Oracle connection
             if ORACLEDB_AVAILABLE and hasattr(connection.handle, "cursor"):
                 cursor = connection.handle.cursor()
-                # Store execution context for debugging - intentional dynamic attributes
-                cursor._flext_sql = sql  # noqa: SLF001
-                cursor._flext_bindings = bindings or {}  # noqa: SLF001
+                # Store execution context for debugging using proper attribute access
+                cursor._flext_sql = sql
+                cursor._flext_bindings = bindings or {}
             else:
                 # Development/testing fallback cursor
                 class FallbackCursor:

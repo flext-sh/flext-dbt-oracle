@@ -8,16 +8,30 @@ parameterization and modern typing.
 
 from __future__ import annotations
 
+# Removed circular dependency - use DI pattern
+# # FIXME: Removed circular dependency - use DI pattern
+import logging
 from typing import TYPE_CHECKING, Any, ClassVar
 
-from flext_core.config.base import BaseConfig
-from flext_core.domain.constants import (
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_dbt_oracle.infrastructure.di_container import get_service_result, get_domain_entity, get_field, get_domain_value_object, get_base_config
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_dbt_oracle.infrastructure.di_container import get_service_result, get_domain_entity, get_field, get_domain_value_object, get_base_config
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
     Environments,
     FlextFramework,
     LogLevels,
 )
 from flext_db_oracle import OracleConfig
-from flext_observability.logging import get_logger
 
 # Use flext-core configuration patterns
 from pydantic import ConfigDict, Field, ValidationInfo, field_validator
@@ -35,7 +49,7 @@ if TYPE_CHECKING:
         TimeoutSeconds,
     )
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 # ==============================================================================

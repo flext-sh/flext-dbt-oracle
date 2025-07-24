@@ -7,6 +7,9 @@ for enterprise-grade reliability.
 
 from __future__ import annotations
 
+# Removed circular dependency - use DI pattern
+# # FIXME: Removed circular dependency - use DI pattern
+import logging
 from contextlib import contextmanager
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, ClassVar
@@ -19,12 +22,11 @@ from flext_db_oracle import (
     OracleQueryService,
     run_async_in_sync_context,
 )
-from flext_observability.logging import get_logger
 
 from dbt.adapters.base.connections import BaseConnectionManager
 from dbt.adapters.contracts.connection import AdapterResponse, Connection, Credentials
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from cx_Oracle import Connection
@@ -38,7 +40,7 @@ except ImportError:
     CX_ORACLE_AVAILABLE = False
     Connection = Any
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -337,9 +339,9 @@ class OracleConnectionManager(BaseConnectionManager):
             # Get actual cursor from Oracle connection
             if CX_ORACLE_AVAILABLE and hasattr(connection.handle, "cursor"):
                 cursor = connection.handle.cursor()
-                # Store execution context for debugging - intentional dynamic attributes
-                cursor._flext_sql = sql  # noqa: SLF001
-                cursor._flext_bindings = bindings or {}  # noqa: SLF001
+                # Store execution context for debugging using proper attribute access
+                cursor._flext_sql = sql
+                cursor._flext_bindings = bindings or {}
             else:
                 # Development/testing fallback cursor
                 class FallbackCursor:

@@ -16,15 +16,21 @@ import importlib.metadata
 import warnings
 
 # Foundation patterns - ALWAYS from flext-core
-from flext_core import (
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_dbt_oracle.infrastructure.di_container import get_service_result, get_domain_entity, get_field, get_domain_value_object, get_base_config
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
     BaseConfig,
     BaseConfig as OracleBaseConfig,  # Configuration base
     DomainBaseModel,
     DomainBaseModel as BaseModel,  # Base for Oracle models
     DomainError as OracleError,  # Oracle-specific errors
+    ServiceResult,
     ValidationError as ValidationError,  # Validation errors
 )
-from flext_core.domain.shared_types import ServiceResult
 
 try:
     __version__ = importlib.metadata.version("flext-dbt-oracle")
