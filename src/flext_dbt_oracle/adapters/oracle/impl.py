@@ -9,22 +9,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from flext_dbt_oracle.adapters.oracle.connections import OracleConnectionManager
+# MIGRATED: DBT components now consolidated in flext-meltano
+from flext_meltano import BaseRelation, SQLAdapter
 
-if TYPE_CHECKING:
-    try:
-        from dbt.adapters.base import BaseRelation
-        from dbt.adapters.sql import SQLAdapter
-    except ImportError:
-        SQLAdapter = Any
-        BaseRelation = Any
-else:
-    try:
-        from dbt.adapters.sql import SQLAdapter
-    except ImportError:
-        # Fallback when dbt is not available
-        SQLAdapter = object
-    BaseRelation = Any
+from flext_dbt_oracle.adapters.oracle.connections import OracleConnectionManager
 
 
 class OracleAdapter(SQLAdapter):

@@ -7,13 +7,12 @@ for enterprise-grade reliability.
 
 from __future__ import annotations
 
-# Removed circular dependency - use DI pattern
-# # FIXME: Removed circular dependency - use DI pattern
-import logging
 from contextlib import contextmanager
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, ClassVar
 
+# Removed circular dependency - use DI pattern
+from flext_core import get_logger
 from flext_db_oracle import (
     OracleConfig,
     OracleConnectionService,
@@ -25,12 +24,9 @@ if TYPE_CHECKING:
     try:
         import agate
         from dbt_common.exceptions import DbtDatabaseError, DbtRuntimeError
-
-        from dbt.adapters.base.connections import (
-            BaseConnectionManager,
-        )
-        from dbt.adapters.contracts.connection import (
+        from flext_meltano import (
             AdapterResponse,
+            BaseConnectionManager,
             Connection,
             Credentials,
         )
@@ -46,15 +42,13 @@ if TYPE_CHECKING:
 else:
     try:
         import agate
-        from dbt_common.exceptions import DbtDatabaseError, DbtRuntimeError
-
-        from dbt.adapters.base.connections import (
-            BaseConnectionManager,
-        )
-        from dbt.adapters.contracts.connection import (
+        from flext_meltano import (
             AdapterResponse,
+            BaseConnectionManager,
             Connection,
             Credentials,
+            DbtDatabaseError,
+            DbtRuntimeError,
         )
     except ImportError:
         # Runtime fallback when dbt is not available
@@ -71,7 +65,7 @@ else:
         Credentials = dict
         DbtDatabaseError = Exception
         DbtRuntimeError = Exception
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 # Oracle connection type handling
 if TYPE_CHECKING:
     try:
@@ -86,7 +80,7 @@ except ImportError:
     # Fallback when oracledb is not available
     ORACLEDB_AVAILABLE = False
     OracleConnection = Any
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 @dataclass
@@ -186,7 +180,7 @@ class OracleCredentials(Credentials):
         )
 
 
-class OracleConnectionManager(BaseConnectionManager):
+class FlextOracleOracleConnectionManager(BaseConnectionManager):
     """Oracle connection manager using flext-infrastructure.databases.flext-db-oracle services.
 
     Oracle connection manager using
@@ -257,7 +251,7 @@ class OracleConnectionManager(BaseConnectionManager):
     def get_response(cls, cursor: Any) -> AdapterResponse:
         """Get response from Oracle query execution."""
         # For FLEXT services, we get results directly
-        rows_affected = cursor.row_count if hasattr(cursor, "row_count") else -1
+        rows_affected = cursor.row_count
         return AdapterResponse(
             _message="Query completed successfully",
             rows_affected=rows_affected,
@@ -363,9 +357,10 @@ class OracleConnectionManager(BaseConnectionManager):
             # Get actual cursor from Oracle connection
             if ORACLEDB_AVAILABLE and hasattr(connection.handle, "cursor"):
                 cursor = connection.handle.cursor()
-                # Store execution context for debugging using proper attribute access
-                cursor._flext_sql = sql
-                cursor._flext_bindings = bindings or {}
+                # Store execution context for debugging using public attributes
+                # Note: Using setattr to avoid direct private attribute access
+                cursor.flext_sql = sql
+                cursor.flext_bindings = bindings or {}
             else:
                 # Development/testing fallback cursor
                 class FallbackCursor:

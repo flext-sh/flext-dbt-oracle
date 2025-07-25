@@ -8,47 +8,39 @@ parameterization and modern typing.
 
 from __future__ import annotations
 
-# Removed circular dependency - use DI pattern
-# # FIXME: Removed circular dependency - use DI pattern
-import logging
 from typing import TYPE_CHECKING, Any, ClassVar
 
-# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
-from flext_dbt_oracle.infrastructure.di_container import get_service_result, get_domain_entity, get_field, get_domain_value_object, get_base_config
-ServiceResult = get_service_result()
-DomainEntity = get_domain_entity()
-Field = get_field()
-DomainValueObject = get_domain_value_object()
-BaseConfig = get_base_config()
-# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
-from flext_dbt_oracle.infrastructure.di_container import get_service_result, get_domain_entity, get_field, get_domain_value_object, get_base_config
-ServiceResult = get_service_result()
-DomainEntity = get_domain_entity()
-Field = get_field()
-DomainValueObject = get_domain_value_object()
-BaseConfig = get_base_config()
-    BaseConfigMixin,
-    LoggingConfigMixin,
-    OracleConfigMixin,
-    PerformanceConfigMixin,
-)
-# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
-from flext_dbt_oracle.infrastructure.di_container import get_service_result, get_domain_entity, get_field, get_domain_value_object, get_base_config
-ServiceResult = get_service_result()
-DomainEntity = get_domain_entity()
-Field = get_field()
-DomainValueObject = get_domain_value_object()
-BaseConfig = get_base_config()
-from flext_db_oracle import OracleConfig
+# Removed circular dependency - use DI pattern
+from flext_core import FlextConstants, get_logger
 
 # Use flext-core configuration patterns
-from pydantic import Field, ValidationInfo, field_validator
+from pydantic import BaseModel, Field, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Import DBT Oracle adapter-specific constants with flext-core integration
 from .constants import DBTOracleAdapterConstants
 
-# Import types from the types module where they're defined
+# Import Oracle types from typedefs
+from .typedefs import (
+    OracleArraySize,
+    OracleConnectionTimeout,
+    OracleFetchSize,
+    OracleHost,
+    OraclePassword,
+    OraclePort,
+    OracleQueryTimeout,
+    OracleSchema,
+    OracleServiceName,
+    OracleSID,
+    OracleUsername,
+)
+
+# Import OracleConfig from flext-db-oracle
+try:
+    from flext_db_oracle.config import OracleConfig
+except ImportError:
+    # Fallback if flext-db-oracle is not available
+    OracleConfig = None  # type: ignore[misc,assignment]
 
 if TYPE_CHECKING:
     from .types import (
@@ -58,7 +50,7 @@ if TYPE_CHECKING:
         TimeoutSeconds,
     )
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 # ==============================================================================
@@ -73,31 +65,35 @@ logger = logging.getLogger(__name__)
 # ==============================================================================
 
 
-class DBTOracleSettings(
-    BaseConfigMixin,
-    LoggingConfigMixin,
-    OracleConfigMixin,
-    PerformanceConfigMixin,
-    BaseSettings,
-):
+class DBTOracleSettings(BaseSettings):
     """Modern DBT Oracle Settings using flext-core BaseSettings patterns.
 
     Provides environment variable integration, validation, and dependency injection
     using standardized flext-core patterns for enterprise configuration management.
     """
 
-    # Project identification (inherits from BaseConfigMixin but override with DBT-specific values)
+    model_config = SettingsConfigDict(
+        env_prefix="DBT_ORACLE_",
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+    )
+
+    # Project identification
     project_name: str = Field(
         default="flext-data.dbt.flext-dbt-oracle",
         description="Project name",
     )
-    project_version: str = Field(default=FlextFramework.VERSION)
+    project_version: str = Field(default=FlextConstants.VERSION)
 
     # Oracle settings now inherited from OracleConfigMixin
     # Additional DBT-specific Oracle settings can be added here if needed
 
     # DBT-specific settings
-    database: str = Field(default="oracle", description="Oracle uses service/SID, not database concept")
+    database: str = Field(
+        default="oracle",
+        description="Oracle uses service/SID, not database concept",
+    )
     schema_name: str = Field(
         default=DBTOracleAdapterConstants.DEFAULT_SCHEMA,
         description="Default schema name",
@@ -110,11 +106,6 @@ class DBTOracleSettings(
     # Performance and logging now inherited from mixins
 
     # Model configuration for environment variables
-    model_config = SettingsConfigDict(
-        env_prefix="DBT_ORACLE_",
-        env_file=".env",
-        case_sensitive=False,
-    )
 
     def to_dbt_config(self) -> DBTOracleConfig:
         """Convert settings to DBTOracleConfig.
@@ -144,7 +135,7 @@ class DBTOracleSettings(
         )
 
 
-class DBTOracleConfig(BaseConfig):
+class DBTOracleConfig(BaseModel):
     """Configuration for the DBT Oracle Adapter with comprehensive validation.
 
     Supports Oracle connection configuration and DBT-specific settings with
@@ -158,11 +149,11 @@ class DBTOracleConfig(BaseConfig):
         description="Project name",
     )
     project_version: str = Field(
-        default=FlextFramework.VERSION,
+        default=FlextConstants.VERSION,
         description="Project version",
     )
     environment: str = Field(
-        default=Environments.DEVELOPMENT,
+        default="development",
         description="Environment name",
     )
 
@@ -271,7 +262,7 @@ class DBTOracleConfig(BaseConfig):
 
     # Logging and observability using flext-core constants
     log_level: str = Field(
-        default=LogLevels.INFO,
+        default="INFO",
         description="Logging level",
     )
     enable_sql_logging: bool = Field(
@@ -397,7 +388,7 @@ class DBTOracleConfig(BaseConfig):
         return self.service_name or self.sid or "ORCL"
 
     def to_connection_config(self) -> dict[str, Any]:
-        """Convert to connection configuration for flext-infrastructure.databases.flext-db-oracle.
+        """Convert to connection configuration for flext-infrastructure.databases.
 
         Convert to connection configuration for
         flext-infrastructure.databases.flext-db-oracle.
@@ -416,7 +407,7 @@ class DBTOracleConfig(BaseConfig):
             "protocol": self.protocol,
         }
 
-    def to_oracle_config(self) -> OracleConfig:
+    def to_oracle_config(self) -> OracleConfig | None:
         """Convert to modern flext-infrastructure.databases.flext-db-oracle OracleConfig.
 
         Convert to modern flext-infrastructure.databases.flext-db-oracle
@@ -424,8 +415,12 @@ class DBTOracleConfig(BaseConfig):
 
         Returns:
             OracleConfig instance with proper parameterization for DBT operations
+            or None if flext-db-oracle is not available
 
         """
+        if OracleConfig is None:
+            return None
+
         return OracleConfig(
             host=self.host or "localhost",
             port=self.port,

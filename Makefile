@@ -3,11 +3,12 @@
 # dbt transformations for Oracle Database with enterprise analytics
 # Python 3.13 + dbt-oracle + Oracle SQL + Zero Tolerance Quality Gates
 
-.PHONY: help check validate test lint type-check security format format-check fix
+.PHONY: help info diagnose check validate test lint type-check security format format-check fix
 .PHONY: install dev-install setup pre-commit build clean
-.PHONY: coverage coverage-html test-unit test-integration
-.PHONY: deps-update deps-audit deps-tree
-.PHONY: dbt-run dbt-test dbt-docs dbt-compile dbt-debug dbt-oracle-profile
+.PHONY: coverage coverage-html test-unit test-integration test-dbt
+.PHONY: deps-update deps-audit deps-tree deps-outdated
+.PHONY: dbt-compile dbt-run dbt-test dbt-docs dbt-debug dbt-seed dbt-snapshot dbt-deps dbt-clean
+.PHONY: oracle-profile-test oracle-macros oracle-performance
 
 # ============================================================================
 # 🎯 HELP & INFORMATION
@@ -24,6 +25,38 @@ help: ## Show this help message
 	@echo ""
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
+
+info: ## Mostrar informações do projeto
+	@echo "📊 Informações do Projeto"
+	@echo "======================"
+	@echo "Nome: flext-dbt-oracle"
+	@echo "Título: FLEXT DBT ORACLE"
+	@echo "Tipo: dbt-project"
+	@echo "Versão: $(shell poetry version -s 2>/dev/null || echo "0.7.0")"
+	@echo "Python: $(shell python3.13 --version 2>/dev/null || echo "Não encontrado")"
+	@echo "Poetry: $(shell poetry --version 2>/dev/null || echo "Não instalado")"
+	@echo "Venv: $(shell poetry env info --path 2>/dev/null || echo "Não ativado")"
+	@echo "Diretório: $(CURDIR)"
+	@echo "Git Branch: $(shell git branch --show-current 2>/dev/null || echo "Não é repo git")"
+	@echo "Git Status: $(shell git status --porcelain 2>/dev/null | wc -l | xargs echo) arquivos alterados"
+
+diagnose: ## Executar diagnósticos completos
+	@echo "🔍 Executando diagnósticos para flext-dbt-oracle..."
+	@echo "Informações do Sistema:"
+	@echo "OS: $(shell uname -s)"
+	@echo "Arquitetura: $(shell uname -m)"
+	@echo "Python: $(shell python3.13 --version 2>/dev/null || echo "Não encontrado")"
+	@echo "Poetry: $(shell poetry --version 2>/dev/null || echo "Não instalado")"
+	@echo ""
+	@echo "Estrutura do Projeto:"
+	@ls -la
+	@echo ""
+	@echo "Configuração Poetry:"
+	@poetry config --list 2>/dev/null || echo "Poetry não configurado"
+	@echo ""
+	@echo "Status das Dependências:"
+	@poetry show --outdated 2>/dev/null || echo "Nenhuma dependência desatualizada"
+
 # ============================================================================
 # 🎯 CORE QUALITY GATES - ZERO TOLERANCE
 # ============================================================================
@@ -31,7 +64,7 @@ help: ## Show this help message
 validate: lint type-check security test dbt-test ## STRICT compliance validation (all must pass)
 	@echo "✅ ALL QUALITY GATES PASSED - FLEXT DBT ORACLE COMPLIANT"
 
-check: lint type-check test ## Essential quality checks (pre-commit standard)
+check: lint type-check test dbt-compile ## Essential quality checks (pre-commit standard)
 	@echo "✅ Essential checks passed"
 
 lint: ## Ruff linting (17 rule categories, ALL enabled)
@@ -85,6 +118,11 @@ test-integration: ## Run integration tests only
 	@poetry run pytest tests/integration/ -v
 	@echo "✅ Integration tests complete"
 
+test-dbt: dbt-deps dbt-compile ## Run dbt data tests
+	@echo "🧪 Running dbt data tests..."
+	@poetry run dbt test --profiles-dir profiles/ --target dev
+	@echo "✅ DBT data tests complete"
+
 coverage: ## Generate detailed coverage report
 	@echo "📊 Generating coverage report..."
 	@poetry run pytest tests/ --cov=src/flext_dbt_oracle --cov-report=term-missing --cov-report=html
@@ -98,7 +136,7 @@ coverage-html: coverage ## Generate HTML coverage report
 # 🚀 DEVELOPMENT SETUP
 # ============================================================================
 
-setup: install pre-commit ## Complete development setup
+setup: install pre-commit dbt-deps ## Complete development setup
 	@echo "🎯 Development setup complete!"
 
 install: ## Install dependencies with Poetry
@@ -110,6 +148,7 @@ dev-install: install ## Install in development mode
 	@echo "🔧 Setting up development environment..."
 	@poetry install --all-extras --with dev,test,docs,security
 	@poetry run pre-commit install
+	@mkdir -p profiles logs target dbt_packages
 	@echo "✅ Development environment ready"
 
 pre-commit: ## Setup pre-commit hooks
@@ -119,68 +158,121 @@ pre-commit: ## Setup pre-commit hooks
 	@echo "✅ Pre-commit hooks installed"
 
 # ============================================================================
-# 🏗️ DBT ORACLE OPERATIONS
+# 🎯 DBT OPERATIONS - CORE WORKFLOW
 # ============================================================================
 
-dbt-run: ## Run dbt Oracle models
-	@echo "🏗️ Running dbt Oracle models..."
-	@poetry run dbt run --profiles-dir profiles --target dev
-	@echo "✅ dbt Oracle models executed"
+dbt-deps: ## Install dbt dependencies
+	@echo "📦 Installing dbt dependencies..."
+	@poetry run dbt deps --profiles-dir profiles/
+	@echo "✅ DBT dependencies installed"
 
-dbt-test: ## Run dbt Oracle tests
-	@echo "🧪 Running dbt Oracle tests..."
-	@poetry run dbt test --profiles-dir profiles --target dev
-	@echo "✅ dbt Oracle tests passed"
+dbt-debug: ## Debug dbt configuration
+	@echo "🔍 Debugging dbt configuration..."
+	@poetry run dbt debug --profiles-dir profiles/ --target dev
+	@echo "✅ DBT debug complete"
 
-dbt-docs: ## Generate dbt Oracle documentation
-	@echo "📚 Generating dbt Oracle documentation..."
-	@poetry run dbt docs generate --profiles-dir profiles --target dev
-	@poetry run dbt docs serve --profiles-dir profiles --port 8080
-	@echo "✅ dbt Oracle documentation available at http://localhost:8080"
+dbt-compile: dbt-deps ## Compile dbt models
+	@echo "🔨 Compiling dbt models..."
+	@poetry run dbt compile --profiles-dir profiles/ --target dev
+	@echo "✅ DBT models compiled"
 
-dbt-compile: ## Compile dbt Oracle models
-	@echo "🔨 Compiling dbt Oracle models..."
-	@poetry run dbt compile --profiles-dir profiles --target dev
-	@echo "✅ dbt Oracle models compiled"
+dbt-run: dbt-deps dbt-compile ## Run dbt models
+	@echo "🚀 Running dbt models..."
+	@poetry run dbt run --profiles-dir profiles/ --target dev
+	@echo "✅ DBT models executed"
 
-dbt-debug: ## Debug dbt Oracle configuration
-	@echo "🔍 Debugging dbt Oracle configuration..."
-	@poetry run dbt debug --profiles-dir profiles --target dev
-	@echo "✅ dbt Oracle debug complete"
+dbt-test: dbt-compile ## Run dbt tests
+	@echo "🧪 Running dbt tests..."
+	@poetry run dbt test --profiles-dir profiles/ --target dev
+	@echo "✅ DBT tests complete"
 
-dbt-oracle-profile: ## Setup Oracle profile
-	@echo "⚙️ Setting up Oracle profile..."
-	@echo "Creating profiles directory if it doesn't exist..."
-	@mkdir -p profiles
-	@echo "Oracle profile setup complete - configure profiles/profiles.yml manually"
+dbt-docs: dbt-compile ## Generate dbt documentation
+	@echo "📚 Generating dbt documentation..."
+	@poetry run dbt docs generate --profiles-dir profiles/ --target dev
+	@echo "✅ DBT documentation generated"
 
-dbt-seed: ## Load Oracle seed data
-	@echo "🌱 Loading Oracle seed data..."
-	@poetry run dbt seed --profiles-dir profiles --target dev
-	@echo "✅ Oracle seed data loaded"
+dbt-seed: dbt-deps ## Load dbt seed data
+	@echo "🌱 Loading dbt seed data..."
+	@poetry run dbt seed --profiles-dir profiles/ --target dev
+	@echo "✅ DBT seed data loaded"
 
-dbt-snapshot: ## Run Oracle snapshots for SCD
-	@echo "📸 Running Oracle snapshots..."
-	@poetry run dbt snapshot --profiles-dir profiles --target dev
-	@echo "✅ Oracle snapshots executed"
+dbt-snapshot: dbt-deps ## Run dbt snapshots
+	@echo "📸 Running dbt snapshots..."
+	@poetry run dbt snapshot --profiles-dir profiles/ --target dev
+	@echo "✅ DBT snapshots complete"
 
-dbt-run-operation: ## Run dbt Oracle operations
-	@echo "⚙️ Running dbt Oracle operations..."
-	@poetry run dbt run-operation --profiles-dir profiles --target dev
-	@echo "✅ dbt Oracle operations complete"
+dbt-clean: ## Clean dbt artifacts
+	@echo "🧹 Cleaning dbt artifacts..."
+	@poetry run dbt clean --profiles-dir profiles/
+	@rm -rf logs/dbt.log
+	@echo "✅ DBT artifacts cleaned"
+
+# ============================================================================
+# 🔧 ORACLE SPECIFIC OPERATIONS
+# ============================================================================
+
+oracle-profile-test: ## Test Oracle connection profiles
+	@echo "🔗 Testing Oracle connection profiles..."
+	@poetry run dbt debug --profiles-dir profiles/ --target dev
+	@poetry run python scripts/test_oracle_connections.py
+	@echo "✅ Oracle profile tests complete"
+
+oracle-macros: dbt-deps ## Test and validate Oracle-specific macros
+	@echo "🔧 Testing Oracle macros..."
+	@poetry run dbt test --models test_oracle_macros --profiles-dir profiles/ --target dev
+	@poetry run python scripts/validate_oracle_macros.py
+	@echo "✅ Oracle macros tests complete"
+
+oracle-performance: dbt-compile ## Analyze Oracle performance and optimization
+	@echo "⚡ Analyzing Oracle performance..."
+	@poetry run python scripts/analyze_oracle_performance.py
+	@poetry run dbt compile --profiles-dir profiles/ --target dev
+	@echo "✅ Oracle performance analysis complete"
+
+oracle-staging-models: dbt-run ## Run Oracle staging models only
+	@echo "📥 Running Oracle staging models..."
+	@poetry run dbt run --models tag:staging --profiles-dir profiles/ --target dev
+	@echo "✅ Oracle staging models executed"
+
+oracle-marts-models: dbt-run ## Run Oracle marts models only
+	@echo "🏪 Running Oracle marts models..."
+	@poetry run dbt run --models tag:marts --profiles-dir profiles/ --target dev
+	@echo "✅ Oracle marts models executed"
+
+oracle-fact-models: dbt-run ## Run Oracle fact models only
+	@echo "📊 Running Oracle fact models..."
+	@poetry run dbt run --models tag:fact --profiles-dir profiles/ --target dev
+	@echo "✅ Oracle fact models executed"
+
+oracle-dimension-models: dbt-run ## Run Oracle dimension models only
+	@echo "🗂️ Running Oracle dimension models..."
+	@poetry run dbt run --models tag:dimension --profiles-dir profiles/ --target dev
+	@echo "✅ Oracle dimension models executed"
+
+oracle-full-refresh: ## Full refresh of Oracle models
+	@echo "🔄 Full refresh of Oracle models..."
+	@poetry run dbt run --full-refresh --profiles-dir profiles/ --target dev
+	@echo "✅ Oracle models full refresh complete"
+
+oracle-test-data-quality: dbt-test ## Test Oracle data quality rules
+	@echo "🔍 Testing Oracle data quality..."
+	@poetry run dbt test --models tag:data_quality --profiles-dir profiles/ --target dev
+	@echo "✅ Oracle data quality tests passed"
+
+oracle-explain-plan: dbt-compile ## Generate Oracle explain plans
+	@echo "📋 Generating Oracle explain plans..."
+	@poetry run dbt compile --profiles-dir profiles/ --target dev
+	@poetry run python scripts/generate_explain_plans.py
+	@echo "✅ Oracle explain plans generated"
 
 # ============================================================================
 # 📦 BUILD & DISTRIBUTION
 # ============================================================================
 
-build: clean ## Build distribution packages
-	@echo "🔨 Building distribution..."
+build: clean dbt-compile ## Build dbt project
+	@echo "🔨 Building dbt project..."
 	@poetry build
 	@echo "✅ Build complete - packages in dist/"
-
-# ============================================================================
-# 🧹 CLEANUP
-# ============================================================================
 
 clean: ## Remove all artifacts
 	@echo "🧹 Cleaning up..."
@@ -206,6 +298,7 @@ clean: ## Remove all artifacts
 deps-update: ## Update all dependencies
 	@echo "🔄 Updating dependencies..."
 	@poetry update
+	@poetry run dbt deps --profiles-dir profiles/
 	@echo "✅ Dependencies updated"
 
 deps-audit: ## Audit dependencies for vulnerabilities
@@ -225,19 +318,38 @@ deps-outdated: ## Show outdated dependencies
 # 🔧 ENVIRONMENT CONFIGURATION
 # ============================================================================
 
+# Project information
+PROJECT_NAME := flext-dbt-oracle
+PROJECT_TYPE := meltano-plugin
+PROJECT_VERSION := $(shell poetry version -s)
+PROJECT_DESCRIPTION := FLEXT DBT Oracle - Oracle Database Data Transformations
+
 # Python settings
 PYTHON := python3.13
 export PYTHONPATH := $(PWD)/src:$(PYTHONPATH)
 export PYTHONDONTWRITEBYTECODE := 1
 export PYTHONUNBUFFERED := 1
 
-# dbt settings
+# DBT settings
 export DBT_PROFILES_DIR := $(PWD)/profiles
 export DBT_PROJECT_DIR := $(PWD)
+export DBT_TARGET := dev
+export DBT_LOG_LEVEL := INFO
 
 # Oracle settings
 export ORACLE_SOURCE_SCHEMA := FLEXT_RAW
 export ORACLE_TARGET_SCHEMA := FLEXT_ANALYTICS
+
+# Performance settings
+export DBT_THREADS := 4
+export DBT_PARTIAL_PARSE := true
+export DBT_USE_COLORS := true
+export DBT_PRINTER_WIDTH := 80
+
+# Quality settings
+export DBT_WARN_ERROR := false
+export DBT_STORE_FAILURES := true
+export DBT_FAIL_FAST := false
 
 # Poetry settings
 export POETRY_VENV_IN_PROJECT := false
@@ -247,59 +359,16 @@ export POETRY_CACHE_DIR := $(HOME)/.cache/pypoetry
 export MYPY_CACHE_DIR := .mypy_cache
 export RUFF_CACHE_DIR := .ruff_cache
 
-# ============================================================================
-# 📝 PROJECT METADATA
-# ============================================================================
-
-# Project information
-PROJECT_NAME := flext-dbt-oracle
-PROJECT_VERSION := $(shell poetry version -s)
-PROJECT_DESCRIPTION := FLEXT DBT Oracle - Oracle Database Data Transformations
-
 .DEFAULT_GOAL := help
 
 # ============================================================================
-# 🎯 ORACLE SPECIFIC COMMANDS
+# 🎯 WORKSPACE INTEGRATION
 # ============================================================================
 
-oracle-staging-models: ## Run Oracle staging models only
-	@echo "📥 Running Oracle staging models..."
-	@poetry run dbt run --models tag:staging --profiles-dir profiles --target dev
-	@echo "✅ Oracle staging models executed"
-
-oracle-marts-models: ## Run Oracle marts models only
-	@echo "🏪 Running Oracle marts models..."
-	@poetry run dbt run --models tag:marts --profiles-dir profiles --target dev
-	@echo "✅ Oracle marts models executed"
-
-oracle-fact-models: ## Run Oracle fact models only
-	@echo "📊 Running Oracle fact models..."
-	@poetry run dbt run --models tag:fact --profiles-dir profiles --target dev
-	@echo "✅ Oracle fact models executed"
-
-oracle-dimension-models: ## Run Oracle dimension models only
-	@echo "🗂️ Running Oracle dimension models..."
-	@poetry run dbt run --models tag:dimension --profiles-dir profiles --target dev
-	@echo "✅ Oracle dimension models executed"
-
-oracle-full-refresh: ## Full refresh of Oracle models
-	@echo "🔄 Full refresh of Oracle models..."
-	@poetry run dbt run --full-refresh --profiles-dir profiles --target dev
-	@echo "✅ Oracle models full refresh complete"
-
-oracle-test-data-quality: ## Test Oracle data quality rules
-	@echo "🔍 Testing Oracle data quality..."
-	@poetry run dbt test --models tag:data_quality --profiles-dir profiles --target dev
-	@echo "✅ Oracle data quality tests passed"
-
-oracle-explain-plan: ## Generate Oracle explain plans
-	@echo "📋 Generating Oracle explain plans..."
-	@poetry run dbt compile --profiles-dir profiles --target dev
-	@echo "✅ Oracle models compiled - check target/ for SQL files"
-
-# ============================================================================
-# 🎯 FLEXT ECOSYSTEM INTEGRATION
-# ============================================================================
+workspace-sync: ## Sync with workspace dependencies
+	@echo "🔄 Syncing with workspace dependencies..."
+	@poetry run python scripts/sync_workspace_deps.py
+	@echo "✅ Workspace sync complete"
 
 ecosystem-check: ## Verify FLEXT ecosystem compatibility
 	@echo "🌐 Checking FLEXT ecosystem compatibility..."

@@ -1,110 +1,47 @@
-"""FLEXT DBT ORACLE - Oracle Database Transformations with simplified imports.
+"""FLEXT DBT Oracle - Wrapper for flext-meltano consolidated implementation.
+
+CONSOLIDATION: This project is now a library wrapper that imports the real
+Singer/Meltano/DBT consolidated implementations from flext-meltano to eliminate
+code duplication across the FLEXT ecosystem.
+
+This follows the architectural principle:
+- flext-* projects are LIBRARIES, not services
+- tap/target/dbt/ext are Meltano plugins
+- Real implementations are in flext-meltano
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
-
-Version 0.7.0 - DBT Oracle with simplified public API:
-- All common imports available from root: from flext_dbt_oracle import OracleAdapter
-- Built on flext-core foundation for robust Oracle database transformations
-- Deprecation warnings for internal imports
 """
 
 from __future__ import annotations
 
-import contextlib
-import importlib.metadata
-import warnings
-
-# Foundation patterns - ALWAYS from flext-core
-# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
-from flext_dbt_oracle.infrastructure.di_container import get_service_result, get_domain_entity, get_field, get_domain_value_object, get_base_config
-ServiceResult = get_service_result()
-DomainEntity = get_domain_entity()
-Field = get_field()
-DomainValueObject = get_domain_value_object()
-BaseConfig = get_base_config()
-    BaseConfig,
-    BaseConfig as OracleBaseConfig,  # Configuration base
-    DomainBaseModel,
-    DomainBaseModel as BaseModel,  # Base for Oracle models
-    DomainError as OracleError,  # Oracle-specific errors
-    ServiceResult,
-    ValidationError as ValidationError,  # Validation errors
+# Import consolidated implementations from flext-meltano
+# MIGRATED: Singer SDK imports centralized via flext-meltano
+from flext_meltano.dbt import (
+    FlextMeltanoDbtManager,
+    FlextMeltanoDbtProject,
+    FlextMeltanoDbtRunner,
 )
 
-try:
-    __version__ = importlib.metadata.version("flext-dbt-oracle")
-except importlib.metadata.PackageNotFoundError:
-    __version__ = "0.7.0"
+# Backward compatibility aliases
+FlextDbtOracle = FlextMeltanoDbtManager
+FlextDbtOracleProject = FlextMeltanoDbtProject
+FlextDbtOracleRunner = FlextMeltanoDbtRunner
+OracleDBT = FlextMeltanoDbtManager
+DBTOracle = FlextMeltanoDbtManager
 
-__version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
-
-
-class FlextDbtOracleDeprecationWarning(DeprecationWarning):
-    """Custom deprecation warning for FLEXT DBT ORACLE import changes."""
-
-
-def _show_deprecation_warning(old_import: str, new_import: str) -> None:
-    """Show deprecation warning for import paths."""
-    message_parts = [
-        f"⚠️  DEPRECATED IMPORT: {old_import}",
-        f"✅ USE INSTEAD: {new_import}",
-        "🔗 This will be removed in version 1.0.0",
-        "📖 See FLEXT DBT ORACLE docs for migration guide",
-    ]
-    warnings.warn(
-        "\n".join(message_parts),
-        FlextDbtOracleDeprecationWarning,
-        stacklevel=3,
-    )
-
-
-# ================================
-# SIMPLIFIED PUBLIC API EXPORTS
-# ================================
-
-# Re-export commonly used imports from flext-core are now imported at top
-
-# DBT Oracle Adapters exports - simplified imports
-with contextlib.suppress(ImportError):
-    from dbt.adapters.oracle import (
-        OracleAdapter,
-        OracleConnectionManager,
-        OracleRelation,
-    )
-
-# DBT Oracle Transformations exports - simplified imports
-with contextlib.suppress(ImportError):
-    from flext_dbt_oracle.transformations import (
-        OracleMacroUtils,
-        OracleModelBuilder,
-        OracleTransformer,
-    )
-
-# ================================
-# PUBLIC API EXPORTS
-# ================================
+__version__ = "0.8.0-wrapper"
 
 __all__ = [
-    "BaseModel",  # from flext_dbt_oracle import BaseModel
-    # Deprecation utilities
-    "FlextDbtOracleDeprecationWarning",
-    # DBT Oracle Adapters (simplified access)
-    "OracleAdapter",  # from flext_dbt_oracle import OracleAdapter
-    # Core Patterns (from flext-core)
-    "OracleBaseConfig",  # from flext_dbt_oracle import OracleBaseConfig
-    "OracleConnectionManager",  # from flext_dbt_oracle import OracleConnectionManager
-    "OracleError",  # from flext_dbt_oracle import OracleError
-    # DBT Oracle Macros (simplified access)
-    "OracleMacroUtils",  # from flext_dbt_oracle import OracleMacroUtils
-    # DBT Oracle Models (simplified access)
-    "OracleModelBuilder",  # from flext_dbt_oracle import OracleModelBuilder
-    "OracleRelation",  # from flext_dbt_oracle import OracleRelation
-    # DBT Oracle Transformations (simplified access)
-    "OracleTransformer",  # from flext_dbt_oracle import OracleTransformer
-    "ServiceResult",  # from flext_dbt_oracle import ServiceResult
-    "ValidationError",  # from flext_dbt_oracle import ValidationError
-    # Version
+    "DBTOracle",
+    # Backward compatibility
+    "FlextDbtOracle",
+    "FlextDbtOracleProject",
+    "FlextDbtOracleRunner",
+    # Consolidated imports
+    "FlextMeltanoDbtManager",
+    "FlextMeltanoDbtProject",
+    "FlextMeltanoDbtRunner",
+    "OracleDBT",
     "__version__",
-    "__version_info__",
 ]
