@@ -22,12 +22,8 @@ from .constants import DBTOracleAdapterConstants
 
 # Import Oracle types from typedefs
 
-# Import OracleConfig from flext-db-oracle
-try:
-    from flext_db_oracle.config import OracleConfig
-except ImportError:
-    # Fallback if flext-db-oracle is not available
-    OracleConfig = None
+# Import real OracleConfig from flext-db-oracle (no fallbacks)
+from flext_db_oracle import FlextDbOracleConfig as OracleConfig
 
 if TYPE_CHECKING:
     from .types import (
@@ -73,8 +69,19 @@ class DBTOracleSettings(BaseSettings):
     )
     project_version: str = Field(default=FlextConstants.VERSION)
 
-    # Oracle settings now inherited from OracleConfigMixin
-    # Additional DBT-specific Oracle settings can be added here if needed
+    # Oracle connection settings (directly defined)
+    oracle_host: str = Field(..., description="Oracle database host")
+    oracle_port: int = Field(1521, description="Oracle database port")
+    oracle_service_name: str = Field(..., description="Oracle service name")
+    oracle_sid: str | None = Field(None, description="Oracle SID (alternative to service_name)")
+    oracle_username: str = Field(..., description="Oracle username")
+    oracle_password: str = Field(..., description="Oracle password")
+    oracle_protocol: str = Field("tcp", description="Oracle protocol")
+    oracle_pool_min_size: int = Field(1, description="Minimum pool size")
+    oracle_pool_max_size: int = Field(10, description="Maximum pool size")
+    oracle_query_timeout: int = Field(30, description="Query timeout in seconds")
+    log_level: str = Field("INFO", description="Logging level")
+    environment: str = Field("development", description="Environment")
 
     # DBT-specific settings
     database: str = Field(

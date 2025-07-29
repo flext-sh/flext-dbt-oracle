@@ -14,11 +14,21 @@ from typing import TYPE_CHECKING, Any, ClassVar
 # Removed circular dependency - use DI pattern
 from flext_core import get_logger
 from flext_db_oracle import (
-    OracleConfig,
-    OracleConnectionService,
-    OracleQueryService,
-    run_async_in_sync_context,
+    FlextDbOracleApi,
+    FlextDbOracleConfig,
+    FlextDbOracleConnection,
 )
+
+# Create aliases for compatibility
+OracleConfig = FlextDbOracleConfig
+OracleConnectionService = FlextDbOracleConnection
+OracleQueryService = FlextDbOracleApi
+
+# Helper function for async context
+def run_async_in_sync_context(coro):
+    """Run async coroutine in sync context."""
+    import asyncio
+    return asyncio.run(coro)
 
 if TYPE_CHECKING:
     try:
@@ -415,3 +425,8 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
         connection = self.get_thread_connection()
         if connection.state == "open":
             logger.debug("Oracle transaction rollback (auto-commit mode)")
+
+
+# Create aliases for backwards compatibility
+OracleConnectionManager = FlextOracleOracleConnectionManager
+FlextOracleConnectionManager = FlextOracleOracleConnectionManager
