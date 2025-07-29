@@ -21,26 +21,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from .constants import DBTOracleAdapterConstants
 
 # Import Oracle types from typedefs
-from .typedefs import (
-    OracleArraySize,
-    OracleConnectionTimeout,
-    OracleFetchSize,
-    OracleHost,
-    OraclePassword,
-    OraclePort,
-    OracleQueryTimeout,
-    OracleSchema,
-    OracleServiceName,
-    OracleSID,
-    OracleUsername,
-)
 
 # Import OracleConfig from flext-db-oracle
 try:
     from flext_db_oracle.config import OracleConfig
 except ImportError:
     # Fallback if flext-db-oracle is not available
-    OracleConfig = None  # type: ignore[misc,assignment]
+    OracleConfig = None
 
 if TYPE_CHECKING:
     from .types import (
@@ -497,7 +484,7 @@ class DBTOracleConfig(BaseModel):
                 # This is handled by the validator, but double-check
                 self.service_name = DBTOracleAdapterConstants.DEFAULT_SERVICE_NAME
 
-        except Exception:
+        except (RuntimeError, ValueError, TypeError):
             logger.exception("Configuration validation failed")
             raise
         else:

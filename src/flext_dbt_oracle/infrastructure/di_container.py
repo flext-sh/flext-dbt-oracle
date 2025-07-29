@@ -12,8 +12,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Any
-
 # 🚨 ARCHITECTURAL COMPLIANCE: Use ONLY official flext-core FlextContainer
 from flext_core import FlextContainer, get_logger
 
@@ -54,11 +52,11 @@ def configure_flext_dbt_oracle_dependencies() -> None:
 
         logger.info("FLEXT_DBT_ORACLE dependencies configured successfully")
 
-    except Exception as e:
+    except (RuntimeError, ValueError, TypeError) as e:
         logger.exception(f"Failed to configure FLEXT_DBT_ORACLE dependencies: {e}")
 
 
-def get_flext_dbt_oracle_service(service_name: str) -> Any:
+def get_flext_dbt_oracle_service(service_name: str) -> object:
     """Get flext_dbt_oracle service from container.
 
     Args:

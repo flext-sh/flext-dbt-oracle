@@ -7,6 +7,7 @@ using real Oracle connections and dbt-core patterns.
 from __future__ import annotations
 
 import os
+import tempfile
 from typing import TYPE_CHECKING, Any
 
 import pytest
@@ -21,7 +22,6 @@ def set_test_environment() -> Generator[None]:
     """Set test environment variables."""
     os.environ["FLEXT_ENV"] = "test"
     os.environ["FLEXT_LOG_LEVEL"] = "debug"
-    import tempfile
 
     temp_dir = tempfile.mkdtemp(prefix="dbt_profiles_")
     os.environ["DBT_PROFILES_DIR"] = temp_dir
@@ -576,7 +576,7 @@ def mock_dbt_runner() -> object:
             models = models or ["dim_customers", "fact_orders"]
             for model in models:
                 # Mock compiled SQL - not executed, just static template
-                compiled[model] = "SELECT * FROM compiled_" + model  # noqa: S608
+                compiled[model] = f"SELECT * FROM compiled_{model}"  # noqa: S608
             return {"compiled": compiled}
 
     return MockDbtRunner

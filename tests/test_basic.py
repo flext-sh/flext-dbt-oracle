@@ -1,11 +1,17 @@
 """Basic tests for FLEXT DBT Oracle adapter."""
 
+from dbt.adapters.oracle import (
+from dbt.adapters.oracle.connections import (
+from dbt.adapters.oracle.connections import OracleCredentials
+from dbt.adapters.oracle import OracleAdapter
+
+
 import pytest
 
 
 def test_basic_import() -> None:
     """Test basic adapter imports work."""
-    from dbt.adapters.oracle import (
+
         OracleAdapter,
         OracleConnectionManager,
     )
@@ -16,16 +22,18 @@ def test_basic_import() -> None:
 
 def test_adapter_type() -> None:
     """Test adapter type is correct."""
-    from dbt.adapters.oracle.connections import (
+
         OracleConnectionManager,
     )
 
-    assert OracleConnectionManager.TYPE == "oracle"
+    if OracleConnectionManager.TYPE != "oracle":
+
+        raise AssertionError(f"Expected {"oracle"}, got {OracleConnectionManager.TYPE}")
 
 
 def test_credentials_class() -> None:
     """Test credentials class is available."""
-    from dbt.adapters.oracle.connections import OracleCredentials
+
 
     assert OracleCredentials is not None
 
@@ -33,7 +41,7 @@ def test_credentials_class() -> None:
 @pytest.mark.unit
 def test_adapter_initialization() -> None:
     """Test basic adapter initialization."""
-    from dbt.adapters.oracle import OracleAdapter
+
 
     # This is just a smoke test - adapter needs actual config to work
     assert OracleAdapter.ConnectionManager is not None

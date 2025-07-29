@@ -7,7 +7,7 @@ for enterprise-grade Oracle Database integration.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 # MIGRATED: DBT components now consolidated in flext-meltano
 from flext_meltano import BaseRelation, SQLAdapter

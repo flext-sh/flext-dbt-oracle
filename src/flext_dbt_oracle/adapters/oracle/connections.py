@@ -202,7 +202,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
         ] = {}
 
     @classmethod
-    def open(cls, connection: Any) -> Any:
+    def open(cls, connection: Any) -> object:
         """Open Oracle connection using flext-infrastructure.databases.flext-db-oracle services.
 
         Open Oracle connection using
@@ -239,7 +239,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             }
             connection.state = "open"
             logger.info("Oracle connection opened: %s", connection.name)
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Failed to open Oracle connection: %s", connection.name)
             connection.state = "fail"
             connection.handle = None
@@ -268,7 +268,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
                     run_async_in_sync_context(
                         handle["connection_service"].close_pool(),
                     )
-            except Exception as e:
+            except (RuntimeError, ValueError, TypeError) as e:
                 logger.warning("Error closing connection: %s", e)
             connection.state = "closed"
             connection.handle = None
@@ -283,10 +283,10 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
         raise DbtDatabaseError(error_message)
 
     @contextmanager
-    def exception_handler(self, sql: str) -> Any:
+    def exception_handler(self, sql: str) -> object:
         try:
             yield
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Oracle query failed: %s", sql)
             msg = f"Oracle query failed: {e}"
             raise DbtDatabaseError(msg) from e
