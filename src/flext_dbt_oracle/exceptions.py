@@ -178,7 +178,9 @@ class FlextDbtOracleModelError(FlextDbtOracleError):
             context["model_type"] = model_type
 
         super().__init__(
-            f"Oracle DBT model: {message}", model_name=model_name, **context,
+            f"Oracle DBT model: {message}",
+            model_name=model_name,
+            **context,
         )
 
 
@@ -215,7 +217,9 @@ class FlextDbtOracleTestError(FlextDbtOracleError):
             context["test_name"] = test_name
 
         super().__init__(
-            f"Oracle DBT test: {message}", model_name=model_name, **context,
+            f"Oracle DBT test: {message}",
+            model_name=model_name,
+            **context,
         )
 
 

@@ -75,7 +75,8 @@ class DBTOracleSettings(BaseSettings):
     oracle_port: int = Field(1521, description="Oracle database port")
     oracle_service_name: str = Field(..., description="Oracle service name")
     oracle_sid: str | None = Field(
-        None, description="Oracle SID (alternative to service_name)",
+        None,
+        description="Oracle SID (alternative to service_name)",
     )
     oracle_username: str = Field(..., description="Oracle username")
     oracle_password: str = Field(..., description="Oracle password")

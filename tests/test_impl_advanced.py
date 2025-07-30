@@ -307,7 +307,8 @@ class TestAdapterIntegration:
 
     @patch("multiprocessing.get_context")
     def test_adapter_connection_manager_integration(
-        self, mock_mp_context: Mock,
+        self,
+        mock_mp_context: Mock,
     ) -> None:
         """Test integration between adapter and connection manager."""
         config = Mock()

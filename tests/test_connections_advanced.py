@@ -151,7 +151,8 @@ class TestConnectionManager:
             manager = FlextOracleOracleConnectionManager(profile)
 
             with pytest.raises(
-                DbtDatabaseError, match="Connection test failed: Test error",
+                DbtDatabaseError,
+                match="Connection test failed: Test error",
             ):
                 manager._handle_connection_error("Test error")
 
@@ -209,7 +210,9 @@ class TestExecuteQueries:
     @patch("flext_dbt_oracle.adapters.oracle.connections.run_async_in_sync_context")
     @patch("multiprocessing.get_context")
     def test_execute_query_success(
-        self, mock_mp_context: Mock, mock_async_run: Mock,
+        self,
+        mock_mp_context: Mock,
+        mock_async_run: Mock,
     ) -> None:
         """Test successful query execution."""
         # Setup mocks
@@ -273,7 +276,8 @@ class TestFallbackCursor:
         with (
             patch.object(manager, "exception_handler") as mock_exception_handler,
             patch(
-                "flext_dbt_oracle.adapters.oracle.connections.ORACLEDB_AVAILABLE", False,
+                "flext_dbt_oracle.adapters.oracle.connections.ORACLEDB_AVAILABLE",
+                False,
             ),
         ):
             mock_exception_handler.__enter__ = Mock(return_value=None)

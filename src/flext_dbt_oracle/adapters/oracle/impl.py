@@ -9,6 +9,9 @@ from __future__ import annotations
 
 from typing import Any
 
+# Direct import - agate is a guaranteed dependency
+import agate  # type: ignore[import-untyped]
+
 # MIGRATED: DBT components now consolidated in flext-meltano
 from flext_meltano import BaseConnectionManager, BaseRelation, SQLAdapter
 
@@ -119,55 +122,115 @@ class OracleAdapter(SQLAdapter):
         _, table = self.execute(sql, bindings, fetch=True)
         return len(table) > 0 and table[0][0] > 0
 
-    def convert_text_type(self, agate_type: str, size: int | None = None) -> str:
+    @classmethod
+    def convert_text_type(cls, agate_table: object, col_idx: int) -> str:
         """Convert text type to Oracle equivalent.
 
         Args:
-            agate_type: The source data type
-            size: Optional size constraint
+            agate_table: The agate table containing the data
+            col_idx: Column index to analyze
 
         Returns:
             Oracle-specific SQL type definition
 
         """
-        if size and size > 4000:
-            return "CLOB"
-        if size:
-            return f"VARCHAR2({size})"
-        return "VARCHAR2(255)"
+        # Analyze column data to determine optimal size
+        if hasattr(agate_table, "columns") and col_idx < len(agate_table.columns):
+            # Get the actual agate column
+            column = agate_table.columns[col_idx]
+            if hasattr(column, "aggregate") and callable(column.aggregate):
+                try:
+                    # Get max length from column data
+                    max_length = column.aggregate(agate.MaxLength())
+                    if max_length and max_length > 4000:
+                        return "CLOB"
+                    if max_length and max_length > 0:
+                        return f"VARCHAR2({min(max_length * 2, 4000)})"  # Add buffer
+                except (AttributeError, TypeError):
+                    pass
 
-    def convert_number_type(
-        self, agate_type: str, precision: int | None = None, scale: int | None = None,
-    ) -> str:
+        # Default to VARCHAR2 with reasonable size
+        return "VARCHAR2(4000)"  # Oracle max for VARCHAR2
+
+    @classmethod
+    def convert_number_type(cls, agate_table: object, col_idx: int) -> str:
         """Convert number type to Oracle equivalent.
 
         Args:
-            agate_type: The source data type
-            precision: Optional precision
-            scale: Optional scale
+            agate_table: The agate table containing the data
+            col_idx: Column index to analyze
 
         Returns:
             Oracle-specific SQL type definition
 
         """
-        if precision and scale is not None:
-            return f"NUMBER({precision},{scale})"
-        if precision:
-            return f"NUMBER({precision})"
+        # Analyze numeric data to determine precision/scale
+        if hasattr(agate_table, "columns") and col_idx < len(agate_table.columns):
+            column = agate_table.columns[col_idx]
+            if hasattr(column, "aggregate") and callable(column.aggregate):
+                try:
+                    # Check if all values are integers
+                    has_decimals = False
+                    max_value = abs(column.aggregate(agate.Max()) or 0)
+                    min_value = abs(column.aggregate(agate.Min()) or 0)
+
+                    # Estimate precision needed
+                    max_digits = max(len(str(int(max_value))), len(str(int(min_value))))
+
+                    # Check for decimal places
+                    if hasattr(agate_table, "rows"):
+                        for row in agate_table.rows:
+                            if col_idx < len(row) and row[col_idx] is not None:
+                                str_val = str(row[col_idx])
+                                if "." in str_val:
+                                    has_decimals = True
+                                    break
+
+                    if not has_decimals and max_digits < 10:
+                        return f"NUMBER({max_digits})"
+                    if has_decimals and max_digits < 15:
+                        return f"NUMBER({max_digits + 2}, 2)"
+
+                except (AttributeError, TypeError, ValueError):
+                    pass
+
+        # Default to NUMBER without constraints
         return "NUMBER"
 
-    def convert_datetime_type(self, agate_type: str) -> str:
+    @classmethod
+    def convert_datetime_type(cls, agate_table: object, col_idx: int) -> str:
         """Convert datetime type to Oracle equivalent.
 
         Args:
-            agate_type: The source data type
+            agate_table: The agate table containing the data
+            col_idx: Column index to analyze
 
         Returns:
             Oracle-specific SQL type definition
 
         """
-        if agate_type.lower() == "date":
-            return "DATE"
-        if "timestamp" in agate_type.lower():
-            return "TIMESTAMP"
-        return "DATE"
+        # Analyze datetime data to determine if DATE is sufficient
+        if hasattr(agate_table, "columns") and col_idx < len(agate_table.columns):
+            try:
+                has_time_component = False
+                # Check sample of rows for time components
+                sample_size = min(100, len(getattr(agate_table, "rows", [])))
+
+                for i, row in enumerate(getattr(agate_table, "rows", [])):
+                    if i >= sample_size:
+                        break
+                    if col_idx < len(row) and row[col_idx] is not None:
+                        str_val = str(row[col_idx])
+                        # Check for time components (HH:MM:SS, microseconds)
+                        if ":" in str_val or "." in str_val.split()[-1]:
+                            has_time_component = True
+                            break
+
+                # Use DATE if no time components found, TIMESTAMP otherwise
+                return "TIMESTAMP" if has_time_component else "DATE"
+
+            except (AttributeError, TypeError, IndexError):
+                pass
+
+        # Default to TIMESTAMP for datetime columns (safer choice)
+        return "TIMESTAMP"

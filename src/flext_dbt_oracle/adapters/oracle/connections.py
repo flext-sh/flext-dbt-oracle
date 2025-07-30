@@ -11,6 +11,10 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, ClassVar, cast
 
+# Direct imports - guaranteed dependencies
+import agate  # type: ignore[import-untyped]
+import cx_Oracle as oracledb  # type: ignore[import-not-found] # Use cx_Oracle as oracledb alias for consistency
+
 # Real DBT and FLEXT imports - no fallbacks
 from flext_core import get_logger
 from flext_db_oracle import (
@@ -38,6 +42,8 @@ OracleConfig = FlextDbOracleConfig
 OracleConnectionService = FlextDbOracleConnection
 OracleQueryService = FlextDbOracleApi
 
+logger = get_logger(__name__)
+
 
 # Helper function for async context
 def run_async_in_sync_context(coro: object) -> object:
@@ -45,26 +51,6 @@ def run_async_in_sync_context(coro: object) -> object:
     import asyncio
 
     return asyncio.run(cast("Coroutine[Any, Any, Any]", coro))
-
-
-# Import agate for data handling
-try:
-    import agate  # type: ignore[import-untyped]
-except ImportError:
-    agate = None
-logger = get_logger(__name__)
-
-# Oracle connection type handling - use real oracledb
-try:
-    import oracledb
-
-    ORACLEDB_AVAILABLE = True
-except ImportError:
-    # Fallback when oracledb is not available
-    ORACLEDB_AVAILABLE = False
-    oracledb = cast("Any", None)  # Type cast to avoid assignment error
-
-logger = get_logger(__name__)
 
 
 @dataclass
@@ -374,7 +360,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             if connection.state != "open":
                 connection = self.open(connection)
             # Get actual cursor from Oracle connection
-            if ORACLEDB_AVAILABLE and oracledb and hasattr(connection.handle, "cursor"):
+            if hasattr(connection.handle, "cursor"):
                 cursor = connection.handle.cursor()
                 # Store execution context for debugging using public attributes
                 # Note: Using setattr to avoid direct private attribute access
