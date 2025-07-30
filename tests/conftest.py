@@ -87,7 +87,7 @@ def dbt_project_config() -> dict[str, Any]:
     """Dbt project configuration for testing."""
     return {
         "name": "flext_dbt_oracle_test",
-        "version": "1.0.0",
+        "version": "0.9.0",
         "profile": "test",
         "model-paths": ["models"],
         "analysis-paths": ["analyses"],

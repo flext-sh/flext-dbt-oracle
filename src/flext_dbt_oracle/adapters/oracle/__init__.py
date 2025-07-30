@@ -33,7 +33,7 @@ from flext_dbt_oracle.adapters.oracle.types import (
 )
 
 # Version information
-__version__ = "1.0.0"
+__version__ = "0.9.0"
 __author__ = "FLEXT Team"
 __email__ = "team@flext.sh"
 

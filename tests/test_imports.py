@@ -7,8 +7,8 @@ import pytest
 def test_module_structure() -> None:
     """Test that module structure exists."""
     assert hasattr(dbt.adapters.oracle, "__version__")
-    if dbt.adapters.oracle.__version__ != "1.0.0":
-        msg = f"Expected {"1.0.0"}, got {dbt.adapters.oracle.__version__}"
+    if dbt.adapters.oracle.__version__ != "0.9.0":
+        msg = f"Expected {"0.9.0"}, got {dbt.adapters.oracle.__version__}"
         raise AssertionError(msg)
 
 

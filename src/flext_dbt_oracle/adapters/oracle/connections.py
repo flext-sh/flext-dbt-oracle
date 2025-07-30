@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, cast
 # Real DBT and FLEXT imports - no fallbacks
 from flext_core import get_logger
 from flext_db_oracle import (
+    ORACLE_DEFAULT_PORT,
     FlextDbOracleApi,
     FlextDbOracleConfig,
     FlextDbOracleConnection,
@@ -81,7 +82,7 @@ class OracleCredentials(Credentials):
     # DBT-specific settings - required
     database: str
     # Oracle connection parameters with defaults
-    port: int = 1521
+    port: int = ORACLE_DEFAULT_PORT
     service_name: str | None = None
     sid: str | None = None
     protocol: str = "tcp"
@@ -297,13 +298,19 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             query_service = handle["query_service"]
             # Execute query using modern async/sync bridge
             result = run_async_in_sync_context(query_service.execute_query(sql))
-            if hasattr(result, 'is_failure') and result.is_failure:
+            if (hasattr(result, "is_failure") and result.is_failure) or (hasattr(result, "success") and not result.success):
                 msg = f"Query execution failed: {result.error if hasattr(result, 'error') else 'Unknown error'}"
                 raise DbtDatabaseError(msg)
-            elif hasattr(result, 'success') and not result.success:
-                msg = f"Query execution failed: {result.error if hasattr(result, 'error') else 'Unknown error'}"
-                raise DbtDatabaseError(msg)
-            query_result = result.value
+            # Extract result data from FlextResult or similar object
+            if hasattr(result, "data"):
+                query_result = result.data
+            elif hasattr(result, "value"):
+                query_result = result.value
+            elif hasattr(result, "unwrap"):
+                query_result = result.unwrap()
+            else:
+                # Fallback - use result directly
+                query_result = result
             # Convert to agate table if fetching results
             if fetch and query_result.rows:
                 # Create agate table from results if agate is available

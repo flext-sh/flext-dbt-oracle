@@ -1,8 +1,12 @@
 """Basic tests for FLEXT DBT Oracle adapter."""
 
 import pytest
-from dbt.adapters.oracle import OracleAdapter
-from dbt.adapters.oracle.connections import OracleConnectionManager, OracleCredentials
+
+from flext_dbt_oracle.adapters import FlextOracleAdapter as OracleAdapter
+from flext_dbt_oracle.adapters.oracle.connections import (
+    FlextOracleOracleConnectionManager as OracleConnectionManager,
+    OracleCredentials,
+)
 
 
 def test_basic_import() -> None:

@@ -7,8 +7,8 @@ specific to Oracle databases.
 
 from __future__ import annotations
 
-from .oracle.adapter import FlextOracleAdapter
 from .oracle.connections import FlextOracleConnectionManager
+from .oracle.impl import OracleAdapter as FlextOracleAdapter
 
 __all__ = [
     "FlextOracleAdapter",

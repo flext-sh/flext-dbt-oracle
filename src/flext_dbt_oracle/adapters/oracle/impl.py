@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Any
 
 # MIGRATED: DBT components now consolidated in flext-meltano
-from flext_meltano import BaseRelation, SQLAdapter
+from flext_meltano import BaseConnectionManager, BaseRelation, SQLAdapter
 
 from flext_dbt_oracle.adapters.oracle.connections import OracleConnectionManager
 
@@ -27,7 +27,7 @@ class OracleAdapter(SQLAdapter):
     - Zero code duplication across FLEXT ecosystem
     """
 
-    ConnectionManager = OracleConnectionManager
+    ConnectionManager: type[BaseConnectionManager] = OracleConnectionManager  # type: ignore[assignment]
 
     @classmethod
     def date_function(cls) -> str:
@@ -39,9 +39,7 @@ class OracleAdapter(SQLAdapter):
         """Oracle connections can be canceled."""
         return True
 
-    def quote(self, identifier: str) -> str:
-        """Quote an identifier for Oracle."""
-        return f'"{identifier}"'
+    # Use parent class quote implementation
 
     def get_columns_in_relation(self, relation: Any) -> list[Any]:
         """Get columns for a given relation using flext-infrastructure.databases.flext-db-oracle services.

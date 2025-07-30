@@ -18,7 +18,7 @@ from flext_core import FlextConstants, get_logger
 from flext_db_oracle import FlextDbOracleConfig as OracleConfig
 
 # Use flext-core configuration patterns
-from pydantic import BaseModel, Field, ValidationInfo, field_validator
+from pydantic import BaseModel, Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Import DBT Oracle adapter-specific constants with flext-core integration
@@ -400,7 +400,7 @@ class DBTOracleConfig(BaseModel):
             "protocol": self.protocol,
         }
 
-    def to_oracle_config(self) -> OracleConfig | None:
+    def to_oracle_config(self) -> OracleConfig:
         """Convert to modern flext-infrastructure.databases.flext-db-oracle OracleConfig.
 
         Convert to modern flext-infrastructure.databases.flext-db-oracle
@@ -408,11 +408,9 @@ class DBTOracleConfig(BaseModel):
 
         Returns:
             OracleConfig instance with proper parameterization for DBT operations
-            or None if flext-db-oracle is not available
 
         """
-        if OracleConfig is None:
-            return None
+        # OracleConfig is always available from flext-db-oracle
 
         return OracleConfig(
             host=self.host or "localhost",
@@ -420,17 +418,13 @@ class DBTOracleConfig(BaseModel):
             service_name=self.service_name,
             sid=self.sid,
             username=self.username or "oracle",
-            password=self.password or "oracle",
+            password=SecretStr(self.password or "oracle"),
             protocol=self.protocol,
             # Performance settings optimized for DBT analytical workloads
-            pool_min_size=self.pool_min_size,
-            pool_max_size=self.pool_max_size,
+            pool_min=self.pool_min_size,
+            pool_max=self.pool_max_size,
             pool_increment=self.pool_increment,
-            query_timeout=int(self.query_timeout),
-            fetch_size=self.fetch_size,
-            connect_timeout=int(self.connect_timeout),
-            retry_attempts=self.retry_attempts,
-            retry_delay=self.retry_delay,
+            timeout=int(self.query_timeout),
         )
 
     def get_performance_settings(self) -> dict[str, Any]:
