@@ -118,3 +118,56 @@ class OracleAdapter(SQLAdapter):
         bindings = {"schema_name": schema.upper()}
         _, table = self.execute(sql, bindings, fetch=True)
         return len(table) > 0 and table[0][0] > 0
+
+    def convert_text_type(self, agate_type: str, size: int | None = None) -> str:
+        """Convert text type to Oracle equivalent.
+
+        Args:
+            agate_type: The source data type
+            size: Optional size constraint
+
+        Returns:
+            Oracle-specific SQL type definition
+
+        """
+        if size and size > 4000:
+            return "CLOB"
+        if size:
+            return f"VARCHAR2({size})"
+        return "VARCHAR2(255)"
+
+    def convert_number_type(
+        self, agate_type: str, precision: int | None = None, scale: int | None = None,
+    ) -> str:
+        """Convert number type to Oracle equivalent.
+
+        Args:
+            agate_type: The source data type
+            precision: Optional precision
+            scale: Optional scale
+
+        Returns:
+            Oracle-specific SQL type definition
+
+        """
+        if precision and scale is not None:
+            return f"NUMBER({precision},{scale})"
+        if precision:
+            return f"NUMBER({precision})"
+        return "NUMBER"
+
+    def convert_datetime_type(self, agate_type: str) -> str:
+        """Convert datetime type to Oracle equivalent.
+
+        Args:
+            agate_type: The source data type
+
+        Returns:
+            Oracle-specific SQL type definition
+
+        """
+        if agate_type.lower() == "date":
+            return "DATE"
+        if "timestamp" in agate_type.lower():
+            return "TIMESTAMP"
+        return "DATE"

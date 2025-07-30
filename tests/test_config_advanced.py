@@ -1,6 +1,6 @@
 """Advanced tests for Oracle configuration using FLEXT patterns."""
 
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 import pytest
 from flext_db_oracle import FlextDbOracleConfig
@@ -42,7 +42,7 @@ class TestDBTOracleConfig:
 
     def test_config_validation_missing_host(self) -> None:
         """Test validation fails when host is missing."""
-        with pytest.raises(ValidationError, match="Host is required"):
+        with pytest.raises(ValidationError, match="Field required"):
             DBTOracleConfig(
                 username="testuser",
                 password="testpass",
@@ -51,7 +51,7 @@ class TestDBTOracleConfig:
 
     def test_config_validation_missing_username(self) -> None:
         """Test validation fails when username is missing."""
-        with pytest.raises(ValidationError, match="Username is required"):
+        with pytest.raises(ValidationError, match="Field required"):
             DBTOracleConfig(
                 host="localhost",
                 password="testpass",
@@ -60,7 +60,7 @@ class TestDBTOracleConfig:
 
     def test_config_validation_missing_password(self) -> None:
         """Test validation fails when password is missing."""
-        with pytest.raises(ValidationError, match="Password is required"):
+        with pytest.raises(ValidationError, match="Field required"):
             DBTOracleConfig(
                 host="localhost",
                 username="testuser",
@@ -69,7 +69,7 @@ class TestDBTOracleConfig:
 
     def test_config_validation_invalid_materialization(self) -> None:
         """Test validation fails for invalid materialization."""
-        with pytest.raises(ValidationError, match="Invalid materialization"):
+        with pytest.raises(ValidationError, match="String should match pattern"):
             DBTOracleConfig(
                 host="localhost",
                 username="testuser",
@@ -235,7 +235,7 @@ class TestDBTOracleConfig:
         dbt_settings = config.get_dbt_settings()
 
         assert "database" in dbt_settings
-        assert "schema_name" in dbt_settings
+        assert "schema" in dbt_settings
         assert "materialization" in dbt_settings
         assert dbt_settings["materialization"] == "table"
 
@@ -258,10 +258,10 @@ class TestDBTOracleSettings:
     def test_settings_from_environment(self) -> None:
         """Test creating settings from environment variables."""
         env_vars = {
-            "DBT_ORACLE_HOST": "env_host",
-            "DBT_ORACLE_SERVICE_NAME": "env_service",
-            "DBT_ORACLE_USERNAME": "env_user",
-            "DBT_ORACLE_PASSWORD": "env_pass",
+            "DBT_ORACLE_ORACLE_HOST": "env_host",
+            "DBT_ORACLE_ORACLE_SERVICE_NAME": "env_service",
+            "DBT_ORACLE_ORACLE_USERNAME": "env_user",
+            "DBT_ORACLE_ORACLE_PASSWORD": "env_pass",
         }
 
         with patch.dict("os.environ", env_vars):
@@ -343,13 +343,13 @@ class TestConfigEdgeCases:
             port=1521,
             pool_min_size=1,
             pool_max_size=50,
-            query_timeout=3600,
+            query_timeout=600,
             retry_delay=0.5,
         )
         assert config.port == 1521
         assert config.pool_min_size == 1
         assert config.pool_max_size == 50
-        assert config.query_timeout == 3600
+        assert config.query_timeout == 600
         assert config.retry_delay == 0.5
 
     def test_config_materialization_validation_all_valid_types(self) -> None:

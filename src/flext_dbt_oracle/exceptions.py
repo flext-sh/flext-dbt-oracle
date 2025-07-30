@@ -88,7 +88,7 @@ class FlextDbtOracleValidationError(FlextValidationError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT validation error with context."""
-        validation_details = {}
+        validation_details: dict[str, object] = {}
         if field is not None:
             validation_details["field"] = field
         if value is not None:
@@ -177,7 +177,9 @@ class FlextDbtOracleModelError(FlextDbtOracleError):
         if model_type is not None:
             context["model_type"] = model_type
 
-        super().__init__(f"Oracle DBT model: {message}", model_name=model_name, **context)
+        super().__init__(
+            f"Oracle DBT model: {message}", model_name=model_name, **context,
+        )
 
 
 class FlextDbtOracleAdapterError(FlextDbtOracleError):
@@ -194,7 +196,7 @@ class FlextDbtOracleAdapterError(FlextDbtOracleError):
         if adapter_method is not None:
             context["adapter_method"] = adapter_method
 
-        super().__init__(f"Oracle DBT adapter: {message}", **context)
+        super().__init__(f"Oracle DBT adapter: {message}", context=context)
 
 
 class FlextDbtOracleTestError(FlextDbtOracleError):
@@ -212,7 +214,9 @@ class FlextDbtOracleTestError(FlextDbtOracleError):
         if test_name is not None:
             context["test_name"] = test_name
 
-        super().__init__(f"Oracle DBT test: {message}", model_name=model_name, **context)
+        super().__init__(
+            f"Oracle DBT test: {message}", model_name=model_name, **context,
+        )
 
 
 __all__ = [

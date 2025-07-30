@@ -9,26 +9,23 @@ integration.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, TypedDict
+from typing import TYPE_CHECKING, Annotated, Literal, TypedDict
+
+# Import available flext-core types and define missing ones
+from pydantic import Field, StringConstraints
+
+# Define missing types for DBT Oracle adapter - moved outside TYPE_CHECKING for runtime use
+NonEmptyStr = Annotated[str, StringConstraints(min_length=1)]
+DBTDatabaseName = Annotated[str, StringConstraints(min_length=1, max_length=128)]
+DBTSchemaName = Annotated[str, StringConstraints(min_length=1, max_length=128)]
+DBTTableName = Annotated[str, StringConstraints(min_length=1, max_length=128)]
+DBTMaterialization = Literal["table", "view", "incremental", "ephemeral"]
+Port = Annotated[int, Field(ge=1, le=65535)]
+PositiveInt = Annotated[int, Field(gt=0)]
+TimeoutSeconds = Annotated[int, Field(ge=1, le=3600)]
 
 if TYPE_CHECKING:
     from datetime import datetime
-
-    # Define DBT-specific types not available in flext-core
-    from typing import Annotated
-
-    # Import available flext-core types and define missing ones
-    from pydantic import Field, StringConstraints
-
-    # Define missing types for DBT Oracle adapter
-    NonEmptyStr = Annotated[str, StringConstraints(min_length=1)]
-    DBTDatabaseName = Annotated[str, StringConstraints(min_length=1, max_length=128)]
-    DBTSchemaName = Annotated[str, StringConstraints(min_length=1, max_length=128)]
-    DBTTableName = Annotated[str, StringConstraints(min_length=1, max_length=128)]
-    DBTMaterialization = Literal["table", "view", "incremental", "ephemeral"]
-    Port = Annotated[int, Field(ge=1, le=65535)]
-    PositiveInt = Annotated[int, Field(gt=0)]
-    TimeoutSeconds = Annotated[int, Field(ge=1, le=3600)]
 
 # ==============================================================================
 # DBT ORACLE ADAPTER TYPES - Python 3.13 Enhanced

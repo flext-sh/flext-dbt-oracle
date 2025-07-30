@@ -4,7 +4,7 @@ from typing import Never
 from unittest.mock import Mock, patch
 
 import pytest
-from flext_meltano import Connection, DbtDatabaseError, DbtRuntimeError
+from flext_meltano import Connection, DbtDatabaseError
 
 from flext_dbt_oracle.adapters.oracle.connections import (
     FlextOracleOracleConnectionManager,
@@ -105,7 +105,10 @@ class TestConnectionManager:
     @patch("flext_dbt_oracle.adapters.oracle.connections.OracleConnectionService")
     @patch("flext_dbt_oracle.adapters.oracle.connections.OracleQueryService")
     def test_open_connection_success(
-        self, mock_query_service, mock_connection_service, mock_async_run
+        self,
+        mock_query_service: Mock,
+        mock_connection_service: Mock,
+        mock_async_run: Mock,
     ) -> None:
         """Test successful connection opening."""
         # Setup mocks
@@ -147,7 +150,9 @@ class TestConnectionManager:
         with patch("multiprocessing.get_context"):
             manager = FlextOracleOracleConnectionManager(profile)
 
-            with pytest.raises(DbtDatabaseError, match="Connection test failed: Test error"):
+            with pytest.raises(
+                DbtDatabaseError, match="Connection test failed: Test error",
+            ):
                 manager._handle_connection_error("Test error")
 
     def test_cancel_open_connections(self) -> None:
@@ -167,7 +172,9 @@ class TestConnectionManager:
 
             manager.thread_connections = {"test": mock_connection}
 
-            with patch("flext_dbt_oracle.adapters.oracle.connections.run_async_in_sync_context"):
+            with patch(
+                "flext_dbt_oracle.adapters.oracle.connections.run_async_in_sync_context",
+            ):
                 result = manager.cancel_open()
                 assert result == []
                 assert mock_connection.state == "closed"
@@ -178,7 +185,6 @@ class TestAsyncHelpers:
 
     def test_run_async_in_sync_context(self) -> None:
         """Test async to sync context conversion."""
-        import asyncio
 
         async def test_coro() -> str:
             return "test_result"
@@ -188,10 +194,10 @@ class TestAsyncHelpers:
 
     def test_run_async_in_sync_context_with_exception(self) -> None:
         """Test async context with exception."""
-        import asyncio
 
         async def failing_coro() -> Never:
-            raise ValueError("Test error")
+            msg = "Test error"
+            raise ValueError(msg)
 
         with pytest.raises(ValueError, match="Test error"):
             run_async_in_sync_context(failing_coro())
@@ -202,7 +208,9 @@ class TestExecuteQueries:
 
     @patch("flext_dbt_oracle.adapters.oracle.connections.run_async_in_sync_context")
     @patch("multiprocessing.get_context")
-    def test_execute_query_success(self, mock_mp_context, mock_async_run) -> None:
+    def test_execute_query_success(
+        self, mock_mp_context: Mock, mock_async_run: Mock,
+    ) -> None:
         """Test successful query execution."""
         # Setup mocks
         mock_result = Mock()
@@ -239,9 +247,9 @@ class TestExecuteQueries:
             mock_exception_handler.__enter__ = Mock(return_value=None)
             mock_exception_handler.__exit__ = Mock(return_value=None)
 
-            response, table = manager.execute("SELECT 1", fetch=True)
+            response, _table = manager.execute("SELECT 1", fetch=True)
 
-            assert response.code in ["SELECT", "DDL"]
+            assert response.code in {"SELECT", "DDL"}
             assert response.rows_affected == 0
 
 
@@ -249,7 +257,7 @@ class TestFallbackCursor:
     """Test fallback cursor functionality."""
 
     @patch("multiprocessing.get_context")
-    def test_add_query_with_fallback_cursor(self, mock_mp_context) -> None:
+    def test_add_query_with_fallback_cursor(self, mock_mp_context: Mock) -> None:
         """Test adding query with fallback cursor when oracledb not available."""
         profile = {"host": "localhost", "username": "test"}
         manager = FlextOracleOracleConnectionManager(profile)
@@ -258,12 +266,16 @@ class TestFallbackCursor:
         mock_connection = Mock()
         mock_connection.state = "open"
         mock_connection.handle = Mock()
-        # Make hasattr return False to trigger fallback
-        mock_connection.handle.cursor = None
 
         manager.get_thread_connection = Mock(return_value=mock_connection)
 
-        with patch.object(manager, "exception_handler") as mock_exception_handler:
+        # Patch ORACLEDB_AVAILABLE to False to trigger fallback cursor
+        with (
+            patch.object(manager, "exception_handler") as mock_exception_handler,
+            patch(
+                "flext_dbt_oracle.adapters.oracle.connections.ORACLEDB_AVAILABLE", False,
+            ),
+        ):
             mock_exception_handler.__enter__ = Mock(return_value=None)
             mock_exception_handler.__exit__ = Mock(return_value=None)
 
@@ -280,7 +292,7 @@ class TestTransactionMethods:
     """Test transaction methods."""
 
     @patch("multiprocessing.get_context")
-    def test_begin_transaction(self, mock_mp_context) -> None:
+    def test_begin_transaction(self, mock_mp_context: Mock) -> None:
         """Test beginning transaction."""
         profile = {"host": "localhost", "username": "test"}
         manager = FlextOracleOracleConnectionManager(profile)
@@ -293,7 +305,7 @@ class TestTransactionMethods:
         manager.begin()
 
     @patch("multiprocessing.get_context")
-    def test_commit_transaction(self, mock_mp_context) -> None:
+    def test_commit_transaction(self, mock_mp_context: Mock) -> None:
         """Test committing transaction."""
         profile = {"host": "localhost", "username": "test"}
         manager = FlextOracleOracleConnectionManager(profile)
@@ -306,7 +318,7 @@ class TestTransactionMethods:
         manager.commit()
 
     @patch("multiprocessing.get_context")
-    def test_rollback_transaction(self, mock_mp_context) -> None:
+    def test_rollback_transaction(self, mock_mp_context: Mock) -> None:
         """Test rolling back transaction."""
         profile = {"host": "localhost", "username": "test"}
         manager = FlextOracleOracleConnectionManager(profile)

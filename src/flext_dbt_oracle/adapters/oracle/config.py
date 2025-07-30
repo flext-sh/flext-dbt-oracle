@@ -24,6 +24,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # Import DBT Oracle adapter-specific constants with flext-core integration
 from .constants import DBTOracleAdapterConstants
 
+# Import types directly for runtime use
+
 if TYPE_CHECKING:
     from .types import (
         NonEmptyStr,
@@ -72,7 +74,9 @@ class DBTOracleSettings(BaseSettings):
     oracle_host: str = Field(..., description="Oracle database host")
     oracle_port: int = Field(1521, description="Oracle database port")
     oracle_service_name: str = Field(..., description="Oracle service name")
-    oracle_sid: str | None = Field(None, description="Oracle SID (alternative to service_name)")
+    oracle_sid: str | None = Field(
+        None, description="Oracle SID (alternative to service_name)",
+    )
     oracle_username: str = Field(..., description="Oracle username")
     oracle_password: str = Field(..., description="Oracle password")
     oracle_protocol: str = Field("tcp", description="Oracle protocol")
@@ -151,8 +155,8 @@ class DBTOracleConfig(BaseModel):
     )
 
     # Oracle Database connection using flext-core types
-    host: NonEmptyStr | None = Field(
-        default=None,
+    host: NonEmptyStr = Field(
+        ...,
         description="Oracle database host",
     )
     port: Port = Field(
@@ -167,12 +171,12 @@ class DBTOracleConfig(BaseModel):
         default=None,
         description="Oracle SID (alternative to service_name)",
     )
-    username: NonEmptyStr | None = Field(
-        default=None,
+    username: NonEmptyStr = Field(
+        ...,
         description="Oracle username",
     )
-    password: NonEmptyStr | None = Field(
-        default=None,
+    password: NonEmptyStr = Field(
+        ...,
         description="Oracle password",
     )
     protocol: NonEmptyStr = Field(
@@ -298,7 +302,7 @@ class DBTOracleConfig(BaseModel):
 
     @field_validator("host")
     @classmethod
-    def validate_host_required(cls, v: str | None) -> str | None:
+    def validate_host_required(cls, v: str) -> str:
         """Validate host is provided."""
         if not v:
             msg = "Host is required"
@@ -322,7 +326,7 @@ class DBTOracleConfig(BaseModel):
 
     @field_validator("username")
     @classmethod
-    def validate_username_required(cls, v: str | None) -> str | None:
+    def validate_username_required(cls, v: str) -> str:
         """Validate username is provided."""
         if not v:
             msg = "Username is required"
@@ -331,7 +335,7 @@ class DBTOracleConfig(BaseModel):
 
     @field_validator("password")
     @classmethod
-    def validate_password_required(cls, v: str | None) -> str | None:
+    def validate_password_required(cls, v: str) -> str:
         """Validate password is provided."""
         if not v:
             msg = "Password is required"
@@ -358,9 +362,12 @@ class DBTOracleConfig(BaseModel):
             Connection string with masked password
 
         """
-        if self.service_name:
-            return f"oracle://{self.username}:***@{self.host}:{self.port}/{self.service_name}"
-        return f"oracle://{self.username}:***@{self.host}:{self.port}:{self.sid}"
+        # Prefer SID if provided explicitly, otherwise use service_name
+        if self.sid:
+            return f"oracle://{self.username}:***@{self.host}:{self.port}:{self.sid}"
+        return (
+            f"oracle://{self.username}:***@{self.host}:{self.port}/{self.service_name}"
+        )
 
     def get_effective_schema(self) -> str:
         """Get the effective schema name.
@@ -413,12 +420,12 @@ class DBTOracleConfig(BaseModel):
         # OracleConfig is always available from flext-db-oracle
 
         return OracleConfig(
-            host=self.host or "localhost",
+            host=self.host,
             port=self.port,
             service_name=self.service_name,
             sid=self.sid,
-            username=self.username or "oracle",
-            password=SecretStr(self.password or "oracle"),
+            username=self.username,
+            password=SecretStr(self.password),
             protocol=self.protocol,
             # Performance settings optimized for DBT analytical workloads
             pool_min=self.pool_min_size,
@@ -500,6 +507,10 @@ class DBTOracleConfig(BaseModel):
         raise ValueError(msg)
 
 
+# Rebuild model after type imports are available
+DBTOracleConfig.model_rebuild()
+
+
 class OracleCredentialsConfig(DBTOracleConfig):
     """Configuration specifically for DBT credentials with additional validation.
 
@@ -529,7 +540,7 @@ class OracleCredentialsConfig(DBTOracleConfig):
             Host as unique identifier
 
         """
-        return self.host or "unknown"
+        return self.host
 
     def connection_keys(self) -> set[str]:
         """Return keys used for connection pooling.

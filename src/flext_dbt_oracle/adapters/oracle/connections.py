@@ -14,11 +14,11 @@ from typing import TYPE_CHECKING, Any, ClassVar, cast
 # Real DBT and FLEXT imports - no fallbacks
 from flext_core import get_logger
 from flext_db_oracle import (
-    ORACLE_DEFAULT_PORT,
     FlextDbOracleApi,
     FlextDbOracleConfig,
     FlextDbOracleConnection,
 )
+from flext_db_oracle.constants import FlextOracleDbConstants
 from flext_meltano import (
     AdapterResponse,
     BaseConnectionManager,
@@ -43,6 +43,7 @@ OracleQueryService = FlextDbOracleApi
 def run_async_in_sync_context(coro: object) -> object:
     """Run async coroutine in sync context."""
     import asyncio
+
     return asyncio.run(cast("Coroutine[Any, Any, Any]", coro))
 
 
@@ -56,6 +57,7 @@ logger = get_logger(__name__)
 # Oracle connection type handling - use real oracledb
 try:
     import oracledb
+
     ORACLEDB_AVAILABLE = True
 except ImportError:
     # Fallback when oracledb is not available
@@ -82,7 +84,7 @@ class OracleCredentials(Credentials):
     # DBT-specific settings - required
     database: str
     # Oracle connection parameters with defaults
-    port: int = ORACLE_DEFAULT_PORT
+    port: int = FlextOracleDbConstants.ORACLE_DEFAULT_PORT
     service_name: str | None = None
     sid: str | None = None
     protocol: str = "tcp"
@@ -146,7 +148,9 @@ class OracleCredentials(Credentials):
             host=self.host,
             port=self.port,
             username=self.username,
-            password=SecretStr(self.password) if isinstance(self.password, str) else SecretStr(str(self.password)),
+            password=SecretStr(self.password)
+            if isinstance(self.password, str)
+            else SecretStr(str(self.password)),
             service_name=self.service_name or "XEPDB1",  # Default service name
             sid=self.sid,
             protocol=self.protocol,
@@ -171,14 +175,26 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
 
     TYPE = "oracle"
 
-    def __init__(self, profile: dict[str, Any]) -> None:
+    def __init__(self, config: Any, mp_context: Any = None) -> None:
         """Initialize connection manager with FLEXT services."""
+        # Handle both old profile dict and new config + mp_context pattern
+        if isinstance(config, dict):
+            profile = config
+        else:
+            # Convert config object to dict for compatibility
+            profile = getattr(config, "__dict__", {})
+
+        if mp_context is None:
+            import multiprocessing
+
+            mp_context = multiprocessing.get_context("spawn")
+
         # Convert profile dict to AdapterRequiredConfig-like structure
-        import multiprocessing
         from types import SimpleNamespace
+
         config_obj = SimpleNamespace()
         config_obj.__dict__.update(profile)
-        super().__init__(config_obj, multiprocessing.get_context("spawn"))  # Proper mp_context
+        super().__init__(config_obj, mp_context)
         self._oracle_services: dict[
             str,
             tuple[OracleConnectionService, OracleQueryService],
@@ -212,8 +228,14 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             query_service = OracleQueryService(oracle_config)
             # Test connection using modern async/sync bridge
             result = run_async_in_sync_context(connection_service.test_connection())
-            if (hasattr(result, "is_failure") and result.is_failure) or (hasattr(result, "success") and not result.success):
-                cls._handle_connection_error(str(result.error) if hasattr(result, "error") else "Connection failed")
+            if (hasattr(result, "is_failure") and result.is_failure) or (
+                hasattr(result, "success") and not result.success
+            ):
+                cls._handle_connection_error(
+                    str(result.error)
+                    if hasattr(result, "error")
+                    else "Connection failed",
+                )
             # Store services for later use
             connection.handle = {
                 "connection_service": connection_service,
@@ -298,7 +320,9 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             query_service = handle["query_service"]
             # Execute query using modern async/sync bridge
             result = run_async_in_sync_context(query_service.execute_query(sql))
-            if (hasattr(result, "is_failure") and result.is_failure) or (hasattr(result, "success") and not result.success):
+            if (hasattr(result, "is_failure") and result.is_failure) or (
+                hasattr(result, "success") and not result.success
+            ):
                 msg = f"Query execution failed: {result.error if hasattr(result, 'error') else 'Unknown error'}"
                 raise DbtDatabaseError(msg)
             # Extract result data from FlextResult or similar object
