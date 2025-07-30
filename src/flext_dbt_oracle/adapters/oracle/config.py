@@ -13,17 +13,16 @@ from typing import TYPE_CHECKING, Any, ClassVar
 # Removed circular dependency - use DI pattern
 from flext_core import FlextConstants, get_logger
 
+# Import Oracle types from typedefs
+# Import real OracleConfig from flext-db-oracle (no fallbacks)
+from flext_db_oracle import FlextDbOracleConfig as OracleConfig
+
 # Use flext-core configuration patterns
 from pydantic import BaseModel, Field, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Import DBT Oracle adapter-specific constants with flext-core integration
 from .constants import DBTOracleAdapterConstants
-
-# Import Oracle types from typedefs
-
-# Import real OracleConfig from flext-db-oracle (no fallbacks)
-from flext_db_oracle import FlextDbOracleConfig as OracleConfig
 
 if TYPE_CHECKING:
     from .types import (

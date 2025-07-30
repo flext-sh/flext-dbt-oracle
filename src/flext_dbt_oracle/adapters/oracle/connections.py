@@ -24,11 +24,13 @@ OracleConfig = FlextDbOracleConfig
 OracleConnectionService = FlextDbOracleConnection
 OracleQueryService = FlextDbOracleApi
 
+
 # Helper function for async context
-def run_async_in_sync_context(coro):
+def run_async_in_sync_context(coro: object) -> object:
     """Run async coroutine in sync context."""
     import asyncio
     return asyncio.run(coro)
+
 
 if TYPE_CHECKING:
     try:
