@@ -9,15 +9,28 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar, cast
 
-# Removed circular dependency - use DI pattern
+# Real DBT and FLEXT imports - no fallbacks
 from flext_core import get_logger
 from flext_db_oracle import (
     FlextDbOracleApi,
     FlextDbOracleConfig,
     FlextDbOracleConnection,
 )
+from flext_meltano import (
+    AdapterResponse,
+    BaseConnectionManager,
+    Connection,
+    ConnectionState,
+    Credentials,
+    DbtDatabaseError,
+    DbtRuntimeError,
+)
+from pydantic import SecretStr
+
+if TYPE_CHECKING:
+    from collections.abc import Coroutine
 
 # Create aliases for compatibility
 OracleConfig = FlextDbOracleConfig
@@ -29,69 +42,25 @@ OracleQueryService = FlextDbOracleApi
 def run_async_in_sync_context(coro: object) -> object:
     """Run async coroutine in sync context."""
     import asyncio
-    return asyncio.run(coro)
+    return asyncio.run(cast("Coroutine[Any, Any, Any]", coro))
 
 
-if TYPE_CHECKING:
-    try:
-        import agate
-        from dbt_common.exceptions import DbtDatabaseError, DbtRuntimeError
-        from flext_meltano import (
-            AdapterResponse,
-            BaseConnectionManager,
-            Connection,
-            Credentials,
-        )
-    except ImportError:
-        # Fallback types when dbt is not available
-        agate = Any
-        BaseConnectionManager = Any
-        AdapterResponse = Any
-        Connection = Any
-        Credentials = Any
-        DbtDatabaseError = Exception
-        DbtRuntimeError = Exception
-else:
-    try:
-        import agate
-        from flext_meltano import (
-            AdapterResponse,
-            BaseConnectionManager,
-            Connection,
-            Credentials,
-            DbtDatabaseError,
-            DbtRuntimeError,
-        )
-    except ImportError:
-        # Runtime fallback when dbt is not available
-        import warnings
-
-        warnings.warn(
-            "dbt modules not available - adapter functionality limited",
-            stacklevel=2,
-        )
-        agate = None
-        BaseConnectionManager = object
-        AdapterResponse = dict
-        Connection = dict
-        Credentials = dict
-        DbtDatabaseError = Exception
-        DbtRuntimeError = Exception
-logger = get_logger(__name__)
-# Oracle connection type handling
-if TYPE_CHECKING:
-    try:
-        from oracledb import Connection as OracleConnection
-    except ImportError:
-        OracleConnection = Any
+# Import agate for data handling
 try:
-    from oracledb import Connection as OracleConnection
+    import agate  # type: ignore[import-untyped]
+except ImportError:
+    agate = None
+logger = get_logger(__name__)
 
+# Oracle connection type handling - use real oracledb
+try:
+    import oracledb
     ORACLEDB_AVAILABLE = True
 except ImportError:
     # Fallback when oracledb is not available
     ORACLEDB_AVAILABLE = False
-    OracleConnection = Any
+    oracledb = cast("Any", None)  # Type cast to avoid assignment error
+
 logger = get_logger(__name__)
 
 
@@ -143,9 +112,9 @@ class OracleCredentials(Credentials):
         """Return unique identifier for connection."""
         return self.host
 
-    def _connection_keys(self) -> set[str]:
+    def _connection_keys(self) -> tuple[str, ...]:
         """Return keys used for connection pooling."""
-        return {
+        return (
             "host",
             "port",
             "username",
@@ -154,7 +123,7 @@ class OracleCredentials(Credentials):
             "sid",
             "protocol",
             "schema",
-        }
+        )
 
     @property
     def database_identifier(self) -> str:
@@ -176,19 +145,15 @@ class OracleCredentials(Credentials):
             host=self.host,
             port=self.port,
             username=self.username,
-            password=self.password,
+            password=SecretStr(self.password) if isinstance(self.password, str) else SecretStr(str(self.password)),
             service_name=self.service_name or "XEPDB1",  # Default service name
             sid=self.sid,
             protocol=self.protocol,
             # Enhanced parameterization for DBT workloads
-            pool_min_size=self.pool_min_size,
-            pool_max_size=self.pool_max_size,
+            pool_min=self.pool_min_size,
+            pool_max=self.pool_max_size,
             pool_increment=self.pool_increment,
-            query_timeout=300,  # DBT queries can be long-running
-            fetch_size=1000,  # Balanced for analytical workloads
-            connect_timeout=30,
-            retry_attempts=3,
-            retry_delay=1.0,
+            timeout=300,  # DBT queries can be long-running
         )
 
 
@@ -207,14 +172,19 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
 
     def __init__(self, profile: dict[str, Any]) -> None:
         """Initialize connection manager with FLEXT services."""
-        super().__init__(profile)
+        # Convert profile dict to AdapterRequiredConfig-like structure
+        import multiprocessing
+        from types import SimpleNamespace
+        config_obj = SimpleNamespace()
+        config_obj.__dict__.update(profile)
+        super().__init__(config_obj, multiprocessing.get_context("spawn"))  # Proper mp_context
         self._oracle_services: dict[
             str,
             tuple[OracleConnectionService, OracleQueryService],
         ] = {}
 
     @classmethod
-    def open(cls, connection: Any) -> object:
+    def open(cls, connection: Connection) -> Connection:
         """Open Oracle connection using flext-infrastructure.databases.flext-db-oracle services.
 
         Open Oracle connection using
@@ -232,28 +202,28 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             oracle_config = credentials.to_oracle_config()
             logger.info(
                 "Created Oracle DB config for DBT with parameterization: "
-                "pool_size=%d, query_timeout=%d",
-                oracle_config.pool_max_size,
-                oracle_config.query_timeout,
+                "pool_size=%d, timeout=%d",
+                oracle_config.pool_max,
+                oracle_config.timeout,
             )
             # Initialize FLEXT services
             connection_service = OracleConnectionService(oracle_config)
-            query_service = OracleQueryService(connection_service)
+            query_service = OracleQueryService(oracle_config)
             # Test connection using modern async/sync bridge
             result = run_async_in_sync_context(connection_service.test_connection())
-            if not result.success:
-                cls._handle_connection_error(result.error)
+            if (hasattr(result, "is_failure") and result.is_failure) or (hasattr(result, "success") and not result.success):
+                cls._handle_connection_error(str(result.error) if hasattr(result, "error") else "Connection failed")
             # Store services for later use
             connection.handle = {
                 "connection_service": connection_service,
                 "query_service": query_service,
                 "oracle_config": oracle_config,
             }
-            connection.state = "open"
+            connection.state = ConnectionState.OPEN
             logger.info("Oracle connection opened: %s", connection.name)
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Failed to open Oracle connection: %s", connection.name)
-            connection.state = "fail"
+            connection.state = ConnectionState.FAIL
             connection.handle = None
             msg = f"Failed to open Oracle connection: {e}"
             raise DbtDatabaseError(msg) from e
@@ -282,7 +252,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
                     )
             except (RuntimeError, ValueError, TypeError) as e:
                 logger.warning("Error closing connection: %s", e)
-            connection.state = "closed"
+            connection.state = ConnectionState.CLOSED
             connection.handle = None
         return []
 
@@ -295,7 +265,8 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
         raise DbtDatabaseError(error_message)
 
     @contextmanager
-    def exception_handler(self, sql: str) -> object:
+    def exception_handler(self, sql: str) -> Any:
+        """Context manager for exception handling."""
         try:
             yield
         except (RuntimeError, ValueError, TypeError) as e:
@@ -306,7 +277,9 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
     def execute(
         self,
         sql: str,
+        auto_begin: bool = False,
         fetch: bool = False,
+        limit: int | None = None,
     ) -> tuple[AdapterResponse, Any]:
         """Execute SQL using flext-infrastructure.databases.flext-db-oracle query service.
 
@@ -324,8 +297,11 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             query_service = handle["query_service"]
             # Execute query using modern async/sync bridge
             result = run_async_in_sync_context(query_service.execute_query(sql))
-            if not result.success:
-                msg = f"Query execution failed: {result.error}"
+            if hasattr(result, 'is_failure') and result.is_failure:
+                msg = f"Query execution failed: {result.error if hasattr(result, 'error') else 'Unknown error'}"
+                raise DbtDatabaseError(msg)
+            elif hasattr(result, 'success') and not result.success:
+                msg = f"Query execution failed: {result.error if hasattr(result, 'error') else 'Unknown error'}"
                 raise DbtDatabaseError(msg)
             query_result = result.value
             # Convert to agate table if fetching results
@@ -367,7 +343,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             if connection.state != "open":
                 connection = self.open(connection)
             # Get actual cursor from Oracle connection
-            if ORACLEDB_AVAILABLE and hasattr(connection.handle, "cursor"):
+            if ORACLEDB_AVAILABLE and oracledb and hasattr(connection.handle, "cursor"):
                 cursor = connection.handle.cursor()
                 # Store execution context for debugging using public attributes
                 # Note: Using setattr to avoid direct private attribute access
