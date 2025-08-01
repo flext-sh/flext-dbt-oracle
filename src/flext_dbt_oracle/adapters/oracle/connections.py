@@ -13,7 +13,6 @@ from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 # Direct imports - guaranteed dependencies
 import agate  # type: ignore[import-untyped]
-import cx_Oracle as oracledb  # type: ignore[import-not-found] # Use cx_Oracle as oracledb alias for consistency
 
 # Real DBT and FLEXT imports - no fallbacks
 from flext_core import get_logger

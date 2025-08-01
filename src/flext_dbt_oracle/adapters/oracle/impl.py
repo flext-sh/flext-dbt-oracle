@@ -222,7 +222,7 @@ class OracleAdapter(SQLAdapter):
                     if col_idx < len(row) and row[col_idx] is not None:
                         str_val = str(row[col_idx])
                         # Check for time components (HH:MM:SS, microseconds)
-                        if ":" in str_val or "." in str_val.split()[-1]:
+                        if ":" in str_val or "." in str_val.rsplit(maxsplit=1)[-1]:
                             has_time_component = True
                             break
 

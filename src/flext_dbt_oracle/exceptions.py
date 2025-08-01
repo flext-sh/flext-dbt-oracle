@@ -1,42 +1,42 @@
-"""Oracle DBT exception hierarchy using flext-core patterns.
+"""Oracle DBT exception hierarchy using flext-core Singer base patterns.
 
 Copyright (c) 2025 FLEXT Contributors
 SPDX-License-Identifier: MIT
 
-Domain-specific exceptions for Oracle DBT operations inheriting from flext-core.
+Domain-specific exceptions for Oracle DBT operations inheriting from Singer base classes.
+Eliminates duplication by using centralized Singer exception patterns from flext-core.
 """
 
 from __future__ import annotations
 
-from flext_core.exceptions import (
-    FlextAuthenticationError,
-    FlextConfigurationError,
-    FlextConnectionError,
-    FlextError,
-    FlextProcessingError,
-    FlextTimeoutError,
-    FlextValidationError,
+# 🚨 ARCHITECTURAL COMPLIANCE: Use Singer base exceptions to eliminate duplication
+from flext_core import (
+    FlextSingerConnectionError,
+    FlextTransformError,
 )
 
 
-class FlextDbtOracleError(FlextError):
+class FlextDbtOracleError(FlextTransformError):
     """Base exception for Oracle DBT operations."""
 
     def __init__(
         self,
         message: str = "Oracle DBT error",
         model_name: str | None = None,
+        stream_name: str | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT error with context."""
-        context = kwargs.copy()
-        if model_name is not None:
-            context["model_name"] = model_name
+        super().__init__(
+            message,
+            component_type="transform",
+            stream_name=stream_name,
+            transform_name=model_name,
+            **kwargs,
+        )
 
-        super().__init__(message, error_code="ORACLE_DBT_ERROR", context=context)
 
-
-class FlextDbtOracleConnectionError(FlextConnectionError):
+class FlextDbtOracleConnectionError(FlextSingerConnectionError):
     """Oracle DBT connection errors."""
 
     def __init__(
@@ -44,6 +44,7 @@ class FlextDbtOracleConnectionError(FlextConnectionError):
         message: str = "Oracle DBT connection failed",
         database_name: str | None = None,
         host: str | None = None,
+        stream_name: str | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT connection error with context."""
@@ -53,7 +54,12 @@ class FlextDbtOracleConnectionError(FlextConnectionError):
         if host is not None:
             context["host"] = host
 
-        super().__init__(f"Oracle DBT connection: {message}", **context)
+        super().__init__(
+            f"Oracle DBT connection: {message}",
+            component_type="transform",
+            stream_name=stream_name,
+            **context,
+        )
 
 
 class FlextDbtOracleAuthenticationError(FlextAuthenticationError):
