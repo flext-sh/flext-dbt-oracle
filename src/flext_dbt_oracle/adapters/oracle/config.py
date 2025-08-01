@@ -388,7 +388,7 @@ class DBTOracleConfig(BaseModel):
         """
         return self.service_name or self.sid or "ORCL"
 
-    def to_connection_config(self) -> dict[str, Any]:
+    def to_connection_config(self) -> dict[str, object]:
         """Convert to connection configuration for flext-infrastructure.databases.
 
         Convert to connection configuration for
@@ -435,7 +435,7 @@ class DBTOracleConfig(BaseModel):
             timeout=int(self.query_timeout),
         )
 
-    def get_performance_settings(self) -> dict[str, Any]:
+    def get_performance_settings(self) -> dict[str, object]:
         """Get performance-related settings.
 
         Returns:
@@ -453,7 +453,7 @@ class DBTOracleConfig(BaseModel):
             "retry_delay": self.retry_delay,
         }
 
-    def get_dbt_settings(self) -> dict[str, Any]:
+    def get_dbt_settings(self) -> dict[str, object]:
         """Get DBT-specific settings.
 
         Returns:

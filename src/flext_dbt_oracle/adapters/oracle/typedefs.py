@@ -288,13 +288,13 @@ class DBTMacroContext(TypedDict):
     """DBT macro execution context."""
 
     adapter: Any
-    model: dict[str, Any]
-    config: dict[str, Any]
-    var: Callable[[str, Any], Any]
+    model: dict[str, object]
+    config: dict[str, object]
+    var: Callable[[str, object], Any]
     ref: Callable[[str], Any]
     source: Callable[[str, str], Any]
     this: Any
-    target: dict[str, Any]
+    target: dict[str, object]
 
 
 # DBT Error and Logging Types
@@ -317,7 +317,7 @@ class DBTLogMessage(TypedDict):
     level: DBTLogLevel
     logger_name: str
     message: str
-    extra: dict[str, Any]
+    extra: dict[str, object]
 
 
 # DBT Performance and Monitoring Types
@@ -342,8 +342,8 @@ class DBTRunResult(TypedDict):
     status: Literal["success", "error", "skipped", "fail"]
     execution_time: float
     thread_id: str
-    timing: list[dict[str, Any]]
-    adapter_response: dict[str, Any]
+    timing: list[dict[str, object]]
+    adapter_response: dict[str, object]
     message: str | None
     failures: int
 
@@ -414,7 +414,7 @@ class DBTProjectConfig(TypedDict):
     docs_paths: list[str]
     target_path: str
     clean_targets: list[str]
-    models: dict[str, Any]
-    snapshots: dict[str, Any]
-    seeds: dict[str, Any]
-    vars: dict[str, Any]
+    models: dict[str, object]
+    snapshots: dict[str, object]
+    seeds: dict[str, object]
+    vars: dict[str, object]

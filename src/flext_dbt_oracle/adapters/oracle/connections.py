@@ -347,7 +347,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
     def add_query(
         self,
         sql: str,
-        bindings: dict[str, Any] | None = None,
+        bindings: dict[str, object] | None = None,
     ) -> tuple[Any, Any]:
         """Add query to connection with enhanced logging."""
         logger.debug(

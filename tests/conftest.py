@@ -16,6 +16,22 @@ if TYPE_CHECKING:
     from collections.abc import Generator
 
 
+# Oracle shared container environment setup
+@pytest.fixture(scope="session", autouse=True)
+def oracle_shared_container_environment():
+    """Setup Oracle environment variables for shared container (pytest-oracle-xe)."""
+    # Set Oracle environment variables for shared container on port 10521
+    os.environ.update({
+        "DBT_ORACLE_ORACLE_HOST": "localhost",
+        "DBT_ORACLE_ORACLE_PORT": "10521",
+        "DBT_ORACLE_ORACLE_USERNAME": "system",
+        "DBT_ORACLE_ORACLE_PASSWORD": "oracle",
+        "DBT_ORACLE_ORACLE_SERVICE_NAME": "XE",
+        "DBT_ORACLE_ORACLE_SCHEMA": "FLEXT_TEST",
+    })
+    yield
+
+
 # Test environment setup
 @pytest.fixture(autouse=True)
 def set_test_environment() -> Generator[None]:
@@ -40,7 +56,7 @@ def set_test_environment() -> Generator[None]:
 
 # dbt configuration fixtures
 @pytest.fixture
-def dbt_oracle_profile() -> dict[str, Any]:
+def dbt_oracle_profile() -> dict[str, object]:
     """Dbt Oracle profile configuration for testing."""
     return {
         "config": {
@@ -83,7 +99,7 @@ def dbt_oracle_profile() -> dict[str, Any]:
 
 
 @pytest.fixture
-def dbt_project_config() -> dict[str, Any]:
+def dbt_project_config() -> dict[str, object]:
     """Dbt project configuration for testing."""
     return {
         "name": "flext_dbt_oracle_test",
@@ -118,7 +134,7 @@ def dbt_project_config() -> dict[str, Any]:
 
 # Oracle adapter fixtures
 @pytest.fixture
-def oracle_adapter_config() -> dict[str, Any]:
+def oracle_adapter_config() -> dict[str, object]:
     """Oracle adapter configuration for testing."""
     return {
         "type": "oracle",
@@ -270,7 +286,7 @@ def dbt_test_definitions() -> dict[str, str]:
 
 
 @pytest.fixture
-def dbt_source_definitions() -> dict[str, Any]:
+def dbt_source_definitions() -> dict[str, object]:
     """Dbt source definitions for testing."""
     return {
         "version": 2,
@@ -374,7 +390,7 @@ def oracle_sql_queries() -> dict[str, str]:
 
 # dbt execution fixtures
 @pytest.fixture
-def dbt_run_config() -> dict[str, Any]:
+def dbt_run_config() -> dict[str, object]:
     """Dbt run configuration for testing."""
     return {
         "threads": 4,
@@ -390,7 +406,7 @@ def dbt_run_config() -> dict[str, Any]:
 
 
 @pytest.fixture
-def dbt_test_config() -> dict[str, Any]:
+def dbt_test_config() -> dict[str, object]:
     """Dbt test configuration for testing."""
     return {
         "threads": 2,
@@ -404,7 +420,7 @@ def dbt_test_config() -> dict[str, Any]:
 
 # Performance test fixtures
 @pytest.fixture
-def performance_test_config() -> dict[str, Any]:
+def performance_test_config() -> dict[str, object]:
     """Performance test configuration."""
     return {
         "large_table_rows": 100000,
@@ -417,7 +433,7 @@ def performance_test_config() -> dict[str, Any]:
 
 # Error handling fixtures
 @pytest.fixture
-def dbt_error_scenarios() -> list[dict[str, Any]]:
+def dbt_error_scenarios() -> list[dict[str, object]]:
     """Dbt error scenarios for testing."""
     return [
         {
@@ -467,12 +483,12 @@ def mock_dbt_oracle_adapter() -> object:
     """Mock dbt Oracle adapter for testing."""
 
     class MockDbtOracleAdapter:
-        def __init__(self, config: dict[str, Any]) -> None:
+        def __init__(self, config: dict[str, object]) -> None:
             self.config = config
-            self.connections: dict[str, Any] = {}
-            self.compiled_models: dict[str, Any] = {}
+            self.connections: dict[str, object] = {}
+            self.compiled_models: dict[str, object] = {}
 
-        def open_connection(self, name: str) -> dict[str, Any]:
+        def open_connection(self, name: str) -> dict[str, object]:
             """Open database connection."""
             connection = {
                 "name": name,
@@ -500,7 +516,7 @@ def mock_dbt_oracle_adapter() -> object:
                 return "SELECT", [{"column1": "value1", "column2": "value2"}]
             return "UNKNOWN", []
 
-        def compile_model(self, model_sql: str, context: dict[str, Any]) -> str:
+        def compile_model(self, model_sql: str, context: dict[str, object]) -> str:
             """Compile dbt model SQL."""
             # Simple mock compilation
             compiled = model_sql
@@ -540,9 +556,9 @@ def mock_dbt_runner() -> object:
         def __init__(self, project_dir: str, profiles_dir: str) -> None:
             self.project_dir = project_dir
             self.profiles_dir = profiles_dir
-            self.results: dict[str, Any] = {}
+            self.results: dict[str, object] = {}
 
-        def run_models(self, models: list[str] | None = None) -> dict[str, Any]:
+        def run_models(self, models: list[str] | None = None) -> dict[str, object]:
             """Run dbt models."""
             results = []
             models = models or ["dim_customers", "fact_orders"]
@@ -556,7 +572,7 @@ def mock_dbt_runner() -> object:
                 results.append(result)
             return {"results": results, "elapsed_time": 10.5}
 
-        def run_tests(self, models: list[str] | None = None) -> dict[str, Any]:
+        def run_tests(self, models: list[str] | None = None) -> dict[str, object]:
             """Run dbt tests."""
             results = []
             tests = ["test_unique_customer_id", "test_not_null_order_id"]
@@ -570,7 +586,7 @@ def mock_dbt_runner() -> object:
                 results.append(result)
             return {"results": results, "elapsed_time": 5.0}
 
-        def compile(self, models: list[str] | None = None) -> dict[str, Any]:
+        def compile(self, models: list[str] | None = None) -> dict[str, object]:
             """Compile dbt models."""
             compiled = {}
             models = models or ["dim_customers", "fact_orders"]
