@@ -3,35 +3,24 @@
 Modern DBT adapter implementation leveraging
 flext-infrastructure.databases.flext-db-oracle services
 for enterprise-grade Oracle Database integration.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-# Direct import - agate is a guaranteed dependency
-import agate  # type: ignore[import-untyped]
-
-if TYPE_CHECKING:
-    from dbt.adapters.base import BaseRelation  # type: ignore[attr-defined]
-    from dbt.adapters.base.connections import BaseConnectionManager
-    from dbt.adapters.sql import SQLAdapter  # type: ignore[attr-defined]
-else:
-    # Mock for runtime
-    class BaseRelation:
-        def __init__(self) -> None:
-            pass
-
-    class BaseConnectionManager:
-        def __init__(self) -> None:
-            pass
-
-    class SQLAdapter:
-        def __init__(self) -> None:
-            pass
-
+import agate
 
 from flext_dbt_oracle.adapters.oracle.connections import OracleConnectionManager
+
+if TYPE_CHECKING:
+    from dbt.adapters.base import BaseRelation
+    from dbt.adapters.base.connections import BaseConnectionManager
+    from dbt.adapters.sql import SQLAdapter
 
 
 class OracleAdapter(SQLAdapter):

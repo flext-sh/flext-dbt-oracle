@@ -1,23 +1,24 @@
-"""Advanced tests for Oracle adapter implementation using FLEXT patterns."""
+"""Advanced tests for Oracle adapter implementation using FLEXT patterns.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
+"""
+
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from unittest.mock import Mock, patch
 
 import pytest
 
-if TYPE_CHECKING:
-    from flext_meltano import BaseRelation
-else:
-    # Runtime mock for BaseRelation that is in TYPE_CHECKING block
-    class BaseRelation:
-        def __init__(self, **kwargs) -> None:
-            self.__dict__.update(kwargs)
-
-
 from flext_dbt_oracle.adapters.oracle.connections import (
     FlextOracleOracleConnectionManager,
 )
 from flext_dbt_oracle.adapters.oracle.impl import OracleAdapter
+
+if TYPE_CHECKING:
+    from flext_meltano import BaseRelation
 
 
 class TestOracleAdapter:

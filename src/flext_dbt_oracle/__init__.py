@@ -11,12 +11,11 @@ This follows the architectural principle:
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations
 
-# Import consolidated implementations from flext-meltano
-# MIGRATED: Singer SDK imports centralized via flext-meltano
 from flext_meltano.dbt import (
     FlextMeltanoDbtManager,
     FlextMeltanoDbtProject,

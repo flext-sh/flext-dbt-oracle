@@ -1,1 +1,8 @@
-"""Test package for flext-dbt-oracle."""
+"""Test package for flext-dbt-oracle.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
+"""
+
+from __future__ import annotations

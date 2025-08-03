@@ -3,6 +3,10 @@
 This module provides Oracle database adapters for FLEXT DBT integration,
 implementing connection pooling, query execution, and schema management
 specific to Oracle databases.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations

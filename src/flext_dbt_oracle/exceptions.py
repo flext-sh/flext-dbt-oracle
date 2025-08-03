@@ -1,15 +1,15 @@
 """Oracle DBT exception hierarchy using flext-core Singer base patterns.
 
-Copyright (c) 2025 FLEXT Contributors
-SPDX-License-Identifier: MIT
-
 Domain-specific exceptions for Oracle DBT operations inheriting from Singer base classes.
 Eliminates duplication by using centralized Singer exception patterns from flext-core.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations
 
-# 🚨 ARCHITECTURAL COMPLIANCE: Use Singer base exceptions to eliminate duplication
 from flext_core import (
     FlextAuthenticationError,
     FlextConfigurationError,

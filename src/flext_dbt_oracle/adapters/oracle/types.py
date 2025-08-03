@@ -1,17 +1,17 @@
 """Oracle DBT adapter types using flext-core standards.
 
-Copyright (c) 2025 FLEXT Contributors
-SPDX-License-Identifier: MIT
-
 Ultra-modern Python 3.13 types for DBT Oracle adapter with MAXIMUM flext-core
 integration.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated, Literal, TypedDict
 
-# Import available flext-core types and define missing ones
 from pydantic import Field, StringConstraints
 
 # Define missing types for DBT Oracle adapter - moved outside TYPE_CHECKING for runtime use

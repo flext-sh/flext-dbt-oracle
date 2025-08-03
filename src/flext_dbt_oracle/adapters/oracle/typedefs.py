@@ -9,13 +9,16 @@ Follows FLEXT ecosystem hierarchy:
 - Extend with project-specific types only
 - Use Pydantic models for validation
 - No duplication with other FLEXT projects
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated, Literal, TypedDict
 
-# FLEXT Core types - Single Source of Truth
 from flext_core import (
     TAnyDict,
     TConnectionString,

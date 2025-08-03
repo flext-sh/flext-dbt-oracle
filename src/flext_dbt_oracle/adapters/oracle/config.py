@@ -4,27 +4,22 @@ This module provides comprehensive configuration handling with validation,
 type safety, and enterprise features using standardized flext-core patterns.
 Enhanced to fully utilize flext-infrastructure.databases.flext-db-oracle
 parameterization and modern typing.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar
 
-# Removed circular dependency - use DI pattern
 from flext_core import FlextConstants, get_logger
-
-# Import Oracle types from typedefs
-# Import real OracleConfig from flext-db-oracle (no fallbacks)
 from flext_db_oracle import FlextDbOracleConfig as OracleConfig
-
-# Use flext-core configuration patterns
 from pydantic import BaseModel, Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# Import DBT Oracle adapter-specific constants with flext-core integration
 from .constants import DBTOracleAdapterConstants
-
-# Import types directly for runtime use
 
 if TYPE_CHECKING:
     from .types import (

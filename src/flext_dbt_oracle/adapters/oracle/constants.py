@@ -3,15 +3,18 @@
 This module provides DBT Oracle adapter specific constants using flext-core patterns.
 All Oracle DB constants are inherited from flext-core to ensure consistency
 and eliminate code duplication across Oracle projects.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations
 
 from typing import ClassVar, Final
 
-# Import all shared Oracle constants from flext-core
 
-
+#
 # Define Oracle-specific constants locally
 class OracleDBConstants:
     """Oracle database constants."""

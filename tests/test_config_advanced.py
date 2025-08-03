@@ -1,4 +1,11 @@
-"""Advanced tests for Oracle configuration using FLEXT patterns."""
+"""Advanced tests for Oracle configuration using FLEXT patterns.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
+"""
+
+from __future__ import annotations
 
 from unittest.mock import patch
 

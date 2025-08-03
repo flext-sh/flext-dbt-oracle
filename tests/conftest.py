@@ -2,6 +2,10 @@
 
 Provides pytest fixtures and configuration for testing dbt Oracle adapter functionality
 using real Oracle connections and dbt-core patterns.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations
@@ -478,52 +482,121 @@ def pytest_configure(config: pytest.Config) -> None:
     config.addinivalue_line("markers", "slow: Slow tests")
 
 
-# Mock services
+# Mock services with Strategy Pattern for reduced complexity
+
+
+class MockConnectionManager:
+    """Strategy for connection management (Single Responsibility Principle)."""
+
+    def __init__(self) -> None:
+        self.connections: dict[str, object] = {}
+
+    def open_connection(
+        self, name: str, config: dict[str, object]
+    ) -> dict[str, object]:
+        """Open database connection."""
+        connection = {
+            "name": name,
+            "state": "open",
+            "handle": f"mock_handle_{name}",
+            "credentials": config,
+        }
+        self.connections[name] = connection
+        return connection
+
+    def close_connection(self, name: str) -> None:
+        """Close database connection."""
+        if name in self.connections:
+            self.connections[name]["state"] = "closed"
+            del self.connections[name]
+
+
+class MockSqlExecutor:
+    """Strategy for SQL execution (Strategy Pattern)."""
+
+    def execute(self, sql: str, auto_begin: bool = True) -> tuple[str, list[Any]]:
+        """Execute SQL statement with reduced branching."""
+        sql_strategies = {
+            "CREATE TABLE": ("CREATE", []),
+            "INSERT": ("INSERT", []),
+            "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
+        }
+
+        for keyword, result in sql_strategies.items():
+            if keyword in sql:
+                return result
+
+        return "UNKNOWN", []
+
+
+class MockModelCompiler:
+    """Strategy for model compilation (Single Responsibility Principle)."""
+
+    def compile_model(self, model_sql: str, context: dict[str, object]) -> str:
+        """Compile dbt model SQL."""
+        compiled = model_sql
+        vars_dict = context.get("vars", {})
+        for var, value in vars_dict.items():
+            compiled = compiled.replace(f"{{{{ var('{var}') }}}}", str(value))
+        return compiled
+
+
+class MockRelationManager:
+    """Strategy for relation management (Single Responsibility Principle)."""
+
+    def get_relation(
+        self,
+        database: str,
+        schema: str,
+        identifier: str,
+    ) -> dict[str, str]:
+        """Get relation information."""
+        return {
+            "database": database,
+            "schema": schema,
+            "identifier": identifier,
+            "type": "table",
+        }
+
+    def list_relations_without_caching(self, schema: str) -> list[dict[str, str]]:
+        """List relations in schema."""
+        return [
+            {"schema": schema, "identifier": "customers", "type": "table"},
+            {"schema": schema, "identifier": "orders", "type": "table"},
+        ]
+
+
 @pytest.fixture
 def mock_dbt_oracle_adapter() -> object:
-    """Mock dbt Oracle adapter for testing."""
+    """Mock dbt Oracle adapter using Strategy Pattern for complexity reduction."""
 
     class MockDbtOracleAdapter:
+        """Simplified adapter using composition and Strategy Pattern."""
+
         def __init__(self, config: dict[str, object]) -> None:
             self.config = config
-            self.connections: dict[str, object] = {}
             self.compiled_models: dict[str, object] = {}
+            # Dependency injection of strategies
+            self.connection_manager = MockConnectionManager()
+            self.sql_executor = MockSqlExecutor()
+            self.model_compiler = MockModelCompiler()
+            self.relation_manager = MockRelationManager()
 
         def open_connection(self, name: str) -> dict[str, object]:
-            """Open database connection."""
-            connection = {
-                "name": name,
-                "state": "open",
-                "handle": f"mock_handle_{name}",
-                "credentials": self.config,
-            }
-            self.connections[name] = connection
-            return connection
+            """Delegate to connection manager strategy."""
+            return self.connection_manager.open_connection(name, self.config)
 
         def close_connection(self, name: str) -> None:
-            """Close database connection."""
-            if name in self.connections:
-                self.connections[name]["state"] = "closed"
-                del self.connections[name]
+            """Delegate to connection manager strategy."""
+            self.connection_manager.close_connection(name)
 
         def execute(self, sql: str, auto_begin: bool = True) -> tuple[str, list[Any]]:
-            """Execute SQL statement."""
-            # Mock execution results
-            if "CREATE TABLE" in sql:
-                return "CREATE", []
-            if "INSERT" in sql:
-                return "INSERT", []
-            if "SELECT" in sql:
-                return "SELECT", [{"column1": "value1", "column2": "value2"}]
-            return "UNKNOWN", []
+            """Delegate to SQL executor strategy."""
+            return self.sql_executor.execute(sql, auto_begin)
 
         def compile_model(self, model_sql: str, context: dict[str, object]) -> str:
-            """Compile dbt model SQL."""
-            # Simple mock compilation
-            compiled = model_sql
-            for var, value in context.get("vars", {}).items():
-                compiled = compiled.replace(f"{{{{ var('{var}') }}}}", str(value))
-            return compiled
+            """Delegate to model compiler strategy."""
+            return self.model_compiler.compile_model(model_sql, context)
 
         def get_relation(
             self,
@@ -531,20 +604,12 @@ def mock_dbt_oracle_adapter() -> object:
             schema: str,
             identifier: str,
         ) -> dict[str, str]:
-            """Get relation information."""
-            return {
-                "database": database,
-                "schema": schema,
-                "identifier": identifier,
-                "type": "table",
-            }
+            """Delegate to relation manager strategy."""
+            return self.relation_manager.get_relation(database, schema, identifier)
 
         def list_relations_without_caching(self, schema: str) -> list[dict[str, str]]:
-            """List relations in schema."""
-            return [
-                {"schema": schema, "identifier": "customers", "type": "table"},
-                {"schema": schema, "identifier": "orders", "type": "table"},
-            ]
+            """Delegate to relation manager strategy."""
+            return self.relation_manager.list_relations_without_caching(schema)
 
     return MockDbtOracleAdapter
 

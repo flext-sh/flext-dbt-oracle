@@ -3,6 +3,10 @@
 This module provides the connection management layer for the DBT Oracle adapter,
 leveraging flext-infrastructure.databases.flext-db-oracle's modern DDD services
 for enterprise-grade reliability.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations
@@ -11,10 +15,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, ClassVar, cast
 
-# Direct imports - guaranteed dependencies
-import agate  # type: ignore[import-untyped]
-
-# Real DBT and FLEXT imports - no fallbacks
+import agate
 from flext_core import get_logger
 from flext_db_oracle import (
     FlextDbOracleApi,
@@ -337,60 +338,95 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
         fetch: bool = False,
         limit: int | None = None,
     ) -> tuple[AdapterResponse, Any]:
-        """Execute SQL using flext-infrastructure.databases.flext-db-oracle query service.
-
-        Execute SQL using flext-infrastructure.databases.flext-db-oracle
-        query service.
-        """
+        """Execute SQL using flext-infrastructure.databases.flext-db-oracle query service."""
         connection = self.get_thread_connection()
         if connection.state != "open":
             connection = self.open(connection)
         if not connection.handle:
             msg = "No connection handle available"
             raise DbtRuntimeError(msg)
-        with self.exception_handler(sql):
-            handle = connection.handle
-            query_service = handle["query_service"]
-            # Execute query using modern async/sync bridge
-            result = run_async_in_sync_context(query_service.execute_query(sql))
-            if (hasattr(result, "is_failure") and result.is_failure) or (
-                hasattr(result, "success") and not result.success
-            ):
-                msg = f"Query execution failed: {result.error if hasattr(result, 'error') else 'Unknown error'}"
-                raise DbtDatabaseError(msg)
-            # Extract result data from FlextResult or similar object
-            if hasattr(result, "data"):
-                query_result = result.data
-            elif hasattr(result, "value"):
-                query_result = result.value
-            elif hasattr(result, "unwrap"):
-                query_result = result.unwrap()
-            else:
-                # Fallback - use result directly
-                query_result = result
-            # Convert to agate table if fetching results
-            if fetch and query_result.rows:
-                # Create agate table from results if agate is available
-                columns = query_result.columns or []
-                rows = query_result.rows or []
-                if agate and columns and rows:
-                    table = agate.Table(rows, column_names=columns)
-                elif agate:
-                    table = agate.Table([])
-                else:
-                    # Fallback when agate is not available
-                    table = {"columns": columns, "rows": rows}
-            elif agate:
-                table = agate.Table([])
-            else:
-                table = {"columns": [], "rows": []}
-            # Create response with metrics
-            response = AdapterResponse(
-                _message=f"Query completed in {query_result.execution_time_ms:.2f}ms",
-                rows_affected=query_result.row_count,
-                code="SELECT" if sql.strip().upper().startswith("SELECT") else "DDL",
-            )
-            return response, table
+
+        executor = OracleQueryExecutor(connection.handle, fetch)
+        return executor.execute(sql)
+
+
+class OracleQueryExecutor:
+    """Strategy pattern for Oracle query execution with SOLID principles."""
+
+    def __init__(self, handle: dict, fetch: bool = False) -> None:
+        """Initialize query executor."""
+        self.handle = handle
+        self.fetch = fetch
+        self.result_extractor = QueryResultExtractor()
+        self.table_factory = AgateTableFactory()
+
+    def execute(self, sql: str) -> tuple[AdapterResponse, Any]:
+        """Execute query and return response."""
+        query_service = self.handle["query_service"]
+        raw_result = run_async_in_sync_context(query_service.execute_query(sql))
+
+        self._validate_result(raw_result)
+        query_result = self.result_extractor.extract(raw_result)
+        table = self.table_factory.create(query_result, self.fetch)
+        response = self._create_response(query_result, sql)
+
+        return response, table
+
+    def _validate_result(self, result: Any) -> None:
+        """Validate query execution result."""
+        if (hasattr(result, "is_failure") and result.is_failure) or (
+            hasattr(result, "success") and not result.success
+        ):
+            error_msg = result.error if hasattr(result, "error") else "Unknown error"
+            msg = f"Query execution failed: {error_msg}"
+            raise DbtDatabaseError(msg)
+
+    def _create_response(self, query_result: Any, sql: str) -> AdapterResponse:
+        """Create adapter response with metrics."""
+        return AdapterResponse(
+            _message=f"Query completed in {query_result.execution_time_ms:.2f}ms",
+            rows_affected=query_result.row_count,
+            code="SELECT" if sql.strip().upper().startswith("SELECT") else "DDL",
+        )
+
+
+class QueryResultExtractor:
+    """Extract query result data from various result types."""
+
+    def extract(self, result: Any) -> Any:
+        """Extract result data using strategy pattern."""
+        if hasattr(result, "data"):
+            return result.data
+        if hasattr(result, "value"):
+            return result.value
+        if hasattr(result, "unwrap"):
+            return result.unwrap()
+        return result
+
+
+class AgateTableFactory:
+    """Factory for creating agate tables with fallback strategy."""
+
+    def create(self, query_result: Any, fetch: bool) -> Any:
+        """Create table using appropriate strategy."""
+        if not fetch:
+            return agate.Table([]) if agate else {"columns": [], "rows": []}
+
+        if not hasattr(query_result, "rows") or not query_result.rows:
+            return agate.Table([]) if agate else {"columns": [], "rows": []}
+
+        return self._create_from_rows(query_result)
+
+    def _create_from_rows(self, query_result: Any) -> Any:
+        """Create table from query result rows."""
+        columns = query_result.columns or []
+        rows = query_result.rows or []
+
+        if agate and columns and rows:
+            return agate.Table(rows, column_names=columns)
+        if agate:
+            return agate.Table([])
+        return {"columns": columns, "rows": rows}
 
     def add_query(
         self,
