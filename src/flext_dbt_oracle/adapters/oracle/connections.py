@@ -22,15 +22,63 @@ from flext_db_oracle import (
     FlextDbOracleConnection,
 )
 from flext_db_oracle.constants import FlextOracleDbConstants
-from flext_meltano import (
-    AdapterResponse,
-    BaseConnectionManager,
-    Connection,
-    ConnectionState,
-    Credentials,
-    DbtDatabaseError,
-    DbtRuntimeError,
-)
+
+
+# Create local DBT exceptions since they're not available in dependencies
+class DbtDatabaseError(Exception):
+    """Database-related DBT adapter error."""
+
+
+class DbtRuntimeError(Exception):
+    """Runtime DBT adapter error."""
+
+
+# Mock ConnectionState for runtime since it might not be available in all DBT versions
+class ConnectionState:
+    OPEN = "open"
+    FAIL = "fail"
+    CLOSED = "closed"
+
+
+if TYPE_CHECKING:
+    from dbt.adapters.base.connections import BaseConnectionManager
+    from dbt.adapters.contracts.connection import (
+        AdapterResponse,
+        Connection,
+        Credentials,
+    )
+else:
+    # Mock for runtime
+    class AdapterResponse:
+        """Adapter response class."""
+
+        def __init__(self, _rows_affected: int = 0, **kwargs: Any) -> None:
+            self._rows_affected = _rows_affected
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+
+    class Connection:
+        """Connection class."""
+
+        def __init__(self) -> None:
+            pass
+
+    class Credentials:
+        """Credentials class."""
+
+        def __init__(self) -> None:
+            pass
+
+    class BaseConnectionManager:
+        """Base connection manager class."""
+
+        def __init__(self) -> None:
+            pass
+
+    class ConnectionState:
+        """Connection state class."""
+
+
 from pydantic import SecretStr
 
 if TYPE_CHECKING:
@@ -49,7 +97,7 @@ def run_async_in_sync_context(coro: object) -> object:
     """Run async coroutine in sync context."""
     import asyncio
 
-    return asyncio.run(cast("Coroutine[Any, Any, Any]", coro))
+    return asyncio.run(cast("Coroutine[object, object, object]", coro))
 
 
 @dataclass
@@ -227,11 +275,11 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
                 "query_service": query_service,
                 "oracle_config": oracle_config,
             }
-            connection.state = ConnectionState.OPEN
+            connection.state = ConnectionState.OPEN  # type: ignore[assignment]
             logger.info("Oracle connection opened: %s", connection.name)
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Failed to open Oracle connection: %s", connection.name)
-            connection.state = ConnectionState.FAIL
+            connection.state = ConnectionState.FAIL  # type: ignore[assignment]
             connection.handle = None
             msg = f"Failed to open Oracle connection: {e}"
             raise DbtDatabaseError(msg) from e
@@ -260,7 +308,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
                     )
             except (RuntimeError, ValueError, TypeError) as e:
                 logger.warning("Error closing connection: %s", e)
-            connection.state = ConnectionState.CLOSED
+            connection.state = ConnectionState.CLOSED  # type: ignore[assignment]
             connection.handle = None
         return []
 

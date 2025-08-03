@@ -11,8 +11,13 @@ from __future__ import annotations
 
 # 🚨 ARCHITECTURAL COMPLIANCE: Use Singer base exceptions to eliminate duplication
 from flext_core import (
+    FlextAuthenticationError,
+    FlextConfigurationError,
+    FlextProcessingError,
     FlextSingerConnectionError,
+    FlextTimeoutError,
     FlextTransformError,
+    FlextValidationError,
 )
 
 
@@ -183,11 +188,13 @@ class FlextDbtOracleModelError(FlextDbtOracleError):
         if model_type is not None:
             context["model_type"] = model_type
 
+        # Only pass supported parameters to base class
         super().__init__(
             f"Oracle DBT model: {message}",
             model_name=model_name,
-            **context,
         )
+        # Store additional context separately
+        self.context = context
 
 
 class FlextDbtOracleAdapterError(FlextDbtOracleError):
@@ -222,11 +229,13 @@ class FlextDbtOracleTestError(FlextDbtOracleError):
         if test_name is not None:
             context["test_name"] = test_name
 
+        # Only pass supported parameters to base class
         super().__init__(
             f"Oracle DBT test: {message}",
             model_name=model_name,
-            **context,
         )
+        # Store additional context separately
+        self.context = context
 
 
 __all__ = [

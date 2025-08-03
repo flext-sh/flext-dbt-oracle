@@ -18,18 +18,19 @@ if TYPE_CHECKING:
 
 # Oracle shared container environment setup
 @pytest.fixture(scope="session", autouse=True)
-def oracle_shared_container_environment():
+def oracle_shared_container_environment() -> None:
     """Setup Oracle environment variables for shared container (pytest-oracle-xe)."""
     # Set Oracle environment variables for shared container on port 10521
-    os.environ.update({
-        "DBT_ORACLE_ORACLE_HOST": "localhost",
-        "DBT_ORACLE_ORACLE_PORT": "10521",
-        "DBT_ORACLE_ORACLE_USERNAME": "system",
-        "DBT_ORACLE_ORACLE_PASSWORD": "oracle",
-        "DBT_ORACLE_ORACLE_SERVICE_NAME": "XE",
-        "DBT_ORACLE_ORACLE_SCHEMA": "FLEXT_TEST",
-    })
-    yield
+    os.environ.update(
+        {
+            "DBT_ORACLE_ORACLE_HOST": "localhost",
+            "DBT_ORACLE_ORACLE_PORT": "10521",
+            "DBT_ORACLE_ORACLE_USERNAME": "system",
+            "DBT_ORACLE_ORACLE_PASSWORD": "oracle",
+            "DBT_ORACLE_ORACLE_SERVICE_NAME": "XE",
+            "DBT_ORACLE_ORACLE_SCHEMA": "FLEXT_TEST",
+        },
+    )
 
 
 # Test environment setup

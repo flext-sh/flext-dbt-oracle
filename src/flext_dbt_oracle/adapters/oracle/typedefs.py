@@ -3,18 +3,46 @@
 This module provides DBT Oracle Adapter specific type definitions using flext-core as
 the foundation. All common Oracle types are inherited from flext-core to ensure
 consistency and eliminate code duplication across Oracle projects.
+
+Follows FLEXT ecosystem hierarchy:
+- Import flext-core types as base
+- Extend with project-specific types only
+- Use Pydantic models for validation
+- No duplication with other FLEXT projects
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Annotated, Any, Literal, TypedDict
+from typing import TYPE_CHECKING, Annotated, Literal, TypedDict
 
+# FLEXT Core types - Single Source of Truth
+from flext_core import (
+    TAnyDict,
+    TConnectionString,
+    TEntityId,
+    TServiceName,
+    TUserData,
+    TValue,
+)
 from pydantic import Field, PositiveInt, StringConstraints
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-# Oracle Basic Types - Core database connection types
+# ==============================================================================
+# DBT-ORACLE SPECIFIC TYPES - Extend flext-core without duplication
+# ==============================================================================
+
+# Use flext-core types as foundation - NO duplication across Oracle projects
+# Oracle connection types are defined in flext-core or shared library
+DBTOracleConnectionString = TConnectionString
+DBTOracleEntityId = TEntityId
+DBTOracleUserData = TUserData
+DBTOracleServiceName = TServiceName
+DBTOracleValue = TValue
+DBTOracleConfig = TAnyDict
+
+# Oracle-specific identifier patterns for DBT (extends flext-core patterns)
 OracleHost = Annotated[
     str,
     StringConstraints(
@@ -287,13 +315,13 @@ class DBTCompilerConfig(TypedDict):
 class DBTMacroContext(TypedDict):
     """DBT macro execution context."""
 
-    adapter: Any
+    adapter: object
     model: dict[str, object]
     config: dict[str, object]
-    var: Callable[[str, object], Any]
-    ref: Callable[[str], Any]
-    source: Callable[[str, str], Any]
-    this: Any
+    var: Callable[[str, object], object]
+    ref: Callable[[str], object]
+    source: Callable[[str, str], object]
+    this: object
     target: dict[str, object]
 
 

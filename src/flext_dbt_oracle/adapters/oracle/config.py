@@ -8,7 +8,7 @@ parameterization and modern typing.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 # Removed circular dependency - use DI pattern
 from flext_core import FlextConstants, get_logger

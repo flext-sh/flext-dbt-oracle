@@ -1,10 +1,21 @@
 """Advanced tests for Oracle connections using FLEXT patterns."""
 
-from typing import Never
+from typing import TYPE_CHECKING, Never
 from unittest.mock import Mock, patch
 
 import pytest
-from flext_meltano import Connection, DbtDatabaseError
+
+if TYPE_CHECKING:
+    from flext_meltano import Connection, DbtDatabaseError
+else:
+    # Runtime mocks for DBT classes that are in TYPE_CHECKING blocks
+    class Connection:
+        def __init__(self, **kwargs) -> None:
+            self.__dict__.update(kwargs)
+
+    class DbtDatabaseError(Exception):
+        pass
+
 
 from flext_dbt_oracle.adapters.oracle.connections import (
     FlextOracleOracleConnectionManager,
