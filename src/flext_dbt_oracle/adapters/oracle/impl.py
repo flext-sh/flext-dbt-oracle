@@ -26,6 +26,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+
 class OracleAdapter(SQLAdapter):
     """Oracle Database adapter for DBT using flext-infrastructure.databases.flext-db-oracle foundation.
 
@@ -98,7 +99,7 @@ class OracleAdapter(SQLAdapter):
         ]
 
     def list_relations_without_caching(
-        self, schema_relation: BaseRelation
+        self, schema_relation: BaseRelation,
     ) -> list[BaseRelation]:
         """List relations in schema without caching using flext-infrastructure.databases.flext-db-oracle services.
 
