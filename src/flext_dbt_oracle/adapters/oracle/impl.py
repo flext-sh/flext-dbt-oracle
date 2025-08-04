@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING, Any
 
 import agate
@@ -23,16 +24,13 @@ if TYPE_CHECKING:
     from dbt.adapters.base.connections import BaseConnectionManager
 
 
+logger = logging.getLogger(__name__)
+
 class OracleAdapter(SQLAdapter):
     """Oracle Database adapter for DBT using flext-infrastructure.databases.flext-db-oracle foundation.
 
     Oracle Database adapter for DBT using
     flext-infrastructure.databases.flext-db-oracle foundation.
-    Provides enterprise-grade Oracle Database integration with:
-    - Modern connection management via flext-infrastructure.databases.flext-db-oracle
-    - Advanced error handling and resilience
-    - Enterprise performance optimizations
-    - Zero code duplication across FLEXT ecosystem
     """
 
     ConnectionManager: type[BaseConnectionManager] = OracleConnectionManager  # type: ignore[assignment]
@@ -47,18 +45,13 @@ class OracleAdapter(SQLAdapter):
                 super().__init__(config, mp_context)  # type: ignore[arg-type]
         except Exception:
             # Fallback initialization for mock classes
-            pass
+            logger.exception("Exception during adapter initialization")
 
         self.config = config
         self.mp_context = mp_context
 
-    def execute(
-        self,
-        sql: str,
-        bindings: dict[str, Any] | None = None,
-        fetch: bool = False,
-    ) -> tuple[str, Any]:
-        """Execute SQL statement - basic implementation for DBT adapter compatibility."""
+    def execute(self, _sql: str, *, fetch: bool = False) -> tuple[str, Any]:
+        """Execute SQL statement - basic impl for DBT adapter compatibility."""
         # This would normally be implemented by the parent SQLAdapter class
         # For now, return mock results to make tests pass
         if fetch:
@@ -80,8 +73,7 @@ class OracleAdapter(SQLAdapter):
     def get_columns_in_relation(self, relation: Any) -> list[Any]:
         """Get columns for a given relation using flext-infrastructure.databases.flext-db-oracle services.
 
-        Get columns for a given relation using
-        flext-infrastructure.databases.flext-db-oracle services.
+        Get columns for a given relation using flext-infrastructure.databases.flext-db-oracle services.
         """
         # Query Oracle's data dictionary - schema/table validated by dbt framework
         # Using parameterized query for security
@@ -106,13 +98,11 @@ class OracleAdapter(SQLAdapter):
         ]
 
     def list_relations_without_caching(
-        self,
-        schema_relation: BaseRelation,
+        self, schema_relation: BaseRelation
     ) -> list[BaseRelation]:
         """List relations in schema without caching using flext-infrastructure.databases.flext-db-oracle services.
 
-        List relations in schema without caching using
-        flext-infrastructure.databases.flext-db-oracle services.
+        List relations in schema without caching using flext-infrastructure.databases.flext-db-oracle services.
         """
         # Query Oracle data dictionary - schema validated by dbt framework
         # Using parameterized query for security
@@ -138,11 +128,10 @@ class OracleAdapter(SQLAdapter):
             relations.append(relation)
         return relations
 
-    def check_schema_exists(self, database: str, schema: str) -> bool:
+    def check_schema_exists(self, _database: str, schema: str) -> bool:
         """Check if schema exists in Oracle using flext-infrastructure.databases.flext-db-oracle services.
 
-        Check if schema exists in Oracle using
-        flext-infrastructure.databases.flext-db-oracle services.
+        Check if schema exists in Oracle using flext-infrastructure.databases.flext-db-oracle services.
         """
         # Query Oracle data dictionary - schema validated and uppercased
         # Using parameterized query for security
@@ -175,7 +164,8 @@ class OracleAdapter(SQLAdapter):
                 try:
                     # Get max length from column data
                     max_length = column.aggregate(agate.MaxLength())
-                    if max_length and max_length > 4000:
+                    max_varchar_length = 4000
+                    if max_length and max_length > max_varchar_length:
                         return "CLOB"
                     if max_length and max_length > 0:
                         return f"VARCHAR2({min(max_length * 2, 4000)})"  # Add buffer
@@ -219,9 +209,11 @@ class OracleAdapter(SQLAdapter):
                                     has_decimals = True
                                     break
 
-                    if not has_decimals and max_digits < 10:
+                    max_simple_digits = 10
+                    if not has_decimals and max_digits < max_simple_digits:
                         return f"NUMBER({max_digits})"
-                    if has_decimals and max_digits < 15:
+                    max_precision_digits = 15
+                    if has_decimals and max_digits < max_precision_digits:
                         return f"NUMBER({max_digits + 2}, 2)"
 
                 except (AttributeError, TypeError, ValueError):
@@ -259,11 +251,11 @@ class OracleAdapter(SQLAdapter):
                             has_time_component = True
                             break
 
-                # Use DATE if no time components found, TIMESTAMP otherwise
-                return "TIMESTAMP" if has_time_component else "DATE"
-
             except (AttributeError, TypeError, IndexError):
                 pass
+            else:
+                # Use DATE if no time components found, TIMESTAMP otherwise
+                return "TIMESTAMP" if has_time_component else "DATE"
 
         # Default to TIMESTAMP for datetime columns (safer choice)
         return "TIMESTAMP"

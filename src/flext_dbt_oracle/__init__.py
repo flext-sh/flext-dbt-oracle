@@ -31,7 +31,7 @@ DBTOracle = FlextMeltanoDbtManager
 
 __version__ = "0.9.0-wrapper"
 
-__all__ = [
+__all__: list[str] = [
     "DBTOracle",
     # Backward compatibility
     "FlextDbtOracle",

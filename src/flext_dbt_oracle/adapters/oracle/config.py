@@ -345,7 +345,9 @@ class DBTOracleConfig(BaseModel):
         if info.data:
             min_size = info.data.get("pool_min_size", 1)
             if v < min_size:
-                msg = f"Pool max size ({v}) must be greater than min size ({min_size})"
+                msg: str = (
+                    f"Pool max size ({v}) must be greater than min size ({min_size})"
+                )
                 raise ValueError(
                     msg,
                 )

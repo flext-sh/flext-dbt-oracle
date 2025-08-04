@@ -91,7 +91,8 @@ class TestOracleAdapter:
         with patch("multiprocessing.get_context") as mock_context:
             adapter = OracleAdapter(config, mock_context.return_value)
 
-            # Mock execute method to return results indicating schema exists (COUNT(*) = 1)
+            # Mock execute method to return results indicating schema exists
+            # (COUNT(*) = 1)
             with patch.object(adapter, "execute") as mock_execute:
                 mock_execute.return_value = (Mock(), [(1,)])
 

@@ -1,11 +1,8 @@
 """Oracle DBT exception hierarchy using flext-core Singer base patterns.
 
-Domain-specific exceptions for Oracle DBT operations inheriting from Singer base classes.
+Domain-specific exceptions for Oracle DBT operations inheriting from Singer base
+classes.
 Eliminates duplication by using centralized Singer exception patterns from flext-core.
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
 """
 
 from __future__ import annotations
@@ -238,7 +235,7 @@ class FlextDbtOracleTestError(FlextDbtOracleError):
         self.context = context
 
 
-__all__ = [
+__all__: list[str] = [
     "FlextDbtOracleAdapterError",
     "FlextDbtOracleAuthenticationError",
     "FlextDbtOracleConfigurationError",

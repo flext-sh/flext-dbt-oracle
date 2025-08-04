@@ -14,7 +14,8 @@ from typing import TYPE_CHECKING, Annotated, Literal, TypedDict
 
 from pydantic import Field, StringConstraints
 
-# Define missing types for DBT Oracle adapter - moved outside TYPE_CHECKING for runtime use
+# Define missing types for DBT Oracle adapter - moved outside TYPE_CHECKING for
+# runtime use
 NonEmptyStr = Annotated[str, StringConstraints(min_length=1)]
 DBTDatabaseName = Annotated[str, StringConstraints(min_length=1, max_length=128)]
 DBTSchemaName = Annotated[str, StringConstraints(min_length=1, max_length=128)]

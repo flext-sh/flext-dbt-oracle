@@ -330,7 +330,10 @@ class TestConfigEdgeCases:
         assert config.log_level == "DEBUG"
 
     def test_config_defaults_when_no_service_name_or_sid(self) -> None:
-        """Test that default service name is used when neither service_name nor sid provided."""
+        """Test that default service name is used when neither service_name nor sid provided.
+
+        Test that default service name is used when neither service_name nor sid provided.
+        """
         config = DBTOracleConfig(
             host="localhost",
             username="testuser",

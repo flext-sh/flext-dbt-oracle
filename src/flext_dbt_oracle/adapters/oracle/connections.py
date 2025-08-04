@@ -40,6 +40,8 @@ class DbtRuntimeError(Exception):
 
 # Mock ConnectionState for runtime since it might not be available in all DBT versions
 class ConnectionState:
+    """Mock ConnectionState for runtime compatibility with different DBT versions."""
+
     OPEN = "open"
     FAIL = "fail"
     CLOSED = "closed"
@@ -58,6 +60,7 @@ else:
         """Adapter response class."""
 
         def __init__(self, _rows_affected: int = 0, **kwargs: Any) -> None:
+            """Initialize adapter response."""
             self._rows_affected = _rows_affected
             for k, v in kwargs.items():
                 setattr(self, k, v)
@@ -66,19 +69,19 @@ else:
         """Connection class."""
 
         def __init__(self) -> None:
-            pass
+            """Initialize connection."""
 
     class Credentials:
         """Credentials class."""
 
         def __init__(self) -> None:
-            pass
+            """Initialize connection."""
 
     class BaseConnectionManager:
         """Base connection manager class."""
 
         def __init__(self) -> None:
-            pass
+            """Initialize connection."""
 
     class ConnectionState:
         """Connection state class."""
@@ -174,8 +177,7 @@ class OracleCredentials(Credentials):
         """Convert DBT credentials to flext-infrastructure.databases.flext-db-oracle configuration.
 
         Convert DBT credentials to
-        flext-infrastructure.databases.flext-db-oracle configuration with full
-        parameterization.
+        flext-infrastructure.databases.flext-db-oracle configuration.
         """
         return OracleConfig(
             host=self.host,
@@ -200,10 +202,6 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
 
     Oracle connection manager using
     flext-infrastructure.databases.flext-db-oracle services.
-    Provides DBT connection management while leveraging the enterprise-grade
-    Oracle connectivity from flext-infrastructure.databases.flext-db-oracle,
-    ensuring zero code duplication
-    and consistent error handling across the FLEXT ecosystem.
     """
 
     TYPE = "oracle"
@@ -281,7 +279,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             logger.exception("Failed to open Oracle connection: %s", connection.name)
             connection.state = ConnectionState.FAIL  # type: ignore[assignment]
             connection.handle = None
-            msg = f"Failed to open Oracle connection: {e}"
+            msg: str = f"Failed to open Oracle connection: {e}"
             raise DbtDatabaseError(msg) from e
         return connection
 
@@ -327,17 +325,21 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             yield
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Oracle query failed: %s", sql)
-            msg = f"Oracle query failed: {e}"
+            msg: str = f"Oracle query failed: {e}"
             raise DbtDatabaseError(msg) from e
 
     def execute(
         self,
         sql: str,
+        *,
         auto_begin: bool = False,
         fetch: bool = False,
         limit: int | None = None,
     ) -> tuple[AdapterResponse, Any]:
-        """Execute SQL using flext-infrastructure.databases.flext-db-oracle query service."""
+        """Execute SQL using flext-infrastructure.databases.flext-db-oracle query service.
+
+        Execute SQL using flext-infrastructure.databases.flext-db-oracle query service.
+        """
         connection = self.get_thread_connection()
         if connection.state != "open":
             connection = self.open(connection)
@@ -352,7 +354,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
 class OracleQueryExecutor:
     """Strategy pattern for Oracle query execution with SOLID principles."""
 
-    def __init__(self, handle: dict, fetch: bool = False) -> None:
+    def __init__(self, handle: dict, *, fetch: bool = False) -> None:
         """Initialize query executor."""
         self.handle = handle
         self.fetch = fetch
@@ -377,7 +379,7 @@ class OracleQueryExecutor:
             hasattr(result, "success") and not result.success
         ):
             error_msg = result.error if hasattr(result, "error") else "Unknown error"
-            msg = f"Query execution failed: {error_msg}"
+            msg: str = f"Query execution failed: {error_msg}"
             raise DbtDatabaseError(msg)
 
     def _create_response(self, query_result: Any, sql: str) -> AdapterResponse:
@@ -406,7 +408,7 @@ class QueryResultExtractor:
 class AgateTableFactory:
     """Factory for creating agate tables with fallback strategy."""
 
-    def create(self, query_result: Any, fetch: bool) -> Any:
+    def create(self, query_result: Any, *, fetch: bool) -> Any:
         """Create table using appropriate strategy."""
         if not fetch:
             return agate.Table([]) if agate else {"columns": [], "rows": []}
@@ -433,9 +435,10 @@ class AgateTableFactory:
         bindings: dict[str, object] | None = None,
     ) -> tuple[Any, Any]:
         """Add query to connection with enhanced logging."""
+        max_sql_log_length = 100
         logger.debug(
             "Executing Oracle query: %s",
-            sql[:100] + "..." if len(sql) > 100 else sql,
+            sql[:max_sql_log_length] + "..." if len(sql) > max_sql_log_length else sql,
         )
         connection = self.get_thread_connection()
         with self.exception_handler(sql):
@@ -459,7 +462,7 @@ class AgateTableFactory:
                         self.row_count = 0
                         self.arraysize = 1
 
-                    def execute(self, sql: str, bindings: Any = None) -> None:
+                    def execute(self, sql: str, _bindings: Any = None) -> None:
                         """Execute SQL (no-op in fallback mode)."""
                         logger.warning(
                             "Using fallback cursor - SQL not executed: %s",

@@ -284,7 +284,7 @@ class TestFallbackCursor:
             patch.object(manager, "exception_handler") as mock_exception_handler,
             patch(
                 "flext_dbt_oracle.adapters.oracle.connections.ORACLEDB_AVAILABLE",
-                False,
+                new=False,
             ),
         ):
             mock_exception_handler.__enter__ = Mock(return_value=None)

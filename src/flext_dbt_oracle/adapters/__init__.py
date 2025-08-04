@@ -14,7 +14,7 @@ from __future__ import annotations
 from .oracle.connections import FlextOracleConnectionManager
 from .oracle.impl import OracleAdapter as FlextOracleAdapter
 
-__all__ = [
+__all__: list[str] = [
     "FlextOracleAdapter",
     "FlextOracleConnectionManager",
 ]

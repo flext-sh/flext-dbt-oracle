@@ -489,10 +489,13 @@ class MockConnectionManager:
     """Strategy for connection management (Single Responsibility Principle)."""
 
     def __init__(self) -> None:
+        """Initialize connection manager."""
         self.connections: dict[str, object] = {}
 
     def open_connection(
-        self, name: str, config: dict[str, object],
+        self,
+        name: str,
+        config: dict[str, object],
     ) -> dict[str, object]:
         """Open database connection."""
         connection = {
@@ -514,7 +517,7 @@ class MockConnectionManager:
 class MockSqlExecutor:
     """Strategy for SQL execution (Strategy Pattern)."""
 
-    def execute(self, sql: str, auto_begin: bool = True) -> tuple[str, list[Any]]:
+    def execute(self, sql: str, *, auto_begin: bool = True) -> tuple[str, list[Any]]:
         """Execute SQL statement with reduced branching."""
         sql_strategies = {
             "CREATE TABLE": ("CREATE", []),
@@ -590,7 +593,9 @@ def mock_dbt_oracle_adapter() -> object:
             """Delegate to connection manager strategy."""
             self.connection_manager.close_connection(name)
 
-        def execute(self, sql: str, auto_begin: bool = True) -> tuple[str, list[Any]]:
+        def execute(
+            self, sql: str, *, auto_begin: bool = True
+        ) -> tuple[str, list[Any]]:
             """Delegate to SQL executor strategy."""
             return self.sql_executor.execute(sql, auto_begin)
 

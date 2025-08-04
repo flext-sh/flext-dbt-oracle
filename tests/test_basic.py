@@ -25,7 +25,7 @@ def test_basic_import() -> None:
 def test_adapter_type() -> None:
     """Test adapter type is correct."""
     if OracleConnectionManager.TYPE != "oracle":
-        msg = f"Expected 'oracle', got {OracleConnectionManager.TYPE}"
+        msg: str = f"Expected 'oracle', got {OracleConnectionManager.TYPE}"
         raise AssertionError(msg)
 
 

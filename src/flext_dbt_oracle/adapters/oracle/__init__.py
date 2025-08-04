@@ -40,7 +40,7 @@ __author__ = "FLEXT Team"
 __email__ = "team@flext.sh"
 
 # Public API - following DBT adapter conventions
-__all__ = [
+__all__: list[str] = [
     # Configuration classes
     "DBTOracleAdapterConstants",
     # Type definitions
