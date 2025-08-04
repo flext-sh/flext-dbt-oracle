@@ -23,6 +23,10 @@ from flext_db_oracle import (
     FlextDbOracleConnection,
 )
 from flext_db_oracle.constants import FlextOracleDbConstants
+from pydantic import SecretStr
+
+if TYPE_CHECKING:
+    from collections.abc import Coroutine
 
 
 # Create local DBT exceptions since they're not available in dependencies
@@ -79,11 +83,6 @@ else:
     class ConnectionState:
         """Connection state class."""
 
-
-from pydantic import SecretStr
-
-if TYPE_CHECKING:
-    from collections.abc import Coroutine
 
 # Create aliases for compatibility
 OracleConfig = FlextDbOracleConfig

@@ -492,7 +492,7 @@ class MockConnectionManager:
         self.connections: dict[str, object] = {}
 
     def open_connection(
-        self, name: str, config: dict[str, object]
+        self, name: str, config: dict[str, object],
     ) -> dict[str, object]:
         """Open database connection."""
         connection = {

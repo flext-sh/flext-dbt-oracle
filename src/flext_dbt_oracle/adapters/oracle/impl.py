@@ -14,13 +14,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 import agate
+from dbt.adapters.sql import SQLAdapter
 
 from flext_dbt_oracle.adapters.oracle.connections import OracleConnectionManager
 
 if TYPE_CHECKING:
     from dbt.adapters.base import BaseRelation
     from dbt.adapters.base.connections import BaseConnectionManager
-    from dbt.adapters.sql import SQLAdapter
 
 
 class OracleAdapter(SQLAdapter):

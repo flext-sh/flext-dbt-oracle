@@ -7,18 +7,15 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 from unittest.mock import Mock, patch
 
 import pytest
+from flext_meltano import BaseRelation
 
 from flext_dbt_oracle.adapters.oracle.connections import (
     FlextOracleOracleConnectionManager,
 )
 from flext_dbt_oracle.adapters.oracle.impl import OracleAdapter
-
-if TYPE_CHECKING:
-    from flext_meltano import BaseRelation
 
 
 class TestOracleAdapter:
