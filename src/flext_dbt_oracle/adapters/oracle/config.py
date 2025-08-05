@@ -21,13 +21,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from .constants import DBTOracleAdapterConstants
 
-if TYPE_CHECKING:
-    from .types import (
-        NonEmptyStr,
-        Port,
-        PositiveInt,
-        TimeoutSeconds,
-    )
+from .types import (
+    NonEmptyStr,
+    Port,
+    PositiveInt,
+    TimeoutSeconds,
+)
 
 logger = get_logger(__name__)
 

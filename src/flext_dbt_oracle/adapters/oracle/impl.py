@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import agate
 from dbt.adapters.sql import SQLAdapter
@@ -34,7 +34,7 @@ class OracleAdapter(SQLAdapter):
     flext-infrastructure.databases.flext-db-oracle foundation.
     """
 
-    ConnectionManager: type[BaseConnectionManager] = OracleConnectionManager  # type: ignore[assignment]
+    ConnectionManager: type[BaseConnectionManager] = OracleConnectionManager
 
     def __init__(self, config: object, mp_context: object | None = None) -> None:
         """Initialize Oracle adapter with configuration."""
@@ -43,7 +43,7 @@ class OracleAdapter(SQLAdapter):
             # Try with parameters if real SQLAdapter, handle type compatibility
             if hasattr(super(), "__init__") and callable(super().__init__):
                 # Cast mp_context to Any to avoid type issues with DBT internals
-                super().__init__(config, mp_context)  # type: ignore[arg-type]
+                super().__init__(config, mp_context)
         except Exception:
             # Fallback initialization for mock classes
             logger.exception("Exception during adapter initialization")
@@ -51,7 +51,7 @@ class OracleAdapter(SQLAdapter):
         self.config = config
         self.mp_context = mp_context
 
-    def execute(self, _sql: str, *, fetch: bool = False) -> tuple[str, Any]:
+    def execute(self, _sql: str, *, fetch: bool = False) -> tuple[str, object]:
         """Execute SQL statement - basic impl for DBT adapter compatibility."""
         # This would normally be implemented by the parent SQLAdapter class
         # For now, return mock results to make tests pass
@@ -71,7 +71,7 @@ class OracleAdapter(SQLAdapter):
 
     # Use parent class quote implementation
 
-    def get_columns_in_relation(self, relation: Any) -> list[Any]:
+    def get_columns_in_relation(self, relation: object) -> list[dict[str, object]]:
         """Get columns for a given relation using flext-infrastructure.databases.flext-db-oracle services.
 
         Get columns for a given relation using flext-infrastructure.databases.flext-db-oracle services.

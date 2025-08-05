@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, ClassVar, cast
+from typing import TYPE_CHECKING, ClassVar, cast
 
 import agate
 from flext_core import get_logger
@@ -59,7 +59,7 @@ else:
     class AdapterResponse:
         """Adapter response class."""
 
-        def __init__(self, _rows_affected: int = 0, **kwargs: Any) -> None:
+        def __init__(self, _rows_affected: int = 0, **kwargs: object) -> None:
             """Initialize adapter response."""
             self._rows_affected = _rows_affected
             for k, v in kwargs.items():
@@ -206,7 +206,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
 
     TYPE = "oracle"
 
-    def __init__(self, config: Any, mp_context: Any = None) -> None:
+    def __init__(self, config: object, mp_context: object = None) -> None:
         """Initialize connection manager with FLEXT services."""
         # Handle both old profile dict and new config + mp_context pattern
         if isinstance(config, dict):
@@ -273,21 +273,21 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
                 "query_service": query_service,
                 "oracle_config": oracle_config,
             }
-            connection.state = ConnectionState.OPEN  # type: ignore[assignment]
+            connection.state = ConnectionState.OPEN
             logger.info("Oracle connection opened: %s", connection.name)
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Failed to open Oracle connection: %s", connection.name)
-            connection.state = ConnectionState.FAIL  # type: ignore[assignment]
+            connection.state = ConnectionState.FAIL
             connection.handle = None
             msg: str = f"Failed to open Oracle connection: {e}"
             raise DbtDatabaseError(msg) from e
         return connection
 
     @classmethod
-    def get_response(cls, cursor: Any) -> AdapterResponse:
+    def get_response(cls, cursor: object) -> AdapterResponse:
         """Get response from Oracle query execution."""
         # For FLEXT services, we get results directly
-        rows_affected = cursor.row_count
+        rows_affected = getattr(cursor, "row_count", 0)
         return AdapterResponse(
             _message="Query completed successfully",
             rows_affected=rows_affected,
@@ -306,7 +306,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
                     )
             except (RuntimeError, ValueError, TypeError) as e:
                 logger.warning("Error closing connection: %s", e)
-            connection.state = ConnectionState.CLOSED  # type: ignore[assignment]
+            connection.state = ConnectionState.CLOSED
             connection.handle = None
         return []
 
@@ -319,7 +319,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
         raise DbtDatabaseError(error_message)
 
     @contextmanager
-    def exception_handler(self, sql: str) -> Any:
+    def exception_handler(self, sql: str) -> object:
         """Context manager for exception handling."""
         try:
             yield
@@ -335,7 +335,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
         auto_begin: bool = False,
         fetch: bool = False,
         limit: int | None = None,
-    ) -> tuple[AdapterResponse, Any]:
+    ) -> tuple[AdapterResponse, object]:
         """Execute SQL using flext-infrastructure.databases.flext-db-oracle query service.
 
         Execute SQL using flext-infrastructure.databases.flext-db-oracle query service.
@@ -347,33 +347,33 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             msg = "No connection handle available"
             raise DbtRuntimeError(msg)
 
-        executor = OracleQueryExecutor(connection.handle, fetch)
+        executor = OracleQueryExecutor(connection.handle, fetch=fetch)
         return executor.execute(sql)
 
 
 class OracleQueryExecutor:
     """Strategy pattern for Oracle query execution with SOLID principles."""
 
-    def __init__(self, handle: dict, *, fetch: bool = False) -> None:
+    def __init__(self, handle: dict[str, object], *, fetch: bool = False) -> None:
         """Initialize query executor."""
         self.handle = handle
         self.fetch = fetch
         self.result_extractor = QueryResultExtractor()
         self.table_factory = AgateTableFactory()
 
-    def execute(self, sql: str) -> tuple[AdapterResponse, Any]:
+    def execute(self, sql: str) -> tuple[AdapterResponse, object]:
         """Execute query and return response."""
         query_service = self.handle["query_service"]
         raw_result = run_async_in_sync_context(query_service.execute_query(sql))
 
         self._validate_result(raw_result)
         query_result = self.result_extractor.extract(raw_result)
-        table = self.table_factory.create(query_result, self.fetch)
+        table = self.table_factory.create(query_result, fetch=self.fetch)
         response = self._create_response(query_result, sql)
 
         return response, table
 
-    def _validate_result(self, result: Any) -> None:
+    def _validate_result(self, result: object) -> None:
         """Validate query execution result."""
         if (hasattr(result, "is_failure") and result.is_failure) or (
             hasattr(result, "success") and not result.success
@@ -382,11 +382,13 @@ class OracleQueryExecutor:
             msg: str = f"Query execution failed: {error_msg}"
             raise DbtDatabaseError(msg)
 
-    def _create_response(self, query_result: Any, sql: str) -> AdapterResponse:
+    def _create_response(self, query_result: object, sql: str) -> AdapterResponse:
         """Create adapter response with metrics."""
+        execution_time = getattr(query_result, "execution_time_ms", 0.0)
+        rows_affected = getattr(query_result, "row_count", 0)
         return AdapterResponse(
-            _message=f"Query completed in {query_result.execution_time_ms:.2f}ms",
-            rows_affected=query_result.row_count,
+            _message=f"Query completed in {execution_time:.2f}ms",
+            rows_affected=rows_affected,
             code="SELECT" if sql.strip().upper().startswith("SELECT") else "DDL",
         )
 
@@ -394,7 +396,7 @@ class OracleQueryExecutor:
 class QueryResultExtractor:
     """Extract query result data from various result types."""
 
-    def extract(self, result: Any) -> Any:
+    def extract(self, result: object) -> object:
         """Extract result data using strategy pattern."""
         if hasattr(result, "data"):
             return result.data
@@ -408,7 +410,7 @@ class QueryResultExtractor:
 class AgateTableFactory:
     """Factory for creating agate tables with fallback strategy."""
 
-    def create(self, query_result: Any, *, fetch: bool) -> Any:
+    def create(self, query_result: object, *, fetch: bool) -> object:
         """Create table using appropriate strategy."""
         if not fetch:
             return agate.Table([]) if agate else {"columns": [], "rows": []}
@@ -418,10 +420,10 @@ class AgateTableFactory:
 
         return self._create_from_rows(query_result)
 
-    def _create_from_rows(self, query_result: Any) -> Any:
+    def _create_from_rows(self, query_result: object) -> object:
         """Create table from query result rows."""
-        columns = query_result.columns or []
-        rows = query_result.rows or []
+        columns = getattr(query_result, "columns", []) or []
+        rows = getattr(query_result, "rows", []) or []
 
         if agate and columns and rows:
             return agate.Table(rows, column_names=columns)
@@ -433,7 +435,7 @@ class AgateTableFactory:
         self,
         sql: str,
         bindings: dict[str, object] | None = None,
-    ) -> tuple[Any, Any]:
+    ) -> tuple[object, object]:
         """Add query to connection with enhanced logging."""
         max_sql_log_length = 100
         logger.debug(
@@ -462,7 +464,7 @@ class AgateTableFactory:
                         self.row_count = 0
                         self.arraysize = 1
 
-                    def execute(self, sql: str, _bindings: Any = None) -> None:
+                    def execute(self, sql: str, _bindings: object = None) -> None:
                         """Execute SQL (no-op in fallback mode)."""
                         logger.warning(
                             "Using fallback cursor - SQL not executed: %s",
@@ -473,7 +475,7 @@ class AgateTableFactory:
                         """Fetch one row (no-op in fallback mode)."""
                         return
 
-                    def fetchall(self) -> list[Any]:
+                    def fetchall(self) -> list[object]:
                         """Fetch all rows (empty in fallback mode)."""
                         return []
 
