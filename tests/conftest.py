@@ -594,7 +594,10 @@ def mock_dbt_oracle_adapter() -> object:
             self.connection_manager.close_connection(name)
 
         def execute(
-            self, sql: str, *, auto_begin: bool = True,
+            self,
+            sql: str,
+            *,
+            auto_begin: bool = True,
         ) -> tuple[str, list[Any]]:
             """Delegate to SQL executor strategy."""
             return self.sql_executor.execute(sql, auto_begin)

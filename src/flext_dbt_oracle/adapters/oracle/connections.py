@@ -11,8 +11,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+import asyncio
+import multiprocessing
 from contextlib import contextmanager
 from dataclasses import dataclass
+from types import SimpleNamespace
 from typing import TYPE_CHECKING, ClassVar, cast
 
 import agate
@@ -98,8 +101,6 @@ logger = get_logger(__name__)
 # Helper function for async context
 def run_async_in_sync_context(coro: object) -> object:
     """Run async coroutine in sync context."""
-    import asyncio
-
     return asyncio.run(cast("Coroutine[object, object, object]", coro))
 
 
@@ -216,12 +217,10 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
             profile = getattr(config, "__dict__", {})
 
         if mp_context is None:
-            import multiprocessing
 
             mp_context = multiprocessing.get_context("spawn")
 
         # Convert profile dict to AdapterRequiredConfig-like structure
-        from types import SimpleNamespace
 
         config_obj = SimpleNamespace()
         config_obj.__dict__.update(profile)
