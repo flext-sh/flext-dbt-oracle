@@ -666,7 +666,7 @@ def mock_dbt_runner() -> object:
             models = models or ["dim_customers", "fact_orders"]
             for model in models:
                 # Mock compiled SQL - not executed, just static template
-                compiled[model] = f"SELECT * FROM compiled_{model}"  # noqa: S608
+                compiled[model] = f"SELECT * FROM compiled_{model}"
             return {"compiled": compiled}
 
     return MockDbtRunner

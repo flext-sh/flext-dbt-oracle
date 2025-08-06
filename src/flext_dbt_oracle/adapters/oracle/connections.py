@@ -331,9 +331,9 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
         self,
         sql: str,
         *,
-        auto_begin: bool = False,
+        _auto_begin: bool = False,
         fetch: bool = False,
-        limit: int | None = None,
+        _limit: int | None = None,
     ) -> tuple[AdapterResponse, object]:
         """Execute SQL using flext-infrastructure.databases.flext-db-oracle query service.
 
