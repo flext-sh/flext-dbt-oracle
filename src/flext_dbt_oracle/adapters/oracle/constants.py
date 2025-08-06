@@ -37,7 +37,7 @@ class FlextDbtOracleSemanticConstants(FlextSemanticConstants):
         """Oracle database constants - CONSUME from flext-core."""
 
         # Basic connection - CONSUME from single source
-        DEFAULT_PORT: Final = FlextSemanticConstants.Infrastructure.DEFAULT_DATABASE_PORT
+        DEFAULT_PORT: Final = 1521
         DEFAULT_SERVICE_NAME: Final = "XE"
         DEFAULT_SCHEMA: Final = "SYSTEM"
         DEFAULT_ENCODING: Final = "utf-8"
@@ -53,14 +53,14 @@ class FlextDbtOracleSemanticConstants(FlextSemanticConstants):
         MIN_THREADS: Final = 1
 
         # Connection pooling - CONSUME from flext-core
-        DEFAULT_POOL_MIN_SIZE: Final = FlextSemanticConstants.Infrastructure.DEFAULT_CONNECTION_POOL_SIZE
+        DEFAULT_POOL_MIN_SIZE: Final = 5
         DEFAULT_POOL_MAX_SIZE: Final = 20
         MAX_POOL_SIZE: Final = 50
         MIN_POOL_SIZE: Final = 1
 
         # Batch processing - CONSUME from flext-core
-        DEFAULT_BATCH_SIZE: Final = FlextSemanticConstants.Processing.DEFAULT_BATCH_SIZE
-        MAX_BATCH_SIZE: Final = FlextSemanticConstants.Processing.MAX_BATCH_SIZE
+        DEFAULT_BATCH_SIZE: Final = 1000
+        MAX_BATCH_SIZE: Final = 10000
         MIN_BATCH_SIZE: Final = 1
 
         # Fetch settings
@@ -161,9 +161,13 @@ class FlextDbtOracleSemanticConstants(FlextSemanticConstants):
     class Logging:
         """Logging configuration constants - CONSUME from flext-core."""
 
-        DEFAULT_LOG_LEVEL: Final = FlextSemanticConstants.Logging.DEFAULT_LEVEL
+        DEFAULT_LOG_LEVEL: Final = "INFO"
         VALID_LOG_LEVELS: ClassVar[set[str]] = {
-            "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL",
+            "DEBUG",
+            "INFO",
+            "WARNING",
+            "ERROR",
+            "CRITICAL",
         }
         DEFAULT_SQL_LOGGING: Final = False
         DEFAULT_INCLUDE_TIMING: Final = True

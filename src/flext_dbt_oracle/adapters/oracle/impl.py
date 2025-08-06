@@ -14,13 +14,13 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-import agate
-from dbt.adapters.sql import SQLAdapter
+import agate  # type: ignore[import-untyped]
+from dbt.adapters.sql import SQLAdapter  # type: ignore[attr-defined]
 
 from flext_dbt_oracle.adapters.oracle.connections import OracleConnectionManager
 
 if TYPE_CHECKING:
-    from dbt.adapters.base import BaseRelation
+    from dbt.adapters.base import BaseRelation  # type: ignore[attr-defined]
     from dbt.adapters.base.connections import BaseConnectionManager
 
 
@@ -34,7 +34,7 @@ class OracleAdapter(SQLAdapter):
     flext-infrastructure.databases.flext-db-oracle foundation.
     """
 
-    ConnectionManager: type[BaseConnectionManager] = OracleConnectionManager
+    ConnectionManager: type[BaseConnectionManager] = OracleConnectionManager  # type: ignore[type-abstract]
 
     def __init__(self, config: object, mp_context: object | None = None) -> None:
         """Initialize Oracle adapter with configuration."""
@@ -43,7 +43,7 @@ class OracleAdapter(SQLAdapter):
             # Try with parameters if real SQLAdapter, handle type compatibility
             if hasattr(super(), "__init__") and callable(super().__init__):
                 # Cast mp_context to Any to avoid type issues with DBT internals
-                super().__init__(config, mp_context)
+                super().__init__(config, mp_context)  # type: ignore[arg-type]
         except Exception:
             # Fallback initialization for mock classes
             logger.exception("Exception during adapter initialization")
@@ -51,7 +51,7 @@ class OracleAdapter(SQLAdapter):
         self.config = config
         self.mp_context = mp_context
 
-    def execute(self, _sql: str, *, fetch: bool = False) -> tuple[str, object]:
+    def execute(self, _sql: str, _bindings: object = None, *, fetch: bool = False) -> tuple[str, object]:
         """Execute SQL statement - basic impl for DBT adapter compatibility."""
         # This would normally be implemented by the parent SQLAdapter class
         # For now, return mock results to make tests pass
@@ -85,7 +85,7 @@ class OracleAdapter(SQLAdapter):
         AND table_name = :table_name
         ORDER BY column_id
         """
-        bindings = {"schema_name": relation.schema, "table_name": relation.identifier}
+        bindings = {"schema_name": relation.schema, "table_name": relation.identifier}  # type: ignore[attr-defined]
         _, table = self.execute(sql, bindings, fetch=True)
         return [
             {
@@ -95,7 +95,7 @@ class OracleAdapter(SQLAdapter):
                 "default": row[3],
                 "position": row[4],
             }
-            for row in table
+            for row in table  # type: ignore[attr-defined]
         ]
 
     def list_relations_without_caching(
@@ -120,7 +120,7 @@ class OracleAdapter(SQLAdapter):
         bindings = {"schema_name": schema_relation.schema}
         _, table = self.execute(sql, bindings, fetch=True)
         relations = []
-        for row in table:
+        for row in table:  # type: ignore[attr-defined]
             relation = self.Relation.create(
                 database=schema_relation.database,
                 schema=schema_relation.schema,
@@ -144,7 +144,7 @@ class OracleAdapter(SQLAdapter):
         """
         bindings = {"schema_name": schema.upper()}
         _, table = self.execute(sql, bindings, fetch=True)
-        return len(table) > 0 and table[0][0] > 0
+        return len(table) > 0 and table[0][0] > 0  # type: ignore[arg-type,index]
 
     @classmethod
     def convert_text_type(cls, agate_table: object, col_idx: int) -> str:

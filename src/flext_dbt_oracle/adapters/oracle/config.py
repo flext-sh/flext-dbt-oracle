@@ -88,11 +88,11 @@ class DBTOracleSettings(BaseSettings):
         description="Oracle uses service/SID, not database concept",
     )
     schema_name: str = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_SCHEMA,
+        default="SYSTEM",
         description="Default schema name",
     )
     materialization: str = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_MATERIALIZATION,
+        default=DBTOracleAdapterConstants.Materializations.DEFAULT,
         description="Default materialization strategy",
     )
 
@@ -156,11 +156,11 @@ class DBTOracleConfig(BaseModel):
         description="Oracle database host",
     )
     port: Port = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_PORT,
+        default=DBTOracleAdapterConstants.OracleDB.DEFAULT_PORT,
         description="Oracle database port",
     )
     service_name: NonEmptyStr | None = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_SERVICE_NAME,
+        default=DBTOracleAdapterConstants.OracleDB.DEFAULT_SERVICE_NAME,
         description="Oracle service name",
     )
     sid: NonEmptyStr | None = Field(
@@ -176,54 +176,54 @@ class DBTOracleConfig(BaseModel):
         description="Oracle password",
     )
     protocol: NonEmptyStr = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_PROTOCOL,
+        default=DBTOracleAdapterConstants.OracleDB.DEFAULT_PROTOCOL,
         description="Oracle protocol (tcp or tcps)",
     )
 
     # DBT-specific configuration using flext-core types
     database: str = "oracle"  # Oracle uses service/SID, not database concept
-    schema_name: str = DBTOracleAdapterConstants.DEFAULT_SCHEMA
+    schema_name: str = DBTOracleAdapterConstants.OracleDB.DEFAULT_SCHEMA
     materialization: str = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_MATERIALIZATION,
+        default=DBTOracleAdapterConstants.Materializations.DEFAULT,
         description="Default materialization strategy",
         pattern="^(table|view|incremental|snapshot)$",
     )
 
     # Connection pool configuration using flext-core types and constants
     pool_min_size: PositiveInt = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_POOL_MIN_SIZE,
+        default=DBTOracleAdapterConstants.Performance.DEFAULT_POOL_MIN_SIZE,
         description="Connection pool minimum size",
-        le=DBTOracleAdapterConstants.MAX_POOL_SIZE,
+        le=DBTOracleAdapterConstants.Performance.MAX_POOL_SIZE,
     )
     pool_max_size: PositiveInt = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_POOL_MAX_SIZE,
+        default=DBTOracleAdapterConstants.Performance.DEFAULT_POOL_MAX_SIZE,
         description="Connection pool maximum size",
-        le=DBTOracleAdapterConstants.MAX_POOL_SIZE,
+        le=DBTOracleAdapterConstants.Performance.MAX_POOL_SIZE,
     )
     pool_increment: PositiveInt = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_POOL_INCREMENT,
+        default=1,
         description="Connection pool increment",
-        le=DBTOracleAdapterConstants.MAX_POOL_INCREMENT,
+        le=10,
     )
     query_timeout: TimeoutSeconds = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_QUERY_TIMEOUT,
+        default=DBTOracleAdapterConstants.OracleDB.DEFAULT_TIMEOUT,
         description="Query timeout in seconds",
-        le=DBTOracleAdapterConstants.MAX_TIMEOUT,
+        le=300,
     )
     fetch_size: PositiveInt = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_FETCH_SIZE,
+        default=DBTOracleAdapterConstants.Performance.DEFAULT_FETCH_SIZE,
         description="Default fetch size for queries",
     )
     connect_timeout: TimeoutSeconds = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_CONNECT_TIMEOUT,
+        default=DBTOracleAdapterConstants.OracleDB.DEFAULT_TIMEOUT,
         description="Connection timeout in seconds",
     )
     retry_attempts: PositiveInt = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_RETRY_ATTEMPTS,
+        default=DBTOracleAdapterConstants.ErrorHandling.DEFAULT_RETRY_ATTEMPTS,
         description="Number of retry attempts",
     )
     retry_delay: float = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_RETRY_DELAY,
+        default=DBTOracleAdapterConstants.ErrorHandling.DEFAULT_RETRY_DELAY,
         description="Retry delay in seconds",
         ge=0.1,
         le=10.0,
@@ -231,7 +231,7 @@ class DBTOracleConfig(BaseModel):
 
     # Oracle-specific settings
     ssl_server_dn_match: bool = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_SSL_SERVER_DN_MATCH,
+        default=False,
         description="Verify SSL server DN for secure connections",
     )
     nls_lang: NonEmptyStr | None = Field(
@@ -239,7 +239,7 @@ class DBTOracleConfig(BaseModel):
         description="Oracle NLS_LANG setting",
     )
     nls_date_format: NonEmptyStr = Field(
-        default=DBTOracleAdapterConstants.DEFAULT_NLS_DATE_FORMAT,
+        default="YYYY-MM-DD HH24:MI:SS",
         description="Oracle NLS_DATE_FORMAT setting",
     )
     search_path: NonEmptyStr | None = Field(
@@ -276,10 +276,10 @@ class DBTOracleConfig(BaseModel):
     @classmethod
     def validate_materialization(cls, v: str) -> str:
         """Validate materialization strategy using constants."""
-        if v not in DBTOracleAdapterConstants.VALID_MATERIALIZATIONS:
+        if v not in DBTOracleAdapterConstants.Materializations.VALID:
             msg = (
                 f"Invalid materialization: {v}. Must be one of "
-                f"{DBTOracleAdapterConstants.VALID_MATERIALIZATIONS}"
+                f"{DBTOracleAdapterConstants.Materializations.VALID}"
             )
             raise ValueError(msg)
         return v
@@ -288,10 +288,10 @@ class DBTOracleConfig(BaseModel):
     @classmethod
     def validate_protocol(cls, v: str) -> str:
         """Validate protocol using constants."""
-        if v not in DBTOracleAdapterConstants.VALID_PROTOCOLS:
+        if v not in {"tcp", "tcps"}:
             msg = (
                 f"Invalid protocol: {v}. Must be one of "
-                f"{DBTOracleAdapterConstants.VALID_PROTOCOLS}"
+                f"{{'tcp', 'tcps'}}"
             )
             raise ValueError(msg)
         return v
@@ -317,7 +317,7 @@ class DBTOracleConfig(BaseModel):
             sid = info.data.get("sid")
             if not v and not sid:
                 # Provide default service name for DBT
-                return DBTOracleAdapterConstants.DEFAULT_SERVICE_NAME
+                return DBTOracleAdapterConstants.OracleDB.DEFAULT_SERVICE_NAME
         return v
 
     @field_validator("username")
@@ -487,7 +487,7 @@ class DBTOracleConfig(BaseModel):
             # Validate either service_name or sid is provided
             if not self.service_name and not self.sid:
                 # This is handled by the validator, but double-check
-                self.service_name = DBTOracleAdapterConstants.DEFAULT_SERVICE_NAME
+                self.service_name = DBTOracleAdapterConstants.OracleDB.DEFAULT_SERVICE_NAME
 
         except (RuntimeError, ValueError, TypeError):
             logger.exception("Configuration validation failed")
