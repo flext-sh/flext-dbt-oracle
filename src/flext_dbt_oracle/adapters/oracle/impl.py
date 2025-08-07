@@ -16,6 +16,7 @@ from typing import TYPE_CHECKING
 
 import agate  # type: ignore[import-untyped]
 from dbt.adapters.sql import SQLAdapter  # type: ignore[attr-defined]
+from flext_core import get_logger
 
 from flext_dbt_oracle.adapters.oracle.connections import OracleConnectionManager
 
@@ -172,7 +173,12 @@ class OracleAdapter(SQLAdapter):
                     if max_length and max_length > 0:
                         return f"VARCHAR2({min(max_length * 2, 4000)})"  # Add buffer
                 except (AttributeError, TypeError):
-                    pass
+                    # EXPLICIT TRANSPARENCY: Oracle column type detection fallback
+                    logger = get_logger(__name__)
+                    logger.warning("Column type detection failed")
+                    logger.debug(f"Failed for column index {col_idx} in agate table analysis")
+                    logger.info("Continuing with default VARCHAR2(4000) - expected fallback behavior")
+                    # Continue to default VARCHAR2(4000) - documented fallback behavior
 
         # Default to VARCHAR2 with reasonable size
         return "VARCHAR2(4000)"  # Oracle max for VARCHAR2
@@ -219,7 +225,12 @@ class OracleAdapter(SQLAdapter):
                         return f"NUMBER({max_digits + 2}, 2)"
 
                 except (AttributeError, TypeError, ValueError):
-                    pass
+                    # EXPLICIT TRANSPARENCY: Oracle NUMBER type detection fallback
+                    logger = get_logger(__name__)
+                    logger.warning("NUMBER type analysis failed")
+                    logger.debug(f"Failed analyzing NUMBER values for column index {col_idx}")
+                    logger.info("Continuing with default NUMBER - expected fallback for complex number detection")
+                    # Continue to default NUMBER - documented fallback behavior
 
         # Default to NUMBER without constraints
         return "NUMBER"
@@ -254,7 +265,12 @@ class OracleAdapter(SQLAdapter):
                             break
 
             except (AttributeError, TypeError, IndexError):
-                pass
+                # EXPLICIT TRANSPARENCY: Oracle datetime type analysis fallback
+                logger = get_logger(__name__)
+                logger.warning("Datetime type analysis failed")
+                logger.debug(f"Failed analyzing datetime for column index {col_idx}")
+                logger.info("Continuing with default TIMESTAMP - safest fallback for datetime columns")
+                # Continue to default TIMESTAMP - documented safe fallback behavior
             else:
                 # Use DATE if no time components found, TIMESTAMP otherwise
                 return "TIMESTAMP" if has_time_component else "DATE"

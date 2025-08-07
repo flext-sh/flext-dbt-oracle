@@ -1,238 +1,135 @@
-"""Oracle DBT exception hierarchy using flext-core Singer base patterns.
+"""Oracle DBT exception hierarchy following flext-core patterns.
 
-Domain-specific exceptions for Oracle DBT operations inheriting from Singer base
-classes.
-Eliminates duplication by using centralized Singer exception patterns from flext-core.
+This module implements Oracle DBT-specific exceptions using proper static
+inheritance from flext-core abstractions, following the architectural principle
+of using generic functionality from abstract libraries correctly.
 """
 
 from __future__ import annotations
 
-from flext_core import (
+from flext_core.exceptions import (
     FlextAuthenticationError,
     FlextConfigurationError,
+    FlextConnectionError,
+    FlextError,
     FlextProcessingError,
-    FlextSingerConnectionError,
     FlextTimeoutError,
-    FlextTransformError,
     FlextValidationError,
 )
 
 
-class FlextDbtOracleError(FlextTransformError):
-    """Base exception for Oracle DBT operations."""
+# Define Oracle DBT-specific exception hierarchy using static inheritance
+class FlextDbtOracleError(FlextError):
+    """Base Oracle DBT error following flext-core patterns."""
 
-    def __init__(
-        self,
-        message: str = "Oracle DBT error",
-        model_name: str | None = None,
-        stream_name: str | None = None,
-        **kwargs: object,
-    ) -> None:
+    def __init__(self, message: str = "Oracle DBT error", **kwargs: object) -> None:
         """Initialize Oracle DBT error with context."""
         super().__init__(
             message,
-            component_type="transform",
-            stream_name=stream_name,
-            transform_name=model_name,
-            **kwargs,
+            error_code="FLEXT_DBT_ORACLE_ERROR",
+            context=kwargs,
         )
-
-
-class FlextDbtOracleConnectionError(FlextSingerConnectionError):
-    """Oracle DBT connection errors."""
-
-    def __init__(
-        self,
-        message: str = "Oracle DBT connection failed",
-        database_name: str | None = None,
-        host: str | None = None,
-        stream_name: str | None = None,
-        **kwargs: object,
-    ) -> None:
-        """Initialize Oracle DBT connection error with context."""
-        context = kwargs.copy()
-        if database_name is not None:
-            context["database_name"] = database_name
-        if host is not None:
-            context["host"] = host
-
-        super().__init__(
-            f"Oracle DBT connection: {message}",
-            component_type="transform",
-            stream_name=stream_name,
-            **context,
-        )
-
-
-class FlextDbtOracleAuthenticationError(FlextAuthenticationError):
-    """Oracle DBT authentication errors."""
-
-    def __init__(
-        self,
-        message: str = "Oracle DBT authentication failed",
-        username: str | None = None,
-        database_name: str | None = None,
-        **kwargs: object,
-    ) -> None:
-        """Initialize Oracle DBT authentication error with context."""
-        context = kwargs.copy()
-        if username is not None:
-            context["username"] = username
-        if database_name is not None:
-            context["database_name"] = database_name
-
-        super().__init__(f"Oracle DBT auth: {message}", **context)
 
 
 class FlextDbtOracleValidationError(FlextValidationError):
-    """Oracle DBT validation errors."""
+    """Oracle DBT validation errors following flext-core patterns."""
 
-    def __init__(
-        self,
-        message: str = "Oracle DBT validation failed",
-        field: str | None = None,
-        value: object = None,
-        model_name: str | None = None,
-        **kwargs: object,
-    ) -> None:
-        """Initialize Oracle DBT validation error with context."""
-        validation_details: dict[str, object] = {}
-        if field is not None:
-            validation_details["field"] = field
-        if value is not None:
-            validation_details["value"] = str(value)[:100]  # Truncate long values
-
-        context = kwargs.copy()
-        if model_name is not None:
-            context["model_name"] = model_name
-
+    def __init__(self, message: str = "Oracle DBT validation error", **kwargs: object) -> None:
+        """Initialize Oracle DBT validation error."""
         super().__init__(
-            f"Oracle DBT validation: {message}",
-            validation_details=validation_details,
-            context=context,
+            message,
+            error_code="FLEXT_DBT_ORACLE_VALIDATION_ERROR",
+            context=kwargs,
         )
 
 
 class FlextDbtOracleConfigurationError(FlextConfigurationError):
-    """Oracle DBT configuration errors."""
+    """Oracle DBT configuration errors following flext-core patterns."""
 
-    def __init__(
-        self,
-        message: str = "Oracle DBT configuration error",
-        config_key: str | None = None,
-        **kwargs: object,
-    ) -> None:
-        """Initialize Oracle DBT configuration error with context."""
-        context = kwargs.copy()
-        if config_key is not None:
-            context["config_key"] = config_key
+    def __init__(self, message: str = "Oracle DBT configuration error", **kwargs: object) -> None:
+        """Initialize Oracle DBT configuration error."""
+        super().__init__(
+            message,
+            **kwargs,
+        )
 
-        super().__init__(f"Oracle DBT config: {message}", **context)
+
+class FlextDbtOracleConnectionError(FlextConnectionError):
+    """Oracle DBT connection errors following flext-core patterns."""
+
+    def __init__(self, message: str = "Oracle DBT connection error", **kwargs: object) -> None:
+        """Initialize Oracle DBT connection error."""
+        super().__init__(
+            message,
+            **kwargs,
+        )
+
+
+class FlextDbtOracleAuthenticationError(FlextAuthenticationError):
+    """Oracle DBT authentication errors following flext-core patterns."""
+
+    def __init__(self, message: str = "Oracle DBT authentication error", **kwargs: object) -> None:
+        """Initialize Oracle DBT authentication error."""
+        super().__init__(
+            message,
+            **kwargs,
+        )
 
 
 class FlextDbtOracleProcessingError(FlextProcessingError):
-    """Oracle DBT processing errors."""
+    """Oracle DBT processing errors following flext-core patterns."""
 
-    def __init__(
-        self,
-        message: str = "Oracle DBT processing failed",
-        model_name: str | None = None,
-        stage: str | None = None,
-        **kwargs: object,
-    ) -> None:
-        """Initialize Oracle DBT processing error with context."""
-        context = kwargs.copy()
-        if model_name is not None:
-            context["model_name"] = model_name
-        if stage is not None:
-            context["stage"] = stage
-
-        super().__init__(f"Oracle DBT processing: {message}", **context)
+    def __init__(self, message: str = "Oracle DBT processing error", **kwargs: object) -> None:
+        """Initialize Oracle DBT processing error."""
+        super().__init__(
+            message,
+            **kwargs,
+        )
 
 
 class FlextDbtOracleTimeoutError(FlextTimeoutError):
-    """Oracle DBT timeout errors."""
+    """Oracle DBT timeout errors following flext-core patterns."""
 
-    def __init__(
-        self,
-        message: str = "Oracle DBT operation timed out",
-        operation: str | None = None,
-        timeout_seconds: float | None = None,
-        **kwargs: object,
-    ) -> None:
-        """Initialize Oracle DBT timeout error with context."""
-        context = kwargs.copy()
-        if operation is not None:
-            context["operation"] = operation
-        if timeout_seconds is not None:
-            context["timeout_seconds"] = timeout_seconds
-
-        super().__init__(f"Oracle DBT timeout: {message}", **context)
+    def __init__(self, message: str = "Oracle DBT timeout error", **kwargs: object) -> None:
+        """Initialize Oracle DBT timeout error."""
+        super().__init__(
+            message,
+            **kwargs,
+        )
 
 
+# Create additional Oracle DBT-specific exceptions using static inheritance
 class FlextDbtOracleModelError(FlextDbtOracleError):
     """Oracle DBT model-specific errors."""
 
-    def __init__(
-        self,
-        message: str = "Oracle DBT model error",
-        model_name: str | None = None,
-        model_type: str | None = None,
-        **kwargs: object,
-    ) -> None:
-        """Initialize Oracle DBT model error with context."""
-        context = kwargs.copy()
-        if model_type is not None:
-            context["model_type"] = model_type
-
-        # Only pass supported parameters to base class
+    def __init__(self, message: str = "Oracle DBT model error", **kwargs: object) -> None:
+        """Initialize Oracle DBT model error."""
         super().__init__(
-            f"Oracle DBT model: {message}",
-            model_name=model_name,
+            message,
+            **kwargs,
         )
-        # Store additional context separately
-        self.context = context
 
 
 class FlextDbtOracleAdapterError(FlextDbtOracleError):
     """Oracle DBT adapter errors."""
 
-    def __init__(
-        self,
-        message: str = "Oracle DBT adapter error",
-        adapter_method: str | None = None,
-        **kwargs: object,
-    ) -> None:
-        """Initialize Oracle DBT adapter error with context."""
-        context = kwargs.copy()
-        if adapter_method is not None:
-            context["adapter_method"] = adapter_method
-
-        super().__init__(f"Oracle DBT adapter: {message}", context=context)
+    def __init__(self, message: str = "Oracle DBT adapter error", **kwargs: object) -> None:
+        """Initialize Oracle DBT adapter error."""
+        super().__init__(
+            message,
+            **kwargs,
+        )
 
 
 class FlextDbtOracleTestError(FlextDbtOracleError):
     """Oracle DBT test errors."""
 
-    def __init__(
-        self,
-        message: str = "Oracle DBT test failed",
-        test_name: str | None = None,
-        model_name: str | None = None,
-        **kwargs: object,
-    ) -> None:
-        """Initialize Oracle DBT test error with context."""
-        context = kwargs.copy()
-        if test_name is not None:
-            context["test_name"] = test_name
-
-        # Only pass supported parameters to base class
+    def __init__(self, message: str = "Oracle DBT test error", **kwargs: object) -> None:
+        """Initialize Oracle DBT test error."""
         super().__init__(
-            f"Oracle DBT test: {message}",
-            model_name=model_name,
+            message,
+            **kwargs,
         )
-        # Store additional context separately
-        self.context = context
 
 
 __all__: list[str] = [

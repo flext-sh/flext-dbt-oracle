@@ -14,7 +14,6 @@ from __future__ import annotations
 import asyncio
 import multiprocessing
 from contextlib import contextmanager
-from typing import Iterator
 from dataclasses import dataclass
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, ClassVar, cast
@@ -30,7 +29,7 @@ from flext_db_oracle.constants import FlextOracleDbConstants
 from pydantic import SecretStr
 
 if TYPE_CHECKING:
-    from collections.abc import Coroutine
+    from collections.abc import Coroutine, Generator, Iterator
 
 
 # Create local DBT exceptions since they're not available in dependencies
@@ -102,12 +101,18 @@ else:
             return connection
 
         @contextmanager
-        def exception_handler(self, sql: str):
+        def exception_handler(self, sql: str) -> Generator[None]:
             """Exception handler context manager."""
             try:
                 yield
             except Exception:
-                pass
+                # EXPLICIT TRANSPARENCY: DBT Oracle adapter exception handling
+                logger = get_logger(__name__)
+                logger.exception("DBT Oracle adapter error in SQL execution")
+                logger.debug(f"SQL that caused error: {sql}")
+                logger.warning("Re-raising exception for proper DBT error handling")
+                # Re-raise for proper DBT error handling - don't swallow
+                raise
 
     # ConnectionState is already defined above at line 45-50
 
@@ -351,14 +356,19 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
     def execute(
         self,
         sql: str,
-        auto_begin: bool = False,
-        fetch: bool = False,
+        auto_begin: bool = False,  # noqa: FBT001,FBT002
+        fetch: bool = False,  # noqa: FBT001,FBT002
         limit: int | None = None,
     ) -> tuple[AdapterResponse, object]:
         """Execute SQL using flext-infrastructure.databases.flext-db-oracle query service.
 
         Execute SQL using flext-infrastructure.databases.flext-db-oracle query service.
         """
+        # NOTE: auto_begin and limit parameters are for interface compatibility
+        _ = auto_begin  # Interface compatibility - not used in current implementation
+        _ = fetch  # Interface compatibility - not used in current implementation
+        _ = limit  # Interface compatibility - not used in current implementation
+
         connection = self.get_thread_connection()
         if connection.state != "open":
             connection = self.open(connection)
@@ -431,7 +441,6 @@ class AgateTableFactory:
 
     def __init__(self) -> None:
         """Initialize AgateTableFactory."""
-        pass
 
     def get_thread_connection(self) -> Connection:
         """Mock method for compatibility."""
@@ -443,11 +452,16 @@ class AgateTableFactory:
 
     @contextmanager
     def exception_handler(self, sql: str) -> Iterator[None]:
-        """Mock exception handler."""
+        """Mock exception handler with explicit transparency."""
         try:
             yield
         except Exception:
-            pass
+            # EXPLICIT TRANSPARENCY: Mock exception handler for AgateTableFactory compatibility
+            logger = get_logger(__name__)
+            logger.warning("AgateTableFactory mock exception handler caught exception")
+            logger.debug(f"SQL that triggered exception: {sql}")
+            logger.info("Mock handler - passing silently for DBT compatibility (this is expected behavior)")
+            # Pass silently as required for DBT AgateTableFactory mock compatibility
 
     def create(self, query_result: object, *, fetch: bool) -> object:
         """Create table using appropriate strategy."""
