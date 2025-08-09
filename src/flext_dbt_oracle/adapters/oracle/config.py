@@ -14,7 +14,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar
 
-from flext_core import FlextConstants, get_logger
+from flext_core import get_logger
+from flext_core.constants import FlextConstants
 from flext_db_oracle import FlextDbOracleConfig as OracleConfig
 from pydantic import BaseModel, Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -63,7 +64,7 @@ class DBTOracleSettings(BaseSettings):
         default="flext-data.dbt.flext-dbt-oracle",
         description="Project name",
     )
-    project_version: str = Field(default=FlextConstants.VERSION)
+    project_version: str = Field(default=FlextConstants.Core.VERSION)
 
     # Oracle connection settings (directly defined)
     oracle_host: str = Field(..., description="Oracle database host")
@@ -142,7 +143,7 @@ class DBTOracleConfig(BaseModel):
         description="Project name",
     )
     project_version: str = Field(
-        default=FlextConstants.VERSION,
+        default=FlextConstants.Core.VERSION,
         description="Project version",
     )
     environment: str = Field(
@@ -289,10 +290,7 @@ class DBTOracleConfig(BaseModel):
     def validate_protocol(cls, v: str) -> str:
         """Validate protocol using constants."""
         if v not in {"tcp", "tcps"}:
-            msg = (
-                f"Invalid protocol: {v}. Must be one of "
-                f"{{'tcp', 'tcps'}}"
-            )
+            msg = f"Invalid protocol: {v}. Must be one of {{'tcp', 'tcps'}}"
             raise ValueError(msg)
         return v
 
@@ -487,7 +485,9 @@ class DBTOracleConfig(BaseModel):
             # Validate either service_name or sid is provided
             if not self.service_name and not self.sid:
                 # This is handled by the validator, but double-check
-                self.service_name = DBTOracleAdapterConstants.OracleDB.DEFAULT_SERVICE_NAME
+                self.service_name = (
+                    DBTOracleAdapterConstants.OracleDB.DEFAULT_SERVICE_NAME
+                )
 
         except (RuntimeError, ValueError, TypeError):
             logger.exception("Configuration validation failed")

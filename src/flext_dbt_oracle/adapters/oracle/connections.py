@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, ClassVar, cast
 
-import agate  # type: ignore[import-untyped]
+import agate
 from flext_core import get_logger
 from flext_db_oracle import (
     FlextDbOracleApi,
@@ -94,7 +94,7 @@ else:
 
         def get_thread_connection(self) -> Connection:
             """Get thread connection."""
-            return Connection()  # type: ignore[call-arg]
+            return Connection()
 
         def open(self, connection: Connection) -> Connection:
             """Open connection."""
@@ -250,7 +250,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
 
         config_obj = SimpleNamespace()
         config_obj.__dict__.update(profile)
-        super().__init__(config_obj, mp_context)  # type: ignore[arg-type]
+        super().__init__(config_obj, mp_context)
         self._oracle_services: dict[
             str,
             tuple[OracleConnectionService, OracleQueryService],
@@ -298,11 +298,11 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
                 "query_service": query_service,
                 "oracle_config": oracle_config,
             }
-            connection.state = ConnectionState.OPEN  # type: ignore[assignment]
+            connection.state = ConnectionState.OPEN
             logger.info("Oracle connection opened: %s", connection.name)
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Failed to open Oracle connection: %s", connection.name)
-            connection.state = ConnectionState.FAIL  # type: ignore[assignment]
+            connection.state = ConnectionState.FAIL
             connection.handle = None
             error_msg: str = f"Failed to open Oracle connection: {e}"
             raise DbtDatabaseError(error_msg) from e
@@ -331,7 +331,7 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
                     )
             except (RuntimeError, ValueError, TypeError) as e:
                 logger.warning("Error closing connection: %s", e)
-            connection.state = ConnectionState.CLOSED  # type: ignore[assignment]
+            connection.state = ConnectionState.CLOSED
             connection.handle = None
         return []
 
@@ -356,8 +356,8 @@ class FlextOracleOracleConnectionManager(BaseConnectionManager):
     def execute(
         self,
         sql: str,
-        auto_begin: bool = False,  # noqa: FBT001,FBT002
-        fetch: bool = False,  # noqa: FBT001,FBT002
+        auto_begin: bool = False,
+        fetch: bool = False,
         limit: int | None = None,
     ) -> tuple[AdapterResponse, object]:
         """Execute SQL using flext-infrastructure.databases.flext-db-oracle query service.
@@ -393,7 +393,7 @@ class OracleQueryExecutor:
     def execute(self, sql: str) -> tuple[AdapterResponse, object]:
         """Execute query and return response."""
         query_service = self.handle["query_service"]
-        raw_result = run_async_in_sync_context(query_service.execute_query(sql))  # type: ignore[attr-defined]
+        raw_result = run_async_in_sync_context(query_service.execute_query(sql))
 
         self._validate_result(raw_result)
         query_result = self.result_extractor.extract(raw_result)
@@ -444,7 +444,7 @@ class AgateTableFactory:
 
     def get_thread_connection(self) -> Connection:
         """Mock method for compatibility."""
-        return Connection()  # type: ignore[call-arg]
+        return Connection()
 
     def open(self, connection: Connection) -> Connection:
         """Mock method for compatibility."""
@@ -460,7 +460,9 @@ class AgateTableFactory:
             logger = get_logger(__name__)
             logger.warning("AgateTableFactory mock exception handler caught exception")
             logger.debug(f"SQL that triggered exception: {sql}")
-            logger.info("Mock handler - passing silently for DBT compatibility (this is expected behavior)")
+            logger.info(
+                "Mock handler - passing silently for DBT compatibility (this is expected behavior)"
+            )
             # Pass silently as required for DBT AgateTableFactory mock compatibility
 
     def create(self, query_result: object, *, fetch: bool) -> object:

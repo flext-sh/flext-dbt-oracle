@@ -14,11 +14,11 @@ from __future__ import annotations
 from typing import ClassVar, Final
 
 # Import from flext-core as SINGLE SOURCE OF TRUTH
-from flext_core.constants import FlextSemanticConstants
+from flext_core.constants import FlextConstants
 
 
-class FlextDbtOracleSemanticConstants(FlextSemanticConstants):
-    """DBT Oracle adapter semantic constants extending FlextSemanticConstants.
+class FlextDbtOracleSemanticConstants(FlextConstants):
+    """DBT Oracle adapter semantic constants extending FlextConstants.
 
     Modern Python 3.13 constants following semantic grouping patterns.
     Extends the FLEXT ecosystem constants with DBT Oracle adapter-specific values
