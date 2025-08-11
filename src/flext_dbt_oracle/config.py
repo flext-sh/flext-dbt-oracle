@@ -20,15 +20,13 @@ from flext_db_oracle import FlextDbOracleConfig as OracleConfig
 from pydantic import BaseModel, Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from .constants import DBTOracleAdapterConstants
-
-if TYPE_CHECKING:
-    from .types import (
-        NonEmptyStr,
-        Port,
-        PositiveInt,
-        TimeoutSeconds,
-    )
+from flext_dbt_oracle.constants import DBTOracleAdapterConstants
+from flext_dbt_oracle.types import (
+    NonEmptyStr,
+    Port,
+    PositiveInt,
+    TimeoutSeconds,
+)
 
 logger = get_logger(__name__)
 

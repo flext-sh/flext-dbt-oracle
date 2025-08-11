@@ -18,7 +18,7 @@ import agate
 from dbt.adapters.sql import SQLAdapter
 from flext_core import get_logger
 
-from flext_dbt_oracle.adapters.oracle.connections import OracleConnectionManager
+from flext_dbt_oracle.connections import OracleConnectionManager
 
 if TYPE_CHECKING:
     from dbt.adapters.base import BaseRelation

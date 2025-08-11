@@ -12,10 +12,10 @@ from unittest.mock import Mock, patch
 import pytest
 from flext_meltano import BaseRelation
 
-from flext_dbt_oracle.adapters.oracle.connections import (
+from flext_dbt_oracle.connections import (
     FlextOracleOracleConnectionManager,
 )
-from flext_dbt_oracle.adapters.oracle.impl import OracleAdapter
+from flext_dbt_oracle.impl import OracleAdapter
 
 
 class TestOracleAdapter:

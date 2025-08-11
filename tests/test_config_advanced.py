@@ -13,7 +13,7 @@ import pytest
 from flext_db_oracle import FlextDbOracleConfig
 from pydantic import ValidationError
 
-from flext_dbt_oracle.adapters.oracle.config import (
+from flext_dbt_oracle.config import (
     DBTOracleConfig,
     DBTOracleSettings,
 )

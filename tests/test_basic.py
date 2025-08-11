@@ -9,8 +9,8 @@ from __future__ import annotations
 
 import pytest
 
-from flext_dbt_oracle.adapters import FlextOracleAdapter as OracleAdapter
-from flext_dbt_oracle.adapters.oracle.connections import (
+from flext_dbt_oracle import FlextOracleAdapter as OracleAdapter
+from flext_dbt_oracle.connections import (
     FlextOracleOracleConnectionManager as OracleConnectionManager,
     OracleCredentials,
 )

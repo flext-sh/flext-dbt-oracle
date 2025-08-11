@@ -13,7 +13,7 @@ from unittest.mock import Mock, patch
 import pytest
 from flext_meltano import Connection, DbtDatabaseError
 
-from flext_dbt_oracle.adapters.oracle.connections import (
+from flext_dbt_oracle.connections import (
     FlextOracleOracleConnectionManager,
     OracleCredentials,
     run_async_in_sync_context,
