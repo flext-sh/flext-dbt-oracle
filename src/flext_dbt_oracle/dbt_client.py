@@ -251,7 +251,8 @@ class FlextDbtOracleClient:
             executed["results"] = results_list
 
             logger.info(
-                "DBT transformation executed for %d model(s)", len(models_to_run),
+                "DBT transformation executed for %d model(s)",
+                len(models_to_run),
             )
             return FlextResult.ok(executed)
 

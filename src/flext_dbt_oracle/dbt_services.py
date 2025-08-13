@@ -96,7 +96,9 @@ class FlextDbtOracleWorkflowService:
                 object_types,
             )
             if not metadata_result.success:
-                return FlextResult.fail(metadata_result.error or "Metadata extraction failed")
+                return FlextResult.fail(
+                    metadata_result.error or "Metadata extraction failed",
+                )
 
             oracle_objects = metadata_result.data or []
             logger.info("Extracted metadata for %d Oracle objects", len(oracle_objects))
@@ -107,7 +109,9 @@ class FlextDbtOracleWorkflowService:
                 oracle_objects,
             )
             if not staging_result.success:
-                return FlextResult.fail(staging_result.error or "Staging model generation failed")
+                return FlextResult.fail(
+                    staging_result.error or "Staging model generation failed",
+                )
 
             staging_models = staging_result.data or []
 
@@ -117,7 +121,9 @@ class FlextDbtOracleWorkflowService:
                 staging_models,
             )
             if not intermediate_result.success:
-                return FlextResult.fail(intermediate_result.error or "Intermediate model generation failed")
+                return FlextResult.fail(
+                    intermediate_result.error or "Intermediate model generation failed",
+                )
 
             intermediate_models = intermediate_result.data or []
 
@@ -127,7 +133,9 @@ class FlextDbtOracleWorkflowService:
                 intermediate_models,
             )
             if not marts_result.success:
-                return FlextResult.fail(marts_result.error or "Marts model generation failed")
+                return FlextResult.fail(
+                    marts_result.error or "Marts model generation failed",
+                )
 
             marts_models = marts_result.data or []
 
@@ -204,7 +212,9 @@ class FlextDbtOracleWorkflowService:
                     models_output_path,
                 )
                 if not models_result.success:
-                    return FlextResult.fail(models_result.error or "Model generation failed")
+                    return FlextResult.fail(
+                        models_result.error or "Model generation failed",
+                    )
 
                 pipeline_results["model_generation"] = models_result.data
 
@@ -216,7 +226,9 @@ class FlextDbtOracleWorkflowService:
                 model_names,
             )
             if not transformation_result.success:
-                return FlextResult.fail(transformation_result.error or "Transformation failed")
+                return FlextResult.fail(
+                    transformation_result.error or "Transformation failed",
+                )
 
             pipeline_results["transformation"] = transformation_result.data
 
@@ -260,7 +272,10 @@ class FlextDbtOracleWorkflowService:
             # Step 3: Validate DBT setup
             try:
                 _ = self.client.dbt_hub
-                dbt_validation: dict[str, object] = {"status": "available", "hub_initialized": True}
+                dbt_validation: dict[str, object] = {
+                    "status": "available",
+                    "hub_initialized": True,
+                }
             except Exception as e:
                 logger.warning("DBT hub validation failed: %s", e)
                 dbt_validation = {"status": "error", "error": str(e)}
@@ -327,14 +342,18 @@ class FlextDbtOracleWorkflowService:
             if oracle_objects is None:
                 metadata_result = self.client.extract_oracle_metadata()
                 if not metadata_result.success:
-                    return FlextResult.fail(metadata_result.error or "Metadata extraction failed")
+                    return FlextResult.fail(
+                        metadata_result.error or "Metadata extraction failed",
+                    )
                 oracle_objects = metadata_result.data or []
 
             if not oracle_objects:
-                return FlextResult.ok({
-                    "message": "No Oracle objects found for analysis",
-                    "recommendations": [],
-                })
+                return FlextResult.ok(
+                    {
+                        "message": "No Oracle objects found for analysis",
+                        "recommendations": [],
+                    },
+                )
 
             # Analyze objects and generate recommendations
             recommendations: list[dict[str, object]] = []
@@ -351,8 +370,12 @@ class FlextDbtOracleWorkflowService:
 
             # Performance recommendations
             from flext_dbt_oracle.constants import FlextDbtOracleConstants
+
             total_objects = len(oracle_objects)
-            if total_objects > FlextDbtOracleConstants.Performance.LARGE_OBJECT_COUNT_THRESHOLD:
+            if (
+                total_objects
+                > FlextDbtOracleConstants.Performance.LARGE_OBJECT_COUNT_THRESHOLD
+            ):
                 recommendations.append(
                     {
                         "type": "performance",
@@ -363,7 +386,10 @@ class FlextDbtOracleWorkflowService:
                 )
 
             # Schema recommendations
-            if len(schema_counts) > FlextDbtOracleConstants.SchemaRecommendations.MANY_SCHEMAS_THRESHOLD:
+            if (
+                len(schema_counts)
+                > FlextDbtOracleConstants.SchemaRecommendations.MANY_SCHEMAS_THRESHOLD
+            ):
                 recommendations.append(
                     {
                         "type": "organization",
@@ -388,7 +414,10 @@ class FlextDbtOracleWorkflowService:
                 )
 
             # Configuration recommendations based on data volume
-            if total_objects > FlextDbtOracleConstants.ModelOptimization.MODERATE_OBJECT_COUNT:
+            if (
+                total_objects
+                > FlextDbtOracleConstants.ModelOptimization.MODERATE_OBJECT_COUNT
+            ):
                 recommendations.append(
                     {
                         "type": "configuration",
@@ -403,20 +432,40 @@ class FlextDbtOracleWorkflowService:
                     "total_objects": total_objects,
                     "object_type_distribution": object_counts,
                     "schema_distribution": schema_counts,
-                    "most_common_object_type": (max(object_counts, key=lambda k: object_counts[k]) if object_counts else None)
+                    "most_common_object_type": (
+                        max(object_counts, key=lambda k: object_counts[k])
+                        if object_counts
+                        else None
+                    )
                     if object_counts
                     else None,
-                    "largest_schema": (max(schema_counts, key=lambda k: schema_counts[k]) if schema_counts else None)
+                    "largest_schema": (
+                        max(schema_counts, key=lambda k: schema_counts[k])
+                        if schema_counts
+                        else None
+                    )
                     if schema_counts
                     else None,
                 },
                 "recommendations": recommendations,
                 "suggested_config": {
-                    "dbt_threads": min(FlextDbtOracleConstants.ModelOptimization.MAX_THREADS, max(FlextDbtOracleConstants.ModelOptimization.MIN_THREADS, total_objects // FlextDbtOracleConstants.ModelOptimization.OBJECTS_PER_THREAD))
-                    if total_objects > FlextDbtOracleConstants.ModelOptimization.LARGE_DATASET_THRESHOLD
+                    "dbt_threads": min(
+                        FlextDbtOracleConstants.ModelOptimization.MAX_THREADS,
+                        max(
+                            FlextDbtOracleConstants.ModelOptimization.MIN_THREADS,
+                            total_objects
+                            // FlextDbtOracleConstants.ModelOptimization.OBJECTS_PER_THREAD,
+                        ),
+                    )
+                    if total_objects
+                    > FlextDbtOracleConstants.ModelOptimization.LARGE_DATASET_THRESHOLD
                     else FlextDbtOracleConstants.ModelOptimization.MIN_THREADS,
-                    "batch_size": FlextDbtOracleConstants.ModelOptimization.LARGE_BATCH_SIZE if total_objects > FlextDbtOracleConstants.Performance.LARGE_OBJECT_COUNT_THRESHOLD else FlextDbtOracleConstants.ModelOptimization.DEFAULT_BATCH_SIZE,
-                    "enable_parallel_dml": total_objects > FlextDbtOracleConstants.ModelOptimization.LARGE_DATASET_THRESHOLD,
+                    "batch_size": FlextDbtOracleConstants.ModelOptimization.LARGE_BATCH_SIZE
+                    if total_objects
+                    > FlextDbtOracleConstants.Performance.LARGE_OBJECT_COUNT_THRESHOLD
+                    else FlextDbtOracleConstants.ModelOptimization.DEFAULT_BATCH_SIZE,
+                    "enable_parallel_dml": total_objects
+                    > FlextDbtOracleConstants.ModelOptimization.LARGE_DATASET_THRESHOLD,
                 },
             }
 

@@ -386,7 +386,9 @@ group by {group_by_columns}
 
             for col in columns:
                 oracle_type_raw = col.get("data_type", "VARCHAR2")
-                dbt_type = self.config.get_dbt_type_for_oracle_type(str(oracle_type_raw))
+                dbt_type = self.config.get_dbt_type_for_oracle_type(
+                    str(oracle_type_raw),
+                )
 
                 # Map Oracle column name using config
                 oracle_name = str(col.get("column_name", ""))
@@ -527,7 +529,9 @@ group by {group_by_columns}
             sql_content = self.MARTS_TEMPLATE.format(
                 aggregated_columns=",\n".join(agg_columns),
                 upstream_model=intermediate_model.name,
-                group_by_columns=", ".join(list(group_columns)) if group_columns else "1",
+                group_by_columns=", ".join(list(group_columns))
+                if group_columns
+                else "1",
             ).strip()
 
             # Determine materialization
