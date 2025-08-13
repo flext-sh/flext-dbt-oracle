@@ -17,9 +17,10 @@ from typing import TYPE_CHECKING
 from flext_core import FlextResult, get_logger
 from flext_db_oracle import FlextDbOracleApi
 
+from flext_dbt_oracle.constants import FlextDbtOracleConstants
 from flext_dbt_oracle.dbt_client import FlextDbtOracleClient
 from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
-from flext_dbt_oracle.dbt_models import FlextDbtOracleModelGenerator
+from flext_dbt_oracle.models import FlextDbtOracleModelGenerator
 
 if TYPE_CHECKING:
     from flext_db_oracle.typings import FlextDbOracleTable as FlextOracleObject
@@ -369,8 +370,6 @@ class FlextDbtOracleWorkflowService:
                 schema_counts[schema_name] = schema_counts.get(schema_name, 0) + 1
 
             # Performance recommendations
-            from flext_dbt_oracle.constants import FlextDbtOracleConstants
-
             total_objects = len(oracle_objects)
             if (
                 total_objects

@@ -32,7 +32,7 @@ from flext_dbt_oracle.dbt_exceptions import (
     FlextDbtOracleTypeError,
     FlextDbtOracleValidationError,
 )
-from flext_dbt_oracle.dbt_models import (
+from flext_dbt_oracle.models import (
     FlextDbtOracleModel,
     FlextDbtOracleModelGenerator,
 )
@@ -43,6 +43,7 @@ from flext_dbt_oracle.dbt_services import (
 
 # Version information
 __version__ = "0.9.0"
+__version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
 __author__ = "FLEXT Team"
 __email__ = "team@flext.sh"
 
@@ -78,4 +79,5 @@ __all__: list[str] = [
     "__author__",
     "__email__",
     "__version__",
+    "__version_info__",
 ]
