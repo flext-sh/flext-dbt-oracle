@@ -6,11 +6,11 @@ and flext-meltano for reliable data transformation workflows.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations
 
-# New DBT Pattern API - Primary Interface
 from flext_dbt_oracle.dbt_client import FlextDbtOracleClient
 from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
 from flext_dbt_oracle.dbt_exceptions import (
@@ -48,15 +48,6 @@ __email__ = "team@flext.sh"
 
 # Public API - Following established flext DBT patterns
 __all__: list[str] = [
-    "annotations", "FlextDbtOracleClient", "FlextDbtOracleConfig", "FlextDbtOracleAuthenticationError",
-    "FlextDbtOracleCompilationError", "FlextDbtOracleConfigError", "FlextDbtOracleConnectionError",
-    "FlextDbtOracleDatabaseError", "FlextDbtOracleExecutionError", "FlextDbtOracleModelError",
-    "FlextDbtOraclePerformanceError", "FlextDbtOraclePermissionError", "FlextDbtOracleProcessingError",
-    "FlextDbtOracleQueryError", "FlextDbtOracleResourceError", "FlextDbtOracleSchemaError",
-    "FlextDbtOracleTimeoutError", "FlextDbtOracleTransformationError", "FlextDbtOracleTypeError",
-    "FlextDbtOracleValidationError", "FlextDbtOracleModel", "FlextDbtOracleModelGenerator",
-    "FlextDbtOracleMonitoringService", "FlextDbtOracleWorkflowService", "__version__",
-] = [
     # Core DBT Pattern Classes
     "FlextDbtOracleClient",
     "FlextDbtOracleConfig",

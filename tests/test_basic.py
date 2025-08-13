@@ -37,5 +37,4 @@ def test_credentials_class() -> None:
 @pytest.mark.unit
 def test_adapter_initialization() -> None:
     """Test basic adapter initialization."""
-    # This is just a smoke test - adapter needs actual config to work
     assert OracleAdapter.ConnectionManager is not None

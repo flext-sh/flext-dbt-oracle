@@ -5,6 +5,7 @@ using flext-core exception factory patterns for consistent error handling.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
+
 """
 
 from __future__ import annotations

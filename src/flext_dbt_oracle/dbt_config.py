@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Any, ClassVar
+from typing import ClassVar
 
 from flext_core import FlextSettings, get_logger
 from flext_db_oracle import FlextDbOracleConfig
@@ -145,11 +145,10 @@ class FlextDbtOracleConfig(FlextSettings):
         """Get Meltano configuration for flext-meltano integration."""
         return FlextMeltanoConfig(
             project_root=self.dbt_project_dir,
-            config_dir=self.dbt_profiles_dir,
             environment=self.dbt_target,
         )
 
-    def get_oracle_quality_config(self) -> dict[str, Any]:
+    def get_oracle_quality_config(self) -> dict[str, object]:
         """Get data quality configuration for Oracle validation."""
         return {
             "min_quality_threshold": self.min_quality_threshold,
@@ -158,7 +157,7 @@ class FlextDbtOracleConfig(FlextSettings):
             "max_parallel_connections": self.max_parallel_connections,
         }
 
-    def get_performance_config(self) -> dict[str, Any]:
+    def get_performance_config(self) -> dict[str, object]:
         """Get Oracle performance configuration for DBT operations."""
         return {
             "fetch_size": self.fetch_size,
