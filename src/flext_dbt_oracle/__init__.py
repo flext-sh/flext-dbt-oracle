@@ -1,13 +1,4 @@
-"""FLEXT DBT Oracle - Modern Oracle Database DBT Integration.
-
-This package provides enterprise-grade Oracle database integration for DBT using
-the established flext DBT pattern with maximum composition from flext-db-oracle
-and flext-meltano for reliable data transformation workflows.
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
-"""
+"""Modern Oracle Database DBT Integration for FLEXT ecosystem."""
 
 from __future__ import annotations
 
