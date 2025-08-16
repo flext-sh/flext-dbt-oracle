@@ -14,6 +14,7 @@ from typing import ClassVar
 from flext_core import FlextSettings, get_logger
 from flext_db_oracle import FlextDbOracleConfig
 from flext_meltano.config import FlextMeltanoConfig
+from pydantic import SecretStr
 
 logger = get_logger(__name__)
 
@@ -133,7 +134,7 @@ class FlextDbtOracleConfig(FlextSettings):
             service_name=self.oracle_service_name,
             sid=self.oracle_sid,
             username=self.oracle_username,
-            password=self.oracle_password,
+            password=SecretStr(self.oracle_password),
             protocol=self.oracle_protocol,
             pool_min=self.oracle_pool_min,
             pool_max=self.oracle_pool_max,
