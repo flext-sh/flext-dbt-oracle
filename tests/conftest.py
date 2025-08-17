@@ -12,12 +12,10 @@ from __future__ import annotations
 
 import os
 import tempfile
-from typing import TYPE_CHECKING, Any
+from collections.abc import Generator
+from typing import Any
 
 import pytest
-
-if TYPE_CHECKING:
-    from collections.abc import Generator
 
 
 # Oracle shared container environment setup
@@ -26,14 +24,14 @@ def oracle_shared_container_environment() -> None:
     """Setup Oracle environment variables for shared container (pytest-oracle-xe)."""
     # Set Oracle environment variables for shared container on port 10521
     os.environ.update(
-        {
-            "DBT_ORACLE_ORACLE_HOST": "localhost",
-            "DBT_ORACLE_ORACLE_PORT": "10521",
-            "DBT_ORACLE_ORACLE_USERNAME": "system",
-            "DBT_ORACLE_ORACLE_PASSWORD": "oracle",
-            "DBT_ORACLE_ORACLE_SERVICE_NAME": "XE",
-            "DBT_ORACLE_ORACLE_SCHEMA": "FLEXT_TEST",
-        },
+      {
+          "DBT_ORACLE_ORACLE_HOST": "localhost",
+          "DBT_ORACLE_ORACLE_PORT": "10521",
+          "DBT_ORACLE_ORACLE_USERNAME": "system",
+          "DBT_ORACLE_ORACLE_PASSWORD": "oracle",
+          "DBT_ORACLE_ORACLE_SERVICE_NAME": "XE",
+          "DBT_ORACLE_ORACLE_SCHEMA": "FLEXT_TEST",
+      },
     )
 
 
@@ -64,42 +62,42 @@ def set_test_environment() -> Generator[None]:
 def dbt_oracle_profile() -> dict[str, object]:
     """Dbt Oracle profile configuration for testing."""
     return {
-        "config": {
-            "partial_parse": True,
-            "printer_width": 120,
-            "send_anonymous_usage_stats": False,
-            "use_colors": True,
-        },
-        "test": {
-            "outputs": {
-                "default": {
-                    "type": "oracle",
-                    "host": "localhost",
-                    "port": 1521,
-                    "database": "XEPDB1",
-                    "schema": "DBT_TEST",
-                    "user": "dbt_test_user",
-                    "password": "dbt_test_pass",
-                    "protocol": "tcp",
-                    "service": "XEPDB1",
-                    "threads": 4,
-                    "keepalives_idle": 0,
-                    "search_path": "DBT_TEST",
-                },
-                "ci": {
-                    "type": "oracle",
-                    "host": "oracle-ci.test.com",
-                    "port": 1521,
-                    "database": "CIDB",
-                    "schema": "DBT_CI",
-                    "user": "{{ env_var('DBT_TEST_USER_1') }}",
-                    "password": "{{ env_var('DBT_TEST_PASS_1') }}",
-                    "service": "CIDB",
-                    "threads": 2,
-                },
-            },
-            "target": "default",
-        },
+      "config": {
+          "partial_parse": True,
+          "printer_width": 120,
+          "send_anonymous_usage_stats": False,
+          "use_colors": True,
+      },
+      "test": {
+          "outputs": {
+              "default": {
+                  "type": "oracle",
+                  "host": "localhost",
+                  "port": 1521,
+                  "database": "XEPDB1",
+                  "schema": "DBT_TEST",
+                  "user": "dbt_test_user",
+                  "password": "dbt_test_pass",
+                  "protocol": "tcp",
+                  "service": "XEPDB1",
+                  "threads": 4,
+                  "keepalives_idle": 0,
+                  "search_path": "DBT_TEST",
+              },
+              "ci": {
+                  "type": "oracle",
+                  "host": "oracle-ci.test.com",
+                  "port": 1521,
+                  "database": "CIDB",
+                  "schema": "DBT_CI",
+                  "user": "{{ env_var('DBT_TEST_USER_1') }}",
+                  "password": "{{ env_var('DBT_TEST_PASS_1') }}",
+                  "service": "CIDB",
+                  "threads": 2,
+              },
+          },
+          "target": "default",
+      },
     }
 
 
@@ -107,33 +105,33 @@ def dbt_oracle_profile() -> dict[str, object]:
 def dbt_project_config() -> dict[str, object]:
     """Dbt project configuration for testing."""
     return {
-        "name": "flext_dbt_oracle_test",
-        "version": "0.9.0",
-        "profile": "test",
-        "model-paths": ["models"],
-        "analysis-paths": ["analyses"],
-        "test-paths": ["tests"],
-        "seed-paths": ["seeds"],
-        "macro-paths": ["macros"],
-        "snapshot-paths": ["snapshots"],
-        "docs-paths": ["docs"],
-        "asset-paths": ["assets"],
-        "target-path": "target",
-        "clean-targets": ["target", "dbt_packages"],
-        "require-dbt-version": ">=1.8.0",
-        "model_config": {
-            "materialized": "table",
-            "oracle": {
-                "tablespace": "USERS",
-                "compression": "NONE",
-                "parallel": 4,
-            },
-        },
-        "vars": {
-            "test_schema": "DBT_TEST",
-            "test_database": "XEPDB1",
-            "enable_oracle_features": True,
-        },
+      "name": "flext_dbt_oracle_test",
+      "version": "0.9.0",
+      "profile": "test",
+      "model-paths": ["models"],
+      "analysis-paths": ["analyses"],
+      "test-paths": ["tests"],
+      "seed-paths": ["seeds"],
+      "macro-paths": ["macros"],
+      "snapshot-paths": ["snapshots"],
+      "docs-paths": ["docs"],
+      "asset-paths": ["assets"],
+      "target-path": "target",
+      "clean-targets": ["target", "dbt_packages"],
+      "require-dbt-version": ">=1.8.0",
+      "model_config": {
+          "materialized": "table",
+          "oracle": {
+              "tablespace": "USERS",
+              "compression": "NONE",
+              "parallel": 4,
+          },
+      },
+      "vars": {
+          "test_schema": "DBT_TEST",
+          "test_database": "XEPDB1",
+          "enable_oracle_features": True,
+      },
     }
 
 
@@ -142,24 +140,24 @@ def dbt_project_config() -> dict[str, object]:
 def oracle_adapter_config() -> dict[str, object]:
     """Oracle adapter configuration for testing."""
     return {
-        "type": "oracle",
-        "host": "localhost",
-        "port": 1521,
-        "database": "XEPDB1",
-        "schema": "DBT_TEST",
-        "user": "dbt_test_user",
-        "password": "dbt_test_pass",
-        "service": "XEPDB1",
-        "protocol": "tcp",
-        "threads": 4,
-        "keepalives_idle": 0,
-        "search_path": "DBT_TEST",
-        "oracle_features": {
-            "enable_merge": True,
-            "enable_parallel": True,
-            "enable_hints": True,
-            "enable_compression": False,
-        },
+      "type": "oracle",
+      "host": "localhost",
+      "port": 1521,
+      "database": "XEPDB1",
+      "schema": "DBT_TEST",
+      "user": "dbt_test_user",
+      "password": "dbt_test_pass",
+      "service": "XEPDB1",
+      "protocol": "tcp",
+      "threads": 4,
+      "keepalives_idle": 0,
+      "search_path": "DBT_TEST",
+      "oracle_features": {
+          "enable_merge": True,
+          "enable_parallel": True,
+          "enable_hints": True,
+          "enable_compression": False,
+      },
     }
 
 
@@ -167,54 +165,54 @@ def oracle_adapter_config() -> dict[str, object]:
 def dbt_model_definitions() -> dict[str, str]:
     """Dbt model SQL definitions for testing."""
     return {
-        "staging_customers": """
-            {{ config(materialized='view') }}
-            SELECT
-                customer_id,
-                customer_name,
-                customer_email,
-                created_at,
-                updated_at
-            FROM {{ source('raw', 'customers') }}
-            WHERE customer_id IS NOT NULL
-        """,
-        "dim_customers": """
-            {{ config(
-                materialized='table',
-                oracle={'tablespace': 'USERS', 'parallel': 2}
-            ) }}
-            SELECT
-                customer_id,
-                customer_name,
-                customer_email,
-                CASE
-                    WHEN customer_email LIKE '%@%.%' THEN 'valid'
-                    ELSE 'invalid'
-                END as email_status,
-                created_at,
-                updated_at,
-                CURRENT_TIMESTAMP as dbt_updated_at
-            FROM {{ ref('staging_customers') }}
-        """,
-        "fact_orders": """
-            {{ config(
-                materialized='incremental',
-                unique_key='order_id',
-                oracle={'merge_update_columns': ['order_status', 'total_amount']}
-            ) }}
-            SELECT
-                order_id,
-                customer_id,
-                order_date,
-                order_status,
-                total_amount,
-                created_at,
-                updated_at
-            FROM {{ source('raw', 'orders') }}
-            {% if is_incremental() %}
-                WHERE updated_at > (SELECT MAX(updated_at) FROM {{ this }})
-            {% endif %}
-        """,
+      "staging_customers": """
+          {{ config(materialized='view') }}
+          SELECT
+              customer_id,
+              customer_name,
+              customer_email,
+              created_at,
+              updated_at
+          FROM {{ source('raw', 'customers') }}
+          WHERE customer_id IS NOT NULL
+      """,
+      "dim_customers": """
+          {{ config(
+              materialized='table',
+              oracle={'tablespace': 'USERS', 'parallel': 2}
+          ) }}
+          SELECT
+              customer_id,
+              customer_name,
+              customer_email,
+              CASE
+                  WHEN customer_email LIKE '%@%.%' THEN 'valid'
+                  ELSE 'invalid'
+              END as email_status,
+              created_at,
+              updated_at,
+              CURRENT_TIMESTAMP as dbt_updated_at
+          FROM {{ ref('staging_customers') }}
+      """,
+      "fact_orders": """
+          {{ config(
+              materialized='incremental',
+              unique_key='order_id',
+              oracle={'merge_update_columns': ['order_status', 'total_amount']}
+          ) }}
+          SELECT
+              order_id,
+              customer_id,
+              order_date,
+              order_status,
+              total_amount,
+              created_at,
+              updated_at
+          FROM {{ source('raw', 'orders') }}
+          {% if is_incremental() %}
+              WHERE updated_at > (SELECT MAX(updated_at) FROM {{ this }})
+          {% endif %}
+      """,
     }
 
 
@@ -222,46 +220,46 @@ def dbt_model_definitions() -> dict[str, str]:
 def dbt_macro_definitions() -> dict[str, str]:
     """Dbt macro definitions for testing."""
     return {
-        "oracle_create_table_as": """
-            {% macro oracle_create_table_as(temporary, relation, sql) -%}
-                {% if temporary %}
-                    CREATE GLOBAL TEMPORARY TABLE {{ relation }}
-                    ON COMMIT PRESERVE ROWS
-                    AS (
-                        {{ sql }}
-                    )
-                {% else %}
-                    CREATE TABLE {{ relation }}
-                    {% if config.get('oracle', {}).get('tablespace') %}
-                        TABLESPACE {{ config.get('oracle', {}).get('tablespace') }}
-                    {% endif %}
-                    {% if config.get('oracle', {}).get('parallel') %}
-                        PARALLEL {{ config.get('oracle', {}).get('parallel') }}
-                    {% endif %}
-                    AS (
-                        {{ sql }}
-                    )
-                {% endif %}
-            {%- endmacro %}
-        """,
-        "oracle_merge_sql": """
-            {% macro oracle_merge_sql(target, source, unique_key, dest_columns) -%}
-                MERGE INTO {{ target }} AS target_table
-                USING ({{ source }}) AS source_table
-                ON (target_table.{{ unique_key }} = source_table.{{ unique_key }})
-                WHEN MATCHED THEN
-                    UPDATE SET
-                    {% for column in dest_columns %}
-                        {{ column }} = source_table.{{ column }}
-                        {%- if not loop.last -%},{%- endif %}
-                    {% endfor %}
-                WHEN NOT MATCHED THEN
-                    INSERT ({{ dest_columns | join(', ') }})
-                    VALUES ({{
-                        dest_columns | map('prepend', 'source_table.') | join(', ')
-                    }})
-            {%- endmacro %}
-        """,
+      "oracle_create_table_as": """
+          {% macro oracle_create_table_as(temporary, relation, sql) -%}
+              {% if temporary %}
+                  CREATE GLOBAL TEMPORARY TABLE {{ relation }}
+                  ON COMMIT PRESERVE ROWS
+                  AS (
+                      {{ sql }}
+                  )
+              {% else %}
+                  CREATE TABLE {{ relation }}
+                  {% if config.get('oracle', {}).get('tablespace') %}
+                      TABLESPACE {{ config.get('oracle', {}).get('tablespace') }}
+                  {% endif %}
+                  {% if config.get('oracle', {}).get('parallel') %}
+                      PARALLEL {{ config.get('oracle', {}).get('parallel') }}
+                  {% endif %}
+                  AS (
+                      {{ sql }}
+                  )
+              {% endif %}
+          {%- endmacro %}
+      """,
+      "oracle_merge_sql": """
+          {% macro oracle_merge_sql(target, source, unique_key, dest_columns) -%}
+              MERGE INTO {{ target }} AS target_table
+              USING ({{ source }}) AS source_table
+              ON (target_table.{{ unique_key }} = source_table.{{ unique_key }})
+              WHEN MATCHED THEN
+                  UPDATE SET
+                  {% for column in dest_columns %}
+                      {{ column }} = source_table.{{ column }}
+                      {%- if not loop.last -%},{%- endif %}
+                  {% endfor %}
+              WHEN NOT MATCHED THEN
+                  INSERT ({{ dest_columns | join(', ') }})
+                  VALUES ({{
+                      dest_columns | map('prepend', 'source_table.') | join(', ')
+                  }})
+          {%- endmacro %}
+      """,
     }
 
 
@@ -270,23 +268,23 @@ def dbt_macro_definitions() -> dict[str, str]:
 def dbt_test_definitions() -> dict[str, str]:
     """Dbt test definitions for testing."""
     return {
-        "test_unique_customer_id": """
-            SELECT customer_id, COUNT(*)
-            FROM {{ ref('dim_customers') }}
-            GROUP BY customer_id
-            HAVING COUNT(*) > 1
-        """,
-        "test_not_null_order_id": """
-            SELECT *
-            FROM {{ ref('fact_orders') }}
-            WHERE order_id IS NULL
-        """,
-        "test_valid_email_format": """
-            SELECT *
-            FROM {{ ref('dim_customers') }}
-            WHERE email_status = 'invalid'
-            AND customer_email IS NOT NULL
-        """,
+      "test_unique_customer_id": """
+          SELECT customer_id, COUNT(*)
+          FROM {{ ref('dim_customers') }}
+          GROUP BY customer_id
+          HAVING COUNT(*) > 1
+      """,
+      "test_not_null_order_id": """
+          SELECT *
+          FROM {{ ref('fact_orders') }}
+          WHERE order_id IS NULL
+      """,
+      "test_valid_email_format": """
+          SELECT *
+          FROM {{ ref('dim_customers') }}
+          WHERE email_status = 'invalid'
+          AND customer_email IS NOT NULL
+      """,
     }
 
 
@@ -294,51 +292,51 @@ def dbt_test_definitions() -> dict[str, str]:
 def dbt_source_definitions() -> dict[str, object]:
     """Dbt source definitions for testing."""
     return {
-        "version": 2,
-        "sources": [
-            {
-                "name": "raw",
-                "description": "Raw data from Oracle source system",
-                "tables": [
-                    {
-                        "name": "customers",
-                        "description": "Customer master data",
-                        "columns": [
-                            {
-                                "name": "customer_id",
-                                "description": "Unique customer identifier",
-                                "tests": ["unique", "not_null"],
-                            },
-                            {
-                                "name": "customer_name",
-                                "description": "Customer full name",
-                                "tests": ["not_null"],
-                            },
-                            {
-                                "name": "customer_email",
-                                "description": "Customer email address",
-                            },
-                        ],
-                    },
-                    {
-                        "name": "orders",
-                        "description": "Order transaction data",
-                        "columns": [
-                            {
-                                "name": "order_id",
-                                "description": "Unique order identifier",
-                                "tests": ["unique", "not_null"],
-                            },
-                            {
-                                "name": "customer_id",
-                                "description": "Customer identifier",
-                                "tests": ["not_null"],
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
+      "version": 2,
+      "sources": [
+          {
+              "name": "raw",
+              "description": "Raw data from Oracle source system",
+              "tables": [
+                  {
+                      "name": "customers",
+                      "description": "Customer master data",
+                      "columns": [
+                          {
+                              "name": "customer_id",
+                              "description": "Unique customer identifier",
+                              "tests": ["unique", "not_null"],
+                          },
+                          {
+                              "name": "customer_name",
+                              "description": "Customer full name",
+                              "tests": ["not_null"],
+                          },
+                          {
+                              "name": "customer_email",
+                              "description": "Customer email address",
+                          },
+                      ],
+                  },
+                  {
+                      "name": "orders",
+                      "description": "Order transaction data",
+                      "columns": [
+                          {
+                              "name": "order_id",
+                              "description": "Unique order identifier",
+                              "tests": ["unique", "not_null"],
+                          },
+                          {
+                              "name": "customer_id",
+                              "description": "Customer identifier",
+                              "tests": ["not_null"],
+                          },
+                      ],
+                  },
+              ],
+          },
+      ],
     }
 
 
@@ -347,49 +345,49 @@ def dbt_source_definitions() -> dict[str, object]:
 def oracle_sql_queries() -> dict[str, str]:
     """Oracle SQL queries for testing."""
     return {
-        "create_test_schema": """
-            CREATE USER DBT_TEST IDENTIFIED BY dbt_test_pass
-            DEFAULT TABLESPACE USERS
-            TEMPORARY TABLESPACE TEMP
-            QUOTA UNLIMITED ON USERS
-        """,
-        "grant_permissions": """
-            GRANT CONNECT, RESOURCE, CREATE VIEW, CREATE PROCEDURE TO DBT_TEST
-        """,
-        "create_customers_table": """
-            CREATE TABLE DBT_TEST.customers (
-                customer_id NUMBER(10) PRIMARY KEY,
-                customer_name VARCHAR2(100) NOT NULL,
-                customer_email VARCHAR2(255),
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """,
-        "create_orders_table": """
-            CREATE TABLE DBT_TEST.orders (
-                order_id NUMBER(10) PRIMARY KEY,
-                customer_id NUMBER(10) NOT NULL,
-                order_date DATE NOT NULL,
-                order_status VARCHAR2(20) DEFAULT 'pending',
-                total_amount NUMBER(10,2),
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                CONSTRAINT fk_orders_customer
-                    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
-            )
-        """,
-        "insert_test_data": """
-            INSERT ALL
-                INTO customers VALUES (1, 'John Doe', 'john@example.com',
-                    SYSTIMESTAMP, SYSTIMESTAMP)
-                INTO customers VALUES (2, 'Jane Smith', 'jane@example.com',
-                    SYSTIMESTAMP, SYSTIMESTAMP)
-                INTO orders VALUES (1, 1, SYSDATE, 'completed', 99.99,
-                    SYSTIMESTAMP, SYSTIMESTAMP)
-                INTO orders VALUES (2, 2, SYSDATE, 'pending', 149.99,
-                    SYSTIMESTAMP, SYSTIMESTAMP)
-            SELECT * FROM dual
-        """,
+      "create_test_schema": """
+          CREATE USER DBT_TEST IDENTIFIED BY dbt_test_pass
+          DEFAULT TABLESPACE USERS
+          TEMPORARY TABLESPACE TEMP
+          QUOTA UNLIMITED ON USERS
+      """,
+      "grant_permissions": """
+          GRANT CONNECT, RESOURCE, CREATE VIEW, CREATE PROCEDURE TO DBT_TEST
+      """,
+      "create_customers_table": """
+          CREATE TABLE DBT_TEST.customers (
+              customer_id NUMBER(10) PRIMARY KEY,
+              customer_name VARCHAR2(100) NOT NULL,
+              customer_email VARCHAR2(255),
+              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          )
+      """,
+      "create_orders_table": """
+          CREATE TABLE DBT_TEST.orders (
+              order_id NUMBER(10) PRIMARY KEY,
+              customer_id NUMBER(10) NOT NULL,
+              order_date DATE NOT NULL,
+              order_status VARCHAR2(20) DEFAULT 'pending',
+              total_amount NUMBER(10,2),
+              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              CONSTRAINT fk_orders_customer
+                  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+          )
+      """,
+      "insert_test_data": """
+          INSERT ALL
+              INTO customers VALUES (1, 'John Doe', 'john@example.com',
+                  SYSTIMESTAMP, SYSTIMESTAMP)
+              INTO customers VALUES (2, 'Jane Smith', 'jane@example.com',
+                  SYSTIMESTAMP, SYSTIMESTAMP)
+              INTO orders VALUES (1, 1, SYSDATE, 'completed', 99.99,
+                  SYSTIMESTAMP, SYSTIMESTAMP)
+              INTO orders VALUES (2, 2, SYSDATE, 'pending', 149.99,
+                  SYSTIMESTAMP, SYSTIMESTAMP)
+          SELECT * FROM dual
+      """,
     }
 
 
@@ -398,15 +396,15 @@ def oracle_sql_queries() -> dict[str, str]:
 def dbt_run_config() -> dict[str, object]:
     """Dbt run configuration for testing."""
     return {
-        "threads": 4,
-        "target": "default",
-        "models": ["dim_customers", "fact_orders"],
-        "exclude": ["staging_*"],
-        "vars": {
-            "start_date": "2023-01-01",
-            "end_date": "2023-12-31",
-        },
-        "full_refresh": False,
+      "threads": 4,
+      "target": "default",
+      "models": ["dim_customers", "fact_orders"],
+      "exclude": ["staging_*"],
+      "vars": {
+          "start_date": "2023-01-01",
+          "end_date": "2023-12-31",
+      },
+      "full_refresh": False,
     }
 
 
@@ -414,12 +412,12 @@ def dbt_run_config() -> dict[str, object]:
 def dbt_test_config() -> dict[str, object]:
     """Dbt test configuration for testing."""
     return {
-        "threads": 2,
-        "target": "default",
-        "models": ["dim_customers"],
-        "data": True,
-        "schema": True,
-        "store_failures": True,
+      "threads": 2,
+      "target": "default",
+      "models": ["dim_customers"],
+      "data": True,
+      "schema": True,
+      "store_failures": True,
     }
 
 
@@ -428,11 +426,11 @@ def dbt_test_config() -> dict[str, object]:
 def performance_test_config() -> dict[str, object]:
     """Performance test configuration."""
     return {
-        "large_table_rows": 100000,
-        "concurrent_models": 5,
-        "memory_threshold": "2GB",
-        "execution_time_threshold": 300,  # 5 minutes
-        "parallel_threads": [1, 2, 4, 8],
+      "large_table_rows": 100000,
+      "concurrent_models": 5,
+      "memory_threshold": "2GB",
+      "execution_time_threshold": 300,  # 5 minutes
+      "parallel_threads": [1, 2, 4, 8],
     }
 
 
@@ -441,30 +439,30 @@ def performance_test_config() -> dict[str, object]:
 def dbt_error_scenarios() -> list[dict[str, object]]:
     """Dbt error scenarios for testing."""
     return [
-        {
-            "name": "connection_failure",
-            "error_type": "DatabaseConnectionError",
-            "cause": "invalid_credentials",
-            "expected_behavior": "fail_fast",
-        },
-        {
-            "name": "compilation_error",
-            "error_type": "CompilationError",
-            "cause": "invalid_sql_syntax",
-            "expected_behavior": "detailed_error_message",
-        },
-        {
-            "name": "runtime_error",
-            "error_type": "RuntimeError",
-            "cause": "table_not_found",
-            "expected_behavior": "graceful_failure",
-        },
-        {
-            "name": "permission_error",
-            "error_type": "DatabaseError",
-            "cause": "insufficient_privileges",
-            "expected_behavior": "clear_error_message",
-        },
+      {
+          "name": "connection_failure",
+          "error_type": "DatabaseConnectionError",
+          "cause": "invalid_credentials",
+          "expected_behavior": "fail_fast",
+      },
+      {
+          "name": "compilation_error",
+          "error_type": "CompilationError",
+          "cause": "invalid_sql_syntax",
+          "expected_behavior": "detailed_error_message",
+      },
+      {
+          "name": "runtime_error",
+          "error_type": "RuntimeError",
+          "cause": "table_not_found",
+          "expected_behavior": "graceful_failure",
+      },
+      {
+          "name": "permission_error",
+          "error_type": "DatabaseError",
+          "cause": "insufficient_privileges",
+          "expected_behavior": "clear_error_message",
+      },
     ]
 
 
@@ -489,84 +487,87 @@ class MockConnectionManager:
     """Strategy for connection management (Single Responsibility Principle)."""
 
     def __init__(self) -> None:
-        """Initialize connection manager."""
-        self.connections: dict[str, object] = {}
+      """Initialize connection manager."""
+      self.connections: dict[str, object] = {}
 
     def open_connection(
-        self,
-        name: str,
-        config: dict[str, object],
+      self,
+      name: str,
+      config: dict[str, object],
     ) -> dict[str, object]:
-        """Open database connection."""
-        connection = {
-            "name": name,
-            "state": "open",
-            "handle": f"mock_handle_{name}",
-            "credentials": config,
-        }
-        self.connections[name] = connection
-        return connection
+      """Open database connection."""
+      connection = {
+          "name": name,
+          "state": "open",
+          "handle": f"mock_handle_{name}",
+          "credentials": config,
+      }
+      self.connections[name] = connection
+      return connection
 
     def close_connection(self, name: str) -> None:
-        """Close database connection."""
-        if name in self.connections:
-            self.connections[name]["state"] = "closed"
-            del self.connections[name]
+      """Close database connection."""
+      if name in self.connections:
+          self.connections[name]["state"] = "closed"
+          del self.connections[name]
 
 
 class MockSqlExecutor:
     """Strategy for SQL execution (Strategy Pattern)."""
 
     def execute(self, sql: str, *, auto_begin: bool = True) -> tuple[str, list[Any]]:
-        """Execute SQL statement with reduced branching."""
-        sql_strategies = {
-            "CREATE TABLE": ("CREATE", []),
-            "INSERT": ("INSERT", []),
-            "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
-        }
+      """Execute SQL statement with reduced branching."""
+      # auto_begin parameter is used for future transaction management
+      _ = auto_begin  # Mark as used for future implementation
 
-        for keyword, result in sql_strategies.items():
-            if keyword in sql:
-                return result
+      sql_strategies = {
+          "CREATE TABLE": ("CREATE", []),
+          "INSERT": ("INSERT", []),
+          "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
+      }
 
-        return "UNKNOWN", []
+      for keyword, result in sql_strategies.items():
+          if keyword in sql:
+              return result
+
+      return "UNKNOWN", []
 
 
 class MockModelCompiler:
     """Strategy for model compilation (Single Responsibility Principle)."""
 
     def compile_model(self, model_sql: str, context: dict[str, object]) -> str:
-        """Compile dbt model SQL."""
-        compiled = model_sql
-        vars_dict = context.get("vars", {})
-        for var, value in vars_dict.items():
-            compiled = compiled.replace(f"{{{{ var('{var}') }}}}", str(value))
-        return compiled
+      """Compile dbt model SQL."""
+      compiled = model_sql
+      vars_dict = context.get("vars", {})
+      for var, value in vars_dict.items():
+          compiled = compiled.replace(f"{{{{ var('{var}') }}}}", str(value))
+      return compiled
 
 
 class MockRelationManager:
     """Strategy for relation management (Single Responsibility Principle)."""
 
     def get_relation(
-        self,
-        database: str,
-        schema: str,
-        identifier: str,
+      self,
+      database: str,
+      schema: str,
+      identifier: str,
     ) -> dict[str, str]:
-        """Get relation information."""
-        return {
-            "database": database,
-            "schema": schema,
-            "identifier": identifier,
-            "type": "table",
-        }
+      """Get relation information."""
+      return {
+          "database": database,
+          "schema": schema,
+          "identifier": identifier,
+          "type": "table",
+      }
 
     def list_relations_without_caching(self, schema: str) -> list[dict[str, str]]:
-        """List relations in schema."""
-        return [
-            {"schema": schema, "identifier": "customers", "type": "table"},
-            {"schema": schema, "identifier": "orders", "type": "table"},
-        ]
+      """List relations in schema."""
+      return [
+          {"schema": schema, "identifier": "customers", "type": "table"},
+          {"schema": schema, "identifier": "orders", "type": "table"},
+      ]
 
 
 @pytest.fixture
@@ -574,50 +575,50 @@ def mock_dbt_oracle_adapter() -> object:
     """Mock dbt Oracle adapter using Strategy Pattern for complexity reduction."""
 
     class MockDbtOracleAdapter:
-        """Simplified adapter using composition and Strategy Pattern."""
+      """Simplified adapter using composition and Strategy Pattern."""
 
-        def __init__(self, config: dict[str, object]) -> None:
-            self.config = config
-            self.compiled_models: dict[str, object] = {}
-            # Dependency injection of strategies
-            self.connection_manager = MockConnectionManager()
-            self.sql_executor = MockSqlExecutor()
-            self.model_compiler = MockModelCompiler()
-            self.relation_manager = MockRelationManager()
+      def __init__(self, config: dict[str, object]) -> None:
+          self.config = config
+          self.compiled_models: dict[str, object] = {}
+          # Dependency injection of strategies
+          self.connection_manager = MockConnectionManager()
+          self.sql_executor = MockSqlExecutor()
+          self.model_compiler = MockModelCompiler()
+          self.relation_manager = MockRelationManager()
 
-        def open_connection(self, name: str) -> dict[str, object]:
-            """Delegate to connection manager strategy."""
-            return self.connection_manager.open_connection(name, self.config)
+      def open_connection(self, name: str) -> dict[str, object]:
+          """Delegate to connection manager strategy."""
+          return self.connection_manager.open_connection(name, self.config)
 
-        def close_connection(self, name: str) -> None:
-            """Delegate to connection manager strategy."""
-            self.connection_manager.close_connection(name)
+      def close_connection(self, name: str) -> None:
+          """Delegate to connection manager strategy."""
+          self.connection_manager.close_connection(name)
 
-        def execute(
-            self,
-            sql: str,
-            *,
-            auto_begin: bool = True,
-        ) -> tuple[str, list[Any]]:
-            """Delegate to SQL executor strategy."""
-            return self.sql_executor.execute(sql, auto_begin)
+      def execute(
+          self,
+          sql: str,
+          *,
+          auto_begin: bool = True,
+      ) -> tuple[str, list[Any]]:
+          """Delegate to SQL executor strategy."""
+          return self.sql_executor.execute(sql, auto_begin)
 
-        def compile_model(self, model_sql: str, context: dict[str, object]) -> str:
-            """Delegate to model compiler strategy."""
-            return self.model_compiler.compile_model(model_sql, context)
+      def compile_model(self, model_sql: str, context: dict[str, object]) -> str:
+          """Delegate to model compiler strategy."""
+          return self.model_compiler.compile_model(model_sql, context)
 
-        def get_relation(
-            self,
-            database: str,
-            schema: str,
-            identifier: str,
-        ) -> dict[str, str]:
-            """Delegate to relation manager strategy."""
-            return self.relation_manager.get_relation(database, schema, identifier)
+      def get_relation(
+          self,
+          database: str,
+          schema: str,
+          identifier: str,
+      ) -> dict[str, str]:
+          """Delegate to relation manager strategy."""
+          return self.relation_manager.get_relation(database, schema, identifier)
 
-        def list_relations_without_caching(self, schema: str) -> list[dict[str, str]]:
-            """Delegate to relation manager strategy."""
-            return self.relation_manager.list_relations_without_caching(schema)
+      def list_relations_without_caching(self, schema: str) -> list[dict[str, str]]:
+          """Delegate to relation manager strategy."""
+          return self.relation_manager.list_relations_without_caching(schema)
 
     return MockDbtOracleAdapter
 
@@ -627,46 +628,49 @@ def mock_dbt_runner() -> object:
     """Mock dbt runner for testing."""
 
     class MockDbtRunner:
-        def __init__(self, project_dir: str, profiles_dir: str) -> None:
-            self.project_dir = project_dir
-            self.profiles_dir = profiles_dir
-            self.results: dict[str, object] = {}
+      def __init__(self, project_dir: str, profiles_dir: str) -> None:
+          self.project_dir = project_dir
+          self.profiles_dir = profiles_dir
+          self.results: dict[str, object] = {}
 
-        def run_models(self, models: list[str] | None = None) -> dict[str, object]:
-            """Run dbt models."""
-            results = []
-            models = models or ["dim_customers", "fact_orders"]
-            for model in models:
-                result = {
-                    "unique_id": f"model.test.{model}",
-                    "status": "success",
-                    "execution_time": 2.5,
-                    "rows_affected": 1000,
-                }
-                results.append(result)
-            return {"results": results, "elapsed_time": 10.5}
+      def run_models(self, models: list[str] | None = None) -> dict[str, object]:
+          """Run dbt models."""
+          results = []
+          models = models or ["dim_customers", "fact_orders"]
+          for model in models:
+              result = {
+                  "unique_id": f"model.test.{model}",
+                  "status": "success",
+                  "execution_time": 2.5,
+                  "rows_affected": 1000,
+              }
+              results.append(result)
+          return {"results": results, "elapsed_time": 10.5}
 
-        def run_tests(self, models: list[str] | None = None) -> dict[str, object]:
-            """Run dbt tests."""
-            results = []
-            tests = ["test_unique_customer_id", "test_not_null_order_id"]
-            for test in tests:
-                result = {
-                    "unique_id": f"test.test.{test}",
-                    "status": "pass",
-                    "execution_time": 1.2,
-                    "failures": 0,
-                }
-                results.append(result)
-            return {"results": results, "elapsed_time": 5.0}
+      def run_tests(self, models: list[str] | None = None) -> dict[str, object]:
+          """Run dbt tests."""
+          # models parameter is used for future model-specific testing
+          _ = models  # Mark as used for future implementation
 
-        def compile(self, models: list[str] | None = None) -> dict[str, object]:
-            """Compile dbt models."""
-            compiled = {}
-            models = models or ["dim_customers", "fact_orders"]
-            for model in models:
-                # Mock compiled SQL - not executed, just static template
-                compiled[model] = f"SELECT * FROM compiled_{model}"  # noqa: S608 - Mock SQL template for testing, not dynamic query
-            return {"compiled": compiled}
+          results = []
+          tests = ["test_unique_customer_id", "test_not_null_order_id"]
+          for test in tests:
+              result = {
+                  "unique_id": f"test.test.{test}",
+                  "status": "pass",
+                  "execution_time": 1.2,
+                  "failures": 0,
+              }
+              results.append(result)
+          return {"results": results, "elapsed_time": 5.0}
+
+      def compile(self, models: list[str] | None = None) -> dict[str, object]:
+          """Compile dbt models."""
+          compiled = {}
+          models = models or ["dim_customers", "fact_orders"]
+          for model in models:
+              # Mock compiled SQL - not executed, just static template
+              compiled[model] = f"SELECT * FROM compiled_{model}"  # noqa: S608 - Mock SQL template for testing, not dynamic query
+          return {"compiled": compiled}
 
     return MockDbtRunner
