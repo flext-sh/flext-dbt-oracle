@@ -45,14 +45,14 @@ class FlextDbtOracleModel(FlextValueObject):
         """Validate DBT model business rules."""
         try:
             if not self.name.strip():
-                return FlextResult.fail("Model name cannot be empty")
+                return FlextResult[None].fail("Model name cannot be empty")
             if self.dbt_model_type not in {"staging", "intermediate", "marts"}:
-                return FlextResult.fail("Invalid model_type")
+                return FlextResult[None].fail("Invalid model_type")
             if not self.schema_name.strip() or not self.table_name.strip():
-                return FlextResult.fail("Schema and table names are required")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail("Schema and table names are required")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Model validation failed: {e}")
+            return FlextResult[None].fail(f"Model validation failed: {e}")
 
     def get_file_path(self, base_path: Path) -> Path:
         """Get the file path for this model."""
@@ -205,11 +205,11 @@ group by {group_by_columns}
                     continue
 
             logger.info("Generated %d staging models", len(staging_models))
-            return FlextResult.ok(staging_models)
+            return FlextResult[None].ok(staging_models)
 
         except Exception as e:
             logger.exception("Error generating staging models")
-            return FlextResult.fail(
+            return FlextResult[None].fail(
                 f"Staging model generation failed: {e}",
             )
 
@@ -252,11 +252,11 @@ group by {group_by_columns}
                     intermediate_models.append(intermediate_model)
 
             logger.info("Generated %d intermediate models", len(intermediate_models))
-            return FlextResult.ok(intermediate_models)
+            return FlextResult[None].ok(intermediate_models)
 
         except Exception as e:
             logger.exception("Error generating intermediate models")
-            return FlextResult.fail(
+            return FlextResult[None].fail(
                 f"Intermediate model generation failed: {e}",
             )
 
@@ -287,11 +287,11 @@ group by {group_by_columns}
                     marts_models.append(marts_model)
 
             logger.info("Generated %d marts models", len(marts_models))
-            return FlextResult.ok(marts_models)
+            return FlextResult[None].ok(marts_models)
 
         except Exception as e:
             logger.exception("Error generating marts models")
-            return FlextResult.fail(
+            return FlextResult[None].fail(
                 f"Marts model generation failed: {e}",
             )
 
@@ -364,11 +364,11 @@ group by {group_by_columns}
             }
 
             logger.info("Successfully wrote models to disk: %s", statistics)
-            return FlextResult.ok(statistics)
+            return FlextResult[None].ok(statistics)
 
         except Exception as e:
             logger.exception("Error writing models to disk")
-            return FlextResult.fail(
+            return FlextResult[None].fail(
                 f"Model writing failed: {e}",
             )
 

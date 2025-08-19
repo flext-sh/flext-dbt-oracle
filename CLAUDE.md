@@ -232,10 +232,10 @@ def process_oracle_data():
             logger.error("Metadata extraction failed: %s", result.error)
             return result
         
-        return FlextResult.ok(result.data)
+        return FlextResult[None].ok(result.data)
     except Exception as e:
         logger.exception("Unexpected error during Oracle processing")
-        return FlextResult.fail(f"Processing error: {e}")
+        return FlextResult[None].fail(f"Processing error: {e}")
 ```
 
 ### Configuration Management

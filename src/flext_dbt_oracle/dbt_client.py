@@ -74,27 +74,27 @@ class FlextDbtOracleClient:
             logger.info("Testing Oracle database connection")
 
             if not self.config.validate_oracle_connection():
-                return FlextResult.fail("Invalid Oracle connection configuration")
+                return FlextResult[None].fail("Invalid Oracle connection configuration")
 
             # Test connection using flext-db-oracle API
             connection_result = self.oracle_api.test_connection()
 
             if connection_result.success:
                 logger.info("Oracle connection test successful")
-                return FlextResult.ok(
+                return FlextResult[None].ok(
                     {
                         "status": "connected",
                         "connection_info": connection_result.data,
                     },
                 )
             logger.error("Oracle connection test failed: %s", connection_result.error)
-            return FlextResult.fail(
+            return FlextResult[None].fail(
                 f"Oracle connection failed: {connection_result.error}",
             )
 
         except Exception as e:
             logger.exception("Unexpected error during Oracle connection test")
-            return FlextResult.fail(f"Connection test error: {e}")
+            return FlextResult[None].fail(f"Connection test error: {e}")
 
     def extract_oracle_metadata(
         self,
@@ -132,7 +132,7 @@ class FlextDbtOracleClient:
                             # Keep as empty list entry replacement by avoiding append if not a proper object
                             pass
                 else:
-                    return FlextResult.fail(
+                    return FlextResult[None].fail(
                         f"Failed to list tables: {table_names_result.error}",
                     )
             else:
@@ -151,11 +151,11 @@ class FlextDbtOracleClient:
                             pass
 
             logger.info("Successfully extracted %d Oracle tables", len(tables))
-            return FlextResult.ok(tables)
+            return FlextResult[None].ok(tables)
 
         except Exception as e:
             logger.exception("Unexpected error during Oracle metadata extraction")
-            return FlextResult.fail(f"Metadata extraction error: {e}")
+            return FlextResult[None].fail(f"Metadata extraction error: {e}")
 
     def validate_oracle_data(
         self,
@@ -188,11 +188,11 @@ class FlextDbtOracleClient:
             )
 
             if quality_score < self.config.min_quality_threshold:
-                return FlextResult.fail(
+                return FlextResult[None].fail(
                     f"Data quality below threshold: {quality_score} < {self.config.min_quality_threshold}",
                 )
 
-            return FlextResult.ok(
+            return FlextResult[None].ok(
                 {
                     **stats,
                     "quality_score": quality_score,
@@ -203,7 +203,7 @@ class FlextDbtOracleClient:
 
         except Exception as e:
             logger.exception("Unexpected error during Oracle validation")
-            return FlextResult.fail(f"Oracle validation error: {e}")
+            return FlextResult[None].fail(f"Oracle validation error: {e}")
 
     def transform_with_dbt(
         self,
@@ -250,11 +250,11 @@ class FlextDbtOracleClient:
                 "DBT transformation executed for %d model(s)",
                 len(models_to_run),
             )
-            return FlextResult.ok(executed)
+            return FlextResult[None].ok(executed)
 
         except Exception as e:
             logger.exception("Unexpected error during DBT transformation")
-            return FlextResult.fail(f"DBT transformation error: {e}")
+            return FlextResult[None].fail(f"DBT transformation error: {e}")
 
     def run_full_pipeline(
         self,
@@ -283,7 +283,7 @@ class FlextDbtOracleClient:
         # Step 2: Extract metadata
         extract_result = self.extract_oracle_metadata(schema_names, object_types)
         if not extract_result.success:
-            return FlextResult.fail(
+            return FlextResult[None].fail(
                 extract_result.error or "Metadata extraction failed",
             )
 
@@ -297,7 +297,7 @@ class FlextDbtOracleClient:
         # Step 4: Transform with DBT
         transform_result = self.transform_with_dbt(objects, model_names or [])
         if not transform_result.success:
-            return FlextResult.fail(transform_result.error or "Transformation failed")
+            return FlextResult[None].fail(transform_result.error or "Transformation failed")
 
         # Combine results
         pipeline_results: dict[str, object] = {
@@ -309,7 +309,7 @@ class FlextDbtOracleClient:
         }
 
         logger.info("Full Oracle-to-DBT pipeline completed successfully")
-        return FlextResult.ok(pipeline_results)
+        return FlextResult[None].ok(pipeline_results)
 
     # Note: Previous data preparation and grouping helpers removed.
 
