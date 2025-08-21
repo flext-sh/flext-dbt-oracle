@@ -98,7 +98,7 @@ class FlextDbtOracleWorkflowService:
                     metadata_result.error or "Metadata extraction failed",
                 )
 
-            oracle_objects = metadata_result.data or []
+            oracle_objects = metadata_result.value or []
             logger.info("Extracted metadata for %d Oracle objects", len(oracle_objects))
 
             # Step 3: Generate staging models
@@ -111,7 +111,7 @@ class FlextDbtOracleWorkflowService:
                     staging_result.error or "Staging model generation failed",
                 )
 
-            staging_models = staging_result.data or []
+            staging_models = staging_result.value or []
 
             # Step 4: Generate intermediate models
             logger.info("Generating intermediate models...")
@@ -123,7 +123,7 @@ class FlextDbtOracleWorkflowService:
                     intermediate_result.error or "Intermediate model generation failed",
                 )
 
-            intermediate_models = intermediate_result.data or []
+            intermediate_models = intermediate_result.value or []
 
             # Step 5: Generate marts models
             logger.info("Generating marts models...")
@@ -135,7 +135,7 @@ class FlextDbtOracleWorkflowService:
                     marts_result.error or "Marts model generation failed",
                 )
 
-            marts_models = marts_result.data or []
+            marts_models = marts_result.value or []
 
             # Step 6: Write all models to disk
             all_models = staging_models + intermediate_models + marts_models
@@ -146,11 +146,13 @@ class FlextDbtOracleWorkflowService:
                 output_dir,
             )
             if not write_result.success:
-                return FlextResult[None].fail(write_result.error or "Failed writing models")
+                return FlextResult[None].fail(
+                    write_result.error or "Failed writing models"
+                )
 
             # Collect workflow results
             workflow_results: dict[str, object] = {
-                "connection_status": connection_result.data,
+                "connection_status": connection_result.value,
                 "extracted_objects": len(oracle_objects),
                 "generated_models": {
                     "staging": len(staging_models),
@@ -158,7 +160,7 @@ class FlextDbtOracleWorkflowService:
                     "marts": len(marts_models),
                     "total": len(all_models),
                 },
-                "written_files": write_result.data,
+                "written_files": write_result.value,
                 "output_path": str(output_dir),
                 "processed_schemas": schema_names or "all accessible",
                 "processed_object_types": object_types or "all types",
@@ -214,7 +216,7 @@ class FlextDbtOracleWorkflowService:
                         models_result.error or "Model generation failed",
                     )
 
-                pipeline_results["model_generation"] = models_result.data
+                pipeline_results["model_generation"] = models_result.value
 
             # Step 2: Run DBT transformation pipeline
             logger.info("Running DBT transformation pipeline...")
@@ -228,7 +230,7 @@ class FlextDbtOracleWorkflowService:
                     transformation_result.error or "Transformation failed",
                 )
 
-            pipeline_results["transformation"] = transformation_result.data
+            pipeline_results["transformation"] = transformation_result.value
 
             # Combine results
             full_results = {
@@ -264,8 +266,10 @@ class FlextDbtOracleWorkflowService:
             # Step 2: Test Oracle connection
             connection_result = self.client.test_oracle_connection()
             if not connection_result.success:
-                return FlextResult[None].fail(connection_result.error or "Connection failed")
-            validation_results["oracle_connection"] = connection_result.data or {}
+                return FlextResult[None].fail(
+                    connection_result.error or "Connection failed"
+                )
+            validation_results["oracle_connection"] = connection_result.value or {}
 
             # Step 3: Validate DBT setup
             try:
@@ -343,7 +347,7 @@ class FlextDbtOracleWorkflowService:
                     return FlextResult[None].fail(
                         metadata_result.error or "Metadata extraction failed",
                     )
-                oracle_objects = metadata_result.data or []
+                oracle_objects = metadata_result.value or []
 
             if not oracle_objects:
                 return FlextResult[None].ok(
@@ -544,7 +548,7 @@ class FlextDbtOracleMonitoringService:
             "workflow_type": tracking_info["workflow_type"],
             "duration_seconds": round(duration, 2),
             "success": result.success,
-            "result_summary": str(result.data)[:200] if result.data else None,
+            "result_summary": str(result.value)[:200] if result.value else None,
             "error_summary": str(result.error)[:200] if result.error else None,
         }
 

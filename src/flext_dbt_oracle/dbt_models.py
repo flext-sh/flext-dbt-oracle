@@ -189,7 +189,7 @@ group by {group_by_columns}
                         )
                         continue
 
-                    columns = columns_result.data or []
+                    columns = columns_result.value or []
 
                     # Generate model
                     model = self._create_staging_model(oracle_obj, columns)
