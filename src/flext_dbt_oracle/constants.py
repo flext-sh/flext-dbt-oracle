@@ -6,7 +6,7 @@ from flext-core, extending it with DBT Oracle-specific constants.
 
 from __future__ import annotations
 
-from flext_core.constants import FlextConstants
+from flext_core import FlextConstants
 
 
 class FlextDbtOracleConstants(FlextConstants):

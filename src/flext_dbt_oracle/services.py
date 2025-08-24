@@ -55,7 +55,7 @@ class FlextDbtOracleWorkflowService:
 
         logger.info("Initialized Oracle DBT workflow service")
 
-    def run_metadata_to_models_workflow(  # noqa: PLR0911
+    def run_metadata_to_models_workflow(
         self,
         schema_names: list[str] | None = None,
         object_types: list[str] | None = None,
@@ -94,7 +94,7 @@ class FlextDbtOracleWorkflowService:
                 object_types,
             )
             if not metadata_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[dict[str, object]].fail(
                     metadata_result.error or "Metadata extraction failed",
                 )
 
@@ -107,7 +107,7 @@ class FlextDbtOracleWorkflowService:
                 oracle_objects,
             )
             if not staging_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[dict[str, object]].fail(
                     staging_result.error or "Staging model generation failed",
                 )
 
@@ -119,7 +119,7 @@ class FlextDbtOracleWorkflowService:
                 staging_models,
             )
             if not intermediate_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[dict[str, object]].fail(
                     intermediate_result.error or "Intermediate model generation failed",
                 )
 
@@ -131,7 +131,7 @@ class FlextDbtOracleWorkflowService:
                 intermediate_models,
             )
             if not marts_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[dict[str, object]].fail(
                     marts_result.error or "Marts model generation failed",
                 )
 
@@ -146,7 +146,7 @@ class FlextDbtOracleWorkflowService:
                 output_dir,
             )
             if not write_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[dict[str, object]].fail(
                     write_result.error or "Failed writing models"
                 )
 
@@ -171,11 +171,11 @@ class FlextDbtOracleWorkflowService:
                 "Metadata-to-models workflow completed successfully: %s",
                 workflow_results,
             )
-            return FlextResult[None].ok(workflow_results)
+            return FlextResult[dict[str, object]].ok(workflow_results)
 
         except Exception as e:
             logger.exception("Unexpected error in metadata-to-models workflow")
-            return FlextResult[None].fail(f"Metadata-to-models workflow failed: {e}")
+            return FlextResult[dict[str, object]].fail(f"Metadata-to-models workflow failed: {e}")
 
     def run_full_transformation_pipeline(
         self,
@@ -212,7 +212,7 @@ class FlextDbtOracleWorkflowService:
                     models_output_path,
                 )
                 if not models_result.success:
-                    return FlextResult[None].fail(
+                    return FlextResult[dict[str, object]].fail(
                         models_result.error or "Model generation failed",
                     )
 
@@ -226,7 +226,7 @@ class FlextDbtOracleWorkflowService:
                 model_names,
             )
             if not transformation_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[dict[str, object]].fail(
                     transformation_result.error or "Transformation failed",
                 )
 
@@ -241,11 +241,11 @@ class FlextDbtOracleWorkflowService:
             }
 
             logger.info("Full Oracle transformation pipeline completed successfully")
-            return FlextResult[None].ok(full_results)
+            return FlextResult[dict[str, object]].ok(full_results)
 
         except Exception as e:
             logger.exception("Unexpected error in full transformation pipeline")
-            return FlextResult[None].fail(f"Full transformation pipeline failed: {e}")
+            return FlextResult[dict[str, object]].fail(f"Full transformation pipeline failed: {e}")
 
     def validate_workflow_prerequisites(self) -> FlextResult[dict[str, object]]:
         """Validate all prerequisites for running Oracle-to-DBT workflows.
@@ -260,13 +260,13 @@ class FlextDbtOracleWorkflowService:
 
             # Step 1: Validate configuration
             if not self.config.validate_oracle_connection():
-                return FlextResult[None].fail("Invalid Oracle connection configuration")
+                return FlextResult[dict[str, object]].fail("Invalid Oracle connection configuration")
             validation_results["config_validation"] = "passed"
 
             # Step 2: Test Oracle connection
             connection_result = self.client.test_oracle_connection()
             if not connection_result.success:
-                return FlextResult[None].fail(
+                return FlextResult[dict[str, object]].fail(
                     connection_result.error or "Connection failed"
                 )
             validation_results["oracle_connection"] = connection_result.value or {}
@@ -318,11 +318,11 @@ class FlextDbtOracleWorkflowService:
                 "Workflow prerequisites validation completed: %s",
                 overall_status,
             )
-            return FlextResult[None].ok(final_results)
+            return FlextResult[dict[str, object]].ok(final_results)
 
         except Exception as e:
             logger.exception("Unexpected error during prerequisites validation")
-            return FlextResult[None].fail(f"Prerequisites validation failed: {e}")
+            return FlextResult[dict[str, object]].fail(f"Prerequisites validation failed: {e}")
 
     def get_workflow_recommendations(
         self,
@@ -344,13 +344,13 @@ class FlextDbtOracleWorkflowService:
             if oracle_objects is None:
                 metadata_result = self.client.extract_oracle_metadata()
                 if not metadata_result.success:
-                    return FlextResult[None].fail(
+                    return FlextResult[dict[str, object]].fail(
                         metadata_result.error or "Metadata extraction failed",
                     )
                 oracle_objects = metadata_result.value or []
 
             if not oracle_objects:
-                return FlextResult[None].ok(
+                return FlextResult[dict[str, object]].ok(
                     {
                         "message": "No Oracle objects found for analysis",
                         "recommendations": [],
@@ -470,11 +470,11 @@ class FlextDbtOracleWorkflowService:
             }
 
             logger.info("Generated %d workflow recommendations", len(recommendations))
-            return FlextResult[None].ok(results)
+            return FlextResult[dict[str, object]].ok(results)
 
         except Exception as e:
             logger.exception("Unexpected error generating workflow recommendations")
-            return FlextResult[None].fail(f"Recommendations generation failed: {e}")
+            return FlextResult[dict[str, object]].fail(f"Recommendations generation failed: {e}")
 
 
 class FlextDbtOracleMonitoringService:
