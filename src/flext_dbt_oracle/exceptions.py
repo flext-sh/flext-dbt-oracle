@@ -20,7 +20,7 @@ from typing import cast
 
 from flext_core import (
     FlextProcessingError,
-    FlextValidationError,
+    FlextExceptions.ValidationError,
     create_module_exception_classes,
 )
 
@@ -169,7 +169,7 @@ class FlextDbtOracleModelError(FlextProcessingError):
         )
 
 
-class FlextDbtOracleCompilationError(FlextValidationError):
+class FlextDbtOracleCompilationError(FlextExceptions.ValidationError):
     """Oracle DBT compilation errors with compilation context."""
 
     def __init__(
