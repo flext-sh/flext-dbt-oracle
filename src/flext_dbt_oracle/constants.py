@@ -27,9 +27,9 @@ class FlextDbtOracleConstants(FlextConstants):
         SLOW_QUERY_THRESHOLD = 5.0  # seconds
         VERY_SLOW_QUERY_THRESHOLD = 30.0  # seconds
 
-        # Batch sizes
-        DEFAULT_BATCH_SIZE = 1000
-        MAX_BATCH_SIZE = 10000
+        # Batch sizes (use centralized constants)
+        DEFAULT_BATCH_SIZE = FlextConstants.DBT.DEFAULT_BATCH_SIZE
+        MAX_BATCH_SIZE = FlextConstants.DBT.MAX_BATCH_SIZE
 
         # Connection pool
         MIN_POOL_SIZE = 1
@@ -105,23 +105,23 @@ class FlextDbtOracleConstants(FlextConstants):
         MODERATE_OBJECT_COUNT = 50
         LARGE_DATASET_THRESHOLD = 50
 
-        # Batch processing
+        # Batch processing (use centralized constants)
         OBJECTS_PER_THREAD = 25
         MIN_THREADS = 4
         MAX_THREADS = 8
-        LARGE_BATCH_SIZE = 5000
-        DEFAULT_BATCH_SIZE = 1000
+        LARGE_BATCH_SIZE = FlextConstants.DBT.LARGE_BATCH_SIZE
+        DEFAULT_BATCH_SIZE = FlextConstants.DBT.DEFAULT_BATCH_SIZE
 
     class Cache:
-        """Cache configuration."""
+        """Cache configuration (use centralized constants)."""
 
         # TTL values in seconds
-        METADATA_CACHE_TTL = 3600  # 1 hour
-        QUERY_CACHE_TTL = 300  # 5 minutes
+        METADATA_CACHE_TTL = FlextConstants.Cache.METADATA_CACHE_TTL
+        QUERY_CACHE_TTL = FlextConstants.Cache.QUERY_CACHE_TTL
 
         # Cache sizes
-        MAX_CACHE_ENTRIES = 1000
-        CACHE_CLEANUP_INTERVAL = 600  # 10 minutes
+        MAX_CACHE_ENTRIES = FlextConstants.Cache.MAX_CACHE_ENTRIES
+        CACHE_CLEANUP_INTERVAL = FlextConstants.Cache.CACHE_CLEANUP_INTERVAL
 
     class Logging:
         """Logging configuration."""

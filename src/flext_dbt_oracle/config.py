@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from flext_core import FlextSettings, get_logger
+from flext_core import FlextConfig, get_logger
 from flext_db_oracle import FlextDbOracleConfig
 from flext_meltano.config import FlextMeltanoConfig
 from pydantic import SecretStr
@@ -19,7 +19,7 @@ from pydantic import SecretStr
 logger = get_logger(__name__)
 
 
-class FlextDbtOracleConfig(FlextSettings):
+class FlextDbtOracleConfig(FlextConfig):
     """Configuration for DBT Oracle transformations.
 
     Combines Oracle database settings with DBT execution configuration.
