@@ -11,7 +11,8 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+
+object
 
 from flext_core import FlextResult, get_logger
 from flext_db_oracle import FlextDbOracleApi
@@ -135,7 +136,7 @@ class FlextDbtOracleClient:
                             # Keep as empty list entry replacement by avoiding append if not a proper object
                             pass
                 else:
-                    return FlextResult[list[Any]].fail(
+                    return FlextResult[list[object]].fail(
                         f"Failed to list tables: {table_names_result.error}",
                     )
             else:
@@ -154,11 +155,11 @@ class FlextDbtOracleClient:
                             pass
 
             logger.info("Successfully extracted %d Oracle tables", len(tables))
-            return FlextResult[list[Any]].ok(tables)
+            return FlextResult[list[object]].ok(tables)
 
         except Exception as e:
             logger.exception("Unexpected error during Oracle metadata extraction")
-            return FlextResult[list[Any]].fail(f"Metadata extraction error: {e}")
+            return FlextResult[list[object]].fail(f"Metadata extraction error: {e}")
 
     def validate_oracle_data(
         self,

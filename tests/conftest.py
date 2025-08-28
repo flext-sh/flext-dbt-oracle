@@ -13,7 +13,8 @@ from __future__ import annotations
 import os
 import tempfile
 from collections.abc import Generator
-from typing import Any
+
+object
 
 import pytest
 
@@ -515,7 +516,7 @@ class MockConnectionManager:
 class MockSqlExecutor:
     """Strategy for SQL execution (Strategy Pattern)."""
 
-    def execute(self, sql: str, *, auto_begin: bool = True) -> tuple[str, list[Any]]:
+    def execute(self, sql: str, *, auto_begin: bool = True) -> tuple[str, list[object]]:
         """Execute SQL statement with reduced branching."""
         # auto_begin parameter is used for future transaction management
         _ = auto_begin  # Mark as used for future implementation
@@ -599,7 +600,7 @@ def mock_dbt_oracle_adapter() -> object:
             sql: str,
             *,
             auto_begin: bool = True,
-        ) -> tuple[str, list[Any]]:
+        ) -> tuple[str, list[object]]:
             """Delegate to SQL executor strategy."""
             return self.sql_executor.execute(sql, auto_begin)
 
