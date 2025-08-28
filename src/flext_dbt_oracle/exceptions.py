@@ -19,8 +19,8 @@ from __future__ import annotations
 from typing import cast
 
 from flext_core import (
-    FlextProcessingError,
     FlextExceptions,
+    FlextProcessingError,
     create_module_exception_classes,
 )
 
