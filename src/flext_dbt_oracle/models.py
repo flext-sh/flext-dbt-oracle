@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import ClassVar
 
 import yaml
-from flext_core import FlextResult, FlextValue, get_logger
+from flext_core import FlextResult, FlextModels.Value, FlextLogger
 from flext_db_oracle import (
     FlextDbOracleApi,
     FlextDbOracleTable as FlextOracleObject,
@@ -21,10 +21,10 @@ from flext_db_oracle import (
 
 from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 
 
-class FlextDbtOracleModel(FlextValue):
+class FlextDbtOracleModel(FlextModels.Value):
     """Value object representing a DBT Oracle model.
 
     Immutable representation of a generated DBT model with Oracle-specific metadata.

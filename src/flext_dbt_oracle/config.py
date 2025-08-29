@@ -11,12 +11,12 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from flext_core import FlextConfig, get_logger
+from flext_core import FlextConfig, FlextLogger
 from flext_db_oracle import FlextDbOracleConfig
 from flext_meltano.config import FlextMeltanoConfig
 from pydantic import SecretStr
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 
 
 class FlextDbtOracleConfig(FlextConfig):

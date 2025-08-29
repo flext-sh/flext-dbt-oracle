@@ -14,14 +14,14 @@ from pathlib import Path
 
 object
 
-from flext_core import FlextResult, get_logger
+from flext_core import FlextLogger, FlextResult
 from flext_db_oracle import FlextDbOracleApi
 from flext_db_oracle.typings import FlextDbOracleTable as FlextOracleObject
 from flext_meltano import FlextDbtHub, create_dbt_hub
 
 from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 
 
 class FlextDbtOracleClient:
