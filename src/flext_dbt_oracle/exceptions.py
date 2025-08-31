@@ -20,7 +20,7 @@ from typing import cast
 
 from flext_core import (
     FlextExceptions,
-    FlextProcessingError,
+    FlextExceptions.ProcessingError,
     create_module_exception_classes,
 )
 
@@ -59,7 +59,7 @@ FLEXT_DBT_ORACLETimeoutError: type[Exception] = cast(
 
 
 # Domain-specific exceptions for Oracle DBT business logic
-class FlextDbtOracleDatabaseError(FlextProcessingError):
+class FlextDbtOracleDatabaseError(FlextExceptions.ProcessingError):
     """Oracle DBT database-specific errors with Oracle context."""
 
     def __init__(
@@ -85,7 +85,7 @@ class FlextDbtOracleDatabaseError(FlextProcessingError):
         )
 
 
-class FlextDbtOracleExecutionError(FlextProcessingError):
+class FlextDbtOracleExecutionError(FlextExceptions.ProcessingError):
     """Oracle DBT execution-specific errors with execution context."""
 
     def __init__(
@@ -111,7 +111,7 @@ class FlextDbtOracleExecutionError(FlextProcessingError):
         )
 
 
-class FlextDbtOracleQueryError(FlextProcessingError):
+class FlextDbtOracleQueryError(FlextExceptions.ProcessingError):
     """Oracle DBT query-specific errors with query context."""
 
     def __init__(
@@ -143,7 +143,7 @@ class FlextDbtOracleQueryError(FlextProcessingError):
         )
 
 
-class FlextDbtOracleModelError(FlextProcessingError):
+class FlextDbtOracleModelError(FlextExceptions.ProcessingError):
     """Oracle DBT model-specific errors with model context."""
 
     def __init__(

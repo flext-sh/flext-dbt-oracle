@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import ClassVar
 
 import yaml
-from flext_core import FlextResult, FlextModels.Value, FlextLogger
+from flext_core import FlextLogger, FlextModels, FlextResult
 from flext_db_oracle import (
     FlextDbOracleApi,
     FlextDbOracleTable as FlextOracleObject,
