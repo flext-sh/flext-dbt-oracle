@@ -20,7 +20,6 @@ from typing import cast
 
 from flext_core import (
     FlextExceptions,
-    FlextExceptions.ProcessingError,
     create_module_exception_classes,
 )
 

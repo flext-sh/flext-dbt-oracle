@@ -24,7 +24,7 @@ from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
 logger = FlextLogger(__name__)
 
 
-class FlextDbtOracleModel(FlextModels.Value):
+class FlextDbtOracleModel(FlextModels):
     """Value object representing a DBT Oracle model.
 
     Immutable representation of a generated DBT model with Oracle-specific metadata.

@@ -12,8 +12,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-object
-
 from flext_core import FlextLogger, FlextResult
 from flext_db_oracle import FlextDbOracleApi
 from flext_db_oracle.typings import FlextDbOracleTable as FlextOracleObject

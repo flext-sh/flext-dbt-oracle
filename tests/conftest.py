@@ -14,8 +14,6 @@ import os
 import tempfile
 from collections.abc import Generator
 
-object
-
 import pytest
 
 
