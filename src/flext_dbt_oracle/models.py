@@ -24,7 +24,7 @@ from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
 logger = FlextLogger(__name__)
 
 
-class FlextDbtOracleModel(FlextModels):
+class FlextDbtOracleModel(FlextModels.Entity):
     """Value object representing a DBT Oracle model.
 
     Immutable representation of a generated DBT model with Oracle-specific metadata.
@@ -429,7 +429,7 @@ group by {group_by_columns}
             # Create model
             return FlextDbtOracleModel(
                 name=f"stg_{oracle_obj.schema_name}_{oracle_obj.name}".lower(),
-                model_type="staging",
+                dbt_model_type="staging",
                 schema_name=oracle_obj.schema_name,
                 table_name=oracle_obj.name,
                 columns=dbt_columns,
@@ -479,7 +479,7 @@ group by {group_by_columns}
             # Create model
             return FlextDbtOracleModel(
                 name=f"int_{schema_name}_combined".lower(),
-                model_type="intermediate",
+                dbt_model_type="intermediate",
                 schema_name=schema_name,
                 table_name=f"{schema_name}_combined",
                 columns=columns,
@@ -562,7 +562,7 @@ group by {group_by_columns}
             # Create model
             return FlextDbtOracleModel(
                 name=f"mart_{intermediate_model.schema_name}_summary".lower(),
-                model_type="marts",
+                dbt_model_type="marts",
                 schema_name=intermediate_model.schema_name,
                 table_name=f"{intermediate_model.schema_name}_summary",
                 columns=mart_columns,
