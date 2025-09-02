@@ -15,7 +15,7 @@ from pathlib import Path
 from flext_core import FlextLogger, FlextResult
 from flext_db_oracle import FlextDbOracleApi
 from flext_db_oracle.typings import FlextDbOracleTable as FlextOracleObject
-from flext_meltano import FlextDbtHub, create_dbt_hub
+from flext_meltano import FlextDbt, FlextMeltanoTypeAdapters
 
 from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
 
@@ -42,7 +42,8 @@ class FlextDbtOracleClient:
         """
         self.config = config or FlextDbtOracleConfig()
         self._oracle_api: FlextDbOracleApi | None = None
-        self._dbt_hub: FlextDbtHub | None = None
+        self._flext_dbt: FlextDbt | None = None
+        self._type_adapters = FlextMeltanoTypeAdapters()
 
         logger.info("Initialized DBT Oracle client with config: %s", self.config)
 
@@ -55,13 +56,18 @@ class FlextDbtOracleClient:
         return self._oracle_api
 
     @property
-    def dbt_hub(self) -> FlextDbtHub:
-        """Get or create DBT hub instance."""
-        if self._dbt_hub is None:
-            # Create hub using project directory as registry_path
-            registry_path = Path(self.config.dbt_project_dir)
-            self._dbt_hub = create_dbt_hub(registry_path)
-        return self._dbt_hub
+    def flext_dbt(self) -> FlextDbt | None:
+        """Get or create FlextDbt instance using modern API."""
+        if self._flext_dbt is None:
+            # Create FlextDbt wrapper using project directory
+            project_path = Path(self.config.dbt_project_dir)
+            dbt_result = self._type_adapters.create_flext_dbt(project_path)
+            if dbt_result.success:
+                self._flext_dbt = dbt_result.value
+                logger.info("Created FlextDbt wrapper", project_path=str(project_path))
+            else:
+                logger.warning("Failed to create FlextDbt wrapper: %s", dbt_result.error)
+        return self._flext_dbt
 
     def test_oracle_connection(self) -> FlextResult[dict[str, object]]:
         """Test Oracle database connection.
@@ -229,30 +235,43 @@ class FlextDbtOracleClient:
                 model_names,
             )
 
-            # Execute requested models using DBT hub
-            hub = self.dbt_hub
-            executed: dict[str, object] = {}
-            results_list: list[dict[str, object]] = []
-            models_to_run = model_names or []
-            for model in models_to_run:
-                exec_res = hub.execute_model(model)
-                model_entry = {
-                    "success": exec_res.success,
-                    "error": exec_res.error,
-                    "rows": len(exec_res.value)
-                    if exec_res.success and exec_res.value is not None
-                    else 0,
-                }
-                executed[model] = model_entry
-                results_list.append({model: model_entry})
+            # Execute requested models using modern FlextDbt API
+            flext_dbt = self.flext_dbt
+            if flext_dbt is None:
+                return FlextResult[dict[str, object]].fail(
+                    "FlextDbt wrapper not initialized - cannot execute models"
+                )
 
-            executed["results"] = results_list
+            # Run all models or specific models using modern API
+            if model_names:
+                run_result = flext_dbt.run_models(model_names)
+            else:
+                run_result = flext_dbt.run_models()
+
+            if run_result.success:
+                executed: dict[str, object] = {
+                    "status": "success",
+                    "models_executed": model_names or "all",
+                    "project_path": str(flext_dbt.project_path),
+                    "dbt_result": run_result.value,
+                }
+            else:
+                executed = {
+                    "status": "failed",
+                    "error": run_result.error,
+                    "models_requested": model_names or "all",
+                }
 
             logger.info(
-                "DBT transformation executed for %d model(s)",
-                len(models_to_run),
+                "DBT transformation executed for models: %s",
+                model_names or "all",
             )
-            return FlextResult[dict[str, object]].ok(executed)
+
+            if run_result.success:
+                return FlextResult[dict[str, object]].ok(executed)
+            return FlextResult[dict[str, object]].fail(
+                run_result.error or "DBT transformation failed"
+            )
 
         except Exception as e:
             logger.exception("Unexpected error during DBT transformation")
