@@ -66,7 +66,9 @@ class FlextDbtOracleClient:
                 self._flext_dbt = dbt_result.value
                 logger.info("Created FlextDbt wrapper", project_path=str(project_path))
             else:
-                logger.warning("Failed to create FlextDbt wrapper: %s", dbt_result.error)
+                logger.warning(
+                    "Failed to create FlextDbt wrapper: %s", dbt_result.error
+                )
         return self._flext_dbt
 
     def test_oracle_connection(self) -> FlextResult[dict[str, object]]:

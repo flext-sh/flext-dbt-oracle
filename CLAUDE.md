@@ -231,7 +231,7 @@ def process_oracle_data():
         if not result.success:
             logger.error("Metadata extraction failed: %s", result.error)
             return result
-        
+
         return FlextResult[None].ok(result.data)
     except Exception as e:
         logger.exception("Unexpected error during Oracle processing")
@@ -335,6 +335,7 @@ export FLEXT_ENV=development
 **Project Identity**: flext-dbt-oracle is now clearly defined as a **DBT client integration library**, not a custom DBT adapter. This resolves previous architectural confusion.
 
 **Current Architecture**:
+
 - **FlextDbtOracleClient**: High-level orchestration client
 - **Integration Focus**: Uses existing flext-db-oracle + flext-meltano libraries
 - **Clear Boundaries**: Oracle operations via flext-db-oracle, DBT operations via flext-meltano
@@ -342,16 +343,19 @@ export FLEXT_ENV=development
 ### 🔄 Active Development Areas
 
 **Type Safety Improvements**:
+
 - MyPy strict mode implementation in progress
 - Some type errors remain (expected during active development)
 - Target: Zero type errors before production release
 
 **Test Coverage Enhancement**:
+
 - Current: Working towards 90% coverage target
 - Comprehensive test fixtures in place
 - Integration tests with Oracle shared container setup
 
 **Configuration System**:
+
 - Environment variable support implemented
 - Oracle-to-DBT type mapping system in place
 - Performance and quality thresholds configurable
