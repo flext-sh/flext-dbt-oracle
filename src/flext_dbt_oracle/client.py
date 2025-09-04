@@ -138,9 +138,16 @@ class FlextDbtOracleClient:
                     for table_name in table_names_result.value or []:
                         meta = self.oracle_api.get_table_metadata(table_name)
                         if meta.success and isinstance(meta.value, dict):
-                            # Convert dict metadata to FlextDbOracleTable is not available here; skip type enforcement
-                            # Keep as empty list entry replacement by avoiding append if not a proper object
-                            pass
+                            # Convert dict metadata to FlextDbOracleTable
+                            table_metadata = meta.value
+                            # Create a basic table object from metadata
+                            table_obj = FlextOracleObject(
+                                name=table_name,
+                                schema_name=None,  # Will be set from context
+                                columns=[],  # Will be populated from metadata if available
+                                metadata=table_metadata,
+                            )
+                            tables.append(table_obj)
                 else:
                     return FlextResult[list[object]].fail(
                         f"Failed to list tables: {table_names_result.error}",
@@ -158,14 +165,25 @@ class FlextDbtOracleClient:
                     for table_name in table_names_result.value or []:
                         meta = self.oracle_api.get_table_metadata(table_name, schema)
                         if meta.success and isinstance(meta.value, dict):
-                            pass
+                            # Convert dict metadata to FlextDbOracleTable
+                            table_metadata = meta.value
+                            # Create a basic table object from metadata
+                            table_obj = FlextOracleObject(
+                                name=table_name,
+                                schema_name=schema,
+                                columns=[],  # Will be populated from metadata if available
+                                metadata=table_metadata,
+                            )
+                            tables.append(table_obj)
 
             logger.info("Successfully extracted %d Oracle tables", len(tables))
-            return FlextResult[list[object]].ok(tables)
+            return FlextResult[list[FlextOracleObject]].ok(tables)
 
         except Exception as e:
             logger.exception("Unexpected error during Oracle metadata extraction")
-            return FlextResult[list[object]].fail(f"Metadata extraction error: {e}")
+            return FlextResult[list[FlextOracleObject]].fail(
+                f"Metadata extraction error: {e}"
+            )
 
     def validate_oracle_data(
         self,
@@ -185,7 +203,7 @@ class FlextDbtOracleClient:
 
             # Basic validation: ensure tables and columns present
             total_tables = len(objects)
-            total_columns = sum(len(t.columns) for t in objects)
+            total_columns = sum(len(getattr(t, "columns", [])) for t in objects)
             quality_score = 1.0 if total_tables > 0 and total_columns > 0 else 0.0
             stats: dict[str, object] = {
                 "tables": total_tables,
