@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleApi
 from flext_db_oracle.typings import FlextDbOracleTable as FlextOracleObject
 from flext_meltano import FlextDbt, FlextMeltanoTypeAdapters
@@ -71,7 +71,7 @@ class FlextDbtOracleClient:
                 )
         return self._flext_dbt
 
-    def test_oracle_connection(self) -> FlextResult[dict[str, object]]:
+    def test_oracle_connection(self) -> FlextResult[FlextTypes.Core.Dict]:
         """Test Oracle database connection.
 
         Returns:
@@ -82,7 +82,7 @@ class FlextDbtOracleClient:
             logger.info("Testing Oracle database connection")
 
             if not self.config.validate_oracle_connection():
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].fail(
                     "Invalid Oracle connection configuration"
                 )
 
@@ -91,25 +91,25 @@ class FlextDbtOracleClient:
 
             if connection_result.success:
                 logger.info("Oracle connection test successful")
-                return FlextResult[dict[str, object]].ok(
+                return FlextResult[FlextTypes.Core.Dict].ok(
                     {
                         "status": "connected",
                         "connection_info": connection_result.value,
                     },
                 )
             logger.error("Oracle connection test failed: %s", connection_result.error)
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[FlextTypes.Core.Dict].fail(
                 f"Oracle connection failed: {connection_result.error}",
             )
 
         except Exception as e:
             logger.exception("Unexpected error during Oracle connection test")
-            return FlextResult[dict[str, object]].fail(f"Connection test error: {e}")
+            return FlextResult[FlextTypes.Core.Dict].fail(f"Connection test error: {e}")
 
     def extract_oracle_metadata(
         self,
-        schema_names: list[str] | None = None,
-        object_types: list[str] | None = None,
+        schema_names: FlextTypes.Core.StringList | None = None,
+        object_types: FlextTypes.Core.StringList | None = None,
     ) -> FlextResult[list[FlextOracleObject]]:
         """Extract Oracle database metadata for DBT processing.
 
@@ -149,7 +149,7 @@ class FlextDbtOracleClient:
                             )
                             tables.append(table_obj)
                 else:
-                    return FlextResult[list[object]].fail(
+                    return FlextResult[FlextTypes.Core.List].fail(
                         f"Failed to list tables: {table_names_result.error}",
                     )
             else:
@@ -188,7 +188,7 @@ class FlextDbtOracleClient:
     def validate_oracle_data(
         self,
         objects: list[FlextOracleObject],
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[FlextTypes.Core.Dict]:
         """Validate Oracle data quality for DBT processing.
 
         Args:
@@ -205,7 +205,7 @@ class FlextDbtOracleClient:
             total_tables = len(objects)
             total_columns = sum(len(getattr(t, "columns", [])) for t in objects)
             quality_score = 1.0 if total_tables > 0 and total_columns > 0 else 0.0
-            stats: dict[str, object] = {
+            stats: FlextTypes.Core.Dict = {
                 "tables": total_tables,
                 "columns": total_columns,
             }
@@ -216,11 +216,11 @@ class FlextDbtOracleClient:
             )
 
             if quality_score < self.config.min_quality_threshold:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].fail(
                     f"Data quality below threshold: {quality_score} < {self.config.min_quality_threshold}",
                 )
 
-            return FlextResult[dict[str, object]].ok(
+            return FlextResult[FlextTypes.Core.Dict].ok(
                 {
                     **stats,
                     "quality_score": quality_score,
@@ -231,13 +231,15 @@ class FlextDbtOracleClient:
 
         except Exception as e:
             logger.exception("Unexpected error during Oracle validation")
-            return FlextResult[dict[str, object]].fail(f"Oracle validation error: {e}")
+            return FlextResult[FlextTypes.Core.Dict].fail(
+                f"Oracle validation error: {e}"
+            )
 
     def transform_with_dbt(
         self,
         objects: list[FlextOracleObject],
-        model_names: list[str] | None = None,
-    ) -> FlextResult[dict[str, object]]:
+        model_names: FlextTypes.Core.StringList | None = None,
+    ) -> FlextResult[FlextTypes.Core.Dict]:
         """Transform Oracle data using DBT models.
 
         Args:
@@ -258,7 +260,7 @@ class FlextDbtOracleClient:
             # Execute requested models using modern FlextDbt API
             flext_dbt = self.flext_dbt
             if flext_dbt is None:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].fail(
                     "FlextDbt wrapper not initialized - cannot execute models"
                 )
 
@@ -269,7 +271,7 @@ class FlextDbtOracleClient:
                 run_result = flext_dbt.run_models()
 
             if run_result.success:
-                executed: dict[str, object] = {
+                executed: FlextTypes.Core.Dict = {
                     "status": "success",
                     "models_executed": model_names or "all",
                     "project_path": str(flext_dbt.project_path),
@@ -288,21 +290,23 @@ class FlextDbtOracleClient:
             )
 
             if run_result.success:
-                return FlextResult[dict[str, object]].ok(executed)
-            return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].ok(executed)
+            return FlextResult[FlextTypes.Core.Dict].fail(
                 run_result.error or "DBT transformation failed"
             )
 
         except Exception as e:
             logger.exception("Unexpected error during DBT transformation")
-            return FlextResult[dict[str, object]].fail(f"DBT transformation error: {e}")
+            return FlextResult[FlextTypes.Core.Dict].fail(
+                f"DBT transformation error: {e}"
+            )
 
     def run_full_pipeline(
         self,
-        schema_names: list[str] | None = None,
-        object_types: list[str] | None = None,
-        model_names: list[str] | None = None,
-    ) -> FlextResult[dict[str, object]]:
+        schema_names: FlextTypes.Core.StringList | None = None,
+        object_types: FlextTypes.Core.StringList | None = None,
+        model_names: FlextTypes.Core.StringList | None = None,
+    ) -> FlextResult[FlextTypes.Core.Dict]:
         """Run complete Oracle to DBT transformation pipeline.
 
         Args:
@@ -324,7 +328,7 @@ class FlextDbtOracleClient:
         # Step 2: Extract metadata
         extract_result = self.extract_oracle_metadata(schema_names, object_types)
         if not extract_result.success:
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[FlextTypes.Core.Dict].fail(
                 extract_result.error or "Metadata extraction failed",
             )
 
@@ -338,12 +342,12 @@ class FlextDbtOracleClient:
         # Step 4: Transform with DBT
         transform_result = self.transform_with_dbt(objects, model_names or [])
         if not transform_result.success:
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[FlextTypes.Core.Dict].fail(
                 transform_result.error or "Transformation failed"
             )
 
         # Combine results
-        pipeline_results: dict[str, object] = {
+        pipeline_results: FlextTypes.Core.Dict = {
             "connection_status": connection_result.value,
             "extracted_objects": len(objects),
             "validation_metrics": validate_result.value,
@@ -352,11 +356,11 @@ class FlextDbtOracleClient:
         }
 
         logger.info("Full Oracle-to-DBT pipeline completed successfully")
-        return FlextResult[dict[str, object]].ok(pipeline_results)
+        return FlextResult[FlextTypes.Core.Dict].ok(pipeline_results)
 
     # Note: Previous data preparation and grouping helpers removed.
 
 
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "FlextDbtOracleClient",
 ]

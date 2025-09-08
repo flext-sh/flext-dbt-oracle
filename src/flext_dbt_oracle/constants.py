@@ -2,6 +2,9 @@
 
 This module defines centralized constants following the FlextConstants pattern
 from flext-core, extending it with DBT Oracle-specific constants.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations

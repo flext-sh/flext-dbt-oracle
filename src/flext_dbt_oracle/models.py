@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import ClassVar
 
 import yaml
-from flext_core import FlextLogger, FlextModels, FlextResult
+from flext_core import FlextLogger, FlextModels, FlextResult, FlextTypes
 from flext_db_oracle import (
     FlextDbOracleApi,
     FlextDbOracleTable as FlextOracleObject,
@@ -34,12 +34,12 @@ class FlextDbtOracleModel(FlextModels.Entity):
     dbt_model_type: str  # staging, intermediate, marts
     schema_name: str
     table_name: str
-    columns: list[dict[str, object]]
+    columns: list[FlextTypes.Core.Dict]
     materialization: str
     sql_content: str
     description: str
     oracle_source: str
-    dependencies: list[str]
+    dependencies: FlextTypes.Core.StringList
 
     def validate_business_rules(self) -> FlextResult[None]:
         """Validate DBT model business rules."""
@@ -81,7 +81,7 @@ class FlextDbtOracleModel(FlextModels.Entity):
 """
         return header + self.sql_content
 
-    def to_schema_entry(self) -> dict[str, object]:
+    def to_schema_entry(self) -> FlextTypes.Core.Dict:
         """Generate schema.yml entry for this model."""
         return {
             "name": self.name,
@@ -130,7 +130,7 @@ group by {group_by_columns}
 """
 
     # Oracle-specific column mappings
-    ORACLE_DATA_TYPE_TESTS: ClassVar[dict[str, list[str]]] = {
+    ORACLE_DATA_TYPE_TESTS: ClassVar[dict[str, FlextTypes.Core.StringList]] = {
         "string": ["not_null"],
         "numeric": ["not_null", "positive"],
         "timestamp": ["not_null"],
@@ -375,13 +375,13 @@ group by {group_by_columns}
     def _create_staging_model(
         self,
         oracle_obj: FlextOracleObject,
-        columns: list[dict[str, object]],
+        columns: list[FlextTypes.Core.Dict],
     ) -> FlextDbtOracleModel | None:
         """Create a staging model from an Oracle object."""
         try:
             # Generate column definitions
             column_defs = []
-            dbt_columns: list[dict[str, object]] = []
+            dbt_columns: list[FlextTypes.Core.Dict] = []
 
             for col in columns:
                 oracle_type_raw = col.get("data_type", "VARCHAR2")
@@ -505,8 +505,8 @@ group by {group_by_columns}
         """Create a marts model from an intermediate model."""
         try:
             # Generate aggregated columns
-            agg_columns: list[str] = []
-            group_columns: list[str] = []
+            agg_columns: FlextTypes.Core.StringList = []
+            group_columns: FlextTypes.Core.StringList = []
 
             for col in intermediate_model.columns:
                 data_type = str(col.get("data_type", ""))
@@ -537,7 +537,7 @@ group by {group_by_columns}
             materialization = self.config.get_materialization_for_layer("marts")
 
             # Generate mart columns
-            mart_columns: list[dict[str, object]] = [
+            mart_columns: list[FlextTypes.Core.Dict] = [
                 {
                     "name": "record_count",
                     "description": "Total number of records",
@@ -582,7 +582,7 @@ group by {group_by_columns}
             return None
 
 
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "FlextDbtOracleModel",
     "FlextDbtOracleModelGenerator",
 ]

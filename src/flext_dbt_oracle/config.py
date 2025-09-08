@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from flext_core import FlextConfig, FlextLogger
+from flext_core import FlextConfig, FlextLogger, FlextTypes
 from flext_db_oracle import FlextDbOracleConfig
 from flext_meltano.config import FlextMeltanoConfig
 from pydantic import SecretStr
@@ -48,7 +48,7 @@ class FlextDbtOracleConfig(FlextConfig):
     dbt_schema: str = "analytics"
 
     # Oracle-specific DBT Settings
-    oracle_schema_mapping: ClassVar[dict[str, str]] = {
+    oracle_schema_mapping: ClassVar[FlextTypes.Core.Headers] = {
         "raw_tables": "stg_raw_tables",
         "views": "stg_views",
         "sequences": "stg_sequences",
@@ -59,7 +59,7 @@ class FlextDbtOracleConfig(FlextConfig):
         "indexes": "stg_indexes",
     }
 
-    oracle_column_mapping: ClassVar[dict[str, str]] = {
+    oracle_column_mapping: ClassVar[FlextTypes.Core.Headers] = {
         "TABLE_NAME": "table_name",
         "COLUMN_NAME": "column_name",
         "DATA_TYPE": "data_type",
@@ -78,7 +78,7 @@ class FlextDbtOracleConfig(FlextConfig):
 
     # Data Quality Settings
     min_quality_threshold: float = 0.85
-    required_oracle_objects: ClassVar[list[str]] = [
+    required_oracle_objects: ClassVar[FlextTypes.Core.StringList] = [
         "TABLE_NAME",
         "OWNER",
         "OBJECT_TYPE",
@@ -87,7 +87,7 @@ class FlextDbtOracleConfig(FlextConfig):
     max_parallel_connections: int = 5
 
     # Oracle Materialization Settings
-    materialization_mapping: ClassVar[dict[str, str]] = {
+    materialization_mapping: ClassVar[FlextTypes.Core.Headers] = {
         "staging": "view",
         "intermediate": "view",
         "marts": "table",
@@ -101,7 +101,7 @@ class FlextDbtOracleConfig(FlextConfig):
     optimizer_mode: str = "ALL_ROWS"
 
     # Oracle Data Type Mapping
-    oracle_type_mapping: ClassVar[dict[str, str]] = {
+    oracle_type_mapping: ClassVar[FlextTypes.Core.Headers] = {
         "VARCHAR2": "string",
         "NVARCHAR2": "string",
         "CHAR": "string",
@@ -127,7 +127,12 @@ class FlextDbtOracleConfig(FlextConfig):
     }
 
     def get_oracle_config(self) -> FlextDbOracleConfig:
-        """Get Oracle configuration for flext-db-oracle integration."""
+        """Get Oracle configuration for flext-db-oracle integration.
+
+        Returns:
+            FlextDbOracleConfig: Prepared Oracle client configuration.
+
+        """
         return FlextDbOracleConfig(
             host=self.oracle_host,
             port=self.oracle_port,
@@ -143,14 +148,24 @@ class FlextDbtOracleConfig(FlextConfig):
         )
 
     def get_meltano_config(self) -> FlextMeltanoConfig:
-        """Get Meltano configuration for flext-meltano integration."""
+        """Get Meltano configuration for flext-meltano integration.
+
+        Returns:
+            FlextMeltanoConfig: Prepared Meltano execution configuration.
+
+        """
         return FlextMeltanoConfig(
             project_root=self.dbt_project_dir,
             environment=self.dbt_target,
         )
 
-    def get_oracle_quality_config(self) -> dict[str, object]:
-        """Get data quality configuration for Oracle validation."""
+    def get_oracle_quality_config(self) -> FlextTypes.Core.Dict:
+        """Get data quality configuration for Oracle validation.
+
+        Returns:
+            FlextTypes.Core.Dict: Quality thresholds and flags for validation.
+
+        """
         return {
             "min_quality_threshold": self.min_quality_threshold,
             "required_oracle_objects": self.required_oracle_objects,
@@ -158,8 +173,13 @@ class FlextDbtOracleConfig(FlextConfig):
             "max_parallel_connections": self.max_parallel_connections,
         }
 
-    def get_performance_config(self) -> dict[str, object]:
-        """Get Oracle performance configuration for DBT operations."""
+    def get_performance_config(self) -> FlextTypes.Core.Dict:
+        """Get Oracle performance configuration for DBT operations.
+
+        Returns:
+            FlextTypes.Core.Dict: Performance tuning parameters.
+
+        """
         return {
             "fetch_size": self.fetch_size,
             "batch_size": self.batch_size,
@@ -168,15 +188,30 @@ class FlextDbtOracleConfig(FlextConfig):
         }
 
     def get_object_type_for_schema(self, object_type: str) -> str | None:
-        """Get schema mapping for a given Oracle object type."""
+        """Get schema mapping for a given Oracle object type.
+
+        Returns:
+            str | None: Schema name for the object type, if mapped.
+
+        """
         return self.oracle_schema_mapping.get(object_type.lower())
 
     def get_schema_for_object_type(self, object_type: str) -> str | None:
-        """Get DBT schema name for a given Oracle object type."""
+        """Get DBT schema name for a given Oracle object type.
+
+        Returns:
+            str | None: DBT schema for the given object type.
+
+        """
         return self.oracle_schema_mapping.get(object_type)
 
     def get_dbt_type_for_oracle_type(self, oracle_type: str) -> str:
-        """Get DBT data type for Oracle data type."""
+        """Get DBT data type for Oracle data type.
+
+        Returns:
+            str: DBT data type string.
+
+        """
         oracle_type_upper = oracle_type.upper()
 
         # Handle parameterized types like VARCHAR2(100)
@@ -187,11 +222,21 @@ class FlextDbtOracleConfig(FlextConfig):
         return self.oracle_type_mapping.get(oracle_type_upper, "string")
 
     def get_materialization_for_layer(self, layer: str) -> str:
-        """Get materialization strategy for DBT layer."""
+        """Get materialization strategy for DBT layer.
+
+        Returns:
+            str: Materialization name for the layer.
+
+        """
         return self.materialization_mapping.get(layer, "view")
 
     def validate_oracle_connection(self) -> bool:
-        """Validate Oracle connection configuration."""
+        """Validate Oracle connection configuration.
+
+        Returns:
+            bool: True when minimal connection fields are present.
+
+        """
         required_fields = [
             self.oracle_host,
             self.oracle_username,
@@ -204,6 +249,6 @@ class FlextDbtOracleConfig(FlextConfig):
         return all(required_fields) and has_connection_identifier
 
 
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "FlextDbtOracleConfig",
 ]

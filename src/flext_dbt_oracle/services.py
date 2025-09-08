@@ -13,7 +13,7 @@ from __future__ import annotations
 import time
 from pathlib import Path
 
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleApi
 from flext_db_oracle.typings import FlextDbOracleTable as FlextOracleObject
 
@@ -57,10 +57,10 @@ class FlextDbtOracleWorkflowService:
 
     def run_metadata_to_models_workflow(
         self,
-        schema_names: list[str] | None = None,
-        object_types: list[str] | None = None,
+        schema_names: FlextTypes.Core.StringList | None = None,
+        object_types: FlextTypes.Core.StringList | None = None,
         output_path: Path | str | None = None,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[FlextTypes.Core.Dict]:
         """Run complete metadata extraction to model generation workflow.
 
         Args:
@@ -94,7 +94,7 @@ class FlextDbtOracleWorkflowService:
                 object_types,
             )
             if not metadata_result.success:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].fail(
                     metadata_result.error or "Metadata extraction failed",
                 )
 
@@ -107,7 +107,7 @@ class FlextDbtOracleWorkflowService:
                 oracle_objects,
             )
             if not staging_result.success:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].fail(
                     staging_result.error or "Staging model generation failed",
                 )
 
@@ -119,7 +119,7 @@ class FlextDbtOracleWorkflowService:
                 staging_models,
             )
             if not intermediate_result.success:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].fail(
                     intermediate_result.error or "Intermediate model generation failed",
                 )
 
@@ -131,7 +131,7 @@ class FlextDbtOracleWorkflowService:
                 intermediate_models,
             )
             if not marts_result.success:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].fail(
                     marts_result.error or "Marts model generation failed",
                 )
 
@@ -146,12 +146,12 @@ class FlextDbtOracleWorkflowService:
                 output_dir,
             )
             if not write_result.success:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].fail(
                     write_result.error or "Failed writing models"
                 )
 
             # Collect workflow results
-            workflow_results: dict[str, object] = {
+            workflow_results: FlextTypes.Core.Dict = {
                 "connection_status": connection_result.value,
                 "extracted_objects": len(oracle_objects),
                 "generated_models": {
@@ -171,23 +171,23 @@ class FlextDbtOracleWorkflowService:
                 "Metadata-to-models workflow completed successfully: %s",
                 workflow_results,
             )
-            return FlextResult[dict[str, object]].ok(workflow_results)
+            return FlextResult[FlextTypes.Core.Dict].ok(workflow_results)
 
         except Exception as e:
             logger.exception("Unexpected error in metadata-to-models workflow")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[FlextTypes.Core.Dict].fail(
                 f"Metadata-to-models workflow failed: {e}"
             )
 
     def run_full_transformation_pipeline(
         self,
-        schema_names: list[str] | None = None,
-        object_types: list[str] | None = None,
-        model_names: list[str] | None = None,
+        schema_names: FlextTypes.Core.StringList | None = None,
+        object_types: FlextTypes.Core.StringList | None = None,
+        model_names: FlextTypes.Core.StringList | None = None,
         *,
         generate_models: bool = True,
         models_output_path: Path | str | None = None,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[FlextTypes.Core.Dict]:
         """Run complete Oracle transformation pipeline with optional model generation.
 
         Args:
@@ -214,7 +214,7 @@ class FlextDbtOracleWorkflowService:
                     models_output_path,
                 )
                 if not models_result.success:
-                    return FlextResult[dict[str, object]].fail(
+                    return FlextResult[FlextTypes.Core.Dict].fail(
                         models_result.error or "Model generation failed",
                     )
 
@@ -228,7 +228,7 @@ class FlextDbtOracleWorkflowService:
                 model_names,
             )
             if not transformation_result.success:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].fail(
                     transformation_result.error or "Transformation failed",
                 )
 
@@ -243,15 +243,15 @@ class FlextDbtOracleWorkflowService:
             }
 
             logger.info("Full Oracle transformation pipeline completed successfully")
-            return FlextResult[dict[str, object]].ok(full_results)
+            return FlextResult[FlextTypes.Core.Dict].ok(full_results)
 
         except Exception as e:
             logger.exception("Unexpected error in full transformation pipeline")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[FlextTypes.Core.Dict].fail(
                 f"Full transformation pipeline failed: {e}"
             )
 
-    def validate_workflow_prerequisites(self) -> FlextResult[dict[str, object]]:
+    def validate_workflow_prerequisites(self) -> FlextResult[FlextTypes.Core.Dict]:
         """Validate all prerequisites for running Oracle-to-DBT workflows.
 
         Returns:
@@ -260,11 +260,11 @@ class FlextDbtOracleWorkflowService:
         """
         try:
             logger.info("Validating workflow prerequisites...")
-            validation_results: dict[str, object] = {}
+            validation_results: FlextTypes.Core.Dict = {}
 
             # Step 1: Validate configuration
             if not self.config.validate_oracle_connection():
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].fail(
                     "Invalid Oracle connection configuration"
                 )
             validation_results["config_validation"] = "passed"
@@ -272,7 +272,7 @@ class FlextDbtOracleWorkflowService:
             # Step 2: Test Oracle connection
             connection_result = self.client.test_oracle_connection()
             if not connection_result.success:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[FlextTypes.Core.Dict].fail(
                     connection_result.error or "Connection failed"
                 )
             validation_results["oracle_connection"] = connection_result.value or {}
@@ -280,7 +280,7 @@ class FlextDbtOracleWorkflowService:
             # Step 3: Validate DBT setup
             try:
                 _ = self.client.dbt_hub
-                dbt_validation: dict[str, object] = {
+                dbt_validation: FlextTypes.Core.Dict = {
                     "status": "available",
                     "hub_initialized": True,
                 }
@@ -314,7 +314,7 @@ class FlextDbtOracleWorkflowService:
             if has_errors:
                 overall_status = "failed"
 
-            final_results: dict[str, object] = {
+            final_results: FlextTypes.Core.Dict = {
                 "overall_status": overall_status,
                 "validations": validation_results,
                 "prerequisites_met": overall_status == "passed",
@@ -324,18 +324,18 @@ class FlextDbtOracleWorkflowService:
                 "Workflow prerequisites validation completed: %s",
                 overall_status,
             )
-            return FlextResult[dict[str, object]].ok(final_results)
+            return FlextResult[FlextTypes.Core.Dict].ok(final_results)
 
         except Exception as e:
             logger.exception("Unexpected error during prerequisites validation")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[FlextTypes.Core.Dict].fail(
                 f"Prerequisites validation failed: {e}"
             )
 
     def get_workflow_recommendations(
         self,
         oracle_objects: list[FlextOracleObject] | None = None,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[FlextTypes.Core.Dict]:
         """Get recommendations for optimal workflow configuration.
 
         Args:
@@ -352,13 +352,13 @@ class FlextDbtOracleWorkflowService:
             if oracle_objects is None:
                 metadata_result = self.client.extract_oracle_metadata()
                 if not metadata_result.success:
-                    return FlextResult[dict[str, object]].fail(
+                    return FlextResult[FlextTypes.Core.Dict].fail(
                         metadata_result.error or "Metadata extraction failed",
                     )
                 oracle_objects = metadata_result.value or []
 
             if not oracle_objects:
-                return FlextResult[dict[str, object]].ok(
+                return FlextResult[FlextTypes.Core.Dict].ok(
                     {
                         "message": "No Oracle objects found for analysis",
                         "recommendations": [],
@@ -366,7 +366,7 @@ class FlextDbtOracleWorkflowService:
                 )
 
             # Analyze objects and generate recommendations
-            recommendations: list[dict[str, object]] = []
+            recommendations: list[FlextTypes.Core.Dict] = []
 
             # Analyze object distribution
             object_counts: dict[str, int] = {}
@@ -435,7 +435,7 @@ class FlextDbtOracleWorkflowService:
                     },
                 )
 
-            results: dict[str, object] = {
+            results: FlextTypes.Core.Dict = {
                 "analysis": {
                     "total_objects": total_objects,
                     "object_type_distribution": object_counts,
@@ -478,11 +478,11 @@ class FlextDbtOracleWorkflowService:
             }
 
             logger.info("Generated %d workflow recommendations", len(recommendations))
-            return FlextResult[dict[str, object]].ok(results)
+            return FlextResult[FlextTypes.Core.Dict].ok(results)
 
         except Exception as e:
             logger.exception("Unexpected error generating workflow recommendations")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[FlextTypes.Core.Dict].fail(
                 f"Recommendations generation failed: {e}"
             )
 
@@ -509,8 +509,8 @@ class FlextDbtOracleMonitoringService:
     def track_workflow_execution(
         self,
         workflow_type: str,
-        workflow_params: dict[str, object],
-    ) -> dict[str, object]:
+        workflow_params: FlextTypes.Core.Dict,
+    ) -> FlextTypes.Core.Dict:
         """Track workflow execution metrics.
 
         Args:
@@ -521,7 +521,7 @@ class FlextDbtOracleMonitoringService:
             Dictionary containing execution tracking information
 
         """
-        tracking_info: dict[str, object] = {
+        tracking_info: FlextTypes.Core.Dict = {
             "workflow_type": workflow_type,
             "start_time": time.time(),
             "parameters": workflow_params,
@@ -536,7 +536,7 @@ class FlextDbtOracleMonitoringService:
 
     def log_workflow_completion(
         self,
-        tracking_info: dict[str, object],
+        tracking_info: FlextTypes.Core.Dict,
         result: FlextResult[object],
     ) -> None:
         """Log workflow completion metrics.
@@ -553,7 +553,7 @@ class FlextDbtOracleMonitoringService:
         else:
             duration = 0.0
 
-        completion_info: dict[str, object] = {
+        completion_info: FlextTypes.Core.Dict = {
             "tracking_id": tracking_info["tracking_id"],
             "workflow_type": tracking_info["workflow_type"],
             "duration_seconds": round(duration, 2),
@@ -568,7 +568,7 @@ class FlextDbtOracleMonitoringService:
             logger.error("Workflow failed: %s", completion_info)
 
 
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "FlextDbtOracleMonitoringService",
     "FlextDbtOracleWorkflowService",
 ]

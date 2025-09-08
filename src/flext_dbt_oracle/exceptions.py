@@ -11,7 +11,6 @@ Domain-specific Oracle DBT exceptions using factory pattern to eliminate duplica
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
-
 """
 
 from __future__ import annotations
@@ -20,6 +19,7 @@ from typing import cast
 
 from flext_core import (
     FlextExceptions,
+    FlextTypes,
     create_module_exception_classes,
 )
 
@@ -180,7 +180,7 @@ class FlextDbtOracleCompilationError(FlextExceptions):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT compilation error with compilation context."""
-        validation_details: dict[str, object] = {}
+        validation_details: FlextTypes.Core.Dict = {}
         if compilation_target is not None:
             validation_details["compilation_target"] = compilation_target
         if compilation_stage is not None:
@@ -195,7 +195,7 @@ class FlextDbtOracleCompilationError(FlextExceptions):
 
 
 # Export all exception types in alphabetical order
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "FLEXT_DBT_ORACLEAuthenticationError",
     "FLEXT_DBT_ORACLEConfigurationError",
     "FLEXT_DBT_ORACLEConnectionError",

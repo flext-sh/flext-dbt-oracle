@@ -1,6 +1,12 @@
-"""Modern Oracle Database DBT Integration for FLEXT ecosystem."""
+"""Modern Oracle Database DBT Integration for FLEXT ecosystem.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
+from flext_core import FlextTypes
+
 
 from flext_dbt_oracle.dbt_client import FlextDbtOracleClient
 from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
@@ -39,7 +45,7 @@ __author__ = "FLEXT Team"
 __email__ = "team@flext.sh"
 
 # Public API - Following established flext DBT patterns
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     # Core DBT Pattern Classes
     "FlextDbtOracleClient",
     "FlextDbtOracleConfig",
