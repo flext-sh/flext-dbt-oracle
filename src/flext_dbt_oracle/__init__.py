@@ -18,7 +18,9 @@ from flext_dbt_oracle.dbt_exceptions import (
     FLEXT_DBT_ORACLETimeoutError,
     FLEXT_DBT_ORACLEValidationError,
     FlextDbtOracleCompilationError,
+    FlextDbtOracleConnectionError,
     FlextDbtOracleDatabaseError,
+    FlextDbtOracleError,
     FlextDbtOracleExecutionError,
     FlextDbtOracleModelError,
     FlextDbtOraclePerformanceError,
@@ -31,11 +33,14 @@ from flext_dbt_oracle.dbt_exceptions import (
 )
 from flext_dbt_oracle.dbt_services import (
     FlextDbtOracleMonitoringService,
+    FlextDbtOracleService,
+    FlextDbtOracleWorkflowManager,
     FlextDbtOracleWorkflowService,
 )
 from flext_dbt_oracle.models import (
     FlextDbtOracleModel,
     FlextDbtOracleModelGenerator,
+    OracleTableModel,
 )
 
 # Version information
@@ -46,9 +51,9 @@ __email__ = "team@flext.sh"
 
 # Public API - Following established flext DBT patterns
 __all__: FlextTypes.Core.StringList = [
+    # Configuration Error Types
     "FLEXT_DBT_ORACLEConfigurationError",
     "FLEXT_DBT_ORACLEConnectionError",
-    # Exceptions
     "FLEXT_DBT_ORACLEError",
     "FLEXT_DBT_ORACLEProcessingError",
     "FLEXT_DBT_ORACLETimeoutError",
@@ -57,7 +62,9 @@ __all__: FlextTypes.Core.StringList = [
     "FlextDbtOracleClient",
     "FlextDbtOracleCompilationError",
     "FlextDbtOracleConfig",
+    "FlextDbtOracleConnectionError",
     "FlextDbtOracleDatabaseError",
+    "FlextDbtOracleError",
     "FlextDbtOracleExecutionError",
     "FlextDbtOracleModel",
     "FlextDbtOracleModelError",
@@ -68,13 +75,16 @@ __all__: FlextTypes.Core.StringList = [
     "FlextDbtOracleQueryError",
     "FlextDbtOracleResourceError",
     "FlextDbtOracleSchemaError",
+    "FlextDbtOracleService",
     "FlextDbtOracleTransformationError",
     "FlextDbtOracleTypeError",
-    # Workflow Services
+    "FlextDbtOracleWorkflowManager",
     "FlextDbtOracleWorkflowService",
+    # Models
+    "OracleTableModel",
+    # Metadata
     "__author__",
     "__email__",
-    # Version
     "__version__",
     "__version_info__",
 ]

@@ -1,7 +1,5 @@
-"""DBT model management for Oracle transformations.
 
-Provides programmatic DBT model generation and management for Oracle data sources.
-Integrates with flext-db-oracle for schema analysis and flext-core patterns.
+"""Models for FLEXT DBT Oracle.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -14,10 +12,7 @@ from typing import ClassVar
 
 import yaml
 from flext_core import FlextLogger, FlextModels, FlextResult, FlextTypes
-from flext_db_oracle import (
-    FlextDbOracleApi,
-    FlextDbOracleTable as FlextOracleObject,
-)
+from flext_db_oracle import FlextDbOracleApi, FlextDbOracleTable as FlextOracleObject
 
 from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
 
@@ -79,6 +74,7 @@ class FlextDbtOracleModel(FlextModels.Entity):
 */
 
 """
+
         return header + self.sql_content
 
     def to_schema_entry(self) -> FlextTypes.Core.Dict:
@@ -110,22 +106,27 @@ class FlextDbtOracleModelGenerator:
 
     # Model templates by type
     STAGING_TEMPLATE: ClassVar[str] = """
+
 select
 {columns}
-from {source_reference}
 """
 
     INTERMEDIATE_TEMPLATE: ClassVar[str] = """
+
 select
 {columns}
-from {{ ref('{upstream_model}') }}
 where {filter_conditions}
 """
 
     MARTS_TEMPLATE: ClassVar[str] = """
+
 select
 {aggregated_columns}
-from {{ ref('{upstream_model}') }}
+from flext_core import FlextModels
+from flext_core import FlextResult
+from typing import Dict
+from typing import Generator
+from typing import List
 group by {group_by_columns}
 """
 

@@ -1,13 +1,12 @@
-"""🚨 ARCHITECTURAL COMPLIANCE: ELIMINATED MASSIVE EXCEPTION DUPLICATION using DRY.
 
-REFATORADO COMPLETO usando create_module_exception_classes:
-- ZERO code duplication através do DRY exception factory pattern de flext-core
+"""Domain-specific Oracle DBT exceptions using factory pattern to eliminate duplication.
+
+Module documentation:
+
 - USA create_module_exception_classes() para eliminar exception boilerplate massivo
 - Elimina 71+ linhas duplicadas de código boilerplate por exception class
 - SOLID: Single source of truth para module exception patterns
 - Redução de 103+ linhas para 165 linhas (60% improvement with domain logic)
-
-Domain-specific Oracle DBT exceptions using factory pattern to eliminate duplication.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -17,11 +16,7 @@ from __future__ import annotations
 
 from typing import cast
 
-from flext_core import (
-    FlextExceptions,
-    FlextTypes,
-    create_module_exception_classes,
-)
+from flext_core import FlextExceptions, FlextTypes, create_module_exception_classes
 
 # 🚨 DRY PATTERN: Use create_module_exception_classes to eliminate exception duplication
 _exceptions = create_module_exception_classes("flext_dbt_oracle")

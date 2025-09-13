@@ -1,11 +1,6 @@
-"""DBT client for Oracle operations.
+"""FLEXT Module.
 
-Provides high-level interface for DBT Oracle transformations.
-Integrates flext-db-oracle and flext-meltano for complete data pipeline operations.
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
+Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations

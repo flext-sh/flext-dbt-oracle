@@ -1,7 +1,4 @@
-"""Test configuration for flext-dbt-oracle.
-
-Provides pytest fixtures and configuration for testing dbt Oracle adapter functionality
-using real Oracle connections and dbt-core patterns.
+"""Configuration for FLEXT DBT Oracle tests.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -165,6 +162,7 @@ def dbt_model_definitions() -> FlextTypes.Core.Headers:
     """Dbt model SQL definitions for testing."""
     return {
         "staging_customers": """
+
           {{ config(materialized='view') }}
           SELECT
               customer_id,
@@ -176,6 +174,7 @@ def dbt_model_definitions() -> FlextTypes.Core.Headers:
           WHERE customer_id IS NOT NULL
       """,
         "dim_customers": """
+
           {{ config(
               materialized='table',
               oracle={'tablespace': 'USERS', 'parallel': 2}
@@ -194,6 +193,7 @@ def dbt_model_definitions() -> FlextTypes.Core.Headers:
           FROM {{ ref('staging_customers') }}
       """,
         "fact_orders": """
+
           {{ config(
               materialized='incremental',
               unique_key='order_id',
@@ -220,6 +220,7 @@ def dbt_macro_definitions() -> FlextTypes.Core.Headers:
     """Dbt macro definitions for testing."""
     return {
         "oracle_create_table_as": """
+
           {% macro oracle_create_table_as(temporary, relation, sql) -%}
               {% if temporary %}
                   CREATE GLOBAL TEMPORARY TABLE {{ relation }}
@@ -242,6 +243,7 @@ def dbt_macro_definitions() -> FlextTypes.Core.Headers:
           {%- endmacro %}
       """,
         "oracle_merge_sql": """
+
           {% macro oracle_merge_sql(target, source, unique_key, dest_columns) -%}
               MERGE INTO {{ target }} AS target_table
               USING ({{ source }}) AS source_table
@@ -268,17 +270,20 @@ def dbt_test_definitions() -> FlextTypes.Core.Headers:
     """Dbt test definitions for testing."""
     return {
         "test_unique_customer_id": """
+
           SELECT customer_id, COUNT(*)
           FROM {{ ref('dim_customers') }}
           GROUP BY customer_id
           HAVING COUNT(*) > 1
       """,
         "test_not_null_order_id": """
+
           SELECT *
           FROM {{ ref('fact_orders') }}
           WHERE order_id IS NULL
       """,
         "test_valid_email_format": """
+
           SELECT *
           FROM {{ ref('dim_customers') }}
           WHERE email_status = 'invalid'
@@ -345,15 +350,18 @@ def oracle_sql_queries() -> FlextTypes.Core.Headers:
     """Oracle SQL queries for testing."""
     return {
         "create_test_schema": """
+
           CREATE USER DBT_TEST IDENTIFIED BY dbt_test_pass
           DEFAULT TABLESPACE USERS
           TEMPORARY TABLESPACE TEMP
           QUOTA UNLIMITED ON USERS
       """,
         "grant_permissions": """
+
           GRANT CONNECT, RESOURCE, CREATE VIEW, CREATE PROCEDURE TO DBT_TEST
       """,
         "create_customers_table": """
+
           CREATE TABLE DBT_TEST.customers (
               customer_id NUMBER(10) PRIMARY KEY,
               customer_name VARCHAR2(100) NOT NULL,
@@ -363,6 +371,7 @@ def oracle_sql_queries() -> FlextTypes.Core.Headers:
           )
       """,
         "create_orders_table": """
+
           CREATE TABLE DBT_TEST.orders (
               order_id NUMBER(10) PRIMARY KEY,
               customer_id NUMBER(10) NOT NULL,
@@ -376,6 +385,7 @@ def oracle_sql_queries() -> FlextTypes.Core.Headers:
           )
       """,
         "insert_test_data": """
+
           INSERT ALL
               INTO customers VALUES (1, 'John Doe', 'john@example.com',
                   SYSTIMESTAMP, SYSTIMESTAMP)
@@ -581,6 +591,7 @@ def mock_dbt_oracle_adapter() -> object:
         """Simplified adapter using composition and Strategy Pattern."""
 
         def __init__(self, config: FlextTypes.Core.Dict) -> None:
+            """Initialize the instance."""
             self.config = config
             self.compiled_models: FlextTypes.Core.Dict = {}
             # Dependency injection of strategies
@@ -634,6 +645,7 @@ def mock_dbt_runner() -> object:
 
     class MockDbtRunner:
         def __init__(self, project_dir: str, profiles_dir: str) -> None:
+            """Initialize the instance."""
             self.project_dir = project_dir
             self.profiles_dir = profiles_dir
             self.results: FlextTypes.Core.Dict = {}

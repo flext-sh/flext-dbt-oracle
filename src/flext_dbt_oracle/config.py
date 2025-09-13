@@ -1,10 +1,6 @@
-"""DBT configuration for Oracle transformations.
+"""FLEXT Module.
 
-Provides configuration management for DBT Oracle projects using flext-core patterns.
-Integrates with flext-db-oracle for database operations and flext-meltano for DBT execution.
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
+Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations

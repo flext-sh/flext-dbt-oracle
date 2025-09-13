@@ -13,10 +13,11 @@
 **OBJECTIVE**: Achieve 100% professional quality compliance for flext-dbt-oracle with zero regressions, following SOLID principles, Python 3.13+ standards, Pydantic best practices, dbt Core patterns, Oracle Database optimization, and flext-core foundation patterns for Oracle-to-dbt orchestration.
 
 **CRITICAL REQUIREMENTS FOR ORACLE DBT PROJECT**:
+
 - ✅ **95%+ pytest pass rate** with **75%+ coverage** for Oracle dbt orchestration logic (flext-core proven achievable at 79%)
 - ✅ **Zero errors** in ruff, mypy (strict mode), and pyright across ALL Oracle dbt orchestration source code
 - ✅ **Unified Oracle dbt service classes** - single responsibility, no aliases, no wrappers, no helpers
-- ✅ **Direct flext-core integration** - eliminate Oracle complexity, reduce dbt configuration overhead  
+- ✅ **Direct flext-core integration** - eliminate Oracle complexity, reduce dbt configuration overhead
 - ✅ **MANDATORY flext-cli usage** - ALL Oracle CLI projects use flext-cli for CLI AND output, NO direct Click/Rich
 - ✅ **ZERO fallback tolerance** - no try/except fallbacks in Oracle handlers, no workarounds, always correct dbt solutions
 - ✅ **SOLID compliance** - proper Oracle abstraction, dependency injection, clean dbt architecture
@@ -26,8 +27,9 @@
 - ✅ **Production-ready Oracle code** - no workarounds, fallbacks, try-pass blocks, or incomplete dbt implementations
 
 **CURRENT FLEXT-DBT-ORACLE STATUS** (Evidence-based):
+
 - 🔴 **Ruff Issues**: Oracle-specific violations in dbt orchestration and Oracle Database integration
-- 🟡 **MyPy Issues**: 0 in main src/ Oracle modules (already compliant)  
+- 🟡 **MyPy Issues**: 0 in main src/ Oracle modules (already compliant)
 - 🟡 **Pyright Issues**: Minor Oracle API mismatches in dbt service definitions
 - 🔴 **Pytest Status**: Oracle test infrastructure needs fixing for dbt orchestration testing
 - 🟢 **flext-core Foundation**: 79% coverage, fully functional API for Oracle operations
@@ -145,27 +147,27 @@ from flext_meltano import (
 # ✅ CORRECT - Unified Oracle dbt service class (VERIFIED WORKING PATTERN)
 class UnifiedFlextDbtOracleService(FlextDomainService):
     """Single unified Oracle dbt service class following flext-core patterns.
-    
+
     This class consolidates all Oracle dbt-related operations:
     - Oracle Database connectivity and operations via flext-db-oracle
     - dbt model compilation, execution, and testing via flext-meltano
     - Oracle-to-dbt type mapping and schema management
     - Performance optimization and connection pooling
     - Data quality validation and incremental processing
-    
+
     Note: FlextDomainService is Pydantic-based, inherits from BaseModel
     """
-    
+
     def __init__(self, **data) -> None:
         """Initialize Oracle dbt service with proper dependency injection."""
         super().__init__(**data)
         # Use direct class access - NO wrapper functions (per updated flext-core)
         self._container = FlextContainer.get_global()
         self._logger = FlextLogger(__name__)
-    
+
     def orchestrate_oracle_dbt_pipeline(
-        self, 
-        schema_names: list[str], 
+        self,
+        schema_names: list[str],
         model_names: list[str] = None
     ) -> FlextResult[OracleDbtPipelineResult]:
         """Orchestrate complete Oracle-to-dbt pipeline with error handling."""
@@ -179,33 +181,33 @@ class UnifiedFlextDbtOracleService(FlextDomainService):
             .map(lambda results: self._create_pipeline_result(results))
             .map_error(lambda e: f"dbt Oracle pipeline failed: {e}")
         )
-    
+
     def extract_oracle_schema_metadata(self, oracle_config: dict) -> FlextResult[OracleSchemaMetadata]:
         """Extract Oracle schema metadata via flext-db-oracle with proper error handling."""
         if not oracle_config:
             return FlextResult[OracleSchemaMetadata].fail("Oracle configuration cannot be empty")
-        
+
         # Validate Oracle configuration
         validation_result = self._validate_oracle_config(oracle_config)
         if validation_result.is_failure:
             return FlextResult[OracleSchemaMetadata].fail(f"Oracle config validation failed: {validation_result.error}")
-        
+
         # Extract Oracle metadata through flext-db-oracle integration (NO direct cx_Oracle)
         extraction_result = self._extract_oracle_schema_info(oracle_config)
         if extraction_result.is_failure:
             return FlextResult[OracleSchemaMetadata].fail(f"Oracle schema extraction failed: {extraction_result.error}")
-            
+
         return FlextResult[OracleSchemaMetadata].ok(extraction_result.unwrap())
-    
+
     def generate_dbt_models_from_oracle(
-        self, 
+        self,
         oracle_metadata: OracleSchemaMetadata,
         generation_config: dict
     ) -> FlextResult[DbtModelCollection]:
         """Generate dbt models from Oracle metadata with optimization patterns."""
         if not oracle_metadata or oracle_metadata.is_empty():
             return FlextResult[DbtModelCollection].fail("Oracle metadata cannot be empty")
-        
+
         # Generate dbt models optimized for Oracle Database
         models_result = (
             self._create_oracle_staging_models(oracle_metadata)
@@ -213,12 +215,12 @@ class UnifiedFlextDbtOracleService(FlextDomainService):
             .flat_map(lambda dims: self._create_oracle_fact_models(dims, generation_config))
             .flat_map(lambda facts: self._create_oracle_analytics_models(facts, generation_config))
         )
-        
+
         if models_result.is_failure:
             return FlextResult[DbtModelCollection].fail(f"Oracle dbt model generation failed: {models_result.error}")
-            
+
         return FlextResult[DbtModelCollection].ok(models_result.unwrap())
-    
+
     def execute_dbt_oracle_models(self, pipeline_config: OracleDbtPipelineConfig) -> FlextResult[OracleDbtExecutionResult]:
         """Execute dbt models with Oracle Database optimizations via flext-meltano."""
         return (
@@ -232,16 +234,16 @@ class UnifiedFlextDbtOracleService(FlextDomainService):
             .map(lambda results: self._create_oracle_execution_result(results))
             .map_error(lambda e: f"Oracle dbt execution pipeline failed: {e}")
         )
-    
+
     def _validate_oracle_connectivity(self) -> FlextResult[None]:
         """Validate Oracle Database connectivity through flext-db-oracle."""
         oracle_api_result = self._container.get("oracle_api")
         if oracle_api_result.is_failure:
             return FlextResult[None].fail("Oracle API service unavailable")
-        
+
         oracle_api = oracle_api_result.unwrap()
         return oracle_api.test_connection()
-    
+
     def _validate_oracle_config(self, config: dict) -> FlextResult[dict]:
         """Validate Oracle configuration structure."""
         required_fields = ["host", "port", "service_name", "username", "password"]
@@ -249,58 +251,58 @@ class UnifiedFlextDbtOracleService(FlextDomainService):
             if field not in config:
                 return FlextResult[dict].fail(f"Missing required Oracle field: {field}")
         return FlextResult[dict].ok(config)
-    
+
     def _extract_oracle_schema_info(self, config: dict) -> FlextResult[OracleSchemaMetadata]:
         """Extract Oracle schema information through flext-db-oracle integration."""
         # Implementation using flext-db-oracle API (NO direct cx_Oracle/oracledb)
         oracle_api_result = self._container.get("oracle_api")
         if oracle_api_result.is_failure:
             return FlextResult[OracleSchemaMetadata].fail("Oracle API service unavailable")
-        
+
         oracle_api = oracle_api_result.unwrap()
         return oracle_api.extract_schema_metadata(config)
-    
+
     def _create_oracle_staging_models(self, metadata: OracleSchemaMetadata) -> FlextResult[DbtModelCollection]:
         """Create staging models optimized for Oracle Database patterns."""
         # Implementation for Oracle staging models with proper SQL optimization
         return FlextResult[DbtModelCollection].ok(DbtModelCollection())
-    
+
     def _create_oracle_dimension_models(
-        self, 
-        staging_models: DbtModelCollection, 
+        self,
+        staging_models: DbtModelCollection,
         config: dict
     ) -> FlextResult[DbtModelCollection]:
         """Create dimension models with Oracle-specific optimizations."""
         # Implementation for Oracle dimensional modeling with SCD handling
         return FlextResult[DbtModelCollection].ok(DbtModelCollection())
-    
+
     def _create_oracle_fact_models(
-        self, 
-        dimension_models: DbtModelCollection, 
+        self,
+        dimension_models: DbtModelCollection,
         config: dict
     ) -> FlextResult[DbtModelCollection]:
         """Create fact models optimized for Oracle Database performance."""
         # Implementation for Oracle fact models with partitioning and indexing hints
         return FlextResult[DbtModelCollection].ok(DbtModelCollection())
-    
+
     def _create_oracle_analytics_models(
-        self, 
-        fact_models: DbtModelCollection, 
+        self,
+        fact_models: DbtModelCollection,
         config: dict
     ) -> FlextResult[DbtModelCollection]:
         """Create analytics models with Oracle advanced features."""
         # Implementation for Oracle analytics with window functions and analytical SQL
         return FlextResult[DbtModelCollection].ok(DbtModelCollection())
-    
+
     def _execute_oracle_dbt_models_via_meltano(
-        self, 
+        self,
         compiled_models: DbtModelCollection
     ) -> FlextResult[DbtExecutionResult]:
         """Execute dbt models via flext-meltano integration."""
         meltano_api_result = self._container.get("meltano_api")
         if meltano_api_result.is_failure:
             return FlextResult[DbtExecutionResult].fail("Meltano API service unavailable")
-        
+
         meltano_api = meltano_api_result.unwrap()
         return meltano_api.execute_dbt_models(compiled_models)
 
@@ -309,13 +311,13 @@ from flext_core import FlextModels
 
 class OracleTableMetadata(FlextModels.Entity):
     """Oracle table metadata entity with business rules validation."""
-    
+
     schema_name: str
     table_name: str
     columns: list[dict]
     constraints: list[dict]
     indexes: list[dict]
-    
+
     def validate_business_rules(self) -> FlextResult[None]:
         """Required abstract method implementation for Oracle table metadata."""
         if not self.schema_name.strip():
@@ -328,12 +330,12 @@ class OracleTableMetadata(FlextModels.Entity):
 
 class OracleDbtPipelineConfig(FlextModels.Value):
     """Oracle dbt pipeline configuration value object."""
-    
+
     oracle_config: dict
     dbt_config: dict
     generation_config: dict
     execution_config: dict
-    
+
     def validate_business_rules(self) -> FlextResult[None]:
         """Required abstract method implementation for pipeline config."""
         if not self.oracle_config:
@@ -356,22 +358,22 @@ from flext_cli import FlextCliApi, FlextCliMain, FlextCliConfig
 
 class OracleCliService:
     """Oracle CLI service using flext-cli foundation - NO Click imports allowed.
-    
-    CONFIGURATION AUTHORITY: 
+
+    CONFIGURATION AUTHORITY:
     - flext-cli automatically loads .env from execution root
     - flext-core provides configuration infrastructure for Oracle
     - Project ONLY describes Oracle configuration schema, never loads manually
     """
-    
+
     def __init__(self) -> None:
         """Initialize Oracle CLI service with automatic configuration loading."""
         # ✅ AUTOMATIC: Oracle configuration loaded transparently by flext-cli/flext-core
         self._cli_api = FlextCliApi()
         self._config = FlextCliConfig()  # Automatically includes .env + defaults + CLI params for Oracle
-        
+
     def define_oracle_configuration_schema(self) -> FlextResult[dict]:
         """Define Oracle-specific configuration schema.
-        
+
         Project ONLY describes Oracle configuration needs - flext-cli handles:
         1. Multi-format file detection (.env, .toml, .yaml, .json)
         2. Environment variable precedence for Oracle settings
@@ -384,7 +386,7 @@ class OracleCliService:
             # Oracle Database configuration
             "oracle": {
                 "host": {
-                    "default": "localhost",              # Level 3: DEFAULT CONSTANTS  
+                    "default": "localhost",              # Level 3: DEFAULT CONSTANTS
                     "env_var": "ORACLE_HOST",            # Levels 1&2: ENV VARS → CONFIG FILE
                     "cli_param": "--oracle-host",        # Level 4: CLI PARAMETERS
                     "config_formats": {
@@ -463,14 +465,14 @@ class OracleCliService:
                 }
             }
         }
-        
+
         # Register Oracle schema with flext-cli - handles ALL formats automatically
         schema_result = self._config.register_universal_schema(oracle_config_schema)
         if schema_result.is_failure:
             return FlextResult[dict].fail(f"Oracle schema registration failed: {schema_result.error}")
-            
+
         return FlextResult[dict].ok(oracle_config_schema)
-    
+
     def create_oracle_cli_interface(self) -> FlextResult[FlextCliMain]:
         """Create Oracle CLI interface using flext-cli patterns."""
         # Initialize main CLI handler for Oracle operations
@@ -478,18 +480,18 @@ class OracleCliService:
             name="flext-dbt-oracle",
             description="FLEXT dbt Oracle - Enterprise Oracle Database Integration"
         )
-        
+
         # Register Oracle command groups through flext-cli
         extract_result = main_cli.register_command_group("extract", self._create_oracle_extract_commands)
         if extract_result.is_failure:
             return FlextResult[FlextCliMain].fail(f"Oracle extract commands registration failed: {extract_result.error}")
-            
-        orchestrate_result = main_cli.register_command_group("orchestrate", self._create_oracle_orchestrate_commands)  
+
+        orchestrate_result = main_cli.register_command_group("orchestrate", self._create_oracle_orchestrate_commands)
         if orchestrate_result.is_failure:
             return FlextResult[FlextCliMain].fail(f"Oracle orchestrate commands registration failed: {orchestrate_result.error}")
-            
+
         return FlextResult[FlextCliMain].ok(main_cli)
-    
+
     def _create_oracle_extract_commands(self) -> FlextResult[dict]:
         """Create Oracle extraction commands using flext-cli patterns."""
         # Use flext-cli command builders, NEVER Click decorators OR Rich output for Oracle
@@ -502,7 +504,7 @@ class OracleCliService:
                 output_format="table"  # Use flext-cli output formatting for Oracle data
             ),
             "tables": self._cli_api.create_command(
-                name="tables", 
+                name="tables",
                 description="Extract Oracle table structures",
                 handler=self._handle_oracle_table_extraction,
                 arguments=["schema_name", "table_pattern"],
@@ -510,30 +512,30 @@ class OracleCliService:
             )
         }
         return FlextResult[dict].ok(commands)
-    
+
     def _handle_oracle_schema_extraction(self, args: dict) -> FlextResult[str]:
         """Handle Oracle schema extraction command."""
         # Validate required arguments
         if not args.get("schema_name"):
             return FlextResult[str].fail("Schema name is required for Oracle extraction")
-        
+
         # Get Oracle service from container
         container = FlextContainer.get_global()
         oracle_service_result = container.get("oracle_dbt_service")
         if oracle_service_result.is_failure:
             return FlextResult[str].fail("Oracle dbt service unavailable")
-        
+
         # Extract Oracle schema metadata - NO try/except fallbacks
         oracle_service = oracle_service_result.unwrap()
         oracle_config = {
             "schema_names": [args["schema_name"]],
             # Configuration automatically loaded from flext-cli config
         }
-        
+
         extraction_result = oracle_service.extract_oracle_schema_metadata(oracle_config)
         if extraction_result.is_failure:
             return FlextResult[str].fail(f"Oracle schema extraction failed: {extraction_result.error}")
-        
+
         # Display results using flext-cli output wrappers
         oracle_metadata = extraction_result.unwrap()
         display_result = self._cli_api.format_output(
@@ -542,7 +544,7 @@ class OracleCliService:
             headers=["Schema", "Table", "Columns", "Constraints", "Indexes"],
             style="oracle_metadata"
         )
-        
+
         return FlextResult[str].ok(f"Oracle schema extraction successful: {len(oracle_metadata.tables)} tables processed")
 
 # ✅ CORRECT - Oracle CLI entry point using flext-cli
@@ -550,7 +552,7 @@ def main() -> None:
     """Main Oracle CLI entry point - uses flext-cli, never Click directly."""
     cli_service = OracleCliService()
     cli_result = cli_service.create_oracle_cli_interface()
-    
+
     if cli_result.is_failure:
         # Use flext-cli for error output too - NO direct print/rich usage
         cli_api = FlextCliApi()
@@ -561,7 +563,7 @@ def main() -> None:
         )
         cli_api.display_error(error_output.unwrap() if error_output.is_success else cli_result.error)
         exit(1)
-        
+
     cli = cli_result.unwrap()
     cli.run()
 ```
@@ -579,7 +581,7 @@ def main() -> None:
 echo "=== ORACLE DBT RUFF ISSUES ==="
 ruff check . --output-format=github | grep -i oracle | wc -l
 
-echo "=== ORACLE DBT MYPY ISSUES ==="  
+echo "=== ORACLE DBT MYPY ISSUES ==="
 mypy src/ --show-error-codes --no-error-summary 2>&1 | grep -E "error:|note:" | grep -i oracle | wc -l
 
 echo "=== ORACLE DBT PYRIGHT ISSUES ==="
@@ -610,7 +612,7 @@ class OracleConnector:
 
 class DbtModelGenerator:
     def generate(self): pass
-    
+
 class MeltanoOrchestrator:
     def orchestrate(self): pass
 
@@ -620,19 +622,19 @@ def create_oracle_connection(): pass
 # AFTER - Single unified Oracle dbt class (incremental improvement)
 class UnifiedFlextDbtOracleService:
     """Consolidated Oracle dbt service following single responsibility principle."""
-    
+
     def extract_oracle_schema_metadata(self, config: dict) -> FlextResult[OracleSchemaMetadata]:
         """Former OracleConnector.connect + metadata extraction with proper error handling."""
         # Implementation using flext-core patterns for Oracle
-        
+
     def generate_dbt_models_from_oracle(self, metadata: OracleSchemaMetadata, config: dict) -> FlextResult[DbtModelCollection]:
         """Former DbtModelGenerator.generate with proper error handling."""
         # Implementation using flext-core patterns for Oracle dbt
-        
+
     def orchestrate_oracle_dbt_pipeline(self, schema_names: list[str]) -> FlextResult[OracleDbtPipelineResult]:
         """Former MeltanoOrchestrator.orchestrate with proper error handling."""
         # Implementation using flext-core patterns for Oracle dbt orchestration
-        
+
     def _establish_oracle_connection(self, config: dict) -> FlextResult[OracleConnection]:
         """Former create_oracle_connection now as private method."""
         # Implementation as part of unified Oracle class via flext-db-oracle
@@ -707,7 +709,7 @@ from flext_db_oracle import get_flext_oracle_api  # If available
 
 class OracleDbtCliTestingService:
     """Oracle dbt CLI testing service using FLEXT ecosystem - .env automatically loaded."""
-    
+
     def __init__(self) -> None:
         """Initialize Oracle CLI testing with automatic .env configuration loading."""
         # ✅ AUTOMATIC: .env loaded transparently by FLEXT ecosystem
@@ -715,49 +717,49 @@ class OracleDbtCliTestingService:
         self._cli_api = FlextCliApi()
         self._config = FlextCliConfig()  # Automatically loads .env + defaults + CLI params
         self._oracle_api = get_flext_oracle_api() if 'flext_db_oracle' in globals() else None
-        
+
     def debug_oracle_configuration(self) -> FlextResult[dict]:
         """Debug Oracle CLI configuration using FLEXT patterns - .env as source of truth."""
         self._logger.debug("Starting Oracle CLI configuration debugging")
-        
+
         # ✅ CORRECT: Access Oracle configuration through FLEXT API (includes .env automatically)
         config_result = self._config.get_all_configuration()
         if config_result.is_failure:
             return FlextResult[dict].fail(f"Oracle configuration access failed: {config_result.error}")
-            
+
         config_data = config_result.unwrap()
-        
+
         # Filter Oracle-specific configuration
         oracle_config = {k: v for k, v in config_data.items() if 'oracle' in k.lower()}
-        
+
         # Debug output through FLEXT CLI API
         debug_display_result = self._cli_api.display_debug_information(
             title="Oracle CLI Configuration Debug (ENV → .env → DEFAULT → CLI)",
             data=oracle_config,
             format_type="tree"  # flext-cli handles formatted output
         )
-        
+
         if debug_display_result.is_failure:
             return FlextResult[dict].fail(f"Oracle debug display failed: {debug_display_result.error}")
-            
+
         return FlextResult[dict].ok(oracle_config)
-    
+
     def test_oracle_connectivity_debug(self) -> FlextResult[dict]:
         """Test Oracle connectivity with debug logging - FLEXT-DB-ORACLE exclusively."""
         self._logger.debug("Starting Oracle connectivity testing")
-        
+
         # ✅ CORRECT: Get Oracle configuration from .env through FLEXT config
         oracle_config_result = self._config.get_oracle_configuration()
         if oracle_config_result.is_failure:
             return FlextResult[dict].fail(f"Oracle config access failed: {oracle_config_result.error}")
-            
+
         oracle_config = oracle_config_result.unwrap()
-        
+
         # ✅ CORRECT: Test connection through FLEXT-DB-ORACLE API (NO external tools)
         if self._oracle_api:
             connection_result = self._oracle_api.test_connection_with_debug(
                 host=oracle_config["host"],
-                port=oracle_config["port"], 
+                port=oracle_config["port"],
                 service_name=oracle_config["service_name"],
                 username=oracle_config["username"],
                 password=oracle_config["password"],
@@ -767,7 +769,7 @@ class OracleDbtCliTestingService:
             # Fallback to direct service testing
             oracle_service_result = self._test_oracle_service_directly(oracle_config)
             connection_result = oracle_service_result
-        
+
         if connection_result.is_failure:
             # Display debug information through FLEXT CLI
             self._cli_api.display_error_with_debug(
@@ -775,14 +777,14 @@ class OracleDbtCliTestingService:
                 debug_data=oracle_config,
                 suggestions=[
                     "Check .env file Oracle configuration",
-                    "Verify Oracle Database is running and accessible", 
+                    "Verify Oracle Database is running and accessible",
                     "Validate Oracle service name and port",
                     "Check Oracle user credentials and permissions",
                     "Test network connectivity to Oracle host"
                 ]
             )
             return FlextResult[dict].fail(connection_result.error)
-            
+
         # Display success with debug information
         connection_info = connection_result.unwrap()
         self._cli_api.display_success_with_debug(
@@ -790,7 +792,7 @@ class OracleDbtCliTestingService:
             debug_data=connection_info,
             format_type="table"
         )
-        
+
         return FlextResult[dict].ok(connection_info)
 ```
 
@@ -804,23 +806,23 @@ class OracleDbtCliTestingService:
 # ✅ CORRECT - Oracle-specific dbt model generation
 class OracleToDbtModelGenerator:
     """Generate dbt models optimized for Oracle Database."""
-    
+
     def generate_oracle_staging_model(self, oracle_table: OracleTableMetadata) -> FlextResult[DbtModel]:
         """Generate staging model from Oracle table metadata."""
         staging_model_sql = f"""
         {{{{ config(materialized='view') }}}}
-        
+
         select
         {self._generate_oracle_column_list(oracle_table.columns)}
         from {{{{ source('oracle_{oracle_table.schema_name.lower()}', '{oracle_table.table_name}') }}}}
         """
-        
+
         return FlextResult[DbtModel].ok(DbtModel(
             name=f"stg_oracle_{oracle_table.schema_name.lower()}_{oracle_table.table_name.lower()}",
             sql=staging_model_sql,
             materialization="view"
         ))
-    
+
     def generate_oracle_dimension_model(self, oracle_tables: list[OracleTableMetadata]) -> FlextResult[DbtModel]:
         """Generate dimension model with Oracle-specific optimizations."""
         dimension_model_sql = """
@@ -828,7 +830,7 @@ class OracleToDbtModelGenerator:
             materialized='table',
             pre_hook="alter session set optimizer_mode=ALL_ROWS"
         ) }}
-        
+
         select
             {{ dbt_utils.surrogate_key(['id']) }} as surrogate_key,
             id as natural_key,
@@ -843,13 +845,13 @@ class OracleToDbtModelGenerator:
                  else 'HISTORICAL' end as record_status
         from {{ ref('stg_oracle_hr_employees') }}
         """
-        
+
         return FlextResult[DbtModel].ok(DbtModel(
             name="dim_oracle_employees",
             sql=dimension_model_sql,
             materialization="table"
         ))
-    
+
     def generate_oracle_fact_model(self, fact_config: dict) -> FlextResult[DbtModel]:
         """Generate fact model with Oracle performance optimizations."""
         fact_model_sql = """
@@ -861,7 +863,7 @@ class OracleToDbtModelGenerator:
                 "alter session set parallel_degree_policy=AUTO"
             ]
         ) }}
-        
+
         select
             {{ dbt_utils.surrogate_key(['transaction_id']) }} as fact_key,
             transaction_id,
@@ -871,15 +873,15 @@ class OracleToDbtModelGenerator:
             quantity,
             -- Oracle-specific: Use analytical functions
             sum(amount) over (
-                partition by employee_id 
-                order by transaction_date 
+                partition by employee_id
+                order by transaction_date
                 rows unbounded preceding
             ) as running_total,
             created_date
         from {{ ref('stg_oracle_sales_transactions') }} t
         join {{ ref('dim_oracle_employees') }} e on t.employee_id = e.natural_key
         join {{ ref('dim_date') }} d on date(t.transaction_date) = d.date_actual
-        
+
         {% if is_incremental() %}
             -- Oracle-specific: Use TRUNC for date comparison
             where trunc(t.created_date) > (
@@ -887,7 +889,7 @@ class OracleToDbtModelGenerator:
             )
         {% endif %}
         """
-        
+
         return FlextResult[DbtModel].ok(DbtModel(
             name="fact_oracle_sales_transactions",
             sql=fact_model_sql,
@@ -900,7 +902,7 @@ class OracleToDbtModelGenerator:
         for col in columns:
             oracle_type = col['data_type'].upper()
             col_name = col['column_name'].lower()
-            
+
             # Oracle-specific type mappings for dbt
             if oracle_type.startswith('VARCHAR2'):
                 column_mappings.append(f"    trim({col_name}) as {col_name}")
@@ -910,7 +912,7 @@ class OracleToDbtModelGenerator:
                 column_mappings.append(f"    nvl({col_name}, 0) as {col_name}")
             else:
                 column_mappings.append(f"    {col_name}")
-                
+
         return ",\n".join(column_mappings)
 ```
 
@@ -966,7 +968,7 @@ class OracleToDbtModelGenerator:
 - [ ] Establish measurable success criteria from current Oracle baseline
 - [ ] Test Oracle Database connectivity and permissions
 
-### During Each Oracle Development Cycle  
+### During Each Oracle Development Cycle
 
 - [ ] Make minimal, focused Oracle changes (single aspect per change)
 - [ ] Validate after every Oracle modification using quality gates
@@ -978,7 +980,7 @@ class OracleToDbtModelGenerator:
 ### After Each Oracle Development Session
 
 - [ ] Full quality gate validation (ruff + mypy + pyright + pytest) for Oracle code
-- [ ] Oracle coverage measurement and improvement tracking  
+- [ ] Oracle coverage measurement and improvement tracking
 - [ ] Integration testing with real Oracle dependencies
 - [ ] dbt model compilation and execution validation
 - [ ] Update Oracle documentation reflecting current reality
@@ -1022,7 +1024,7 @@ else
     echo "✅ dbt compilation successful"
 fi
 
-# Oracle Functional Validation  
+# Oracle Functional Validation
 python -c "
 import sys
 sys.path.insert(0, 'src')
@@ -1031,25 +1033,25 @@ try:
     # Test all major Oracle imports
     from flext_core import FlextResult, FlextContainer, FlextModels
     print('✅ flext-core integration: SUCCESS')
-    
+
     # Test Oracle dbt functionality
     from src.unified_flext_dbt_oracle_service import UnifiedFlextDbtOracleService
     print('✅ Oracle dbt service import: SUCCESS')
-    
+
     # Test Oracle service instantiation
     oracle_service = UnifiedFlextDbtOracleService()
     print('✅ Oracle service creation: SUCCESS')
-    
+
     # Test Oracle-specific integrations
     from flext_db_oracle import get_flext_oracle_api
     print('✅ flext-db-oracle integration: SUCCESS')
-    
-    from flext_meltano import get_flext_meltano_api  
+
+    from flext_meltano import get_flext_meltano_api
     print('✅ flext-meltano integration: SUCCESS')
-    
+
     print('✅ All Oracle imports: SUCCESS')
     print('✅ FINAL ORACLE VALIDATION: PASSED')
-    
+
 except Exception as e:
     print(f'❌ ORACLE VALIDATION FAILED: {e}')
     sys.exit(1)

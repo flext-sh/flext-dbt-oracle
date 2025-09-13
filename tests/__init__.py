@@ -1,4 +1,4 @@
-"""Init module.
+"""Tests for FLEXT DBT Oracle.
 
 This module is part of the FLEXT ecosystem. Docstrings follow PEP 257 and Google style.
 

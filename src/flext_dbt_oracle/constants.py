@@ -1,7 +1,6 @@
-"""Constants for FLEXT DBT Oracle module.
+"""Constants for FLEXT DBT Oracle.
 
-This module defines centralized constants following the FlextConstants pattern
-from flext-core, extending it with DBT Oracle-specific constants.
+Extending flext-core with DBT Oracle-specific constants.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
