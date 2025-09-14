@@ -10,11 +10,11 @@ from pathlib import Path
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleApi
-from flext_db_oracle.typings import FlextDbOracleTable as FlextOracleObject
+from flext_db_oracle.compatibility import FlextDbOracleTable as FlextOracleObject
 
+from flext_dbt_oracle.client import FlextDbtOracleClient
+from flext_dbt_oracle.config import FlextDbtOracleConfig
 from flext_dbt_oracle.constants import FlextDbtOracleConstants
-from flext_dbt_oracle.dbt_client import FlextDbtOracleClient
-from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
 from flext_dbt_oracle.models import FlextDbtOracleModelGenerator
 
 logger = FlextLogger(__name__)

@@ -8,9 +8,9 @@ from __future__ import annotations
 
 from flext_core import FlextTypes
 
-from flext_dbt_oracle.dbt_client import FlextDbtOracleClient
-from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
-from flext_dbt_oracle.dbt_exceptions import (
+from flext_dbt_oracle.client import FlextDbtOracleClient
+from flext_dbt_oracle.config import FlextDbtOracleConfig
+from flext_dbt_oracle.exceptions import (
     FLEXT_DBT_ORACLEConfigurationError,
     FLEXT_DBT_ORACLEConnectionError,
     FLEXT_DBT_ORACLEError,
@@ -31,16 +31,16 @@ from flext_dbt_oracle.dbt_exceptions import (
     FlextDbtOracleTransformationError,
     FlextDbtOracleTypeError,
 )
-from flext_dbt_oracle.dbt_services import (
-    FlextDbtOracleMonitoringService,
-    FlextDbtOracleService,
-    FlextDbtOracleWorkflowManager,
-    FlextDbtOracleWorkflowService,
-)
 from flext_dbt_oracle.models import (
     FlextDbtOracleModel,
     FlextDbtOracleModelGenerator,
     OracleTableModel,
+)
+from flext_dbt_oracle.services import (
+    FlextDbtOracleMonitoringService,
+    FlextDbtOracleService,
+    FlextDbtOracleWorkflowManager,
+    FlextDbtOracleWorkflowService,
 )
 
 # Version information

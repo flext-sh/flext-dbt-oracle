@@ -1,4 +1,3 @@
-
 """Models for FLEXT DBT Oracle.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -14,7 +13,7 @@ import yaml
 from flext_core import FlextLogger, FlextModels, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleApi, FlextDbOracleTable as FlextOracleObject
 
-from flext_dbt_oracle.dbt_config import FlextDbtOracleConfig
+from flext_dbt_oracle.config import FlextDbtOracleConfig
 
 logger = FlextLogger(__name__)
 

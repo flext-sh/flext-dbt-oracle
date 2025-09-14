@@ -1,4 +1,3 @@
-
 """Domain-specific Oracle DBT exceptions using factory pattern to eliminate duplication.
 
 Module documentation:
