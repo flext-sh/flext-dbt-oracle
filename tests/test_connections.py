@@ -215,7 +215,7 @@ class TestExecuteQueries:
 
     @patch("flext_dbt_oracle.adapters.oracle.connections.run_async_in_sync_context")
     @patch("multiprocessing.get_context")
-    @pytest.mark.usefixtures("_mock_mp_context")
+    @pytest.mark.usefixtures("_mock_oracle_connection")
     def test_execute_query_success(
         self,
         mock_async_run: Mock,
