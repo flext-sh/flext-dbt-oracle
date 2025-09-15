@@ -9,8 +9,7 @@ import time
 from pathlib import Path
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
-from flext_db_oracle import FlextDbOracleApi
-from flext_db_oracle.compatibility import FlextDbOracleTable as FlextOracleObject
+from flext_db_oracle import FlextDbOracleApi, Table as FlextOracleObject
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.config import FlextDbtOracleConfig

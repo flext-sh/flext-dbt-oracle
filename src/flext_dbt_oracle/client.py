@@ -8,8 +8,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
-from flext_db_oracle import FlextDbOracleApi
-from flext_db_oracle.compatibility import FlextDbOracleTable as FlextOracleObject
+from flext_db_oracle import FlextDbOracleApi, Table as FlextOracleObject
 from flext_meltano import FlextDbt, FlextMeltanoTypeAdapters
 
 from flext_dbt_oracle.config import FlextDbtOracleConfig
