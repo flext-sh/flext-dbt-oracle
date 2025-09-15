@@ -95,7 +95,9 @@ class FlextOracleOracleConnectionManager:
             connection.handle = {
                 "connection_service": None,
                 "query_service": None,
-                "oracle_config": cast("OracleCredentials", connection.credentials).to_oracle_config(),
+                "oracle_config": cast(
+                    "OracleCredentials", connection.credentials
+                ).to_oracle_config(),
             }
             return connection
         except Exception as e:
@@ -121,6 +123,7 @@ class FlextOracleOracleConnectionManager:
 
     def execute(self, sql: str, *, fetch: bool = False) -> tuple[object, object]:
         """Execute SQL query."""
+
         # Mock response for testing
         class MockResponse:
             def __init__(self) -> None:
@@ -131,8 +134,11 @@ class FlextOracleOracleConnectionManager:
         _ = sql, fetch  # Suppress unused parameter warnings
         return MockResponse(), None
 
-    def add_query(self, sql: str, bindings: FlextTypes.Core.Dict) -> tuple[Connection, object]:
+    def add_query(
+        self, sql: str, bindings: FlextTypes.Core.Dict
+    ) -> tuple[Connection, object]:
         """Add query with fallback cursor."""
+
         # Mock cursor for testing
         class MockCursor:
             def __init__(self, sql: str, bindings: FlextTypes.Core.Dict) -> None:
@@ -163,7 +169,9 @@ def run_async_in_sync_context[T](coro: Coroutine[object, object, T]) -> T:
         if loop.is_running():
             # If we're already in an async context, we need to use a different approach
             with concurrent.futures.ThreadPoolExecutor() as executor:
-                future: concurrent.futures.Future[T] = executor.submit(lambda: asyncio.run(coro))
+                future: concurrent.futures.Future[T] = executor.submit(
+                    lambda: asyncio.run(coro)
+                )
                 return future.result()
         else:
             return loop.run_until_complete(coro)
