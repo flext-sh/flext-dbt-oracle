@@ -5,13 +5,15 @@ Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from flext_core import FlextLogger, FlextResult, FlextTypes
-from flext_db_oracle import FlextDbOracleApi, Table as FlextOracleObject
-from flext_meltano import FlextDbt, FlextMeltanoTypeAdapters
+from flext_db_oracle import FlextDbOracleApi
+from flext_meltano import FlextMeltanoService
 
+from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
 from flext_dbt_oracle.config import FlextDbtOracleConfig
+
+# Type alias for Oracle table objects using adapter pattern
+FlextOracleObject = OracleTableAdapter
 
 logger = FlextLogger(__name__)
 
@@ -36,8 +38,8 @@ class FlextDbtOracleClient:
         """
         self.config = config or FlextDbtOracleConfig()
         self._oracle_api: FlextDbOracleApi | None = None
-        self._flext_dbt: FlextDbt | None = None
-        self._type_adapters = FlextMeltanoTypeAdapters()
+        self._meltano_service: FlextMeltanoService | None = None
+        self._dbt_plugin: object | None = None  # FlextDbtPlugin interface
 
         logger.info("Initialized DBT Oracle client with config: %s", self.config)
 
@@ -50,20 +52,16 @@ class FlextDbtOracleClient:
         return self._oracle_api
 
     @property
-    def flext_dbt(self) -> FlextDbt | None:
-        """Get or create FlextDbt instance using modern API."""
-        if self._flext_dbt is None:
-            # Create FlextDbt wrapper using project directory
-            project_path = Path(self.config.dbt_project_dir)
-            dbt_result = self._type_adapters.create_flext_dbt(project_path)
-            if dbt_result.success:
-                self._flext_dbt = dbt_result.value
-                logger.info("Created FlextDbt wrapper", project_path=str(project_path))
-            else:
-                logger.warning(
-                    "Failed to create FlextDbt wrapper: %s", dbt_result.error
-                )
-        return self._flext_dbt
+    def meltano_service(self) -> FlextMeltanoService | None:
+        """Get or create FlextMeltanoService instance."""
+        if self._meltano_service is None:
+            try:
+                # Create Meltano service using project directory
+                self._meltano_service = FlextMeltanoService()
+                logger.info("Created FlextMeltanoService wrapper")
+            except Exception as e:
+                logger.warning("Failed to create FlextMeltanoService: %s", e)
+        return self._meltano_service
 
     def test_oracle_connection(self) -> FlextResult[FlextTypes.Core.Dict]:
         """Test Oracle database connection.
@@ -129,21 +127,27 @@ class FlextDbtOracleClient:
                 # If no schemas provided, try a simple default: current user schema via get_tables(None)
                 table_names_result = self.oracle_api.get_tables()
                 if table_names_result.success:
-                    for table_name in table_names_result.value or []:
+                    for table_dict in table_names_result.value or []:
+                        # Extract table name from dictionary with proper type casting
+                        table_name = (
+                            str(table_dict.get("name", ""))
+                            if isinstance(table_dict, dict)
+                            else str(table_dict)
+                        )
                         meta = self.oracle_api.get_table_metadata(table_name)
                         if meta.success and isinstance(meta.value, dict):
-                            # Convert dict metadata to FlextDbOracleTable
+                            # Convert dict metadata using adapter factory
                             table_metadata = meta.value
-                            # Create a basic table object from metadata
-                            table_obj = FlextOracleObject(
-                                name=table_name,
-                                schema_name=None,  # Will be set from context
-                                columns=[],  # Will be populated from metadata if available
-                                metadata=table_metadata,
+                            # Create adapter from API response
+                            adapter_result = OracleTableFactory.from_api_response(
+                                table_name=table_name,
+                                api_response=table_metadata,
+                                schema_name=None,  # Will be inferred from response
                             )
-                            tables.append(table_obj)
+                            if adapter_result.is_success:
+                                tables.append(adapter_result.unwrap())
                 else:
-                    return FlextResult[FlextTypes.Core.List].fail(
+                    return FlextResult[list[FlextOracleObject]].fail(
                         f"Failed to list tables: {table_names_result.error}",
                     )
             else:
@@ -156,19 +160,25 @@ class FlextDbtOracleClient:
                             table_names_result.error,
                         )
                         continue
-                    for table_name in table_names_result.value or []:
+                    for table_dict in table_names_result.value or []:
+                        # Extract table name from dictionary with proper type casting
+                        table_name = (
+                            str(table_dict.get("name", ""))
+                            if isinstance(table_dict, dict)
+                            else str(table_dict)
+                        )
                         meta = self.oracle_api.get_table_metadata(table_name, schema)
                         if meta.success and isinstance(meta.value, dict):
-                            # Convert dict metadata to FlextDbOracleTable
+                            # Convert dict metadata using adapter factory
                             table_metadata = meta.value
-                            # Create a basic table object from metadata
-                            table_obj = FlextOracleObject(
-                                name=table_name,
+                            # Create adapter from API response
+                            adapter_result = OracleTableFactory.from_api_response(
+                                table_name=table_name,
+                                api_response=table_metadata,
                                 schema_name=schema,
-                                columns=[],  # Will be populated from metadata if available
-                                metadata=table_metadata,
                             )
-                            tables.append(table_obj)
+                            if adapter_result.is_success:
+                                tables.append(adapter_result.unwrap())
 
             logger.info("Successfully extracted %d Oracle tables", len(tables))
             return FlextResult[list[FlextOracleObject]].ok(tables)
@@ -251,40 +261,31 @@ class FlextDbtOracleClient:
                 model_names,
             )
 
-            # Execute requested models using modern FlextDbt API
-            flext_dbt = self.flext_dbt
-            if flext_dbt is None:
+            # Execute requested models using FlextMeltanoService
+            meltano_service = self.meltano_service
+            if meltano_service is None:
                 return FlextResult[FlextTypes.Core.Dict].fail(
-                    "FlextDbt wrapper not initialized - cannot execute models"
+                    "FlextMeltanoService not initialized - cannot execute models"
                 )
 
-            # Run all models or specific models using modern API
-            if model_names:
-                run_result = flext_dbt.run_models(model_names)
-            else:
-                run_result = flext_dbt.run_models()
+            # Run all models or specific models using Meltano service
+            run_result = meltano_service.run_models(
+                model_names=model_names,
+            )
 
             if run_result.success:
                 executed: FlextTypes.Core.Dict = {
                     "status": "success",
                     "models_executed": model_names or "all",
-                    "project_path": str(flext_dbt.project_path),
-                    "dbt_result": run_result.value,
+                    "project_path": self.config.dbt_project_dir,
+                    "dbt_result": run_result.unwrap(),
                 }
-            else:
-                executed = {
-                    "status": "failed",
-                    "error": run_result.error,
-                    "models_requested": model_names or "all",
-                }
-
-            logger.info(
-                "DBT transformation executed for models: %s",
-                model_names or "all",
-            )
-
-            if run_result.success:
+                logger.info(
+                    "DBT transformation executed for models: %s",
+                    model_names or "all",
+                )
                 return FlextResult[FlextTypes.Core.Dict].ok(executed)
+
             return FlextResult[FlextTypes.Core.Dict].fail(
                 run_result.error or "DBT transformation failed"
             )

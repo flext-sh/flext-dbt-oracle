@@ -8,7 +8,7 @@ from __future__ import annotations
 from typing import ClassVar
 
 from flext_core import FlextConfig, FlextLogger, FlextTypes
-from flext_db_oracle import FlextDbOracleConfig
+from flext_db_oracle import OracleConfig as FlextDbOracleConfig
 from flext_meltano.config import FlextMeltanoConfig
 from pydantic import SecretStr
 

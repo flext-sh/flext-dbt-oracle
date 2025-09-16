@@ -8,9 +8,11 @@ from __future__ import annotations
 
 from flext_core import FlextTypes
 
+from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.config import FlextDbtOracleConfig
 from flext_dbt_oracle.exceptions import (
+    FLEXT_DBT_ORACLEAuthenticationError,
     FLEXT_DBT_ORACLEConfigurationError,
     FLEXT_DBT_ORACLEConnectionError,
     FLEXT_DBT_ORACLEError,
@@ -18,28 +20,17 @@ from flext_dbt_oracle.exceptions import (
     FLEXT_DBT_ORACLETimeoutError,
     FLEXT_DBT_ORACLEValidationError,
     FlextDbtOracleCompilationError,
-    FlextDbtOracleConnectionError,
     FlextDbtOracleDatabaseError,
-    FlextDbtOracleError,
     FlextDbtOracleExecutionError,
     FlextDbtOracleModelError,
-    FlextDbtOraclePerformanceError,
-    FlextDbtOraclePermissionError,
     FlextDbtOracleQueryError,
-    FlextDbtOracleResourceError,
-    FlextDbtOracleSchemaError,
-    FlextDbtOracleTransformationError,
-    FlextDbtOracleTypeError,
 )
 from flext_dbt_oracle.models import (
     FlextDbtOracleModel,
     FlextDbtOracleModelGenerator,
-    OracleTableModel,
 )
 from flext_dbt_oracle.services import (
     FlextDbtOracleMonitoringService,
-    FlextDbtOracleService,
-    FlextDbtOracleWorkflowManager,
     FlextDbtOracleWorkflowService,
 )
 
@@ -52,6 +43,7 @@ __email__ = "team@flext.sh"
 # Public API - Following established flext DBT patterns
 __all__: FlextTypes.Core.StringList = [
     # Configuration Error Types
+    "FLEXT_DBT_ORACLEAuthenticationError",
     "FLEXT_DBT_ORACLEConfigurationError",
     "FLEXT_DBT_ORACLEConnectionError",
     "FLEXT_DBT_ORACLEError",
@@ -62,26 +54,17 @@ __all__: FlextTypes.Core.StringList = [
     "FlextDbtOracleClient",
     "FlextDbtOracleCompilationError",
     "FlextDbtOracleConfig",
-    "FlextDbtOracleConnectionError",
     "FlextDbtOracleDatabaseError",
-    "FlextDbtOracleError",
     "FlextDbtOracleExecutionError",
     "FlextDbtOracleModel",
     "FlextDbtOracleModelError",
     "FlextDbtOracleModelGenerator",
     "FlextDbtOracleMonitoringService",
-    "FlextDbtOraclePerformanceError",
-    "FlextDbtOraclePermissionError",
     "FlextDbtOracleQueryError",
-    "FlextDbtOracleResourceError",
-    "FlextDbtOracleSchemaError",
-    "FlextDbtOracleService",
-    "FlextDbtOracleTransformationError",
-    "FlextDbtOracleTypeError",
-    "FlextDbtOracleWorkflowManager",
     "FlextDbtOracleWorkflowService",
-    # Models
-    "OracleTableModel",
+    # Adapter Pattern Classes (SOLID Interface Segregation)
+    "OracleTableAdapter",
+    "OracleTableFactory",
     # Metadata
     "__author__",
     "__email__",

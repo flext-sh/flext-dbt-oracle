@@ -8,10 +8,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextConstants
 
-
-class FlextDbtOracleConstants(FlextConstants):
+class FlextDbtOracleConstants:
     """Central container for DBT Oracle-specific constants.
 
     Follows the same pattern as FlextConstants from flext-core,
@@ -29,9 +27,9 @@ class FlextDbtOracleConstants(FlextConstants):
         SLOW_QUERY_THRESHOLD = 5.0  # seconds
         VERY_SLOW_QUERY_THRESHOLD = 30.0  # seconds
 
-        # Batch sizes (use centralized constants)
-        DEFAULT_BATCH_SIZE = FlextConstants.DBT.DEFAULT_BATCH_SIZE
-        MAX_BATCH_SIZE = FlextConstants.DBT.MAX_BATCH_SIZE
+        # Batch sizes
+        DEFAULT_BATCH_SIZE = 1000
+        MAX_BATCH_SIZE = 10000
 
         # Connection pool
         MIN_POOL_SIZE = 1
@@ -54,7 +52,7 @@ class FlextDbtOracleConstants(FlextConstants):
         MAX_NUMBER_PRECISION = 38
 
         # Default port
-        DEFAULT_PORT = FlextConstants.Infrastructure.DEFAULT_ORACLE_PORT
+        DEFAULT_PORT = 1521  # Standard Oracle port
 
     class DBT:
         """DBT-specific constants."""
@@ -107,23 +105,23 @@ class FlextDbtOracleConstants(FlextConstants):
         MODERATE_OBJECT_COUNT = 50
         LARGE_DATASET_THRESHOLD = 50
 
-        # Batch processing (use centralized constants)
+        # Batch processing
         OBJECTS_PER_THREAD = 25
         MIN_THREADS = 4
         MAX_THREADS = 8
-        LARGE_BATCH_SIZE = FlextConstants.DBT.LARGE_BATCH_SIZE
-        DEFAULT_BATCH_SIZE = FlextConstants.DBT.DEFAULT_BATCH_SIZE
+        LARGE_BATCH_SIZE = 5000
+        DEFAULT_BATCH_SIZE = 1000
 
     class Cache:
         """Cache configuration (use centralized constants)."""
 
         # TTL values in seconds
-        METADATA_CACHE_TTL = FlextConstants.Cache.METADATA_CACHE_TTL
-        QUERY_CACHE_TTL = FlextConstants.Cache.QUERY_CACHE_TTL
+        METADATA_CACHE_TTL = 3600  # 1 hour
+        QUERY_CACHE_TTL = 1800  # 30 minutes
 
         # Cache sizes
-        MAX_CACHE_ENTRIES = FlextConstants.Cache.MAX_CACHE_ENTRIES
-        CACHE_CLEANUP_INTERVAL = FlextConstants.Cache.CACHE_CLEANUP_INTERVAL
+        MAX_CACHE_ENTRIES = 10000
+        CACHE_CLEANUP_INTERVAL = 300  # 5 minutes
 
     class Logging:
         """Logging configuration."""

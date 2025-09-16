@@ -9,21 +9,26 @@ import time
 from pathlib import Path
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
-from flext_db_oracle import FlextDbOracleApi, Table as FlextOracleObject
+from flext_db_oracle import FlextDbOracleApi
+from flext_db_oracle.models import FlextDbOracleModels
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.config import FlextDbtOracleConfig
 from flext_dbt_oracle.constants import FlextDbtOracleConstants
-from flext_dbt_oracle.models import FlextDbtOracleModelGenerator
+from flext_dbt_oracle.models import FlextDbtOracleModel
+
+# Type alias for Oracle table objects
+FlextOracleObject = FlextDbOracleModels.Table
 
 logger = FlextLogger(__name__)
 
 
 class FlextDbtOracleWorkflowService:
-    """Service for orchestrating complete Oracle-to-DBT workflows.
+    """Unified Oracle-to-DBT workflow service with monitoring capabilities.
 
     Provides high-level workflow orchestration that combines metadata extraction,
-    model generation, and DBT execution into cohesive data transformation pipelines.
+    model generation, and DBT execution into cohesive data transformation pipelines,
+    with integrated monitoring functionality following FLEXT unified class pattern.
     """
 
     def __init__(
@@ -42,10 +47,13 @@ class FlextDbtOracleWorkflowService:
         # Initialize Oracle API for model generation
         oracle_config = self.config.get_oracle_config()
         self.oracle_api = FlextDbOracleApi(oracle_config)
-        self.model_generator = FlextDbtOracleModelGenerator(
+        self.model_generator = FlextDbtOracleModel.create_generator(
             self.config,
             self.oracle_api,
         )
+
+        # Initialize monitoring service
+        self.monitoring_service = self._MonitoringService(self.config)
 
         logger.info("Initialized Oracle DBT workflow service")
 
@@ -480,87 +488,94 @@ class FlextDbtOracleWorkflowService:
                 f"Recommendations generation failed: {e}"
             )
 
-
-class FlextDbtOracleMonitoringService:
-    """Service for monitoring Oracle-to-DBT workflow execution.
-
-    Provides monitoring, logging, and metrics collection for workflow execution.
-    """
-
-    def __init__(
-        self,
+    @classmethod
+    def create_monitoring_service(
+        cls,
         config: FlextDbtOracleConfig,
-    ) -> None:
-        """Initialize monitoring service.
+    ) -> _MonitoringService:
+        """Factory method to create monitoring service instance."""
+        return cls._MonitoringService(config)
 
-        Args:
-            config: Configuration for monitoring settings
+    class _MonitoringService:
+        """Nested helper class for monitoring workflow execution."""
 
-        """
-        self.config = config
-        logger.info("Initialized Oracle DBT monitoring service")
+        def __init__(
+            self,
+            config: FlextDbtOracleConfig,
+        ) -> None:
+            """Initialize monitoring service.
 
-    def track_workflow_execution(
-        self,
-        workflow_type: str,
-        workflow_params: FlextTypes.Core.Dict,
-    ) -> FlextTypes.Core.Dict:
-        """Track workflow execution metrics.
+            Args:
+                config: Configuration for monitoring settings
 
-        Args:
-            workflow_type: Type of workflow being executed
-            workflow_params: Parameters passed to workflow
+            """
+            self.config = config
+            logger.info("Initialized Oracle DBT monitoring service")
 
-        Returns:
-            Dictionary containing execution tracking information
+        def track_workflow_execution(
+            self,
+            workflow_type: str,
+            workflow_params: FlextTypes.Core.Dict,
+        ) -> FlextTypes.Core.Dict:
+            """Track workflow execution metrics.
 
-        """
-        tracking_info: FlextTypes.Core.Dict = {
-            "workflow_type": workflow_type,
-            "start_time": time.time(),
-            "parameters": workflow_params,
-            "tracking_id": f"{workflow_type}_{int(time.time())}",
-        }
+            Args:
+                workflow_type: Type of workflow being executed
+                workflow_params: Parameters passed to workflow
 
-        logger.info(
-            "Started tracking workflow execution: %s",
-            tracking_info["tracking_id"],
-        )
-        return tracking_info
+            Returns:
+                Dictionary containing execution tracking information
 
-    def log_workflow_completion(
-        self,
-        tracking_info: FlextTypes.Core.Dict,
-        result: FlextResult[object],
-    ) -> None:
-        """Log workflow completion metrics.
+            """
+            tracking_info: FlextTypes.Core.Dict = {
+                "workflow_type": workflow_type,
+                "start_time": time.time(),
+                "parameters": workflow_params,
+                "tracking_id": f"{workflow_type}_{int(time.time())}",
+            }
 
-        Args:
-            tracking_info: Tracking information from track_workflow_execution
-            result: Workflow execution result
+            logger.info(
+                "Started tracking workflow execution: %s",
+                tracking_info["tracking_id"],
+            )
+            return tracking_info
 
-        """
-        end_time = time.time()
-        start_time = tracking_info.get("start_time")
-        if isinstance(start_time, (int, float)):
-            duration = end_time - float(start_time)
-        else:
-            duration = 0.0
+        def log_workflow_completion(
+            self,
+            tracking_info: FlextTypes.Core.Dict,
+            result: FlextResult[object],
+        ) -> None:
+            """Log workflow completion metrics.
 
-        completion_info: FlextTypes.Core.Dict = {
-            "tracking_id": tracking_info["tracking_id"],
-            "workflow_type": tracking_info["workflow_type"],
-            "duration_seconds": round(duration, 2),
-            "success": result.success,
-            "result_summary": str(result.value)[:200] if result.value else None,
-            "error_summary": str(result.error)[:200] if result.error else None,
-        }
+            Args:
+                tracking_info: Tracking information from track_workflow_execution
+                result: Workflow execution result
 
-        if result.success:
-            logger.info("Workflow completed successfully: %s", completion_info)
-        else:
-            logger.error("Workflow failed: %s", completion_info)
+            """
+            end_time = time.time()
+            start_time = tracking_info.get("start_time")
+            if isinstance(start_time, (int, float)):
+                duration = end_time - float(start_time)
+            else:
+                duration = 0.0
 
+            completion_info: FlextTypes.Core.Dict = {
+                "tracking_id": tracking_info["tracking_id"],
+                "workflow_type": tracking_info["workflow_type"],
+                "duration_seconds": round(duration, 2),
+                "success": result.success,
+                "result_summary": str(result.value)[:200] if result.value else None,
+                "error_summary": str(result.error)[:200] if result.error else None,
+            }
+
+            if result.success:
+                logger.info("Workflow completed successfully: %s", completion_info)
+            else:
+                logger.error("Workflow failed: %s", completion_info)
+
+
+# Backward compatibility type alias
+FlextDbtOracleMonitoringService = FlextDbtOracleWorkflowService._MonitoringService
 
 __all__: FlextTypes.Core.StringList = [
     "FlextDbtOracleMonitoringService",

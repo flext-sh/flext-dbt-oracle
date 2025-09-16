@@ -15,10 +15,10 @@ from __future__ import annotations
 
 from typing import cast
 
-from flext_core import FlextExceptions, FlextTypes, create_module_exception_classes
+from flext_core import FlextExceptions, FlextTypes
 
 # 🚨 DRY PATTERN: Use create_module_exception_classes to eliminate exception duplication
-_exceptions = create_module_exception_classes("flext_dbt_oracle")
+_exceptions = FlextExceptions.create_module_exception_classes("flext_dbt_oracle")
 
 # Extract factory-generated exception classes with proper typing for MyPy
 FLEXT_DBT_ORACLEConfigurationError: type[Exception] = cast(
@@ -52,7 +52,7 @@ FLEXT_DBT_ORACLETimeoutError: type[Exception] = cast(
 
 
 # Domain-specific exceptions for Oracle DBT business logic
-class FlextDbtOracleDatabaseError(FlextExceptions.ProcessingError):
+class FlextDbtOracleDatabaseError(FlextExceptions.BaseError):
     """Oracle DBT database-specific errors with Oracle context."""
 
     def __init__(
@@ -65,20 +65,20 @@ class FlextDbtOracleDatabaseError(FlextExceptions.ProcessingError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT database error with Oracle context."""
-        context = dict(kwargs)
+        context = dict(cast("dict[str, object]", kwargs.get("context", {})))
         if table_name is not None:
             context["table_name"] = table_name
         if schema_name is not None:
             context["schema_name"] = schema_name
+        context["operation"] = operation
 
         super().__init__(
             f"Oracle DBT database: {message}",
-            operation=operation,
             context=context,
         )
 
 
-class FlextDbtOracleExecutionError(FlextExceptions.ProcessingError):
+class FlextDbtOracleExecutionError(FlextExceptions.BaseError):
     """Oracle DBT execution-specific errors with execution context."""
 
     def __init__(
@@ -91,20 +91,20 @@ class FlextDbtOracleExecutionError(FlextExceptions.ProcessingError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT execution error with execution context."""
-        context = dict(kwargs)
+        context = dict(cast("dict[str, object]", kwargs.get("context", {})))
         if sql_statement is not None:
             context["sql_statement"] = sql_statement
         if execution_step is not None:
             context["execution_step"] = execution_step
+        context["operation"] = operation
 
         super().__init__(
             f"Oracle DBT execution: {message}",
-            operation=operation,
             context=context,
         )
 
 
-class FlextDbtOracleQueryError(FlextExceptions.ProcessingError):
+class FlextDbtOracleQueryError(FlextExceptions.BaseError):
     """Oracle DBT query-specific errors with query context."""
 
     def __init__(
@@ -117,7 +117,7 @@ class FlextDbtOracleQueryError(FlextExceptions.ProcessingError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT query error with query context."""
-        context = dict(kwargs)
+        context = dict(cast("dict[str, object]", kwargs.get("context", {})))
         if query_type is not None:
             context["query_type"] = query_type
         if query_text is not None:
@@ -128,15 +128,15 @@ class FlextDbtOracleQueryError(FlextExceptions.ProcessingError):
                 if len(query_text) > max_query_text_length
                 else query_text
             )
+        context["operation"] = operation
 
         super().__init__(
             f"Oracle DBT query: {message}",
-            operation=operation,
             context=context,
         )
 
 
-class FlextDbtOracleModelError(FlextExceptions.ProcessingError):
+class FlextDbtOracleModelError(FlextExceptions.BaseError):
     """Oracle DBT model-specific errors with model context."""
 
     def __init__(
@@ -149,20 +149,20 @@ class FlextDbtOracleModelError(FlextExceptions.ProcessingError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT model error with model context."""
-        context = dict(kwargs)
+        context = dict(cast("dict[str, object]", kwargs.get("context", {})))
         if model_name is not None:
             context["model_name"] = model_name
         if model_type is not None:
             context["model_type"] = model_type
+        context["operation"] = operation
 
         super().__init__(
             f"Oracle DBT model: {message}",
-            operation=operation,
             context=context,
         )
 
 
-class FlextDbtOracleCompilationError(FlextExceptions):
+class FlextDbtOracleCompilationError(FlextExceptions.BaseError):
     """Oracle DBT compilation errors with compilation context."""
 
     def __init__(
@@ -174,16 +174,14 @@ class FlextDbtOracleCompilationError(FlextExceptions):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT compilation error with compilation context."""
-        validation_details: FlextTypes.Core.Dict = {}
+        context = dict(cast("dict[str, object]", kwargs.get("context", {})))
         if compilation_target is not None:
-            validation_details["compilation_target"] = compilation_target
+            context["compilation_target"] = compilation_target
         if compilation_stage is not None:
-            validation_details["compilation_stage"] = compilation_stage
+            context["compilation_stage"] = compilation_stage
 
-        context = dict(kwargs)
         super().__init__(
             f"Oracle DBT compilation: {message}",
-            validation_details=validation_details,
             context=context,
         )
 
