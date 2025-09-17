@@ -9,13 +9,11 @@ from __future__ import annotations
 import asyncio
 import concurrent.futures
 from collections.abc import Coroutine
-from typing import TypeVar, cast
+from typing import cast
 
-from flext_core import FlextLogger, FlextTypes
+from flext_core import FlextLogger, FlextTypes, T
 from flext_db_oracle import FlextDbOracleConfig
 from flext_meltano import Connection, DbtDatabaseError
-
-T = TypeVar("T")
 
 logger = FlextLogger(__name__)
 

@@ -7,10 +7,9 @@ from __future__ import annotations
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleApi
-from flext_meltano import FlextMeltanoService
-
 from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
 from flext_dbt_oracle.config import FlextDbtOracleConfig
+from flext_meltano import FlextMeltanoService
 
 # Type alias for Oracle table objects using adapter pattern
 FlextOracleObject = OracleTableAdapter

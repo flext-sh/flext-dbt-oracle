@@ -10,13 +10,13 @@ from typing import Never
 from unittest.mock import Mock, patch
 
 import pytest
-from flext_meltano import Connection, DbtDatabaseError
 
 from flext_dbt_oracle import (
     FlextOracleOracleConnectionManager,
     OracleCredentials,
     run_async_in_sync_context,
 )
+from flext_meltano import Connection, DbtDatabaseError
 
 
 class TestOracleCredentials:
