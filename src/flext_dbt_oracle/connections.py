@@ -138,10 +138,12 @@ class FlextOracleOracleConnectionManager:
         """Add query with fallback cursor."""
 
         # Mock cursor for testing
+        from dataclasses import dataclass
+
+        @dataclass
         class MockCursor:
-            def __init__(self, sql: str, bindings: FlextTypes.Core.Dict) -> None:
-                self.sql = sql
-                self.bindings = bindings
+            sql: str
+            bindings: FlextTypes.Core.Dict
 
         connection = self.get_thread_connection("default")
         if connection is None:

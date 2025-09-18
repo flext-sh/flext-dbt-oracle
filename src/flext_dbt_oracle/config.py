@@ -151,9 +151,24 @@ class FlextDbtOracleConfig(FlextConfig):
             FlextMeltanoConfig: Prepared Meltano execution configuration.
 
         """
+        # Map dbt_target values to FlextMeltanoConfig environment literal strings
+        environment_mapping = {
+            "dev": "development",
+            "development": "development",
+            "staging": "staging",
+            "prod": "production",
+            "production": "production",
+            "test": "test",
+            "local": "local",
+        }
+
+        environment_value = environment_mapping.get(
+            self.dbt_target.lower(), "development"
+        )
+
         return FlextMeltanoConfig(
             project_root=self.dbt_project_dir,
-            environment=self.dbt_target,
+            environment=environment_value,
         )
 
     def get_oracle_quality_config(self) -> FlextTypes.Core.Dict:

@@ -6,6 +6,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+import asyncio
 from typing import Never
 from unittest.mock import Mock, patch
 
@@ -194,6 +195,7 @@ class TestAsyncHelpers:
         """Test async to sync context conversion."""
 
         async def test_coro() -> str:
+            await asyncio.sleep(0)  # Make it truly async
             return "test_result"
 
         result = run_async_in_sync_context(test_coro())
@@ -203,6 +205,7 @@ class TestAsyncHelpers:
         """Test async context with exception."""
 
         async def failing_coro() -> Never:
+            await asyncio.sleep(0)  # Make it truly async
             msg = "Test error"
             raise ValueError(msg)
 
