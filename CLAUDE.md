@@ -3,8 +3,20 @@
 **Enterprise-Grade Oracle Database Integration Quality Assurance & Refactoring Guidelines**
 **Version**: 2.1.0 | **Authority**: WORKSPACE | **Updated**: 2025-01-08
 **Environment**: `/home/marlonsc/flext/.venv/bin/python` (No PYTHONPATH required)
-**Based on**: flext-core 0.9.0 with 79% test coverage (PROVEN FOUNDATION)
+**Based on**: flext-core 0.9.0 with 75%+ test coverage (PROVEN FOUNDATION)
 **Project Context**: dbt client integration library for Oracle Database within the FLEXT ecosystem (NOT a custom dbt adapter, but high-level orchestration via flext-db-oracle + flext-meltano)
+
+**Hierarchy**: This document provides project-specific standards based on workspace-level patterns defined in [../CLAUDE.md](../CLAUDE.md). For architectural principles, quality gates, and MCP server usage, reference the main workspace standards.
+
+## 🔗 MCP SERVER INTEGRATION
+
+| MCP Server | Purpose | Status |
+|------------|---------|--------|
+| **serena** | DBT Oracle codebase analysis and database transformation patterns | **ACTIVE** |
+| **sequential-thinking** | Oracle data modeling and DBT architecture problem solving | **ACTIVE** |
+| **github** | DBT ecosystem integration and Oracle transformation PRs | **ACTIVE** |
+
+**Usage**: `claude mcp list` for available servers, leverage for DBT-specific development patterns and Oracle transformation analysis.
 
 ---
 
@@ -41,8 +53,8 @@
 ### ❌ FORBIDDEN ORACLE DBT PRACTICES
 
 1. **ORACLE DATABASE INTEGRATION QUALITY VIOLATIONS**:
-   - Any use of `# type: ignore` without specific error codes in Oracle handlers
-   - Any use of `Any` types instead of proper Oracle type annotations
+   - object use of `# type: ignore` without specific error codes in Oracle handlers
+   - object use of `object` types instead of proper Oracle type annotations
    - Silencing Oracle errors with ignore hints instead of fixing dbt root causes
    - Creating Oracle wrappers, aliases, or compatibility facades
    - Using sed, awk, or automated scripts for complex Oracle refactoring
@@ -60,7 +72,7 @@
    - **FORBIDDEN**: Direct `import rich` in any Oracle project code for output/formatting
    - **FORBIDDEN**: Direct `from dbt import` bypassing FlextDbtOracleService
    - **FORBIDDEN**: Local Oracle CLI implementations bypassing flext-cli
-   - **FORBIDDEN**: Any Oracle CLI functionality not going through flext-cli layer
+   - **FORBIDDEN**: object Oracle CLI functionality not going through flext-cli layer
    - **REQUIRED**: If flext-cli lacks Oracle functionality, IMPROVE flext-cli first - NEVER work around
    - **PRINCIPLE**: Fix the foundation, don't work around Oracle patterns
    - **OUTPUT RULE**: ALL Oracle data output, formatting, tables, progress bars MUST use flext-cli wrappers
@@ -959,7 +971,7 @@ class OracleToDbtModelGenerator:
 
 ## ⚡ EXECUTION CHECKLIST FOR ORACLE DBT PROJECT
 
-### Before Starting Any Oracle Work
+### Before Starting object Oracle Work
 
 - [ ] Read all documentation: `CLAUDE.md`, `FLEXT_REFACTORING_PROMPT.md`, project `README.md`
 - [ ] Verify virtual environment: `/home/marlonsc/flext/.venv/bin/python` (VERIFIED WORKING)
