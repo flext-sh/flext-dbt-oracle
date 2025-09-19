@@ -95,7 +95,8 @@ class FlextOracleOracleConnectionManager:
                 "connection_service": None,
                 "query_service": None,
                 "oracle_config": cast(
-                    "OracleCredentials", connection.credentials,
+                    "OracleCredentials",
+                    connection.credentials,
                 ).to_oracle_config(),
             }
             return connection
@@ -134,7 +135,9 @@ class FlextOracleOracleConnectionManager:
         return MockResponse(), None
 
     def add_query(
-        self, sql: str, bindings: FlextTypes.Core.Dict,
+        self,
+        sql: str,
+        bindings: FlextTypes.Core.Dict,
     ) -> tuple[Connection, object]:
         """Add query with fallback cursor."""
 

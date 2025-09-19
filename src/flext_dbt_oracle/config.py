@@ -163,7 +163,8 @@ class FlextDbtOracleConfig(FlextConfig):
         }
 
         environment_value = environment_mapping.get(
-            self.dbt_target.lower(), "development",
+            self.dbt_target.lower(),
+            "development",
         )
 
         return FlextMeltanoConfig(

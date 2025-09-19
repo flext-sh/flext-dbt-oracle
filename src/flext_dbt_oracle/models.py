@@ -243,7 +243,8 @@ group by {group_by_columns}
                         intermediate_models.append(intermediate_model)
 
                 logger.info(
-                    "Generated %d intermediate models", len(intermediate_models),
+                    "Generated %d intermediate models",
+                    len(intermediate_models),
                 )
                 return FlextResult[list[FlextDbtOracleModel]].ok(intermediate_models)
 
@@ -295,7 +296,8 @@ group by {group_by_columns}
                 # Ensure output directories exist
                 for model_type in ["staging", "intermediate", "marts"]:
                     (output_path / "models" / model_type).mkdir(
-                        parents=True, exist_ok=True,
+                        parents=True,
+                        exist_ok=True,
                     )
 
                 # Group models by type for schema file generation

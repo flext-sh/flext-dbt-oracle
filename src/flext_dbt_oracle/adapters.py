@@ -202,7 +202,8 @@ class OracleTableFactory:
 
         # Extract schema name from response if not provided
         effective_schema_name = schema_name or api_response.get(
-            "owner", str(api_response.get("schema_name", "USER")),
+            "owner",
+            str(api_response.get("schema_name", "USER")),
         )
 
         # Extract column information if available

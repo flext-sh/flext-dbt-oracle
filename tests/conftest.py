@@ -526,7 +526,10 @@ class MockSqlExecutor:
     """Strategy for SQL execution (Strategy Pattern)."""
 
     def execute(
-        self, sql: str, *, auto_begin: bool = True,
+        self,
+        sql: str,
+        *,
+        auto_begin: bool = True,
     ) -> tuple[str, FlextTypes.Core.List]:
         """Execute SQL statement with reduced branching."""
         # auto_begin parameter is used for future transaction management
@@ -575,7 +578,8 @@ class MockRelationManager:
         }
 
     def list_relations_without_caching(
-        self, schema: str,
+        self,
+        schema: str,
     ) -> list[FlextTypes.Core.Headers]:
         """List relations in schema."""
         return [
@@ -632,7 +636,8 @@ def mock_dbt_oracle_adapter() -> object:
             return self.relation_manager.get_relation(database, schema, identifier)
 
         def list_relations_without_caching(
-            self, schema: str,
+            self,
+            schema: str,
         ) -> list[FlextTypes.Core.Headers]:
             """Delegate to relation manager strategy."""
             return self.relation_manager.list_relations_without_caching(schema)
@@ -652,7 +657,8 @@ def mock_dbt_runner() -> object:
             self.results: FlextTypes.Core.Dict = {}
 
         def run_models(
-            self, models: FlextTypes.Core.StringList | None = None,
+            self,
+            models: FlextTypes.Core.StringList | None = None,
         ) -> FlextTypes.Core.Dict:
             """Run dbt models."""
             results = []
@@ -668,7 +674,8 @@ def mock_dbt_runner() -> object:
             return {"results": results, "elapsed_time": 10.5}
 
         def run_tests(
-            self, models: FlextTypes.Core.StringList | None = None,
+            self,
+            models: FlextTypes.Core.StringList | None = None,
         ) -> FlextTypes.Core.Dict:
             """Run dbt tests."""
             # models parameter is used for future model-specific testing
@@ -687,7 +694,8 @@ def mock_dbt_runner() -> object:
             return {"results": results, "elapsed_time": 5.0}
 
         def compile(
-            self, models: FlextTypes.Core.StringList | None = None,
+            self,
+            models: FlextTypes.Core.StringList | None = None,
         ) -> FlextTypes.Core.Dict:
             """Compile dbt models."""
             compiled = {}
