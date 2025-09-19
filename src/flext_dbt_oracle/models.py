@@ -10,10 +10,10 @@ from pathlib import Path
 from typing import ClassVar
 
 import yaml
-from flext_db_oracle.models import FlextDbOracleModels
 
 from flext_core import FlextLogger, FlextModels, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleApi
+from flext_db_oracle.models import FlextDbOracleModels
 from flext_dbt_oracle.config import FlextDbtOracleConfig
 
 # Type alias for Oracle table objects

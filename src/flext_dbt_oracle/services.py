@@ -8,10 +8,9 @@ from __future__ import annotations
 import time
 from pathlib import Path
 
-from flext_db_oracle.models import FlextDbOracleModels
-
 from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleApi
+from flext_db_oracle.models import FlextDbOracleModels
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.config import FlextDbtOracleConfig
 from flext_dbt_oracle.constants import FlextDbtOracleConstants
