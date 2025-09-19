@@ -81,7 +81,7 @@ class OracleTableAdapter:
             cls(
                 _table=table,
                 _extra_metadata=metadata or {},
-            )
+            ),
         )
 
     @classmethod
@@ -127,7 +127,7 @@ class OracleTableAdapter:
             cls(
                 _table=table,
                 _extra_metadata=metadata or {},
-            )
+            ),
         )
 
     @property
@@ -197,12 +197,12 @@ class OracleTableFactory:
 
         if not isinstance(api_response, dict):
             return FlextResult[OracleTableAdapter].fail(
-                "API response must be a dictionary"
+                "API response must be a dictionary",
             )
 
         # Extract schema name from response if not provided
         effective_schema_name = schema_name or api_response.get(
-            "owner", str(api_response.get("schema_name", "USER"))
+            "owner", str(api_response.get("schema_name", "USER")),
         )
 
         # Extract column information if available
@@ -256,7 +256,7 @@ class OracleTableFactory:
                     adapters.append(adapter_result.unwrap())
                 else:
                     return FlextResult[list[OracleTableAdapter]].fail(
-                        f"Failed to create adapter for table {table_name}: {adapter_result.error}"
+                        f"Failed to create adapter for table {table_name}: {adapter_result.error}",
                     )
 
         return FlextResult[list[OracleTableAdapter]].ok(adapters)

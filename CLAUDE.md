@@ -132,7 +132,7 @@ from flext_core import (
 from flext_cli import (
     FlextCliApi,           # High-level CLI API for Oracle operations
     FlextCliMain,          # Main CLI entry point for Oracle commands
-    FlextCliConfig,        # Configuration management for Oracle CLI
+    FlextCliConfigs,        # Configuration management for Oracle CLI
     FlextCliConstants,     # Oracle CLI-specific constants
     # NEVER import click or rich directly - ALL Oracle CLI + OUTPUT through flext-cli
 )
@@ -364,7 +364,7 @@ __all__ = ["UnifiedFlextDbtOracleService", "OracleTableMetadata", "OracleDbtPipe
 
 ```python
 # ✅ CORRECT - ALL Oracle CLI projects MUST use flext-cli exclusively
-from flext_cli import FlextCliApi, FlextCliMain, FlextCliConfig
+from flext_cli import FlextCliApi, FlextCliMain, FlextCliConfigs
 # ❌ FORBIDDEN - NEVER import click directly in Oracle projects
 # import click  # THIS IS ABSOLUTELY FORBIDDEN IN ORACLE PROJECTS
 
@@ -381,7 +381,7 @@ class OracleCliService:
         """Initialize Oracle CLI service with automatic configuration loading."""
         # ✅ AUTOMATIC: Oracle configuration loaded transparently by flext-cli/flext-core
         self._cli_api = FlextCliApi()
-        self._config = FlextCliConfig()  # Automatically includes .env + defaults + CLI params for Oracle
+        self._config = FlextCliConfigs()  # Automatically includes .env + defaults + CLI params for Oracle
 
     def define_oracle_configuration_schema(self) -> FlextResult[dict]:
         """Define Oracle-specific configuration schema.
@@ -716,7 +716,7 @@ python -m flext_dbt_oracle orchestrate pipeline \
 
 ```python
 from flext_core import FlextResult, get_logger
-from flext_cli import FlextCliApi, FlextCliConfig
+from flext_cli import FlextCliApi, FlextCliConfigs
 from flext_db_oracle import get_flext_oracle_api  # If available
 
 class OracleDbtCliTestingService:
@@ -727,7 +727,7 @@ class OracleDbtCliTestingService:
         # ✅ AUTOMATIC: .env loaded transparently by FLEXT ecosystem
         self._logger = get_logger("oracle_cli_testing")
         self._cli_api = FlextCliApi()
-        self._config = FlextCliConfig()  # Automatically loads .env + defaults + CLI params
+        self._config = FlextCliConfigs()  # Automatically loads .env + defaults + CLI params
         self._oracle_api = get_flext_oracle_api() if 'flext_db_oracle' in globals() else None
 
     def debug_oracle_configuration(self) -> FlextResult[dict]:

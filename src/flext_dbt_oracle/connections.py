@@ -95,7 +95,7 @@ class FlextOracleOracleConnectionManager:
                 "connection_service": None,
                 "query_service": None,
                 "oracle_config": cast(
-                    "OracleCredentials", connection.credentials
+                    "OracleCredentials", connection.credentials,
                 ).to_oracle_config(),
             }
             return connection
@@ -134,7 +134,7 @@ class FlextOracleOracleConnectionManager:
         return MockResponse(), None
 
     def add_query(
-        self, sql: str, bindings: FlextTypes.Core.Dict
+        self, sql: str, bindings: FlextTypes.Core.Dict,
     ) -> tuple[Connection, object]:
         """Add query with fallback cursor."""
 
@@ -169,7 +169,7 @@ def run_async_in_sync_context[T](coro: Coroutine[object, object, T]) -> T:
             # If we're already in an async context, we need to use a different approach
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 future: concurrent.futures.Future[T] = executor.submit(
-                    lambda: asyncio.run(coro)
+                    lambda: asyncio.run(coro),
                 )
                 return future.result()
         else:

@@ -74,7 +74,7 @@ class FlextDbtOracleClient:
 
             if not self.config.validate_oracle_connection():
                 return FlextResult[FlextTypes.Core.Dict].fail(
-                    "Invalid Oracle connection configuration"
+                    "Invalid Oracle connection configuration",
                 )
 
             # Test connection using flext-db-oracle API
@@ -185,7 +185,7 @@ class FlextDbtOracleClient:
         except Exception as e:
             logger.exception("Unexpected error during Oracle metadata extraction")
             return FlextResult[list[FlextOracleObject]].fail(
-                f"Metadata extraction error: {e}"
+                f"Metadata extraction error: {e}",
             )
 
     def validate_oracle_data(
@@ -235,7 +235,7 @@ class FlextDbtOracleClient:
         except Exception as e:
             logger.exception("Unexpected error during Oracle validation")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Oracle validation error: {e}"
+                f"Oracle validation error: {e}",
             )
 
     def transform_with_dbt(
@@ -264,7 +264,7 @@ class FlextDbtOracleClient:
             meltano_service = self.meltano_service
             if meltano_service is None:
                 return FlextResult[FlextTypes.Core.Dict].fail(
-                    "FlextMeltanoService not initialized - cannot execute models"
+                    "FlextMeltanoService not initialized - cannot execute models",
                 )
 
             # Run all models or specific models using Meltano service
@@ -286,13 +286,13 @@ class FlextDbtOracleClient:
                 return FlextResult[FlextTypes.Core.Dict].ok(executed)
 
             return FlextResult[FlextTypes.Core.Dict].fail(
-                run_result.error or "DBT transformation failed"
+                run_result.error or "DBT transformation failed",
             )
 
         except Exception as e:
             logger.exception("Unexpected error during DBT transformation")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"DBT transformation error: {e}"
+                f"DBT transformation error: {e}",
             )
 
     def run_full_pipeline(
@@ -337,7 +337,7 @@ class FlextDbtOracleClient:
         transform_result = self.transform_with_dbt(objects, model_names or [])
         if not transform_result.success:
             return FlextResult[FlextTypes.Core.Dict].fail(
-                transform_result.error or "Transformation failed"
+                transform_result.error or "Transformation failed",
             )
 
         # Combine results

@@ -149,7 +149,7 @@ class FlextDbtOracleWorkflowService:
             )
             if not write_result.success:
                 return FlextResult[FlextTypes.Core.Dict].fail(
-                    write_result.error or "Failed writing models"
+                    write_result.error or "Failed writing models",
                 )
 
             # Collect workflow results
@@ -178,7 +178,7 @@ class FlextDbtOracleWorkflowService:
         except Exception as e:
             logger.exception("Unexpected error in metadata-to-models workflow")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Metadata-to-models workflow failed: {e}"
+                f"Metadata-to-models workflow failed: {e}",
             )
 
     def run_full_transformation_pipeline(
@@ -250,7 +250,7 @@ class FlextDbtOracleWorkflowService:
         except Exception as e:
             logger.exception("Unexpected error in full transformation pipeline")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Full transformation pipeline failed: {e}"
+                f"Full transformation pipeline failed: {e}",
             )
 
     def validate_workflow_prerequisites(self) -> FlextResult[FlextTypes.Core.Dict]:
@@ -267,7 +267,7 @@ class FlextDbtOracleWorkflowService:
             # Step 1: Validate configuration
             if not self.config.validate_oracle_connection():
                 return FlextResult[FlextTypes.Core.Dict].fail(
-                    "Invalid Oracle connection configuration"
+                    "Invalid Oracle connection configuration",
                 )
             validation_results["config_validation"] = "passed"
 
@@ -275,7 +275,7 @@ class FlextDbtOracleWorkflowService:
             connection_result = self.client.test_oracle_connection()
             if not connection_result.success:
                 return FlextResult[FlextTypes.Core.Dict].fail(
-                    connection_result.error or "Connection failed"
+                    connection_result.error or "Connection failed",
                 )
             validation_results["oracle_connection"] = connection_result.value or {}
 
@@ -331,7 +331,7 @@ class FlextDbtOracleWorkflowService:
         except Exception as e:
             logger.exception("Unexpected error during prerequisites validation")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Prerequisites validation failed: {e}"
+                f"Prerequisites validation failed: {e}",
             )
 
     def get_workflow_recommendations(
@@ -485,7 +485,7 @@ class FlextDbtOracleWorkflowService:
         except Exception as e:
             logger.exception("Unexpected error generating workflow recommendations")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Recommendations generation failed: {e}"
+                f"Recommendations generation failed: {e}",
             )
 
     @classmethod
