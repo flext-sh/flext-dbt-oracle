@@ -9,6 +9,7 @@ from __future__ import annotations
 import asyncio
 import concurrent.futures
 from collections.abc import Coroutine
+from dataclasses import dataclass
 from typing import cast
 
 from flext_core import FlextLogger, FlextTypes, T
@@ -138,8 +139,6 @@ class FlextOracleOracleConnectionManager:
         """Add query with fallback cursor."""
 
         # Mock cursor for testing
-        from dataclasses import dataclass
-
         @dataclass
         class MockCursor:
             sql: str
