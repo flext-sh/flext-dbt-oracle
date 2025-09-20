@@ -12,8 +12,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
-from flext_core import FlextResult, FlextTypes
 from flext_db_oracle.models import FlextDbOracleModels
+
+from flext_core import FlextResult, FlextTypes
 
 
 class OracleTableInterface(Protocol):
