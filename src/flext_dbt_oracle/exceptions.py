@@ -17,38 +17,34 @@ from typing import cast
 
 from flext_core import FlextExceptions, FlextTypes
 
-# 🚨 DRY PATTERN: Use create_module_exception_classes to eliminate exception duplication
-_exceptions = FlextExceptions.create_module_exception_classes("flext_dbt_oracle")
 
-# Extract factory-generated exception classes with proper typing for MyPy
-FLEXT_DBT_ORACLEConfigurationError: type[Exception] = cast(
-    "type[Exception]",
-    _exceptions["FLEXT_DBT_ORACLEConfigurationError"],
-)
-FLEXT_DBT_ORACLEConnectionError: type[Exception] = cast(
-    "type[Exception]",
-    _exceptions["FLEXT_DBT_ORACLEConnectionError"],
-)
-FLEXT_DBT_ORACLEAuthenticationError: type[Exception] = cast(
-    "type[Exception]",
-    _exceptions["FLEXT_DBT_ORACLEAuthenticationError"],
-)
-FLEXT_DBT_ORACLEProcessingError: type[Exception] = cast(
-    "type[Exception]",
-    _exceptions["FLEXT_DBT_ORACLEProcessingError"],
-)
-FLEXT_DBT_ORACLEValidationError: type[Exception] = cast(
-    "type[Exception]",
-    _exceptions["FLEXT_DBT_ORACLEValidationError"],
-)
-FLEXT_DBT_ORACLEError: type[Exception] = cast(
-    "type[Exception]",
-    _exceptions["FLEXT_DBT_ORACLEError"],
-)
-FLEXT_DBT_ORACLETimeoutError: type[Exception] = cast(
-    "type[Exception]",
-    _exceptions["FLEXT_DBT_ORACLETimeoutError"],
-)
+# ✅ DIRECT EXCEPTION CLASSES: Use direct inheritance instead of factory pattern
+class FLEXT_DBT_ORACLEConfigurationError(FlextExceptions.ConfigurationError):
+    """Oracle DBT configuration-specific errors."""
+
+
+class FLEXT_DBT_ORACLEConnectionError(FlextExceptions.ConnectionError):
+    """Oracle DBT connection-specific errors."""
+
+
+class FLEXT_DBT_ORACLEAuthenticationError(FlextExceptions.AuthenticationError):
+    """Oracle DBT authentication-specific errors."""
+
+
+class FLEXT_DBT_ORACLEProcessingError(FlextExceptions.ProcessingError):
+    """Oracle DBT processing-specific errors."""
+
+
+class FLEXT_DBT_ORACLEValidationError(FlextExceptions.ValidationError):
+    """Oracle DBT validation-specific errors."""
+
+
+class FLEXT_DBT_ORACLEError(FlextExceptions.Error):
+    """Oracle DBT generic errors."""
+
+
+class FLEXT_DBT_ORACLETimeoutError(FlextExceptions.TimeoutError):
+    """Oracle DBT timeout-specific errors."""
 
 
 # Domain-specific exceptions for Oracle DBT business logic
