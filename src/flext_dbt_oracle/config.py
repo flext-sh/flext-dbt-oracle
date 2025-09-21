@@ -10,7 +10,7 @@ from typing import ClassVar
 from flext_meltano.config import FlextMeltanoConfig
 from pydantic import SecretStr
 
-from flext_core import FlextConfig, FlextLogger, FlextTypes
+from flext_core import FlextConfig, FlextConstants, FlextLogger, FlextTypes
 from flext_db_oracle import OracleConfig as FlextDbOracleConfig
 
 logger = FlextLogger(__name__)
@@ -23,25 +23,25 @@ class FlextDbtOracleConfig(FlextConfig):
     Uses composition to integrate flext-db-oracle and flext-meltano configurations.
     """
 
-    # Oracle Database Settings (from flext-db-oracle)
+    # Oracle Database Settings - using FlextConstants as SOURCE OF TRUTH
     oracle_host: str = ""
-    oracle_port: int = 1521
+    oracle_port: int = 1521  # Keep Oracle-specific port
     oracle_service_name: str = ""
     oracle_sid: str = ""
     oracle_username: str = ""
     oracle_password: str = ""
     oracle_protocol: str = "tcp"
     oracle_pool_min: int = 1
-    oracle_pool_max: int = 10
-    oracle_timeout: int = 30
+    oracle_pool_max: int = FlextConstants.Container.DEFAULT_WORKERS * 5  # 10
+    oracle_timeout: int = FlextConstants.Network.DEFAULT_TIMEOUT
     oracle_encoding: str = "utf-8"
 
-    # DBT Execution Settings (from flext-meltano)
+    # DBT Execution Settings - using FlextConstants as SOURCE OF TRUTH
     dbt_project_dir: str = "."
     dbt_profiles_dir: str = "."
     dbt_target: str = "dev"
-    dbt_threads: int = 4
-    dbt_log_level: str = "info"
+    dbt_threads: int = FlextConstants.Container.MAX_WORKERS
+    dbt_log_level: str = FlextConstants.Config.LogLevel.DEFAULT_LEVEL.lower()  # "info"
     dbt_schema: str = "analytics"
 
     # Oracle-specific DBT Settings
