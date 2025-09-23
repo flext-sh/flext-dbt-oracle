@@ -11,7 +11,7 @@ from flext_meltano.config import FlextMeltanoConfig
 from pydantic import SecretStr
 
 from flext_core import FlextConfig, FlextConstants, FlextLogger, FlextTypes
-from flext_db_oracle import OracleConfig as FlextDbOracleConfig
+from flext_db_oracle import FlextDbOracleModels
 
 logger = FlextLogger(__name__)
 
@@ -41,7 +41,7 @@ class FlextDbtOracleConfig(FlextConfig):
     dbt_profiles_dir: str = "."
     dbt_target: str = "dev"
     dbt_threads: int = FlextConstants.Container.MAX_WORKERS
-    dbt_log_level: str = FlextConstants.Config.LogLevel.DEFAULT_LEVEL.lower()  # "info"
+    dbt_log_level: str = FlextConstants.Logging.DEFAULT_LEVEL
     dbt_schema: str = "analytics"
 
     # Oracle-specific DBT Settings
@@ -123,25 +123,24 @@ class FlextDbtOracleConfig(FlextConfig):
         "UROWID": "string",
     }
 
-    def get_oracle_config(self) -> FlextDbOracleConfig:
+    def get_oracle_config(self) -> FlextDbOracleModels.OracleConfig:
         """Get Oracle configuration for flext-db-oracle integration.
 
         Returns:
-            FlextDbOracleConfig: Prepared Oracle client configuration.
+            FlextDbOracleModels.OracleConfig: Prepared Oracle client configuration.
 
         """
-        return FlextDbOracleConfig(
+        return FlextDbOracleModels.OracleConfig(
             host=self.oracle_host,
             port=self.oracle_port,
             service_name=self.oracle_service_name,
             sid=self.oracle_sid,
             username=self.oracle_username,
             password=SecretStr(self.oracle_password),
-            protocol=self.oracle_protocol,
             pool_min=self.oracle_pool_min,
             pool_max=self.oracle_pool_max,
             timeout=self.oracle_timeout,
-            encoding=self.oracle_encoding,
+            domain_events=self.domain_events,
         )
 
     def get_meltano_config(self) -> FlextMeltanoConfig:

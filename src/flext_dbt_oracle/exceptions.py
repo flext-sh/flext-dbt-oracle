@@ -19,31 +19,31 @@ from flext_core import FlextExceptions, FlextTypes
 
 
 # ✅ DIRECT EXCEPTION CLASSES: Use direct inheritance instead of factory pattern
-class FLEXT_DBT_ORACLEConfigurationError(FlextExceptions.ConfigurationError):
+class FlextDbtOracleConfigurationError(FlextExceptions.ConfigurationError):
     """Oracle DBT configuration-specific errors."""
 
 
-class FLEXT_DBT_ORACLEConnectionError(FlextExceptions.ConnectionError):
+class FlextDbtOracleConnectionError(FlextExceptions.ConnectionError):
     """Oracle DBT connection-specific errors."""
 
 
-class FLEXT_DBT_ORACLEAuthenticationError(FlextExceptions.AuthenticationError):
+class FlextDbtOracleAuthenticationError(FlextExceptions.AuthenticationError):
     """Oracle DBT authentication-specific errors."""
 
 
-class FLEXT_DBT_ORACLEProcessingError(FlextExceptions.ProcessingError):
+class FlextDbtOracleProcessingError(FlextExceptions.ProcessingError):
     """Oracle DBT processing-specific errors."""
 
 
-class FLEXT_DBT_ORACLEValidationError(FlextExceptions.ValidationError):
+class FlextDbtOracleValidationError(FlextExceptions.ValidationError):
     """Oracle DBT validation-specific errors."""
 
 
-class FLEXT_DBT_ORACLEError(FlextExceptions.Error):
+class FlextDbtOracleError(FlextExceptions.Error):
     """Oracle DBT generic errors."""
 
 
-class FLEXT_DBT_ORACLETimeoutError(FlextExceptions.TimeoutError):
+class FlextDbtOracleTimeoutError(FlextExceptions.TimeoutError):
     """Oracle DBT timeout-specific errors."""
 
 
@@ -184,16 +184,16 @@ class FlextDbtOracleCompilationError(FlextExceptions.BaseError):
 
 # Export all exception types in alphabetical order
 __all__: FlextTypes.Core.StringList = [
-    "FLEXT_DBT_ORACLEAuthenticationError",
-    "FLEXT_DBT_ORACLEConfigurationError",
-    "FLEXT_DBT_ORACLEConnectionError",
-    "FLEXT_DBT_ORACLEError",
-    "FLEXT_DBT_ORACLEProcessingError",
-    "FLEXT_DBT_ORACLETimeoutError",
-    "FLEXT_DBT_ORACLEValidationError",
+    "FlextDbtOracleAuthenticationError",
     "FlextDbtOracleCompilationError",
+    "FlextDbtOracleConfigurationError",
+    "FlextDbtOracleConnectionError",
     "FlextDbtOracleDatabaseError",
+    "FlextDbtOracleError",
     "FlextDbtOracleExecutionError",
     "FlextDbtOracleModelError",
+    "FlextDbtOracleProcessingError",
     "FlextDbtOracleQueryError",
+    "FlextDbtOracleTimeoutError",
+    "FlextDbtOracleValidationError",
 ]

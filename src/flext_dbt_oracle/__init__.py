@@ -11,18 +11,18 @@ from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.config import FlextDbtOracleConfig
 from flext_dbt_oracle.exceptions import (
-    FLEXT_DBT_ORACLEAuthenticationError,
-    FLEXT_DBT_ORACLEConfigurationError,
-    FLEXT_DBT_ORACLEConnectionError,
-    FLEXT_DBT_ORACLEError,
-    FLEXT_DBT_ORACLEProcessingError,
-    FLEXT_DBT_ORACLETimeoutError,
-    FLEXT_DBT_ORACLEValidationError,
+    FlextDbtOracleAuthenticationError,
     FlextDbtOracleCompilationError,
+    FlextDbtOracleConfigurationError,
+    FlextDbtOracleConnectionError,
     FlextDbtOracleDatabaseError,
+    FlextDbtOracleError,
     FlextDbtOracleExecutionError,
     FlextDbtOracleModelError,
+    FlextDbtOracleProcessingError,
     FlextDbtOracleQueryError,
+    FlextDbtOracleTimeoutError,
+    FlextDbtOracleValidationError,
 )
 from flext_dbt_oracle.models import (
     FlextDbtOracleModel,
@@ -42,24 +42,24 @@ __email__ = "team@flext.sh"
 # Public API - Following established flext DBT patterns
 __all__: FlextTypes.Core.StringList = [
     # Configuration Error Types
-    "FLEXT_DBT_ORACLEAuthenticationError",
-    "FLEXT_DBT_ORACLEConfigurationError",
-    "FLEXT_DBT_ORACLEConnectionError",
-    "FLEXT_DBT_ORACLEError",
-    "FLEXT_DBT_ORACLEProcessingError",
-    "FLEXT_DBT_ORACLETimeoutError",
-    "FLEXT_DBT_ORACLEValidationError",
+    "FlextDbtOracleAuthenticationError",
     # Core DBT Pattern Classes
     "FlextDbtOracleClient",
     "FlextDbtOracleCompilationError",
     "FlextDbtOracleConfig",
+    "FlextDbtOracleConfigurationError",
+    "FlextDbtOracleConnectionError",
     "FlextDbtOracleDatabaseError",
+    "FlextDbtOracleError",
     "FlextDbtOracleExecutionError",
     "FlextDbtOracleModel",
     "FlextDbtOracleModelError",
     "FlextDbtOracleModelGenerator",
     "FlextDbtOracleMonitoringService",
+    "FlextDbtOracleProcessingError",
     "FlextDbtOracleQueryError",
+    "FlextDbtOracleTimeoutError",
+    "FlextDbtOracleValidationError",
     "FlextDbtOracleWorkflowService",
     # Adapter Pattern Classes (SOLID Interface Segregation)
     "OracleTableAdapter",
