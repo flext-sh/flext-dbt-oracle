@@ -8,8 +8,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from flext_core import FlextConstants
 
-class FlextDbtOracleConstants:
+
+class FlextDbtOracleConstants(FlextConstants):
     """Central container for DBT Oracle-specific constants.
 
     Follows the same pattern as FlextConstants from flext-core,

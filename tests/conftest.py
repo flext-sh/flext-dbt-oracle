@@ -13,6 +13,29 @@ from collections.abc import Generator
 import pytest
 
 from flext_core import FlextTypes
+from flext_tests import FlextTestDocker
+
+
+@pytest.fixture(scope="session")
+def docker_control() -> FlextTestDocker:
+    """Provide FlextTestDocker instance for container management."""
+    return FlextTestDocker()
+
+
+@pytest.fixture(scope="session")
+def shared_oracle_container(docker_control: FlextTestDocker) -> FlextTestDocker:
+    """Start and maintain flext-oracle-db-test container.
+
+    Container auto-starts if not running and remains running after tests.
+    """
+    result = docker_control.start_container("flext-oracle-db-test")
+    if result.is_failure:
+        pytest.skip(f"Failed to start Oracle container: {result.error}")
+
+    yield "flext-oracle-db-test"
+
+    # Keep container running after tests
+    docker_control.stop_container("flext-oracle-db-test", remove=False)
 
 
 # Oracle shared container environment setup

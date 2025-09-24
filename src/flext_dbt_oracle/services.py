@@ -41,11 +41,11 @@ class FlextDbtOracleWorkflowService:
             config: Configuration for Oracle and DBT operations
 
         """
-        self.config = config or FlextDbtOracleConfig()
+        self.config: dict[str, object] = config or FlextDbtOracleConfig()
         self.client = FlextDbtOracleClient(self.config)
 
         # Initialize Oracle API for model generation
-        oracle_config = self.config.get_oracle_config()
+        oracle_config: dict[str, object] = self.config.get_oracle_config()
         self.oracle_api = FlextDbOracleApi(oracle_config)
         self.model_generator = FlextDbtOracleModel.create_generator(
             self.config,
@@ -85,7 +85,9 @@ class FlextDbtOracleWorkflowService:
 
             # Step 1: Test Oracle connection
             logger.info("Testing Oracle connection...")
-            connection_result = self.client.test_oracle_connection()
+            connection_result: FlextResult[object] = (
+                self.client.test_oracle_connection()
+            )
             if not connection_result.success:
                 return connection_result
 
@@ -253,7 +255,9 @@ class FlextDbtOracleWorkflowService:
                 f"Full transformation pipeline failed: {e}",
             )
 
-    def validate_workflow_prerequisites(self) -> FlextResult[FlextTypes.Core.Dict]:
+    def validate_workflow_prerequisites(
+        self: object,
+    ) -> FlextResult[FlextTypes.Core.Dict]:
         """Validate all prerequisites for running Oracle-to-DBT workflows.
 
         Returns:
@@ -272,7 +276,9 @@ class FlextDbtOracleWorkflowService:
             validation_results["config_validation"] = "passed"
 
             # Step 2: Test Oracle connection
-            connection_result = self.client.test_oracle_connection()
+            connection_result: FlextResult[object] = (
+                self.client.test_oracle_connection()
+            )
             if not connection_result.success:
                 return FlextResult[FlextTypes.Core.Dict].fail(
                     connection_result.error or "Connection failed",
@@ -352,7 +358,9 @@ class FlextDbtOracleWorkflowService:
 
             # Extract objects if not provided
             if oracle_objects is None:
-                metadata_result = self.client.extract_oracle_metadata()
+                metadata_result: FlextResult[object] = (
+                    self.client.extract_oracle_metadata()
+                )
                 if not metadata_result.success:
                     return FlextResult[FlextTypes.Core.Dict].fail(
                         metadata_result.error or "Metadata extraction failed",
@@ -509,7 +517,7 @@ class FlextDbtOracleWorkflowService:
                 config: Configuration for monitoring settings
 
             """
-            self.config = config
+            self.config: dict[str, object] = config
             logger.info("Initialized Oracle DBT monitoring service")
 
         def track_workflow_execution(
@@ -574,10 +582,6 @@ class FlextDbtOracleWorkflowService:
                 logger.error("Workflow failed: %s", completion_info)
 
 
-# Backward compatibility type alias
-FlextDbtOracleMonitoringService = FlextDbtOracleWorkflowService._MonitoringService
-
 __all__: FlextTypes.Core.StringList = [
-    "FlextDbtOracleMonitoringService",
     "FlextDbtOracleWorkflowService",
 ]

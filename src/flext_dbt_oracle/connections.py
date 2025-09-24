@@ -47,7 +47,7 @@ class OracleCredentials:
         self.type = "oracle"
         self.unique_field = host
 
-    def _connection_keys(self) -> tuple[str, ...]:
+    def _connection_keys(self: object) -> tuple[str, ...]:
         """Get connection keys for pooling."""
         return (
             "host",
@@ -61,11 +61,11 @@ class OracleCredentials:
         )
 
     @property
-    def database_identifier(self) -> str:
+    def database_identifier(self: object) -> str:
         """Get database identifier (service_name or sid)."""
         return self.service_name or self.sid or "XE"
 
-    def to_oracle_config(self) -> FlextDbOracleConfig:
+    def to_oracle_config(self: object) -> FlextDbOracleConfig:
         """Convert to Oracle config."""
         return FlextDbOracleConfig(
             host=self.host,
@@ -108,9 +108,9 @@ class FlextOracleOracleConnectionManager:
         """Handle connection error."""
         raise DbtDatabaseError(error_message)
 
-    def cancel_open(self) -> list[str]:
+    def cancel_open(self: object) -> list[str]:
         """Cancel open connections."""
-        cancelled = []
+        cancelled: list[str] = []
         for name, connection in self.thread_connections.items():
             if connection.state == "open":
                 connection.state = "closed"
@@ -126,7 +126,7 @@ class FlextOracleOracleConnectionManager:
 
         # Mock response for testing
         class MockResponse:
-            def __init__(self) -> None:
+            def __init__(self: object) -> None:
                 self.code = "SELECT"
                 self.rows_affected = 0
 
@@ -154,13 +154,13 @@ class FlextOracleOracleConnectionManager:
         cursor = MockCursor(sql, bindings)
         return connection, cursor
 
-    def begin(self) -> None:
+    def begin(self: object) -> None:
         """Begin transaction."""
 
-    def commit(self) -> None:
+    def commit(self: object) -> None:
         """Commit transaction."""
 
-    def rollback(self) -> None:
+    def rollback(self: object) -> None:
         """Rollback transaction."""
 
 

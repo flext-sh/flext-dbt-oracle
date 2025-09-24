@@ -40,7 +40,7 @@ class FlextDbtOracleModel(FlextModels.Entity):
     oracle_source: str
     dependencies: FlextTypes.Core.StringList
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate DBT model business rules."""
         try:
             if not self.name.strip():
@@ -61,7 +61,7 @@ class FlextDbtOracleModel(FlextModels.Entity):
         """Get the schema.yml file path for this model."""
         return base_path / f"models/{self.dbt_model_type}/schema.yml"
 
-    def to_sql_file(self) -> str:
+    def to_sql_file(self: object) -> str:
         """Generate SQL file content for this model."""
         header = f"""{{{{
   config(
@@ -81,7 +81,7 @@ class FlextDbtOracleModel(FlextModels.Entity):
 
         return header + self.sql_content
 
-    def to_schema_entry(self) -> FlextTypes.Core.Dict:
+    def to_schema_entry(self: object) -> FlextTypes.Core.Dict:
         """Generate schema.yml entry for this model."""
         return {
             "name": self.name,
@@ -156,7 +156,7 @@ group by {group_by_columns}
                 oracle_api: Oracle API instance
 
             """
-            self.config = config
+            self.config: dict[str, object] = config
             self.oracle_api = oracle_api
             logger.info("Initialized DBT Oracle model generator")
 
@@ -362,7 +362,7 @@ group by {group_by_columns}
             """Create a staging model from an Oracle object."""
             try:
                 # Generate column definitions
-                column_defs = []
+                column_defs: list[str] = []
                 dbt_columns: list[FlextTypes.Core.Dict] = []
 
                 for col in columns:
@@ -495,7 +495,7 @@ group by {group_by_columns}
                 group_columns: FlextTypes.Core.StringList = []
 
                 for col in intermediate_model.columns:
-                    data_type = str(col.get("data_type", ""))
+                    data_type: dict[str, object] = str(col.get("data_type", ""))
                     col_name = str(col.get("name", ""))
                     if data_type in {"numeric", "float"}:
                         agg_columns.append(f"    sum({col_name}) as total_{col_name}")
@@ -568,10 +568,6 @@ group by {group_by_columns}
                 return None
 
 
-# Backward compatibility type alias
-FlextDbtOracleModelGenerator = FlextDbtOracleModel._ModelGenerator
-
 __all__: FlextTypes.Core.StringList = [
     "FlextDbtOracleModel",
-    "FlextDbtOracleModelGenerator",
 ]

@@ -24,22 +24,22 @@ class OracleTableInterface(Protocol):
     """
 
     @property
-    def name(self) -> str:
+    def name(self: object) -> str:
         """Table name."""
         ...
 
     @property
-    def schema_name(self) -> str:
+    def schema_name(self: object) -> str:
         """Schema/owner name."""
         ...
 
     @property
-    def columns(self) -> list[dict[str, str]]:
+    def columns(self: object) -> list[dict[str, str]]:
         """List of column information as dictionaries."""
         ...
 
     @property
-    def metadata(self) -> dict[str, object]:
+    def metadata(self: object) -> dict[str, object]:
         """Table metadata information."""
         ...
 
@@ -113,7 +113,7 @@ class OracleTableAdapter:
         # Create a basic Table object (using actual constructor signature)
         try:
             # Convert column information if provided
-            table_columns = list(columns) if columns else []
+            table_columns: list[object] = list(columns) if columns else []
 
             table = FlextDbOracleModels.Table(
                 name=name,
@@ -131,17 +131,17 @@ class OracleTableAdapter:
         )
 
     @property
-    def name(self) -> str:
+    def name(self: object) -> str:
         """Table name from the adapted table."""
         return self._table.name
 
     @property
-    def schema_name(self) -> str:
+    def schema_name(self: object) -> str:
         """Schema name (mapped from 'owner' attribute)."""
         return self._table.owner
 
     @property
-    def columns(self) -> list[dict[str, str]]:
+    def columns(self: object) -> list[dict[str, str]]:
         """Column information converted to dictionaries."""
         # Convert Column objects to dictionaries for business logic compatibility
         return [
@@ -154,7 +154,7 @@ class OracleTableAdapter:
         ]
 
     @property
-    def metadata(self) -> dict[str, object]:
+    def metadata(self: object) -> dict[str, object]:
         """Combined metadata from table and extra metadata."""
         base_metadata = {
             "name": self.name,
@@ -164,7 +164,7 @@ class OracleTableAdapter:
         # Merge with extra metadata
         return {**base_metadata, **self._extra_metadata}
 
-    def get_underlying_table(self) -> FlextDbOracleModels.Table:
+    def get_underlying_table(self: object) -> FlextDbOracleModels.Table:
         """Get the underlying Table object for operations that need it."""
         return self._table
 

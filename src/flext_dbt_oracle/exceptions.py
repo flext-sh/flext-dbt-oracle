@@ -61,7 +61,9 @@ class FlextDbtOracleDatabaseError(FlextExceptions.BaseError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT database error with Oracle context."""
-        context = dict(cast("dict[str, object]", kwargs.get("context", {})))
+        context: dict[str, object] = dict(
+            cast("dict[str, object]", kwargs.get("context", {}))
+        )
         if table_name is not None:
             context["table_name"] = table_name
         if schema_name is not None:
@@ -87,7 +89,9 @@ class FlextDbtOracleExecutionError(FlextExceptions.BaseError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT execution error with execution context."""
-        context = dict(cast("dict[str, object]", kwargs.get("context", {})))
+        context: dict[str, object] = dict(
+            cast("dict[str, object]", kwargs.get("context", {}))
+        )
         if sql_statement is not None:
             context["sql_statement"] = sql_statement
         if execution_step is not None:
@@ -113,7 +117,9 @@ class FlextDbtOracleQueryError(FlextExceptions.BaseError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT query error with query context."""
-        context = dict(cast("dict[str, object]", kwargs.get("context", {})))
+        context: dict[str, object] = dict(
+            cast("dict[str, object]", kwargs.get("context", {}))
+        )
         if query_type is not None:
             context["query_type"] = query_type
         if query_text is not None:
@@ -145,7 +151,9 @@ class FlextDbtOracleModelError(FlextExceptions.BaseError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT model error with model context."""
-        context = dict(cast("dict[str, object]", kwargs.get("context", {})))
+        context: dict[str, object] = dict(
+            cast("dict[str, object]", kwargs.get("context", {}))
+        )
         if model_name is not None:
             context["model_name"] = model_name
         if model_type is not None:
@@ -170,7 +178,9 @@ class FlextDbtOracleCompilationError(FlextExceptions.BaseError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle DBT compilation error with compilation context."""
-        context = dict(cast("dict[str, object]", kwargs.get("context", {})))
+        context: dict[str, object] = dict(
+            cast("dict[str, object]", kwargs.get("context", {}))
+        )
         if compilation_target is not None:
             context["compilation_target"] = compilation_target
         if compilation_stage is not None:

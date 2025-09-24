@@ -123,7 +123,7 @@ class FlextDbtOracleConfig(FlextConfig):
         "UROWID": "string",
     }
 
-    def get_oracle_config(self) -> FlextDbOracleModels.OracleConfig:
+    def get_oracle_config(self: object) -> FlextDbOracleModels.OracleConfig:
         """Get Oracle configuration for flext-db-oracle integration.
 
         Returns:
@@ -143,7 +143,7 @@ class FlextDbtOracleConfig(FlextConfig):
             domain_events=self.domain_events,
         )
 
-    def get_meltano_config(self) -> FlextMeltanoConfig:
+    def get_meltano_config(self: object) -> FlextMeltanoConfig:
         """Get Meltano configuration for flext-meltano integration.
 
         Returns:
@@ -171,7 +171,7 @@ class FlextDbtOracleConfig(FlextConfig):
             environment=environment_value,
         )
 
-    def get_oracle_quality_config(self) -> FlextTypes.Core.Dict:
+    def get_oracle_quality_config(self: object) -> FlextTypes.Core.Dict:
         """Get data quality configuration for Oracle validation.
 
         Returns:
@@ -185,7 +185,7 @@ class FlextDbtOracleConfig(FlextConfig):
             "max_parallel_connections": self.max_parallel_connections,
         }
 
-    def get_performance_config(self) -> FlextTypes.Core.Dict:
+    def get_performance_config(self: object) -> FlextTypes.Core.Dict:
         """Get Oracle performance configuration for DBT operations.
 
         Returns:
@@ -242,7 +242,7 @@ class FlextDbtOracleConfig(FlextConfig):
         """
         return self.materialization_mapping.get(layer, "view")
 
-    def validate_oracle_connection(self) -> bool:
+    def validate_oracle_connection(self: object) -> bool:
         """Validate Oracle connection configuration.
 
         Returns:
