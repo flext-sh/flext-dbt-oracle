@@ -207,7 +207,7 @@ class FlextDbtOracleWorkflowService:
         """
         try:
             logger.info("Starting full Oracle transformation pipeline")
-            pipeline_results = {}
+            pipeline_results: dict[str, dict[str, object]] = {}
 
             # Step 1: Generate models if requested
             if generate_models:

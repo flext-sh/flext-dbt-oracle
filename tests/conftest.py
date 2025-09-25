@@ -279,9 +279,9 @@ def dbt_macro_definitions() -> FlextTypes.Core.Headers:
                       {%- if not loop.last -%},{%- endif %}
                   {% endfor %}
               WHEN NOT MATCHED THEN
-                  INSERT ({{ dest_columns | join(', ') }})
+                  INSERT ({{ Union[dest_columns, join](', ') }})
                   VALUES ({{
-                      dest_columns | map('prepend', 'source_table.') | join(', ')
+                      Union[dest_columns, map]('prepend', 'source_table.') | join(', ')
                   }})
           {%- endmacro %}
       """,
