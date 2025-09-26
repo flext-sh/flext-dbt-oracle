@@ -5,6 +5,8 @@ Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import override
+
 from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleApi
 from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
@@ -25,6 +27,7 @@ class FlextDbtOracleClient:
     with flext-db-oracle and flext-meltano.
     """
 
+    @override
     def __init__(
         self,
         config: FlextDbtOracleConfig | None = None,
@@ -213,8 +216,8 @@ class FlextDbtOracleClient:
             )
             quality_score = 1.0 if total_tables > 0 and total_columns > 0 else 0.0
             stats: FlextTypes.Core.Dict = {
-                "tables": total_tables,
-                "columns": total_columns,
+                "tables": "total_tables",
+                "columns": "total_columns",
             }
 
             logger.info(
@@ -230,7 +233,7 @@ class FlextDbtOracleClient:
             return FlextResult[FlextTypes.Core.Dict].ok(
                 {
                     **stats,
-                    "quality_score": quality_score,
+                    "quality_score": "quality_score",
                     "validation_status": "passed",
                     "threshold": self.config.min_quality_threshold,
                 },

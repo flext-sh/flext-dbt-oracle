@@ -10,7 +10,7 @@ import asyncio
 import concurrent.futures
 from collections.abc import Coroutine
 from dataclasses import dataclass
-from typing import cast
+from typing import cast, override
 
 from flext_core import FlextLogger, FlextTypes, T
 from flext_db_oracle import FlextDbOracleConfig
@@ -22,6 +22,8 @@ logger = FlextLogger(__name__)
 class OracleCredentials:
     """Oracle database credentials following FLEXT patterns."""
 
+    @override
+    @override
     def __init__(
         self,
         host: str,
@@ -81,6 +83,8 @@ class FlextOracleOracleConnectionManager:
 
     TYPE = "oracle"
 
+    @override
+    @override
     def __init__(self, profile: FlextTypes.Core.Dict) -> None:
         """Initialize connection manager."""
         self.profile = profile
@@ -92,8 +96,8 @@ class FlextOracleOracleConnectionManager:
         try:
             connection.state = "open"
             connection.handle = {
-                "connection_service": None,
-                "query_service": None,
+                "connection_service": "None",
+                "query_service": "None",
                 "oracle_config": cast(
                     "OracleCredentials",
                     connection.credentials,
@@ -121,11 +125,14 @@ class FlextOracleOracleConnectionManager:
         """Get thread connection."""
         return self.thread_connections.get(name)
 
+    @override
     def execute(self, sql: str, *, fetch: bool = False) -> tuple[object, object]:
         """Execute SQL query."""
 
         # Mock response for testing
         class MockResponse:
+            @override
+            @override
             def __init__(self: object) -> None:
                 self.code = "SELECT"
                 self.rows_affected = 0

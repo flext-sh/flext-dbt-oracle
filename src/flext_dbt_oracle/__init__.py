@@ -6,7 +6,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
 from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.config import FlextDbtOracleConfig
@@ -32,6 +31,7 @@ from flext_dbt_oracle.services import (
     FlextDbtOracleMonitoringService,
     FlextDbtOracleWorkflowService,
 )
+from flext_dbt_oracle.typings import FlextDbtOracleTypes
 
 # Version information
 __version__ = "0.9.0"
@@ -40,7 +40,7 @@ __author__ = "FLEXT Team"
 __email__ = "team@flext.sh"
 
 # Public API - Following established flext DBT patterns
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextDbtOracleTypes.Core.StringList = [
     # Configuration Error Types
     "FlextDbtOracleAuthenticationError",
     # Core DBT Pattern Classes

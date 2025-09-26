@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import time
 from pathlib import Path
+from typing import override
 
 from flext_db_oracle.models import FlextDbOracleModels
 
@@ -31,6 +32,7 @@ class FlextDbtOracleWorkflowService:
     with integrated monitoring functionality following FLEXT unified class pattern.
     """
 
+    @override
     def __init__(
         self,
         config: FlextDbtOracleConfig | None = None,
@@ -241,8 +243,8 @@ class FlextDbtOracleWorkflowService:
             # Combine results
             full_results = {
                 "pipeline_type": "full_transformation",
-                "model_generation_enabled": generate_models,
-                "results": pipeline_results,
+                "model_generation_enabled": "generate_models",
+                "results": "pipeline_results",
                 "pipeline_status": "completed",
             }
 
@@ -290,7 +292,7 @@ class FlextDbtOracleWorkflowService:
                 _ = self.client.dbt_hub
                 dbt_validation: FlextTypes.Core.Dict = {
                     "status": "available",
-                    "hub_initialized": True,
+                    "hub_initialized": "True",
                 }
             except Exception as e:
                 logger.warning("DBT hub validation failed: %s", e)
@@ -323,8 +325,8 @@ class FlextDbtOracleWorkflowService:
                 overall_status = "failed"
 
             final_results: FlextTypes.Core.Dict = {
-                "overall_status": overall_status,
-                "validations": validation_results,
+                "overall_status": "overall_status",
+                "validations": "validation_results",
                 "prerequisites_met": overall_status == "passed",
             }
 
@@ -447,9 +449,9 @@ class FlextDbtOracleWorkflowService:
 
             results: FlextTypes.Core.Dict = {
                 "analysis": {
-                    "total_objects": total_objects,
-                    "object_type_distribution": object_counts,
-                    "schema_distribution": schema_counts,
+                    "total_objects": "total_objects",
+                    "object_type_distribution": "object_counts",
+                    "schema_distribution": "schema_counts",
                     "most_common_object_type": (
                         max(object_counts, key=lambda k: object_counts[k])
                         if object_counts
@@ -465,7 +467,7 @@ class FlextDbtOracleWorkflowService:
                     if schema_counts
                     else None,
                 },
-                "recommendations": recommendations,
+                "recommendations": "recommendations",
                 "suggested_config": {
                     "dbt_threads": min(
                         FlextDbtOracleConstants.ModelOptimization.MAX_THREADS,
@@ -507,6 +509,7 @@ class FlextDbtOracleWorkflowService:
     class _MonitoringService:
         """Nested helper class for monitoring workflow execution."""
 
+        @override
         def __init__(
             self,
             config: FlextDbtOracleConfig,
@@ -536,9 +539,9 @@ class FlextDbtOracleWorkflowService:
 
             """
             tracking_info: FlextTypes.Core.Dict = {
-                "workflow_type": workflow_type,
+                "workflow_type": "workflow_type",
                 "start_time": time.time(),
-                "parameters": workflow_params,
+                "parameters": "workflow_params",
                 "tracking_id": f"{workflow_type}_{int(time.time())}",
             }
 

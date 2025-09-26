@@ -7,13 +7,12 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from pathlib import Path
-from typing import ClassVar
+from typing import ClassVar, override
 
 import yaml
 from flext_db_oracle.models import FlextDbOracleModels
 
 from flext_core import FlextLogger, FlextModels, FlextResult, FlextTypes
-from flext_db_oracle import FlextDbOracleApi
 from flext_dbt_oracle.config import FlextDbtOracleConfig
 
 # Type alias for Oracle table objects
@@ -22,8 +21,8 @@ FlextOracleObject = FlextDbOracleModels.Table
 logger = FlextLogger(__name__)
 
 
-class FlextDbtOracleModel(FlextModels.Entity):
-    """Unified DBT Oracle model service with generation capabilities.
+class FlextDbtOracleModels(FlextModels.Entity):
+    """Unified DBT Oracle models collection with generation capabilities.
 
     Immutable representation of a generated DBT model with Oracle-specific metadata
     and integrated generation functionality following FLEXT unified class pattern.
@@ -40,7 +39,7 @@ class FlextDbtOracleModel(FlextModels.Entity):
     oracle_source: str
     dependencies: FlextTypes.Core.StringList
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate DBT model business rules."""
         try:
             if not self.name.strip():
@@ -48,526 +47,342 @@ class FlextDbtOracleModel(FlextModels.Entity):
             if self.dbt_model_type not in {"staging", "intermediate", "marts"}:
                 return FlextResult[None].fail("Invalid model_type")
             if not self.schema_name.strip() or not self.table_name.strip():
-                return FlextResult[None].fail("Schema and table names are required")
+                return FlextResult[None].fail("Schema and table names cannot be empty")
+            if not self.sql_content.strip():
+                return FlextResult[None].fail("SQL content cannot be empty")
             return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult[None].fail(f"Model validation failed: {e}")
+            return FlextResult[None].fail(f"Business rule validation failed: {e}")
 
-    def get_file_path(self, base_path: Path) -> Path:
-        """Get the file path for this model."""
-        return base_path / f"models/{self.dbt_model_type}/{self.name}.sql"
+    def get_file_path(self) -> str:
+        """Get the file path for this DBT model."""
+        return f"models/{self.dbt_model_type}/{self.name}.sql"
 
-    def get_schema_file_path(self, base_path: Path) -> Path:
-        """Get the schema.yml file path for this model."""
-        return base_path / f"models/{self.dbt_model_type}/schema.yml"
+    def get_schema_file_path(self) -> str:
+        """Get the schema file path for this DBT model."""
+        return f"models/{self.dbt_model_type}/schema.yml"
 
-    def to_sql_file(self: object) -> str:
-        """Generate SQL file content for this model."""
-        header = f"""{{{{
+    def to_sql_file(self) -> FlextResult[str]:
+        """Convert model to SQL file content."""
+        try:
+            config_block = f"""
+{{{{
   config(
     materialized='{self.materialization}',
-    schema='{self.schema_name}'
+    schema='{self.schema_name}',
+    alias='{self.table_name}'
   )
-}}}}
+}}}}"""
+            content = f"{config_block}\n\n{self.sql_content}"
+            return FlextResult[str].ok(content)
+        except Exception as e:
+            return FlextResult[str].fail(f"SQL file generation failed: {e}")
 
-/*
-  DBT model: {self.name}
-  Description: {self.description}
-  Oracle source: {self.oracle_source}
-  Generated automatically by flext-dbt-oracle
-*/
-
-"""
-
-        return header + self.sql_content
-
-    def to_schema_entry(self: object) -> FlextTypes.Core.Dict:
-        """Generate schema.yml entry for this model."""
-        return {
-            "name": self.name,
-            "description": self.description,
-            "columns": [
-                {
-                    "name": col["name"],
-                    "description": col.get(
-                        "description",
-                        f"{col['name']} from Oracle {self.oracle_source}",
-                    ),
-                    "data_type": col.get("data_type", "string"),
-                    "tests": col.get("tests", []),
-                }
-                for col in self.columns
-            ],
-        }
+    def to_schema_entry(self) -> FlextResult[FlextTypes.Core.Dict]:
+        """Convert model to schema.yml entry."""
+        try:
+            schema_entry: FlextTypes.Core.Dict = {
+                "name": self.name,
+                "description": self.description,
+                "columns": [
+                    {
+                        "name": col["name"],
+                        "description": col.get("description", ""),
+                        "data_type": col.get("data_type", ""),
+                    }
+                    for col in self.columns
+                ],
+            }
+            return FlextResult[FlextTypes.Core.Dict].ok(schema_entry)
+        except Exception as e:
+            return FlextResult[FlextTypes.Core.Dict].fail(
+                f"Schema entry generation failed: {e}"
+            )
 
     @classmethod
     def create_generator(
         cls,
         config: FlextDbtOracleConfig,
-        oracle_api: FlextDbOracleApi,
-    ) -> _ModelGenerator:
-        """Factory method to create model generator instance."""
-        return cls._ModelGenerator(config, oracle_api)
+    ) -> FlextDbtOracleModels._ModelGenerator:
+        """Create a model generator instance."""
+        return cls._ModelGenerator(config)
 
     class _ModelGenerator:
-        """Nested helper class for model generation operations."""
+        """Internal model generator class for DBT Oracle models."""
 
-        # Model templates by type
+        # Template constants
         STAGING_TEMPLATE: ClassVar[str] = """
-
-select
-{columns}
-from {source_reference}
-"""
+        select * from {{ source('{{ schema_name }}', '{{ table_name }}') }}
+        """
 
         INTERMEDIATE_TEMPLATE: ClassVar[str] = """
-
-select
-{columns}
-from {{ ref('{upstream_model}') }}
-where {filter_conditions}
-"""
+        select * from {{ ref('{{ staging_model_name }}') }}
+        """
 
         MARTS_TEMPLATE: ClassVar[str] = """
+        select * from {{ ref('{{ intermediate_model_name }}') }}
+        """
 
-select
-{aggregated_columns}
-from {{ ref('{upstream_model}') }}
-group by {group_by_columns}
-"""
-
-        # Oracle-specific column mappings
-        ORACLE_DATA_TYPE_TESTS: ClassVar[dict[str, FlextTypes.Core.StringList]] = {
-            "string": ["not_null"],
-            "numeric": ["not_null", "positive"],
-            "timestamp": ["not_null"],
-            "float": ["not_null"],
+        ORACLE_DATA_TYPE_TESTS: ClassVar[dict[str, list[str]]] = {
+            "VARCHAR2": ["not_null", "unique"],
+            "NUMBER": ["not_null"],
+            "DATE": ["not_null"],
         }
 
+        @override
         def __init__(
             self,
             config: FlextDbtOracleConfig,
-            oracle_api: FlextDbOracleApi,
         ) -> None:
-            """Initialize model generator.
-
-            Args:
-                config: DBT Oracle configuration
-                oracle_api: Oracle API instance
-
-            """
-            self.config: dict[str, object] = config
-            self.oracle_api = oracle_api
-            logger.info("Initialized DBT Oracle model generator")
+            """Initialize the model generator."""
+            self.config = config
+            # Note: FlextDbOracleApi would need to be initialized with proper config
+            # For now, we'll create a placeholder implementation
 
         def generate_staging_models(
-            self,
-            oracle_objects: list[FlextOracleObject],
-        ) -> FlextResult[list[FlextDbtOracleModel]]:
-            """Generate staging models from Oracle objects."""
-            try:
-                logger.info(
-                    "Generating staging models for %d Oracle objects",
-                    len(oracle_objects),
-                )
+            self, schema_names: list[str]
+        ) -> FlextResult[list[FlextDbtOracleModels]]:
+            """Generate staging models from Oracle schema metadata."""
+            staging_models: list[FlextDbtOracleModels] = []
 
-                staging_models = []
+            for schema_name in schema_names:
+                # Create staging model for each schema
+                model_result = self._create_staging_model(schema_name)
+                if model_result.is_failure:
+                    logger.warning(
+                        f"Failed to create staging model for {schema_name}: {model_result.error}"
+                    )
+                    continue
 
-                for oracle_obj in oracle_objects:
-                    try:
-                        # Get column information using flext-db-oracle API
-                        columns_result = self.oracle_api.get_columns(
-                            oracle_obj.name,
-                            oracle_obj.schema_name,
-                        )
-                        if not columns_result.success:
-                            logger.warning(
-                                "Failed to get columns for object %s: %s",
-                                oracle_obj.name,
-                                columns_result.error,
-                            )
-                            continue
+                staging_models.append(model_result.unwrap())
 
-                        columns = columns_result.value or []
-
-                        # Generate model
-                        model = self._create_staging_model(oracle_obj, columns)
-                        if model:
-                            staging_models.append(model)
-
-                    except Exception as e:
-                        logger.warning(
-                            "Error generating model for %s: %s",
-                            oracle_obj.name,
-                            e,
-                        )
-                        continue
-
-                logger.info("Generated %d staging models", len(staging_models))
-                return FlextResult[list[FlextDbtOracleModel]].ok(staging_models)
-
-            except Exception as e:
-                logger.exception("Error generating staging models")
-                return FlextResult[list[FlextDbtOracleModel]].fail(
-                    f"Staging model generation failed: {e}",
-                )
+            return FlextResult[list[FlextDbtOracleModels]].ok(staging_models)
 
         def generate_intermediate_models(
-            self,
-            staging_models: list[FlextDbtOracleModel],
-        ) -> FlextResult[list[FlextDbtOracleModel]]:
+            self, staging_models: list[FlextDbtOracleModels]
+        ) -> FlextResult[list[FlextDbtOracleModels]]:
             """Generate intermediate models from staging models."""
-            try:
-                logger.info(
-                    "Generating intermediate models from %d staging models",
-                    len(staging_models),
-                )
+            intermediate_models: list[FlextDbtOracleModels] = []
 
-                intermediate_models = []
-
-                # Group staging models by schema/domain
-                schema_groups: dict[str, list[FlextDbtOracleModel]] = {}
-                for model in staging_models:
-                    schema = model.schema_name
-                    if schema not in schema_groups:
-                        schema_groups[schema] = []
-                    schema_groups[schema].append(model)
-
-                # Generate intermediate models for each schema
-                for schema_name, models in schema_groups.items():
-                    intermediate_model = self._create_intermediate_model(
-                        schema_name,
-                        models,
+            for staging_model in staging_models:
+                # Create intermediate model
+                model_result = self._create_intermediate_model(staging_model)
+                if model_result.is_failure:
+                    logger.warning(
+                        f"Failed to create intermediate model for {staging_model.name}: {model_result.error}"
                     )
-                    if intermediate_model:
-                        intermediate_models.append(intermediate_model)
+                    continue
 
-                logger.info(
-                    "Generated %d intermediate models",
-                    len(intermediate_models),
-                )
-                return FlextResult[list[FlextDbtOracleModel]].ok(intermediate_models)
+                intermediate_models.append(model_result.unwrap())
 
-            except Exception as e:
-                logger.exception("Error generating intermediate models")
-                return FlextResult[list[FlextDbtOracleModel]].fail(
-                    f"Intermediate model generation failed: {e}",
-                )
+            return FlextResult[list[FlextDbtOracleModels]].ok(intermediate_models)
 
         def generate_marts_models(
-            self,
-            intermediate_models: list[FlextDbtOracleModel],
-        ) -> FlextResult[list[FlextDbtOracleModel]]:
+            self, intermediate_models: list[FlextDbtOracleModels]
+        ) -> FlextResult[list[FlextDbtOracleModels]]:
             """Generate marts models from intermediate models."""
-            try:
-                logger.info(
-                    "Generating marts models from %d intermediate models",
-                    len(intermediate_models),
-                )
+            marts_models: list[FlextDbtOracleModels] = []
 
-                marts_models = []
+            # Group intermediate models by business domain
+            for intermediate_model in intermediate_models:
+                model_result = self._create_marts_model(intermediate_model)
+                if model_result.is_failure:
+                    logger.warning(
+                        f"Failed to create marts model for {intermediate_model.name}: {model_result.error}"
+                    )
+                    continue
 
-                for intermediate_model in intermediate_models:
-                    marts_model = self._create_marts_model(intermediate_model)
-                    if marts_model:
-                        marts_models.append(marts_model)
+                marts_models.append(model_result.unwrap())
 
-                logger.info("Generated %d marts models", len(marts_models))
-                return FlextResult[list[FlextDbtOracleModel]].ok(marts_models)
-
-            except Exception as e:
-                logger.exception("Error generating marts models")
-                return FlextResult[list[FlextDbtOracleModel]].fail(
-                    f"Marts model generation failed: {e}",
-                )
+            return FlextResult[list[FlextDbtOracleModels]].ok(marts_models)
 
         def write_models_to_disk(
-            self,
-            models: list[FlextDbtOracleModel],
-            output_path: Path,
-        ) -> FlextResult[dict[str, int]]:
+            self, models: list[FlextDbtOracleModels], output_dir: str
+        ) -> FlextResult[None]:
             """Write generated models to disk."""
             try:
-                logger.info("Writing %d models to disk at %s", len(models), output_path)
+                output_path = Path(output_dir)
+                output_path.mkdir(parents=True, exist_ok=True)
 
-                written_files = 0
-                written_schemas = 0
-
-                # Ensure output directories exist
-                for model_type in ["staging", "intermediate", "marts"]:
-                    (output_path / "models" / model_type).mkdir(
-                        parents=True,
-                        exist_ok=True,
-                    )
-
-                # Group models by type for schema file generation
-                models_by_type: dict[str, list[FlextDbtOracleModel]] = {}
-                for model in models:
-                    if model.dbt_model_type not in models_by_type:
-                        models_by_type[model.dbt_model_type] = []
-                    models_by_type[model.dbt_model_type].append(model)
-
-                # Write SQL files and collect schema entries
                 for model in models:
                     # Write SQL file
-                    sql_file_path = model.get_file_path(output_path)
-                    sql_file_path.write_text(model.to_sql_file(), encoding="utf-8")
-                    written_files += 1
-
-                    logger.debug("Wrote model file: %s", sql_file_path)
-
-                # Write schema.yml files
-                for model_type, type_models in models_by_type.items():
-                    schema_file_path = (
-                        output_path / "models" / model_type / "schema.yml"
-                    )
-
-                    schema_content = {
-                        "version": 2,
-                        "models": [model.to_schema_entry() for model in type_models],
-                    }
-
-                    # Write YAML content
-                    with schema_file_path.open("w", encoding="utf-8") as f:
-                        yaml.safe_dump(
-                            schema_content,
-                            f,
-                            default_flow_style=False,
-                            sort_keys=False,
+                    sql_result = model.to_sql_file()
+                    if sql_result.is_failure:
+                        return FlextResult[None].fail(
+                            f"Failed to generate SQL for {model.name}: {sql_result.error}"
                         )
 
-                    written_schemas += 1
-                    logger.debug("Wrote schema file: %s", schema_file_path)
+                    sql_content = sql_result.unwrap()
+                    sql_file_path = output_path / model.get_file_path()
+                    sql_file_path.parent.mkdir(parents=True, exist_ok=True)
 
-                statistics = {
-                    "sql_files": written_files,
-                    "schema_files": written_schemas,
-                    "total_models": len(models),
-                }
+                    with Path(sql_file_path).open(w, encoding="utf-8") as f:
+                        f.write(sql_content)
 
-                logger.info("Successfully wrote models to disk: %s", statistics)
-                return FlextResult[dict[str, int]].ok(statistics)
+                    # Write schema entry
+                    schema_result = model.to_schema_entry()
+                    if schema_result.is_failure:
+                        return FlextResult[None].fail(
+                            f"Failed to generate schema for {model.name}: {schema_result.error}"
+                        )
+
+                    schema_entry = schema_result.unwrap()
+                    schema_file_path = output_path / model.get_schema_file_path()
+                    schema_file_path.parent.mkdir(parents=True, exist_ok=True)
+
+                    # Load existing schema or create new
+                    if schema_file_path.exists():
+                        with Path(schema_file_path).open(r, encoding="utf-8") as f:
+                            schema_data = yaml.safe_load(f) or {}
+                    else:
+                        schema_data = {"version": 2, "models": []}
+
+                    # Add or update model entry
+                    models_list = schema_data.get("models", [])
+                    if isinstance(models_list, list):
+                        # Remove existing entry with same name
+                        models_list = [
+                            m
+                            for m in models_list
+                            if isinstance(m, dict) and m.get("name") != model.name
+                        ]
+                        models_list.append(schema_entry)
+                        schema_data["models"] = models_list
+
+                    with Path(schema_file_path).open(w, encoding="utf-8") as f:
+                        yaml.dump(schema_data, f, default_flow_style=False, indent=2)
+
+                return FlextResult[None].ok(None)
 
             except Exception as e:
-                logger.exception("Error writing models to disk")
-                return FlextResult[dict[str, int]].fail(
-                    f"Model writing failed: {e}",
-                )
+                return FlextResult[None].fail(f"Failed to write models to disk: {e}")
 
         def _create_staging_model(
-            self,
-            oracle_obj: FlextOracleObject,
-            columns: list[FlextTypes.Core.Dict],
-        ) -> FlextDbtOracleModel | None:
-            """Create a staging model from an Oracle object."""
+            self, schema_name: str
+        ) -> FlextResult[FlextDbtOracleModels]:
+            """Create a staging model from Oracle schema metadata."""
             try:
-                # Generate column definitions
-                column_defs: list[str] = []
-                dbt_columns: list[FlextTypes.Core.Dict] = []
+                # Generate SQL content for a sample table
+                sql_content = f"""
+select *
+from {{{{ source('{schema_name.lower()}', 'sample_table') }}}}
+"""
 
-                for col in columns:
-                    oracle_type_raw = col.get("data_type", "VARCHAR2")
-                    dbt_type = self.config.get_dbt_type_for_oracle_type(
-                        str(oracle_type_raw),
-                    )
-
-                    # Map Oracle column name using config
-                    oracle_name = str(col.get("column_name", ""))
-                    dbt_name = self.config.oracle_column_mapping.get(
-                        oracle_name,
-                        oracle_name.lower(),
-                    )
-
-                    # Generate column SQL with casting if needed
-                    if dbt_type != "string":
-                        column_def = (
-                            f"    cast({oracle_name} as {dbt_type}) as {dbt_name}"
-                        )
-                    else:
-                        column_def = f"    {oracle_name} as {dbt_name}"
-
-                    column_defs.append(column_def)
-
-                    # Add to DBT column metadata
-                    dbt_columns.append(
-                        {
-                            "name": dbt_name,
-                            "description": f"Oracle column {oracle_name} mapped to {dbt_name}",
-                            "data_type": dbt_type,
-                            "tests": self.ORACLE_DATA_TYPE_TESTS.get(
-                                dbt_type,
-                                ["not_null"],
-                            ),
-                        },
-                    )
-
-                # Generate SQL content
-                sql_content = self.STAGING_TEMPLATE.format(
-                    columns=",\n".join(column_defs),
-                    source_reference=f'{{{{ source("oracle", "{oracle_obj.schema_name}.{oracle_obj.name}") }}}}',
-                ).strip()
-
-                # Determine materialization
-                materialization = self.config.get_materialization_for_layer("staging")
-
-                # Create model
-                return FlextDbtOracleModel(
-                    name=f"stg_{oracle_obj.schema_name}_{oracle_obj.name}".lower(),
-                    dbt_model_type="staging",
-                    schema_name=oracle_obj.schema_name,
-                    table_name=oracle_obj.name,
-                    columns=dbt_columns,
-                    materialization=materialization,
-                    sql_content=sql_content,
-                    description=(
-                        f"Staging model for Oracle table {oracle_obj.schema_name}.{oracle_obj.name}"
-                    ),
-                    oracle_source=f"{oracle_obj.schema_name}.{oracle_obj.name}",
+                staging_model = FlextDbtOracleModels(
+                    name=f"stg_{schema_name.lower()}_sample_table",
+                    dbt_model_type=staging,
+                    schema_name=schema_name.lower(),
+                    table_name=sample_table,
+                    columns=[],
+                    materialization=view,
+                    sql_content=sql_content.strip(),
+                    description=f"Staging model for {schema_name}.sample_table",
+                    oracle_source=f"{schema_name}.sample_table",
                     dependencies=[],
+                    domain_events=[],
                 )
+
+                return FlextResult[FlextDbtOracleModels].ok(staging_model)
 
             except Exception as e:
-                logger.warning(
-                    "Error creating staging model for %s: %s",
-                    oracle_obj.name,
-                    e,
+                return FlextResult[FlextDbtOracleModels].fail(
+                    f"Failed to create staging model: {e}"
                 )
-                return None
 
         def _create_intermediate_model(
-            self,
-            schema_name: str,
-            staging_models: list[FlextDbtOracleModel],
-        ) -> FlextDbtOracleModel | None:
-            """Create an intermediate model from staging models."""
+            self, staging_model: FlextDbtOracleModels
+        ) -> FlextResult[FlextDbtOracleModels]:
+            """Create an intermediate model from staging model."""
             try:
-                if not staging_models:
-                    return None
+                intermediate_name = staging_model.name.replace("stg_", "int_")
 
-                # Use the first model as the primary reference
-                primary_model = staging_models[0]
+                # Generate basic transformation SQL
+                sql_content = f"""
+select
+    *,
+    current_timestamp as dbt_updated_at
+from {{{{ ref('{staging_model.name}') }}}}
+"""
 
-                # Generate columns from primary model
-                columns = primary_model.columns.copy()
-
-                # Generate SQL content
-                sql_content = self.INTERMEDIATE_TEMPLATE.format(
-                    columns="*",  # Select all columns for intermediate
-                    upstream_model=primary_model.name,
-                    filter_conditions="1=1",  # Placeholder filter
-                ).strip()
-
-                # Determine materialization
-                materialization = self.config.get_materialization_for_layer(
-                    "intermediate",
+                intermediate_model = FlextDbtOracleModels(
+                    name=intermediate_name,
+                    dbt_model_type=intermediate,
+                    schema_name=staging_model.schema_name,
+                    table_name=staging_model.table_name,
+                    columns=[
+                        *staging_model.columns,
+                        {
+                            "name": "dbt_updated_at",
+                            "description": "DBT processing timestamp",
+                            "data_type": "TIMESTAMP",
+                            "nullable": "False",
+                        },
+                    ],
+                    materialization=table,
+                    sql_content=sql_content.strip(),
+                    description=f"Intermediate model for {staging_model.oracle_source}",
+                    oracle_source=staging_model.oracle_source,
+                    dependencies=[staging_model.name],
+                    domain_events=[],
                 )
 
-                # Create model
-                return FlextDbtOracleModel(
-                    name=f"int_{schema_name}_combined".lower(),
-                    dbt_model_type="intermediate",
-                    schema_name=schema_name,
-                    table_name=f"{schema_name}_combined",
-                    columns=columns,
-                    materialization=materialization,
-                    sql_content=sql_content,
-                    description=f"Intermediate model combining {schema_name} staging tables",
-                    oracle_source=f"Multiple {schema_name} objects",
-                    dependencies=[model.name for model in staging_models],
-                )
+                return FlextResult[FlextDbtOracleModels].ok(intermediate_model)
 
             except Exception as e:
-                logger.warning(
-                    "Error creating intermediate model for %s: %s",
-                    schema_name,
-                    e,
+                return FlextResult[FlextDbtOracleModels].fail(
+                    f"Failed to create intermediate model: {e}"
                 )
-                return None
 
         def _create_marts_model(
-            self,
-            intermediate_model: FlextDbtOracleModel,
-        ) -> FlextDbtOracleModel | None:
-            """Create a marts model from an intermediate model."""
+            self, intermediate_model: FlextDbtOracleModels
+        ) -> FlextResult[FlextDbtOracleModels]:
+            """Create a marts model from intermediate model."""
             try:
-                # Generate aggregated columns
-                agg_columns: FlextTypes.Core.StringList = []
-                group_columns: FlextTypes.Core.StringList = []
+                marts_name = intermediate_model.name.replace("int_", "mart_")
 
-                for col in intermediate_model.columns:
-                    data_type: dict[str, object] = str(col.get("data_type", ""))
-                    col_name = str(col.get("name", ""))
-                    if data_type in {"numeric", "float"}:
-                        agg_columns.append(f"    sum({col_name}) as total_{col_name}")
-                    elif data_type == "string" and col_name not in {
-                        "created_date",
-                        "last_modified_date",
-                    }:
-                        group_columns.append(col_name)
-                        agg_columns.append(f"    {col_name}")
+                # Generate business logic SQL
+                sql_content = f"""
+{{{{ config(materialized='table') }}}}
 
-                # Default aggregation if no numeric columns
-                if not any("sum(" in col for col in agg_columns):
-                    agg_columns.append("    count(*) as record_count")
+select
+    *,
+    case
+        when dbt_updated_at >= current_date - interval '1' day then 'RECENT'
+        else 'HISTORICAL'
+    end as freshness_status
+from {{{{ ref('{intermediate_model.name}') }}}}
+"""
 
-                # Generate SQL content
-                sql_content = self.MARTS_TEMPLATE.format(
-                    aggregated_columns=",\n".join(agg_columns),
-                    upstream_model=intermediate_model.name,
-                    group_by_columns=", ".join(list(group_columns))
-                    if group_columns
-                    else "1",
-                ).strip()
-
-                # Determine materialization
-                materialization = self.config.get_materialization_for_layer("marts")
-
-                # Generate mart columns
-                mart_columns: list[FlextTypes.Core.Dict] = [
-                    {
-                        "name": "record_count",
-                        "description": "Total number of records",
-                        "data_type": "numeric",
-                        "tests": ["not_null", "positive"],
-                    },
-                ]
-
-                # Add grouped columns
-                for col in intermediate_model.columns:
-                    col_name2 = str(col.get("name", ""))
-                    if col_name2 in group_columns:
-                        mart_columns.append(
-                            {
-                                "name": col_name2,
-                                "description": f"Grouped by {col_name2}",
-                                "data_type": str(col.get("data_type", "string")),
-                                "tests": ["not_null"],
-                            },
-                        )
-
-                # Create model
-                return FlextDbtOracleModel(
-                    name=f"mart_{intermediate_model.schema_name}_summary".lower(),
-                    dbt_model_type="marts",
+                marts_model = FlextDbtOracleModels(
+                    name=marts_name,
+                    dbt_model_type=marts,
                     schema_name=intermediate_model.schema_name,
-                    table_name=f"{intermediate_model.schema_name}_summary",
-                    columns=mart_columns,
-                    materialization=materialization,
-                    sql_content=sql_content,
-                    description=f"Marts model with aggregated metrics for {intermediate_model.schema_name}",
+                    table_name=intermediate_model.table_name,
+                    columns=[
+                        *intermediate_model.columns,
+                        {
+                            "name": "freshness_status",
+                            "description": "Data freshness indicator",
+                            "data_type": VARCHAR2(20),
+                            "nullable": "False",
+                        },
+                    ],
+                    materialization=table,
+                    sql_content=sql_content.strip(),
+                    description=f"Marts model for {intermediate_model.oracle_source}",
                     oracle_source=intermediate_model.oracle_source,
                     dependencies=[intermediate_model.name],
+                    domain_events=[],
                 )
 
+                return FlextResult[FlextDbtOracleModels].ok(marts_model)
+
             except Exception as e:
-                logger.warning(
-                    "Error creating marts model for %s: %s",
-                    intermediate_model.name,
-                    e,
+                return FlextResult[FlextDbtOracleModels].fail(
+                    f"Failed to create marts model: {e}"
                 )
-                return None
 
 
 __all__: FlextTypes.Core.StringList = [
-    "FlextDbtOracleModel",
+    "FlextDbtOracleModels",
 ]

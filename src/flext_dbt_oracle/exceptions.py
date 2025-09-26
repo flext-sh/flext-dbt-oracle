@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import cast
+from typing import cast, override
 
 from flext_core import FlextExceptions, FlextTypes
 
@@ -51,6 +51,11 @@ class FlextDbtOracleTimeoutError(FlextExceptions.TimeoutError):
 class FlextDbtOracleDatabaseError(FlextExceptions.BaseError):
     """Oracle DBT database-specific errors with Oracle context."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle DBT database error",
@@ -79,6 +84,11 @@ class FlextDbtOracleDatabaseError(FlextExceptions.BaseError):
 class FlextDbtOracleExecutionError(FlextExceptions.BaseError):
     """Oracle DBT execution-specific errors with execution context."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle DBT execution error",
@@ -107,6 +117,11 @@ class FlextDbtOracleExecutionError(FlextExceptions.BaseError):
 class FlextDbtOracleQueryError(FlextExceptions.BaseError):
     """Oracle DBT query-specific errors with query context."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle DBT query error",
@@ -141,6 +156,11 @@ class FlextDbtOracleQueryError(FlextExceptions.BaseError):
 class FlextDbtOracleModelError(FlextExceptions.BaseError):
     """Oracle DBT model-specific errors with model context."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle DBT model error",
@@ -169,6 +189,11 @@ class FlextDbtOracleModelError(FlextExceptions.BaseError):
 class FlextDbtOracleCompilationError(FlextExceptions.BaseError):
     """Oracle DBT compilation errors with compilation context."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle DBT compilation failed",
