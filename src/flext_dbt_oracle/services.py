@@ -43,7 +43,9 @@ class FlextDbtOracleWorkflowService:
             config: Configuration for Oracle and DBT operations
 
         """
-        self.config: dict[str, object] = config or FlextDbtOracleConfig()
+        self.config: dict[str, object] = (
+            config or FlextDbtOracleConfig.get_global_instance()
+        )
         self.client = FlextDbtOracleClient(self.config)
 
         # Initialize Oracle API for model generation
@@ -532,12 +534,14 @@ class FlextDbtOracleWorkflowService:
 
             Args:
                 workflow_type: Type of workflow being executed
+                workflow_params: Workflow parameters (currently unused but kept for API compatibility)
                 workflow_params: Parameters passed to workflow
 
             Returns:
                 Dictionary containing execution tracking information
 
             """
+            _ = workflow_params  # Parameter required by API but not used in stub implementation
             tracking_info: FlextTypes.Core.Dict = {
                 "workflow_type": "workflow_type",
                 "start_time": time.time(),

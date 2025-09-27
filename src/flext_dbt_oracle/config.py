@@ -5,14 +5,14 @@ Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import threading
 from pathlib import Path
-from typing import ClassVar
+from typing import ClassVar, Self
 
 from flext_meltano.config import FlextMeltanoConfig
 from pydantic import Field, SecretStr, field_validator, model_validator
+from pydantic_settings import SettingsConfigDict
 
-from flext_core import FlextConfig, FlextConstants, FlextLogger, FlextTypes
+from flext_core import FlextConfig, FlextConstants, FlextLogger, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleModels
 
 logger = FlextLogger(__name__)
@@ -26,17 +26,25 @@ class FlextDbtOracleConfig(FlextConfig):
     - Uses SecretStr for sensitive data
     - All defaults from FlextConstants
     - Proper Pydantic 2 validation
-    - Singleton pattern with proper typing
+    - Enhanced singleton pattern with inverse dependency injection
 
     Combines Oracle database settings with DBT execution configuration.
     """
 
-    # Singleton pattern attributes
-    _global_instance: ClassVar[FlextDbtOracleConfig | None] = None
-    _lock: ClassVar[threading.Lock] = threading.Lock()
+    model_config = SettingsConfigDict(
+        env_prefix="FLEXT_DBT_ORACLE_",
+        case_sensitive=False,
+        extra="allow",
+        validate_assignment=True,
+        arbitrary_types_allowed=True,
+        populate_by_name=True,
+        use_enum_values=True,
+        str_strip_whitespace=True,
+        validate_default=True,
+    )
 
     # Oracle Database Configuration - using Field() with proper defaults
-    oracle_host: str = Field(default=localhost, description="Oracle database host")
+    oracle_host: str = Field(default="localhost", description="Oracle database host")
 
     oracle_port: int = Field(
         default=1521, ge=1, le=65535, description="Oracle database port"
@@ -52,7 +60,9 @@ class FlextDbtOracleConfig(FlextConfig):
         default_factory=lambda: SecretStr(""), description="Oracle password (sensitive)"
     )
 
-    oracle_protocol: str = Field(default=tcp, description="Oracle connection protocol")
+    oracle_protocol: str = Field(
+        default="tcp", description="Oracle connection protocol"
+    )
 
     oracle_pool_min: int = Field(
         default=1, ge=1, description="Minimum Oracle connection pool size"
@@ -79,7 +89,7 @@ class FlextDbtOracleConfig(FlextConfig):
 
     dbt_profiles_dir: str = Field(default=".", description="DBT profiles directory")
 
-    dbt_target: str = Field(default=dev, description="DBT target environment")
+    dbt_target: str = Field(default="dev", description="DBT target environment")
 
     dbt_threads: int = Field(
         default=FlextConstants.Container.MAX_WORKERS,
@@ -91,7 +101,7 @@ class FlextDbtOracleConfig(FlextConfig):
         default=FlextConstants.Logging.DEFAULT_LEVEL, description="DBT logging level"
     )
 
-    dbt_schema: str = Field(default=analytics, description="DBT default schema")
+    dbt_schema: str = Field(default="analytics", description="DBT default schema")
 
     # Data Quality Configuration
     min_quality_threshold: float = Field(
@@ -119,7 +129,7 @@ class FlextDbtOracleConfig(FlextConfig):
         default=True, description="Enable Oracle parallel DML"
     )
 
-    optimizer_mode: str = Field(default=ALL_ROWS, description="Oracle optimizer mode")
+    optimizer_mode: str = Field(default="ALL_ROWS", description="Oracle optimizer mode")
 
     # Oracle-specific mappings (ClassVar - not configurable)
     oracle_schema_mapping: ClassVar[FlextTypes.Core.Headers] = {
@@ -237,7 +247,7 @@ class FlextDbtOracleConfig(FlextConfig):
         return v.upper()
 
     @model_validator(mode="after")
-    def validate_oracle_connection_config(self) -> FlextDbtOracleConfig:
+    def validate_oracle_connection_config(self) -> Self:
         """Validate Oracle connection configuration."""
         # Either service_name or sid must be provided
         if not self.oracle_service_name and not self.oracle_sid:
@@ -350,43 +360,88 @@ class FlextDbtOracleConfig(FlextConfig):
         return all(required_fields) and has_connection_identifier
 
     @classmethod
+    def create_for_development(cls, **overrides: object) -> FlextResult[Self]:
+        """Create configuration optimized for development environment."""
+        dev_config = {
+            "dbt_target": "development",
+            "dbt_threads": 1,
+            "validate_connections": False,
+            "enable_parallel_dml": False,
+            "oracle_pool_min": 1,
+            "oracle_pool_max": 2,
+        }
+        config_data = {**dev_config, **overrides}
+        try:
+            instance = cls.get_or_create_shared_instance(
+                project_name="flext-dbt-oracle", **config_data
+            )
+            return FlextResult[Self].ok(instance)
+        except Exception as e:
+            return FlextResult[Self].fail(f"Development config creation failed: {e}")
+
+    @classmethod
+    def create_for_production(cls, **overrides: object) -> FlextResult[Self]:
+        """Create configuration optimized for production environment."""
+        prod_config = {
+            "dbt_target": "production",
+            "dbt_threads": min(4, FlextConstants.Container.MAX_WORKERS),
+            "validate_connections": True,
+            "enable_parallel_dml": True,
+            "oracle_pool_min": 5,
+            "oracle_pool_max": FlextConstants.Container.DEFAULT_WORKERS * 5,
+        }
+        config_data = {**prod_config, **overrides}
+        try:
+            instance = cls.get_or_create_shared_instance(
+                project_name="flext-dbt-oracle", **config_data
+            )
+            return FlextResult[Self].ok(instance)
+        except Exception as e:
+            return FlextResult[Self].fail(f"Production config creation failed: {e}")
+
+    @classmethod
+    def create_for_testing(cls, **overrides: object) -> FlextResult[Self]:
+        """Create configuration optimized for testing environment."""
+        test_config = {
+            "dbt_target": "test",
+            "dbt_threads": 1,
+            "validate_connections": False,
+            "enable_parallel_dml": False,
+            "oracle_pool_min": 1,
+            "oracle_pool_max": 1,
+            "min_quality_threshold": 0.5,  # Lower threshold for tests
+        }
+        config_data = {**test_config, **overrides}
+        try:
+            instance = cls.get_or_create_shared_instance(
+                project_name="flext-dbt-oracle", **config_data
+            )
+            return FlextResult[Self].ok(instance)
+        except Exception as e:
+            return FlextResult[Self].fail(f"Testing config creation failed: {e}")
+
+    @classmethod
     def create_for_environment(
         cls, environment: str, **overrides: object
-    ) -> FlextDbtOracleConfig:
+    ) -> FlextResult[Self]:
         """Create configuration for specific environment."""
-        env_overrides: dict[str, object] = {"dbt_target": "environment"}
-
         if environment == "production":
-            env_overrides.update({
-                "dbt_threads": min(4, FlextConstants.Container.MAX_WORKERS),
-                "validate_connections": "True",
-                "enable_parallel_dml": "True",
-            })
-        elif environment == "development":
-            env_overrides.update({
-                "dbt_threads": 1,
-                "validate_connections": "False",
-                "enable_parallel_dml": "False",
-            })
+            return cls.create_for_production(**overrides)
+        if environment == "development":
+            return cls.create_for_development(**overrides)
+        if environment == "testing":
+            return cls.create_for_testing(**overrides)
+        return FlextResult[Self].fail(f"Unknown environment: {environment}")
 
-        all_overrides = {**env_overrides, **overrides}
-        # Pydantic BaseSettings handles kwargs validation and type conversion automatically
-        return cls(**all_overrides)
-
-    # Singleton pattern override for proper typing
     @classmethod
-    def get_global_instance(cls) -> FlextDbtOracleConfig:
-        """Get the global singleton instance of FlextDbtOracleConfig."""
-        if cls._global_instance is None:
-            with cls._lock:
-                if cls._global_instance is None:
-                    cls._global_instance = cls()
-        return cls._global_instance
+    def get_global_instance(cls) -> Self:
+        """Get the global singleton instance using enhanced FlextConfig pattern."""
+        return cls.get_or_create_shared_instance(project_name="flext-dbt-oracle")
 
     @classmethod
     def reset_global_instance(cls) -> None:
-        """Reset the global FlextDbtOracleConfig instance (mainly for testing)."""
-        cls._global_instance = None
+        """Reset the global instance (mainly for testing)."""
+        cls.reset_shared_instance(project_name="flext-dbt-oracle")
 
 
 __all__: FlextTypes.Core.StringList = [

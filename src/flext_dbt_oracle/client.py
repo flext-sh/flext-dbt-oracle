@@ -38,7 +38,9 @@ class FlextDbtOracleClient:
             config: Configuration for Oracle and DBT operations
 
         """
-        self.config: dict[str, object] = config or FlextDbtOracleConfig()
+        self.config: dict[str, object] = (
+            config or FlextDbtOracleConfig.get_global_instance()
+        )
         self._oracle_api: FlextDbOracleApi | None = None
         self._meltano_service: FlextMeltanoService | None = None
         self._dbt_plugin: object | None = None  # FlextDbtPlugin interface

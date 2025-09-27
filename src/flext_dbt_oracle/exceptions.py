@@ -18,32 +18,32 @@ from typing import cast, override
 from flext_core import FlextExceptions, FlextTypes
 
 
-# ✅ DIRECT EXCEPTION CLASSES: Use direct inheritance instead of factory pattern
-class FlextDbtOracleConfigurationError(FlextExceptions.ConfigurationError):
+# ✅ SIMPLIFIED EXCEPTION CLASSES: Use BaseError for all custom exceptions
+class FlextDbtOracleConfigurationError(FlextExceptions.BaseError):
     """Oracle DBT configuration-specific errors."""
 
 
-class FlextDbtOracleConnectionError(FlextExceptions.ConnectionError):
+class FlextDbtOracleConnectionError(FlextExceptions.BaseError):
     """Oracle DBT connection-specific errors."""
 
 
-class FlextDbtOracleAuthenticationError(FlextExceptions.AuthenticationError):
+class FlextDbtOracleAuthenticationError(FlextExceptions.BaseError):
     """Oracle DBT authentication-specific errors."""
 
 
-class FlextDbtOracleProcessingError(FlextExceptions.ProcessingError):
+class FlextDbtOracleProcessingError(FlextExceptions.BaseError):
     """Oracle DBT processing-specific errors."""
 
 
-class FlextDbtOracleValidationError(FlextExceptions.ValidationError):
+class FlextDbtOracleValidationError(FlextExceptions.BaseError):
     """Oracle DBT validation-specific errors."""
 
 
-class FlextDbtOracleError(FlextExceptions.Error):
+class FlextDbtOracleError(FlextExceptions.BaseError):
     """Oracle DBT generic errors."""
 
 
-class FlextDbtOracleTimeoutError(FlextExceptions.TimeoutError):
+class FlextDbtOracleTimeoutError(FlextExceptions.BaseError):
     """Oracle DBT timeout-specific errors."""
 
 

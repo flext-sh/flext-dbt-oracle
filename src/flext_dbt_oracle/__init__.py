@@ -26,6 +26,7 @@ from flext_dbt_oracle.exceptions import (
 from flext_dbt_oracle.models import (
     FlextDbtOracleModel,
     FlextDbtOracleModelGenerator,
+    FlextDbtOracleUtilities,
 )
 from flext_dbt_oracle.services import (
     FlextDbtOracleMonitoringService,
@@ -59,6 +60,7 @@ __all__: FlextDbtOracleTypes.Core.StringList = [
     "FlextDbtOracleProcessingError",
     "FlextDbtOracleQueryError",
     "FlextDbtOracleTimeoutError",
+    "FlextDbtOracleUtilities",  # Standardized [Project]Utilities pattern
     "FlextDbtOracleValidationError",
     "FlextDbtOracleWorkflowService",
     # Adapter Pattern Classes (SOLID Interface Segregation)
