@@ -18,9 +18,6 @@ from flext_dbt_oracle.config import FlextDbtOracleConfig
 from flext_dbt_oracle.constants import FlextDbtOracleConstants
 from flext_dbt_oracle.models import FlextDbtOracleModel
 
-# Type alias for Oracle table objects
-FlextOracleObject = FlextDbOracleModels.Table
-
 logger = FlextLogger(__name__)
 
 
@@ -346,7 +343,7 @@ class FlextDbtOracleWorkflowService:
 
     def get_workflow_recommendations(
         self,
-        oracle_objects: list[FlextOracleObject] | None = None,
+        oracle_objects: list[FlextDbOracleModels.Table] | None = None,
     ) -> FlextResult[FlextTypes.Core.Dict]:
         """Get recommendations for optimal workflow configuration.
 

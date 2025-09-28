@@ -34,17 +34,13 @@ from flext_dbt_oracle.services import (
 from flext_dbt_oracle.typings import FlextDbtOracleTypes
 from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
 
-# Version information
 __version__ = "0.9.0"
 __version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
 __author__ = "FLEXT Team"
 __email__ = "team@flext.sh"
 
-# Public API - Following established flext DBT patterns
 __all__: FlextDbtOracleTypes.Core.StringList = [
-    # Configuration Error Types
     "FlextDbtOracleAuthenticationError",
-    # Core DBT Pattern Classes
     "FlextDbtOracleClient",
     "FlextDbtOracleCompilationError",
     "FlextDbtOracleConfig",
@@ -60,13 +56,11 @@ __all__: FlextDbtOracleTypes.Core.StringList = [
     "FlextDbtOracleProcessingError",
     "FlextDbtOracleQueryError",
     "FlextDbtOracleTimeoutError",
-    "FlextDbtOracleUtilities",  # Standardized [Project]Utilities pattern
+    "FlextDbtOracleUtilities",
     "FlextDbtOracleValidationError",
     "FlextDbtOracleWorkflowService",
-    # Adapter Pattern Classes (SOLID Interface Segregation)
     "OracleTableAdapter",
     "OracleTableFactory",
-    # Metadata
     "__author__",
     "__email__",
     "__version__",

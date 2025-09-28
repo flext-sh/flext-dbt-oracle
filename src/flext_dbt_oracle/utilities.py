@@ -15,8 +15,6 @@ from flext_core import (
     FlextUtilities,
 )
 
-__all__: list[str] = ["FlextDbtOracleUtilities"]
-
 
 class FlextDbtOracleUtilities(FlextUtilities):
     """Single unified utilities class for DBT Oracle database operations.
@@ -851,3 +849,6 @@ from {{{{ ref('stg_{dimension_name}') }}}}
             "timestamp": "now",
             "version": "1.0.0",
         })
+
+
+__all__: list[str] = ["FlextDbtOracleUtilities"]
