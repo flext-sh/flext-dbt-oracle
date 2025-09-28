@@ -26,13 +26,13 @@ from flext_dbt_oracle.exceptions import (
 from flext_dbt_oracle.models import (
     FlextDbtOracleModel,
     FlextDbtOracleModelGenerator,
-    FlextDbtOracleUtilities,
 )
 from flext_dbt_oracle.services import (
     FlextDbtOracleMonitoringService,
     FlextDbtOracleWorkflowService,
 )
 from flext_dbt_oracle.typings import FlextDbtOracleTypes
+from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
 
 # Version information
 __version__ = "0.9.0"

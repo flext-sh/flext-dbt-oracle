@@ -53,9 +53,6 @@ class FlextDbtOracleDatabaseError(FlextExceptions.BaseError):
 
     @override
     @override
-    @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle DBT database error",
@@ -86,9 +83,6 @@ class FlextDbtOracleExecutionError(FlextExceptions.BaseError):
 
     @override
     @override
-    @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle DBT execution error",
@@ -117,9 +111,6 @@ class FlextDbtOracleExecutionError(FlextExceptions.BaseError):
 class FlextDbtOracleQueryError(FlextExceptions.BaseError):
     """Oracle DBT query-specific errors with query context."""
 
-    @override
-    @override
-    @override
     @override
     @override
     def __init__(
@@ -158,9 +149,6 @@ class FlextDbtOracleModelError(FlextExceptions.BaseError):
 
     @override
     @override
-    @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle DBT model error",
@@ -189,9 +177,6 @@ class FlextDbtOracleModelError(FlextExceptions.BaseError):
 class FlextDbtOracleCompilationError(FlextExceptions.BaseError):
     """Oracle DBT compilation errors with compilation context."""
 
-    @override
-    @override
-    @override
     @override
     @override
     def __init__(

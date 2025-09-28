@@ -23,7 +23,6 @@ class OracleCredentials:
     """Oracle database credentials following FLEXT patterns."""
 
     @override
-    @override
     def __init__(
         self,
         host: str,
@@ -83,7 +82,6 @@ class FlextOracleOracleConnectionManager:
 
     TYPE = "oracle"
 
-    @override
     @override
     def __init__(self, profile: FlextTypes.Core.Dict) -> None:
         """Initialize connection manager."""

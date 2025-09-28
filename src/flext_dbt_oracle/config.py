@@ -274,7 +274,6 @@ class FlextDbtOracleConfig(FlextConfig):
             pool_min=self.oracle_pool_min,
             pool_max=self.oracle_pool_max,
             timeout=self.oracle_timeout,
-            domain_events=[],  # Initialize empty domain events list
         )
 
     def get_meltano_config(self) -> FlextMeltanoConfig:
