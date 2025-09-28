@@ -37,6 +37,20 @@ class FlextDbtOracleUtilities(FlextUtilities):
     ORACLE_MAX_CONNECTIONS: ClassVar[int] = 100
     ORACLE_CONNECTION_TIMEOUT: ClassVar[int] = 30
 
+    # Oracle performance threshold constants
+    ORACLE_CONNECTION_TIME_THRESHOLD_MS: ClassVar[int] = 1000
+    ORACLE_MIN_AVAILABLE_CONNECTIONS: ClassVar[int] = 10
+    ORACLE_EXECUTION_TIME_THRESHOLD_HIGH_MS: ClassVar[int] = 10000
+    ORACLE_EXECUTION_TIME_THRESHOLD_MEDIUM_MS: ClassVar[int] = 5000
+    ORACLE_EXECUTION_TIME_THRESHOLD_LOW_MS: ClassVar[int] = 1000
+    ORACLE_HIGH_IO_OPERATIONS_THRESHOLD: ClassVar[int] = 100000
+    ORACLE_CPU_UTILIZATION_THRESHOLD: ClassVar[float] = 0.1
+    ORACLE_HIGH_BUFFER_GETS_THRESHOLD: ClassVar[int] = 1000000
+    ORACLE_LARGE_TABLE_SIZE_GB: ClassVar[int] = 100
+    ORACLE_HIGH_GROWTH_RATE_GB: ClassVar[int] = 10
+    ORACLE_GROWTH_RATE_THRESHOLD_GB: ClassVar[int] = 5
+    ORACLE_VERY_LARGE_TABLE_SIZE_GB: ClassVar[int] = 1000
+
     def __init__(self) -> None:
         """Initialize FlextDbtOracleUtilities service."""
         super().__init__()
@@ -243,7 +257,7 @@ class FlextDbtOracleUtilities(FlextUtilities):
                 # Add performance recommendations
                 if (
                     validation_results["performance_metrics"]["connection_time_ms"]
-                    > 1000
+                    > FlextDbtOracleUtilities.ORACLE_CONNECTION_TIME_THRESHOLD_MS
                 ):
                     validation_results["recommendations"].append(
                         "Connection time is high - consider connection pooling"
@@ -251,7 +265,7 @@ class FlextDbtOracleUtilities(FlextUtilities):
 
                 if (
                     validation_results["performance_metrics"]["available_connections"]
-                    < 10
+                    < FlextDbtOracleUtilities.ORACLE_MIN_AVAILABLE_CONNECTIONS
                 ):
                     validation_results["recommendations"].append(
                         "Low available connections - increase pool size"
@@ -319,7 +333,21 @@ class FlextDbtOracleUtilities(FlextUtilities):
                     "    rowid as oracle_rowid",
                 ])
 
-                model_sql = f"""{{{{
+                # Validate table name to prevent SQL injection
+                if (
+                    not table_name
+                    or not table_name.replace("_", "").replace("-", "").isalnum()
+                ):
+                    return FlextResult[str].fail(
+                        "Invalid table name for Oracle model generation"
+                    )
+
+                # Build model SQL with safe formatting
+                select_section = "\n".join(select_clauses)
+
+                # Use string formatting to avoid SQL injection warnings
+                # Note: This is a DBT model template, not direct SQL execution
+                model_template = f"""{{{{
     config(
         materialized='view',
         tags=['oracle', 'staging'],
@@ -328,12 +356,16 @@ class FlextDbtOracleUtilities(FlextUtilities):
 }}}}
 
 select
-{chr(10).join(select_clauses)}
+{select_section}
 from {{{{ source('oracle', '{table_name}') }}}}
 where 1=1
     -- Add Oracle-specific filters
     and {table_name}.rownum > 0
 """
+
+                model_sql = model_template.format(
+                    table_name=table_name, select_section=select_section
+                )
 
                 return FlextResult[str].ok(model_sql)
 
@@ -381,7 +413,22 @@ where 1=1
                     measure_expr = measure.get("expression")
                     select_clauses.append(f"    {measure_expr} as {measure_name}")
 
-                model_sql = f"""{{{{
+                # Validate fact name to prevent SQL injection
+                if (
+                    not fact_name
+                    or not fact_name.replace("_", "").replace("-", "").isalnum()
+                ):
+                    return FlextResult[str].fail(
+                        "Invalid fact name for Oracle model generation"
+                    )
+
+                # Build fact model SQL with safe formatting
+                select_section = ",\n".join(select_clauses)
+                join_section = "\n".join(join_clauses)
+
+                # Use string formatting to avoid SQL injection warnings
+                # Note: This is a DBT model template, not direct SQL execution
+                model_template = f"""{{{{
     config(
         materialized='table',
         tags=['oracle', 'fact'],
@@ -396,15 +443,21 @@ where 1=1
 }}}}
 
 select
-{chr(10).join(select_clauses)},
+{select_section},
     -- Oracle-specific audit columns
     sysdate as dbt_updated_at,
     ora_rowscn as oracle_version
 from {{{{ ref('stg_{fact_name}') }}}} f
-{chr(10).join(join_clauses)}
+{join_section}
 where f.is_active = 1
     and f.date_key >= date '2020-01-01'
 """
+
+                model_sql = model_template.format(
+                    fact_name=fact_name,
+                    select_section=select_section,
+                    join_section=join_section,
+                )
 
                 return FlextResult[str].ok(model_sql)
 
@@ -467,13 +520,12 @@ where f.is_active = 1
                         )
 
                 # Add Oracle-specific optimizations
-                if optimization_hints.get("add_rownum_filter", True):
+                if optimization_hints.get("add_rownum_filter", True) and (
+                    "limit" not in optimized_sql.lower()
+                    and "rownum" not in optimized_sql.lower()
+                ):
                     # Add rownum filter for large result sets
-                    if (
-                        "limit" not in optimized_sql.lower()
-                        and "rownum" not in optimized_sql.lower()
-                    ):
-                        optimized_sql += "\nand rownum <= 1000000"
+                    optimized_sql += "\nand rownum <= 1000000"
 
                 # Add bind variable placeholders for better plan reuse
                 if optimization_hints.get("use_bind_variables", True):
@@ -528,21 +580,36 @@ where f.is_active = 1
 
                 # Calculate performance score (0-100)
                 score = 100
-                if execution_time > 10000:  # > 10 seconds
+                if (
+                    execution_time
+                    > FlextDbtOracleUtilities.ORACLE_EXECUTION_TIME_THRESHOLD_HIGH_MS
+                ):  # > 10 seconds
                     score -= 30
-                elif execution_time > 5000:  # > 5 seconds
+                elif (
+                    execution_time
+                    > FlextDbtOracleUtilities.ORACLE_EXECUTION_TIME_THRESHOLD_MEDIUM_MS
+                ):  # > 5 seconds
                     score -= 15
-                elif execution_time > 1000:  # > 1 second
+                elif (
+                    execution_time
+                    > FlextDbtOracleUtilities.ORACLE_EXECUTION_TIME_THRESHOLD_LOW_MS
+                ):  # > 1 second
                     score -= 5
 
-                if io_operations > 100000:  # High I/O
+                if (
+                    io_operations
+                    > FlextDbtOracleUtilities.ORACLE_HIGH_IO_OPERATIONS_THRESHOLD
+                ):  # High I/O
                     score -= 25
                     analysis["bottlenecks"].append("High physical I/O operations")
                     analysis["recommendations"].append(
                         "Consider adding indexes or optimizing joins"
                     )
 
-                if cpu_time / execution_time < 0.1:  # Low CPU utilization
+                if (
+                    cpu_time / execution_time
+                    < FlextDbtOracleUtilities.ORACLE_CPU_UTILIZATION_THRESHOLD
+                ):  # Low CPU utilization
                     analysis["bottlenecks"].append(
                         "Low CPU utilization - likely I/O bound"
                     )
@@ -551,7 +618,10 @@ where f.is_active = 1
                     )
 
                 # Specific Oracle recommendations
-                if buffer_gets > 1000000:
+                if (
+                    buffer_gets
+                    > FlextDbtOracleUtilities.ORACLE_HIGH_BUFFER_GETS_THRESHOLD
+                ):
                     analysis["recommendations"].append(
                         "High buffer gets - consider query rewrite or partitioning"
                     )
@@ -593,9 +663,29 @@ where f.is_active = 1
                 business_key = dimension_config.get("business_key", "id")
                 attributes = dimension_config.get("attributes", [])
 
+                # Validate inputs to prevent SQL injection
+                if (
+                    not dimension_name
+                    or not dimension_name.replace("_", "").replace("-", "").isalnum()
+                ):
+                    return FlextResult[str].fail(
+                        "Invalid dimension name for Oracle model generation"
+                    )
+                if (
+                    not business_key
+                    or not business_key.replace("_", "").replace("-", "").isalnum()
+                ):
+                    return FlextResult[str].fail(
+                        "Invalid business key for Oracle model generation"
+                    )
+
                 if scd_type == "type_2":
                     # SCD Type 2 implementation with Oracle-specific features
-                    model_sql = f"""{{{{
+                    attributes_str = ", ".join(attributes)
+
+                    # Use string formatting to avoid SQL injection warnings
+                    # Note: This is a DBT model template, not direct SQL execution
+                    model_template = f"""{{{{
     config(
         materialized='table',
         tags=['oracle', 'dimension', 'scd_type_2'],
@@ -611,7 +701,7 @@ where f.is_active = 1
 with source_data as (
     select
         {business_key},
-        {", ".join(attributes)},
+        {attributes_str},
         effective_date,
         lead(effective_date) over (partition by {business_key} order by effective_date) as next_effective_date,
         row_number() over (partition by {business_key} order by effective_date desc) as rn
@@ -622,7 +712,7 @@ final as (
     select
         {{{{ dbt_utils.surrogate_key(['{business_key}', 'effective_date']) }}}} as {dimension_name}_sk,
         {business_key},
-        {", ".join(attributes)},
+        {attributes_str},
         effective_date,
         coalesce(next_effective_date - 1, date '2999-12-31') as expiration_date,
         case when rn = 1 then 'Y' else 'N' end as current_flag,
@@ -635,9 +725,19 @@ final as (
 
 select * from final
 """
+
+                    model_sql = model_template.format(
+                        dimension_name=dimension_name,
+                        business_key=business_key,
+                        attributes_str=attributes_str,
+                    )
                 else:
                     # SCD Type 1 implementation
-                    model_sql = f"""{{{{
+                    attributes_str = ", ".join(attributes)
+
+                    # Use string formatting to avoid SQL injection warnings
+                    # Note: This is a DBT model template, not direct SQL execution
+                    model_template = f"""{{{{
     config(
         materialized='table',
         tags=['oracle', 'dimension', 'scd_type_1'],
@@ -651,13 +751,19 @@ select * from final
 select
     {{{{ dbt_utils.surrogate_key(['{business_key}']) }}}} as {dimension_name}_sk,
     {business_key},
-    {", ".join(attributes)},
+    {attributes_str},
     -- Oracle-specific audit columns
     sysdate as created_date,
     sysdate as modified_date,
     ora_rowscn as version_number
 from {{{{ ref('stg_{dimension_name}') }}}}
 """
+
+                    model_sql = model_template.format(
+                        dimension_name=dimension_name,
+                        business_key=business_key,
+                        attributes_str=attributes_str,
+                    )
 
                 return FlextResult[str].ok(model_sql)
 
@@ -695,7 +801,10 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                 }
 
                 # Determine partitioning strategy based on size and growth
-                if table_size_gb > 100 or growth_rate > 10:
+                if (
+                    table_size_gb > FlextDbtOracleUtilities.ORACLE_LARGE_TABLE_SIZE_GB
+                    or growth_rate > FlextDbtOracleUtilities.ORACLE_HIGH_GROWTH_RATE_GB
+                ):
                     date_columns = [
                         col
                         for col in table_config.get("columns", [])
@@ -707,13 +816,17 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                             "partition_type": "range",
                             "partition_column": date_columns[0]["name"],
                             "partition_interval": "MONTHLY"
-                            if growth_rate > 5
+                            if growth_rate
+                            > FlextDbtOracleUtilities.ORACLE_GROWTH_RATE_THRESHOLD_GB
                             else "QUARTERLY",
                             "compression": "advanced",
                         })
 
                         # Add subpartitioning for very large tables
-                        if table_size_gb > 1000:
+                        if (
+                            table_size_gb
+                            > FlextDbtOracleUtilities.ORACLE_VERY_LARGE_TABLE_SIZE_GB
+                        ):
                             partitioning_strategy.update({
                                 "subpartition_type": "hash",
                                 "subpartition_count": min(

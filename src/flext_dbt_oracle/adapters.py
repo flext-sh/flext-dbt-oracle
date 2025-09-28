@@ -17,254 +17,273 @@ from flext_db_oracle.models import FlextDbOracleModels
 from flext_core import FlextResult, FlextTypes
 
 
-class OracleTableInterface(Protocol):
-    """Interface defining what flext-dbt-oracle needs from Oracle tables.
+class FlextDbtOracleAdapters:
+    """Unified Oracle table adapter service with interface, adapter, and factory capabilities.
 
-    This follows Interface Segregation Principle - only methods we actually need.
+    Consolidates Oracle table adapter functionality including interface definitions,
+    adapter pattern implementation, and factory methods following FLEXT unified class pattern.
     """
 
-    @property
-    def name(self: object) -> str:
-        """Table name."""
-        ...
+    class TableInterface(Protocol):
+        """Interface defining what flext-dbt-oracle needs from Oracle tables.
 
-    @property
-    def schema_name(self: object) -> str:
-        """Schema/owner name."""
-        ...
-
-    @property
-    def columns(self: object) -> list[dict[str, str]]:
-        """List of column information as dictionaries."""
-        ...
-
-    @property
-    def metadata(self: object) -> dict[str, object]:
-        """Table metadata information."""
-        ...
-
-
-@dataclass
-class OracleTableAdapter:
-    """Adapter that converts FlextDbOracleModels.Table to our business interface.
-
-    Follows Adapter Pattern (Open/Closed Principle) - extends functionality
-    without modifying existing classes.
-    """
-
-    _table: FlextDbOracleModels.Table
-    _extra_metadata: dict[str, object]
-
-    @classmethod
-    def create_from_table(
-        cls,
-        table: FlextDbOracleModels.Table,
-        metadata: dict[str, object] | None = None,
-    ) -> FlextResult[OracleTableAdapter]:
-        """Create adapter from actual Table object with optional metadata.
-
-        Args:
-            table: The actual FlextDbOracleModels.Table instance
-            metadata: Optional additional metadata
-
-        Returns:
-            FlextResult containing the adapter
-
+        This follows Interface Segregation Principle - only methods we actually need.
         """
-        if not table:
-            return FlextResult[OracleTableAdapter].fail("Table cannot be None")
 
-        if not table.name:
-            return FlextResult[OracleTableAdapter].fail("Table name cannot be empty")
+        @property
+        def name(self: object) -> str:
+            """Table name."""
+            ...
 
-        return FlextResult[OracleTableAdapter].ok(
-            cls(
-                _table=table,
-                _extra_metadata=metadata or {},
-            ),
-        )
+        @property
+        def schema_name(self: object) -> str:
+            """Schema/owner name."""
+            ...
 
-    @classmethod
-    def create_from_metadata(
-        cls,
-        name: str,
-        schema_name: str,
-        columns: list[dict[str, str]] | None = None,
-        metadata: dict[str, object] | None = None,
-    ) -> FlextResult[OracleTableAdapter]:
-        """Create adapter from raw metadata (for cases where we build from scratch).
+        @property
+        def columns(self: object) -> list[dict[str, str]]:
+            """List of column information as dictionaries."""
+            ...
 
-        Args:
-            name: Table name
-            schema_name: Schema/owner name
-            columns: Column information
-            metadata: Additional metadata
+        @property
+        def metadata(self: object) -> dict[str, object]:
+            """Table metadata information."""
+            ...
 
-        Returns:
-            FlextResult containing the adapter
+    @dataclass
+    class TableAdapter:
+        """Adapter that converts FlextDbOracleModels.Table to our business interface.
 
+        Follows Adapter Pattern (Open/Closed Principle) - extends functionality
+        without modifying existing classes.
         """
-        if not name:
-            return FlextResult[OracleTableAdapter].fail("Table name cannot be empty")
 
-        if not schema_name:
-            return FlextResult[OracleTableAdapter].fail("Schema name cannot be empty")
+        _table: FlextDbOracleModels.Table
+        _extra_metadata: dict[str, object]
 
-        # Create a basic Table object (using actual constructor signature)
-        try:
-            # Convert column information if provided
-            table_columns: list[object] = list(columns) if columns else []
+        @classmethod
+        def create_from_table(
+            cls,
+            table: FlextDbOracleModels.Table,
+            metadata: dict[str, object] | None = None,
+        ) -> FlextResult[FlextDbtOracleAdapters.TableAdapter]:
+            """Create adapter from actual Table object with optional metadata.
 
-            table = FlextDbOracleModels.Table(
-                name=name,
-                owner=schema_name,  # Use 'owner' not 'schema_name'
-                columns=table_columns,  # Use provided columns
-            )
-        except Exception as e:
-            return FlextResult[OracleTableAdapter].fail(f"Failed to create Table: {e}")
+            Args:
+                table: The actual FlextDbOracleModels.Table instance
+                metadata: Optional additional metadata
 
-        return FlextResult[OracleTableAdapter].ok(
-            cls(
-                _table=table,
-                _extra_metadata=metadata or {},
-            ),
-        )
+            Returns:
+                FlextResult containing the adapter
 
-    @property
-    def name(self: object) -> str:
-        """Table name from the adapted table."""
-        return self._table.name
+            """
+            if not table:
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
+                    "Table cannot be None"
+                )
 
-    @property
-    def schema_name(self: object) -> str:
-        """Schema name (mapped from 'owner' attribute)."""
-        return self._table.owner
+            if not table.name:
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
+                    "Table name cannot be empty"
+                )
 
-    @property
-    def columns(self: object) -> list[dict[str, str]]:
-        """Column information converted to dictionaries."""
-        # Convert Column objects to dictionaries for business logic compatibility
-        return [
-            {
-                "name": col.name if hasattr(col, "name") else str(col),
-                "data_type": getattr(col, "data_type", "UNKNOWN"),
-                "nullable": str(getattr(col, "nullable", True)),
-            }
-            for col in self._table.columns
-        ]
-
-    @property
-    def metadata(self: object) -> dict[str, object]:
-        """Combined metadata from table and extra metadata."""
-        base_metadata = {
-            "name": self.name,
-            "owner": self.schema_name,
-            "column_count": len(self._table.columns),
-        }
-        # Merge with extra metadata
-        return {**base_metadata, **self._extra_metadata}
-
-    def get_underlying_table(self: object) -> FlextDbOracleModels.Table:
-        """Get the underlying Table object for operations that need it."""
-        return self._table
-
-
-class OracleTableFactory:
-    """Factory for creating table adapters with different strategies.
-
-    Follows Factory Pattern and Single Responsibility Principle.
-    """
-
-    @staticmethod
-    def from_api_response(
-        table_name: str,
-        api_response: dict[str, object],
-        schema_name: str | None = None,
-    ) -> FlextResult[OracleTableAdapter]:
-        """Create table adapter from Oracle API response.
-
-        Args:
-            table_name: Name of the table
-            api_response: Dictionary response from Oracle API
-            schema_name: Optional schema name (inferred if not provided)
-
-        Returns:
-            FlextResult containing the table adapter
-
-        """
-        if not table_name:
-            return FlextResult[OracleTableAdapter].fail("Table name required")
-
-        if not isinstance(api_response, dict):
-            return FlextResult[OracleTableAdapter].fail(
-                "API response must be a dictionary",
+            return FlextResult[FlextDbtOracleAdapters.TableAdapter].ok(
+                cls(
+                    _table=table,
+                    _extra_metadata=metadata or {},
+                ),
             )
 
-        # Extract schema name from response if not provided
-        effective_schema_name = schema_name or api_response.get(
-            "owner",
-            str(api_response.get("schema_name", "USER")),
-        )
+        @classmethod
+        def create_from_metadata(
+            cls,
+            name: str,
+            schema_name: str,
+            columns: list[dict[str, str]] | None = None,
+            metadata: dict[str, object] | None = None,
+        ) -> FlextResult[FlextDbtOracleAdapters.TableAdapter]:
+            """Create adapter from raw metadata (for cases where we build from scratch).
 
-        # Extract column information if available
-        columns = []
-        if "columns" in api_response and isinstance(api_response["columns"], list):
-            columns = [
+            Args:
+                name: Table name
+                schema_name: Schema/owner name
+                columns: Column information
+                metadata: Additional metadata
+
+            Returns:
+                FlextResult containing the adapter
+
+            """
+            if not name:
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
+                    "Table name cannot be empty"
+                )
+
+            if not schema_name:
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
+                    "Schema name cannot be empty"
+                )
+
+            # Create a basic Table object (using actual constructor signature)
+            try:
+                # Convert column information if provided
+                table_columns: list[object] = list(columns) if columns else []
+
+                table = FlextDbOracleModels.Table(
+                    name=name,
+                    owner=schema_name,  # Use 'owner' not 'schema_name'
+                    columns=table_columns,  # Use provided columns
+                )
+            except Exception as e:
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
+                    f"Failed to create Table: {e}"
+                )
+
+            return FlextResult[FlextDbtOracleAdapters.TableAdapter].ok(
+                cls(
+                    _table=table,
+                    _extra_metadata=metadata or {},
+                ),
+            )
+
+        @property
+        def name(self: object) -> str:
+            """Table name from the adapted table."""
+            return self._table.name
+
+        @property
+        def schema_name(self: object) -> str:
+            """Schema name (mapped from 'owner' attribute)."""
+            return self._table.owner
+
+        @property
+        def columns(self: object) -> list[dict[str, str]]:
+            """Column information converted to dictionaries."""
+            # Convert Column objects to dictionaries for business logic compatibility
+            return [
                 {
-                    "name": col.get("name", "UNKNOWN"),
-                    "data_type": col.get("data_type", "UNKNOWN"),
-                    "nullable": str(col.get("nullable", True)),
+                    "name": col.name if hasattr(col, "name") else str(col),
+                    "data_type": getattr(col, "data_type", "UNKNOWN"),
+                    "nullable": str(getattr(col, "nullable", True)),
                 }
-                for col in api_response["columns"]
-                if isinstance(col, dict)
+                for col in self._table.columns
             ]
 
-        return OracleTableAdapter.create_from_metadata(
-            name=table_name,
-            schema_name=effective_schema_name,
-            columns=columns,
-            metadata=dict(api_response),
-        )
+        @property
+        def metadata(self: object) -> dict[str, object]:
+            """Combined metadata from table and extra metadata."""
+            base_metadata = {
+                "name": self.name,
+                "owner": self.schema_name,
+                "column_count": len(self._table.columns),
+            }
+            # Merge with extra metadata
+            return {**base_metadata, **self._extra_metadata}
 
-    @staticmethod
-    def from_table_list(
-        table_names: list[str],
-        schema_name: str = "USER",
-    ) -> FlextResult[list[OracleTableAdapter]]:
-        """Create table adapters from a list of table names.
+        def get_underlying_table(self: object) -> FlextDbOracleModels.Table:
+            """Get the underlying Table object for operations that need it."""
+            return self._table
 
-        Args:
-            table_names: List of table names
-            schema_name: Schema name for all tables
+    class TableFactory:
+        """Factory for creating table adapters with different strategies.
 
-        Returns:
-            FlextResult containing list of table adapters
-
+        Follows Factory Pattern and Single Responsibility Principle.
         """
-        if not table_names:
-            return FlextResult[list[OracleTableAdapter]].ok([])
 
-        adapters: list[OracleTableAdapter] = []
-        for table_name in table_names:
-            if isinstance(table_name, str) and table_name.strip():
-                adapter_result = OracleTableAdapter.create_from_metadata(
-                    name=table_name.strip(),
-                    schema_name=schema_name,
-                    columns=[],
-                    metadata={},
+        @staticmethod
+        def from_api_response(
+            table_name: str,
+            api_response: dict[str, object],
+            schema_name: str | None = None,
+        ) -> FlextResult[FlextDbtOracleAdapters.TableAdapter]:
+            """Create table adapter from Oracle API response.
+
+            Args:
+                table_name: Name of the table
+                api_response: Dictionary response from Oracle API
+                schema_name: Optional schema name (inferred if not provided)
+
+            Returns:
+                FlextResult containing the table adapter
+
+            """
+            if not table_name:
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
+                    "Table name required"
                 )
-                if adapter_result.is_success:
-                    adapters.append(adapter_result.unwrap())
-                else:
-                    return FlextResult[list[OracleTableAdapter]].fail(
-                        f"Failed to create adapter for table {table_name}: {adapter_result.error}",
-                    )
 
-        return FlextResult[list[OracleTableAdapter]].ok(adapters)
+            if not isinstance(api_response, dict):
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
+                    "API response must be a dictionary",
+                )
+
+            # Extract schema name from response if not provided
+            effective_schema_name = schema_name or api_response.get(
+                "owner",
+                str(api_response.get("schema_name", "USER")),
+            )
+
+            # Extract column information if available
+            columns = []
+            if "columns" in api_response and isinstance(api_response["columns"], list):
+                columns = [
+                    {
+                        "name": col.get("name", "UNKNOWN"),
+                        "data_type": col.get("data_type", "UNKNOWN"),
+                        "nullable": str(col.get("nullable", True)),
+                    }
+                    for col in api_response["columns"]
+                    if isinstance(col, dict)
+                ]
+
+            return FlextDbtOracleAdapters.TableAdapter.create_from_metadata(
+                name=table_name,
+                schema_name=effective_schema_name,
+                columns=columns,
+                metadata=dict(api_response),
+            )
+
+        @staticmethod
+        def from_table_list(
+            table_names: list[str],
+            schema_name: str = "USER",
+        ) -> FlextResult[list[FlextDbtOracleAdapters.TableAdapter]]:
+            """Create table adapters from a list of table names.
+
+            Args:
+                table_names: List of table names
+                schema_name: Schema name for all tables
+
+            Returns:
+                FlextResult containing list of table adapters
+
+            """
+            if not table_names:
+                return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].ok([])
+
+            adapters: list[FlextDbtOracleAdapters.TableAdapter] = []
+            for table_name in table_names:
+                if isinstance(table_name, str) and table_name.strip():
+                    adapter_result = (
+                        FlextDbtOracleAdapters.TableAdapter.create_from_metadata(
+                            name=table_name.strip(),
+                            schema_name=schema_name,
+                            columns=[],
+                            metadata={},
+                        )
+                    )
+                    if adapter_result.is_success:
+                        adapters.append(adapter_result.unwrap())
+                    else:
+                        return FlextResult[
+                            list[FlextDbtOracleAdapters.TableAdapter]
+                        ].fail(
+                            f"Failed to create adapter for table {table_name}: {adapter_result.error}",
+                        )
+
+            return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].ok(adapters)
 
 
 __all__: FlextTypes.Core.StringList = [
-    "OracleTableAdapter",
-    "OracleTableFactory",
-    "OracleTableInterface",
+    "FlextDbtOracleAdapters",
 ]

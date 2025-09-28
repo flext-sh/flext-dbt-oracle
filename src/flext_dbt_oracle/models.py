@@ -14,8 +14,6 @@ import yaml
 from flext_core import FlextLogger, FlextModels, FlextResult, FlextTypes
 from flext_dbt_oracle.config import FlextDbtOracleConfig
 
-logger = FlextLogger(__name__)
-
 
 class FlextDbtOracleModels(FlextModels):
     """Unified DBT Oracle models collection with generation capabilities.
@@ -23,6 +21,9 @@ class FlextDbtOracleModels(FlextModels):
     Immutable representation of a generated DBT model with Oracle-specific metadata
     and integrated generation functionality following FLEXT unified class pattern.
     """
+
+    # Shared logger for all DBT Oracle model operations
+    _logger = FlextLogger(__name__)
 
     name: str
     dbt_model_type: str  # staging, intermediate, marts
@@ -145,7 +146,7 @@ class FlextDbtOracleModels(FlextModels):
                 # Create staging model for each schema
                 model_result = self._create_staging_model(schema_name)
                 if model_result.is_failure:
-                    logger.warning(
+                    FlextDbtOracleModels._logger.warning(
                         f"Failed to create staging model for {schema_name}: {model_result.error}"
                     )
                     continue
@@ -164,7 +165,7 @@ class FlextDbtOracleModels(FlextModels):
                 # Create intermediate model
                 model_result = self._create_intermediate_model(staging_model)
                 if model_result.is_failure:
-                    logger.warning(
+                    FlextDbtOracleModels._logger.warning(
                         f"Failed to create intermediate model for {staging_model.name}: {model_result.error}"
                     )
                     continue
@@ -183,7 +184,7 @@ class FlextDbtOracleModels(FlextModels):
             for intermediate_model in intermediate_models:
                 model_result = self._create_marts_model(intermediate_model)
                 if model_result.is_failure:
-                    logger.warning(
+                    FlextDbtOracleModels._logger.warning(
                         f"Failed to create marts model for {intermediate_model.name}: {model_result.error}"
                     )
                     continue

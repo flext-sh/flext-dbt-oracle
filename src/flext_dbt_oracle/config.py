@@ -12,10 +12,8 @@ from flext_meltano.config import FlextMeltanoConfig
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
-from flext_core import FlextConfig, FlextConstants, FlextLogger, FlextResult, FlextTypes
+from flext_core import FlextConfig, FlextConstants, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleModels
-
-logger = FlextLogger(__name__)
 
 
 class FlextDbtOracleConfig(FlextConfig):
