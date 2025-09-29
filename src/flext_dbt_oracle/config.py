@@ -45,7 +45,10 @@ class FlextDbtOracleConfig(FlextConfig):
     oracle_host: str = Field(default="localhost", description="Oracle database host")
 
     oracle_port: int = Field(
-        default=1521, ge=1, le=65535, description="Oracle database port"
+        default=FlextConstants.Platform.DATABASE_DEFAULT_PORT,
+        ge=1,
+        le=65535,
+        description="Oracle database port",
     )
 
     oracle_service_name: str = Field(default="", description="Oracle service name")
@@ -63,7 +66,9 @@ class FlextDbtOracleConfig(FlextConfig):
     )
 
     oracle_pool_min: int = Field(
-        default=1, ge=1, description="Minimum Oracle connection pool size"
+        default=FlextConstants.Performance.MIN_DB_POOL_SIZE,
+        ge=1,
+        description="Minimum Oracle connection pool size",
     )
 
     oracle_pool_max: int = Field(
@@ -103,7 +108,10 @@ class FlextDbtOracleConfig(FlextConfig):
 
     # Data Quality Configuration
     min_quality_threshold: float = Field(
-        default=0.85, ge=0.0, le=1.0, description="Minimum data quality threshold"
+        default=FlextConstants.Quality.DEFAULT_THRESHOLD,
+        ge=0.0,
+        le=1.0,
+        description="Minimum data quality threshold",
     )
 
     validate_connections: bool = Field(
@@ -111,16 +119,22 @@ class FlextDbtOracleConfig(FlextConfig):
     )
 
     max_parallel_connections: int = Field(
-        default=5, ge=1, description="Maximum parallel Oracle connections"
+        default=FlextConstants.Container.DEFAULT_WORKERS,
+        ge=1,
+        description="Maximum parallel Oracle connections",
     )
 
     # Oracle Performance Configuration
     fetch_size: int = Field(
-        default=10000, ge=1, description="Oracle fetch size for queries"
+        default=FlextConstants.Performance.BatchProcessing.MAX_ITEMS,
+        ge=1,
+        description="Oracle fetch size for queries",
     )
 
     batch_size: int = Field(
-        default=1000, ge=1, description="Batch size for Oracle operations"
+        default=FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE,
+        ge=1,
+        description="Batch size for Oracle operations",
     )
 
     enable_parallel_dml: bool = Field(

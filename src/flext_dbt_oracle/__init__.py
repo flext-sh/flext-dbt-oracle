@@ -27,6 +27,7 @@ from flext_dbt_oracle.models import (
     FlextDbtOracleModel,
     FlextDbtOracleModelGenerator,
 )
+from flext_dbt_oracle.protocols import FlextDbtOracleProtocols
 from flext_dbt_oracle.services import (
     FlextDbtOracleMonitoringService,
     FlextDbtOracleWorkflowService,
@@ -54,6 +55,7 @@ __all__: FlextDbtOracleTypes.Core.StringList = [
     "FlextDbtOracleModelGenerator",
     "FlextDbtOracleMonitoringService",
     "FlextDbtOracleProcessingError",
+    "FlextDbtOracleProtocols",
     "FlextDbtOracleQueryError",
     "FlextDbtOracleTimeoutError",
     "FlextDbtOracleUtilities",
