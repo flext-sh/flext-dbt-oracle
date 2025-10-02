@@ -37,8 +37,8 @@ class TestFlextDbtOracleConfig:
             oracle_password="testpass",
             sid="XE",
         )
-        assert config.host == "localhost"
-        assert config.username == "testuser"
+        assert config.oracle_host == "localhost"
+        assert config.oracle_username == "testuser"
         assert config.sid == "XE"
 
     def test_config_validation_missing_host(self) -> None:
@@ -190,9 +190,9 @@ class TestFlextDbtOracleConfig:
         oracle_config = config.to_oracle_config()
 
         assert isinstance(oracle_config, OracleConfig)
-        assert oracle_config.host == "localhost"
-        assert oracle_config.username == "testuser"
-        assert oracle_config.service_name == "XEPDB1"
+        assert oracle_config.oracle_host == "localhost"
+        assert oracle_config.oracle_username == "testuser"
+        assert oracle_config.oracle_service_name == "XEPDB1"
         assert oracle_config.pool_min == 2
         assert oracle_config.pool_max == 10
 
@@ -287,7 +287,7 @@ class TestConfigEdgeCases:
             oracle_password="testpass",
         )
         # Should use default service name from constants
-        assert config.service_name is not None
+        assert config.oracle_service_name is not None
 
     def test_config_field_validation_ranges(self) -> None:
         """Test field validation for numeric ranges."""
