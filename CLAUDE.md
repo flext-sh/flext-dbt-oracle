@@ -8,13 +8,35 @@
 
 **Hierarchy**: This document provides project-specific standards based on workspace-level patterns defined in [../CLAUDE.md](../CLAUDE.md). For architectural principles, quality gates, and MCP server usage, reference the main workspace standards.
 
-## 🔗 MCP SERVER INTEGRATION
+## 📋 DOCUMENT STRUCTURE & REFERENCES
 
-| MCP Server              | Purpose                                                           | Status     |
-| ----------------------- | ----------------------------------------------------------------- | ---------- |
-| **serena**              | DBT Oracle codebase analysis and database transformation patterns | **ACTIVE** |
-| **sequential-thinking** | Oracle data modeling and DBT architecture problem solving         | **ACTIVE** |
-| **github**              | DBT ecosystem integration and Oracle transformation PRs           | **ACTIVE** |
+**Quick Links**:
+- **[~/.claude/commands/flext.md](~/.claude/commands/flext.md)**: Optimization command for module refactoring (USE with `/flext` command)
+- **[../CLAUDE.md](../CLAUDE.md)**: FLEXT ecosystem standards and domain library rules
+
+**Document Purpose**:
+- **This file (CLAUDE.md)**: Project-specific flext-dbt-oracle standards, DBT Oracle orchestration patterns, and Oracle Database transformation authority
+- **flext.md command**: Practical refactoring workflows and MCP tool usage patterns (HOW-TO)
+- **Workspace CLAUDE.md**: Domain library standards and ecosystem architectural principles (WHAT and WHY)
+
+**DO NOT DUPLICATE**: This file focuses on flext-dbt-oracle DBT orchestration authority with MANDATORY use of flext-meltano, flext-db-oracle, and flext-core.
+
+**Usage**: Reference [~/.claude/commands/flext.md](~/.claude/commands/flext.md) for MCP workflows. Use `/flext` command for DBT Oracle module optimization and Clean Architecture refactoring.
+
+**CRITICAL INTEGRATION DEPENDENCIES**:
+- **flext-meltano**: MANDATORY for ALL DBT operations (ZERO TOLERANCE for direct dbt imports)
+- **flext-db-oracle**: MANDATORY for ALL Oracle operations (ZERO TOLERANCE for direct SQLAlchemy/oracledb imports)
+- **flext-core**: Foundation patterns (FlextResult, FlextService, FlextContainer)
+- **flext-cli**: MANDATORY for ALL CLI operations (ZERO TOLERANCE for direct click/rich imports)
+
+## 🔗 MCP SERVER INTEGRATION (MANDATORY)
+
+| MCP Server              | Purpose                                                           | Status          |
+| ----------------------- | ----------------------------------------------------------------- | --------------- |
+| **serena-flext**        | Semantic code analysis, symbol manipulation, refactoring          | **MANDATORY**   |
+| **sequential-thinking** | Oracle data modeling and DBT architecture problem solving         | **RECOMMENDED** |
+| **context7**            | Third-party library documentation (dbt, Oracle Database)          | **RECOMMENDED** |
+| **github**              | Repository operations and DBT Oracle ecosystem PRs                | **ACTIVE**      |
 
 **Usage**: `claude mcp list` for available servers, leverage for DBT-specific development patterns and Oracle transformation analysis.
 

@@ -6,7 +6,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import asyncio
 import concurrent.futures
 from collections.abc import Coroutine
 from dataclasses import dataclass
@@ -21,7 +20,7 @@ class FlextDbtOracleConnections:
     """Unified Oracle connection management with credentials, connection manager, and utilities.
 
     Consolidates Oracle connection functionality including credentials management,
-    connection pooling, and async utilities following FLEXT unified class pattern.
+    connection pooling, and utilities following FLEXT unified class pattern.
     """
 
     # Shared logger for all Oracle connection operations
@@ -54,7 +53,7 @@ class FlextDbtOracleConnections:
             self.sid = sid
             self.protocol = protocol
             self.type = "oracle"
-            self.unique_field = host
+            self.unique_field = self.host
 
         def _connection_keys(self: object) -> tuple[str, ...]:
             """Get connection keys for pooling."""
@@ -77,11 +76,11 @@ class FlextDbtOracleConnections:
         def to_oracle_config(self: object) -> FlextDbOracleConfig:
             """Convert to Oracle config."""
             return FlextDbOracleConfig(
-                host=self.host,
-                port=self.port,
-                user=self.username,  # Use 'user' field, not 'username'
-                password=self.password,
-                service_name=self.service_name,
+                oracle_host=self.host,
+                oracle_port=self.port,
+                oracle_username=self.username,
+                oracle_password=self.password,
+                oracle_service_name=self.service_name,
             )
 
     class ConnectionManager:
@@ -177,26 +176,26 @@ class FlextDbtOracleConnections:
         def rollback(self: object) -> None:
             """Rollback transaction."""
 
-    class AsyncUtilities:
-        """Async utilities for Oracle connections."""
+    class Utilities:
+        """utilities for Oracle connections."""
 
         @staticmethod
-        def run_async_in_sync_context[T](coro: Coroutine[object, object, T]) -> T:
-            """Run async coroutine in sync context."""
+        def run_in_sync_context[T](coro: Coroutine[object, object, T]) -> T:
+            """Run coroutine in sync context."""
             try:
-                loop = asyncio.get_event_loop()
+                loop = get_event_loop()
                 if loop.is_running():
-                    # If we're already in an async context, we need to use a different approach
+                    # If we're already in an context, we need to use a different approach
                     with concurrent.futures.ThreadPoolExecutor() as executor:
                         future: concurrent.futures.Future[T] = executor.submit(
-                            lambda: asyncio.run(coro),
+                            lambda: run(coro),
                         )
                         return future.result()
                 else:
                     return loop.run_until_complete(coro)
             except RuntimeError:
                 # No event loop running, create a new one
-                return asyncio.run(coro)
+                return run(coro)
 
 
 __all__ = [

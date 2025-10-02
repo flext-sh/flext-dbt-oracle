@@ -19,22 +19,22 @@ class TestFlextDbtOracleConfig:
     def test_basic_config_creation(self) -> None:
         """Test creating basic Oracle configuration."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            service_name="XEPDB1",
+            oracle_oracle_host="localhost",
+            oracle_oracle_username="testuser",
+            oracle_oracle_password="testpass",
+            oracle_oracle_service_name="XEPDB1",
         )
-        assert config.host == "localhost"
-        assert config.username == "testuser"
-        assert config.service_name == "XEPDB1"
+        assert config.oracle_host == "localhost"
+        assert config.oracle_username == "testuser"
+        assert config.oracle_service_name == "XEPDB1"
         assert config.port == 1521  # default
 
     def test_config_with_sid(self) -> None:
         """Test configuration with SID instead of service_name."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
+            oracle_host="localhost",
+            oracle_username="testuser",
+            oracle_password="testpass",
             sid="XE",
         )
         assert config.host == "localhost"
@@ -45,37 +45,37 @@ class TestFlextDbtOracleConfig:
         """Test validation fails when host is missing."""
         with pytest.raises(ValidationError, match="Field required"):
             FlextDbtOracleConfig(
-                username="testuser",
-                password="testpass",
-                service_name="XEPDB1",
+                oracle_username="testuser",
+                oracle_password="testpass",
+                oracle_service_name="XEPDB1",
             )
 
     def test_config_validation_missing_username(self) -> None:
         """Test validation fails when username is missing."""
         with pytest.raises(ValidationError, match="Field required"):
             FlextDbtOracleConfig(
-                host="localhost",
-                password="testpass",
-                service_name="XEPDB1",
+                oracle_host="localhost",
+                oracle_password="testpass",
+                oracle_service_name="XEPDB1",
             )
 
     def test_config_validation_missing_password(self) -> None:
         """Test validation fails when password is missing."""
         with pytest.raises(ValidationError, match="Field required"):
             FlextDbtOracleConfig(
-                host="localhost",
-                username="testuser",
-                service_name="XEPDB1",
+                oracle_host="localhost",
+                oracle_username="testuser",
+                oracle_service_name="XEPDB1",
             )
 
     def test_config_validation_invalid_materialization(self) -> None:
         """Test validation fails for invalid materialization."""
         with pytest.raises(ValidationError, match="String should match pattern"):
             FlextDbtOracleConfig(
-                host="localhost",
-                username="testuser",
-                password="testpass",
-                service_name="XEPDB1",
+                oracle_host="localhost",
+                oracle_username="testuser",
+                oracle_password="testpass",
+                oracle_service_name="XEPDB1",
                 materialization="invalid_type",
             )
 
@@ -83,10 +83,10 @@ class TestFlextDbtOracleConfig:
         """Test validation fails for invalid protocol."""
         with pytest.raises(ValidationError, match="Invalid protocol"):
             FlextDbtOracleConfig(
-                host="localhost",
-                username="testuser",
-                password="testpass",
-                service_name="XEPDB1",
+                oracle_host="localhost",
+                oracle_username="testuser",
+                oracle_password="testpass",
+                oracle_service_name="XEPDB1",
                 protocol="invalid_protocol",
             )
 
@@ -94,10 +94,10 @@ class TestFlextDbtOracleConfig:
         """Test validation of pool sizes."""
         with pytest.raises(ValidationError, match="Pool max size"):
             FlextDbtOracleConfig(
-                host="localhost",
-                username="testuser",
-                password="testpass",
-                service_name="XEPDB1",
+                oracle_host="localhost",
+                oracle_username="testuser",
+                oracle_password="testpass",
+                oracle_service_name="XEPDB1",
                 pool_min_size=10,
                 pool_max_size=5,  # smaller than min
             )
@@ -105,10 +105,10 @@ class TestFlextDbtOracleConfig:
     def test_get_connection_string(self) -> None:
         """Test connection string generation."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            service_name="XEPDB1",
+            oracle_oracle_host="localhost",
+            oracle_oracle_username="testuser",
+            oracle_oracle_password="testpass",
+            oracle_oracle_service_name="XEPDB1",
         )
         conn_str = config.get_connection_string()
         assert conn_str == "oracle://testuser:***@localhost:1521/XEPDB1"
@@ -116,9 +116,9 @@ class TestFlextDbtOracleConfig:
     def test_get_connection_string_with_sid(self) -> None:
         """Test connection string generation with SID."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
+            oracle_host="localhost",
+            oracle_username="testuser",
+            oracle_password="testpass",
             sid="XE",
         )
         conn_str = config.get_connection_string()
@@ -127,10 +127,10 @@ class TestFlextDbtOracleConfig:
     def test_get_effective_schema(self) -> None:
         """Test effective schema retrieval."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            service_name="XEPDB1",
+            oracle_host="localhost",
+            oracle_username="testuser",
+            oracle_password="testpass",
+            oracle_service_name="XEPDB1",
             schema_name="TEST_SCHEMA",
         )
         assert config.get_effective_schema() == "TEST_SCHEMA"
@@ -138,17 +138,17 @@ class TestFlextDbtOracleConfig:
     def test_get_database_identifier(self) -> None:
         """Test database identifier retrieval."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            service_name="XEPDB1",
+            oracle_oracle_host="localhost",
+            oracle_oracle_username="testuser",
+            oracle_oracle_password="testpass",
+            oracle_oracle_service_name="XEPDB1",
         )
         assert config.get_database_identifier() == "XEPDB1"
 
         config_with_sid = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
+            oracle_host="localhost",
+            oracle_username="testuser",
+            oracle_password="testpass",
             sid="XE",
         )
         assert config_with_sid.get_database_identifier() == "XE"
@@ -156,10 +156,10 @@ class TestFlextDbtOracleConfig:
     def test_to_connection_config(self) -> None:
         """Test conversion to connection configuration."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            service_name="XEPDB1",
+            oracle_oracle_host="localhost",
+            oracle_oracle_username="testuser",
+            oracle_oracle_password="testpass",
+            oracle_oracle_service_name="XEPDB1",
         )
         conn_config = config.to_connection_config()
 
@@ -180,10 +180,10 @@ class TestFlextDbtOracleConfig:
     def test_to_oracle_config(self) -> None:
         """Test conversion to Oracle config."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            service_name="XEPDB1",
+            oracle_host="localhost",
+            oracle_username="testuser",
+            oracle_password="testpass",
+            oracle_service_name="XEPDB1",
             pool_min_size=2,
             pool_max_size=10,
         )
@@ -199,10 +199,10 @@ class TestFlextDbtOracleConfig:
     def test_get_performance_settings(self) -> None:
         """Test performance settings retrieval."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            service_name="XEPDB1",
+            oracle_host="localhost",
+            oracle_username="testuser",
+            oracle_password="testpass",
+            oracle_service_name="XEPDB1",
             pool_min_size=2,
             pool_max_size=10,
             query_timeout=300,
@@ -227,10 +227,10 @@ class TestFlextDbtOracleConfig:
     def test_get_dbt_settings(self) -> None:
         """Test DBT settings retrieval."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            service_name="XEPDB1",
+            oracle_host="localhost",
+            oracle_username="testuser",
+            oracle_password="testpass",
+            oracle_service_name="XEPDB1",
             materialization="table",
         )
         dbt_settings = config.get_dbt_settings()
@@ -247,10 +247,10 @@ class TestConfigEdgeCases:
     def test_config_with_all_optional_fields(self) -> None:
         """Test configuration with all optional fields set."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            service_name="XEPDB1",
+            oracle_host="localhost",
+            oracle_username="testuser",
+            oracle_password="testpass",
+            oracle_service_name="XEPDB1",
             port=1522,
             protocol="tcps",
             ssl_server_dn_match=True,
@@ -282,9 +282,9 @@ class TestConfigEdgeCases:
         Test that default service name is used when neither service_name nor sid provided.
         """
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
+            oracle_host="localhost",
+            oracle_username="testuser",
+            oracle_password="testpass",
         )
         # Should use default service name from constants
         assert config.service_name is not None
@@ -293,10 +293,10 @@ class TestConfigEdgeCases:
         """Test field validation for numeric ranges."""
         # Test valid ranges
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            service_name="XEPDB1",
+            oracle_host="localhost",
+            oracle_username="testuser",
+            oracle_password="testpass",
+            oracle_service_name="XEPDB1",
             port=1521,
             pool_min_size=1,
             pool_max_size=50,
@@ -315,10 +315,10 @@ class TestConfigEdgeCases:
 
         for materialization in valid_materializations:
             config = FlextDbtOracleConfig(
-                host="localhost",
-                username="testuser",
-                password="testpass",
-                service_name="XEPDB1",
+                oracle_host="localhost",
+                oracle_username="testuser",
+                oracle_password="testpass",
+                oracle_service_name="XEPDB1",
                 materialization=materialization,
             )
             assert config.materialization == materialization
@@ -329,10 +329,10 @@ class TestConfigEdgeCases:
 
         for protocol in valid_protocols:
             config = FlextDbtOracleConfig(
-                host="localhost",
-                username="testuser",
-                password="testpass",
-                service_name="XEPDB1",
+                oracle_host="localhost",
+                oracle_username="testuser",
+                oracle_password="testpass",
+                oracle_service_name="XEPDB1",
                 protocol=protocol,
             )
             assert config.protocol == protocol
@@ -344,10 +344,10 @@ class TestConfigConstantsUsage:
     def test_config_uses_default_constants(self) -> None:
         """Test that configuration uses default constants appropriately."""
         config = FlextDbtOracleConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            service_name="XEPDB1",
+            oracle_oracle_host="localhost",
+            oracle_oracle_username="testuser",
+            oracle_oracle_password="testpass",
+            oracle_oracle_service_name="XEPDB1",
         )
 
         # Test that defaults come from constants

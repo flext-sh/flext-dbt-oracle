@@ -6,7 +6,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import asyncio
 from typing import Never
 from unittest.mock import Mock, patch
 
@@ -15,7 +14,7 @@ import pytest
 from flext_dbt_oracle import (
     FlextOracleOracleConnectionManager,
     OracleCredentials,
-    run_async_in_sync_context,
+    run_in_sync_context,
 )
 from flext_meltano import Connection, DbtDatabaseError
 
@@ -108,14 +107,14 @@ class TestConnectionManager:
             assert manager.TYPE == "oracle"
             assert hasattr(manager, "_oracle_services")
 
-    @patch("flext_dbt_oracle.adapters.oracle.connections.run_async_in_sync_context")
+    @patch("flext_dbt_oracle.adapters.oracle.connections.run_in_sync_context")
     @patch("flext_dbt_oracle.adapters.oracle.connections.OracleConnectionService")
     @patch("flext_dbt_oracle.adapters.oracle.connections.OracleQueryService")
     def test_open_connection_success(
         self,
         mock_query_service: Mock,
         mock_connection_service: Mock,
-        mock_async_run: Mock,
+        mock_run: Mock,
     ) -> None:
         """Test successful connection opening."""
         # Setup mocks
@@ -128,7 +127,7 @@ class TestConnectionManager:
         mock_result = Mock()
         mock_result.is_failure = False
         mock_result.success = True
-        mock_async_run.return_value = mock_result
+        mock_run.return_value = mock_result
 
         # Create connection object
         connection = Mock(spec=Connection)
@@ -181,47 +180,47 @@ class TestConnectionManager:
             manager.thread_connections = {"test": mock_connection}
 
             with patch(
-                "flext_dbt_oracle.adapters.oracle.connections.run_async_in_sync_context",
+                "flext_dbt_oracle.adapters.oracle.connections.run_in_sync_context",
             ):
                 result = manager.cancel_open()
                 assert result == []
                 assert mock_connection.state == "closed"
 
 
-class TestAsyncHelpers:
-    """Test async helper functions."""
+class TestHelpers:
+    """Test helper functions."""
 
-    def test_run_async_in_sync_context(self) -> None:
-        """Test async to sync context conversion."""
+    def test_run_in_sync_context(self) -> None:
+        """Test to sync context conversion."""
 
-        async def test_coro() -> str:
-            await asyncio.sleep(0)  # Make it truly async
+        def test_coro() -> str:
+            time.sleep(0)
             return "test_result"
 
-        result = run_async_in_sync_context(test_coro())
+        result = run_in_sync_context(test_coro())
         assert result == "test_result"
 
-    def test_run_async_in_sync_context_with_exception(self) -> None:
-        """Test async context with exception."""
+    def test_run_in_sync_context_with_exception(self) -> None:
+        """Test context with exception."""
 
-        async def failing_coro() -> Never:
-            await asyncio.sleep(0)  # Make it truly async
+        def failing_coro() -> Never:
+            time.sleep(0)
             msg = "Test error"
             raise ValueError(msg)
 
         with pytest.raises(ValueError, match="Test error"):
-            run_async_in_sync_context(failing_coro())
+            run_in_sync_context(failing_coro())
 
 
 class TestExecuteQueries:
     """Test query execution functionality."""
 
-    @patch("flext_dbt_oracle.adapters.oracle.connections.run_async_in_sync_context")
+    @patch("flext_dbt_oracle.adapters.oracle.connections.run_in_sync_context")
     @patch("multiprocessing.get_context")
     @pytest.mark.usefixtures("_mock_oracle_connection")
     def test_execute_query_success(
         self,
-        mock_async_run: Mock,
+        mock_run: Mock,
     ) -> None:
         """Test successful query execution."""
         # Setup mocks
@@ -233,7 +232,7 @@ class TestExecuteQueries:
         mock_result.data.columns = ["col1", "col2"]
         mock_result.data.execution_time_ms = 100.0
         mock_result.data.row_count = 0
-        mock_async_run.return_value = mock_result
+        mock_run.return_value = mock_result
 
         # Create connection manager
         profile = {"host": "localhost", "username": "test"}

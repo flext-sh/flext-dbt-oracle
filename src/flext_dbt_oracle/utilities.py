@@ -954,8 +954,8 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                     f"Oracle test generation failed: {e}"
                 )
 
-    async def execute_async(self) -> FlextResult[dict[str, Any]]:
-        """Execute DBT Oracle utilities service operation asynchronously."""
+    def execute(self) -> FlextResult[dict[str, Any]]:
+        """Execute DBT Oracle utilities service operation hronously."""
         return FlextResult[dict[str, Any]].ok({
             "status": "operational",
             "service": "flext-dbt-oracle-utilities",

@@ -18,7 +18,7 @@
       "no_direct_database": true,
       "use_connection_service": "mandatory",
       "connection_manager": "custom",
-      "query_execution": "async_aware"
+      "query_execution": "aware"
     },
     "configuration": {
       "profile_template": "oracle",
@@ -136,7 +136,7 @@
     "no_legacy_dbt": true,
     "modern_dbt_only": true,
     "use_flext_db_oracle": true,
-    "async_compatible": true
+    "compatible": true
   },
   "sql_macros": {
     "required_macros": [
@@ -166,7 +166,7 @@
   "modernization": {
     "remove_postgresql_legacy": true,
     "use_modern_dbt_patterns": true,
-    "async_query_execution": true,
+    "query_execution": true,
     "structured_logging": true,
     "metrics_collection": true
   }
