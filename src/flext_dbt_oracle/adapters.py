@@ -33,22 +33,18 @@ class FlextDbtOracleAdapters:
         @property
         def name(self: object) -> str:
             """Table name."""
-            ...
 
         @property
         def schema_name(self: object) -> str:
             """Schema/owner name."""
-            ...
 
         @property
         def columns(self: object) -> list[dict[str, str]]:
             """List of column information as dictionaries."""
-            ...
 
         @property
         def metadata(self: object) -> dict[str, object]:
             """Table metadata information."""
-            ...
 
     @dataclass
     class TableAdapter:

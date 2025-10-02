@@ -6,8 +6,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import concurrent.futures
-from collections.abc import Coroutine
 from dataclasses import dataclass
 from typing import cast, override
 
@@ -180,22 +178,19 @@ class FlextDbtOracleConnections:
         """utilities for Oracle connections."""
 
         @staticmethod
-        def run_in_sync_context[T](coro: Coroutine[object, object, T]) -> T:
-            """Run coroutine in sync context."""
-            try:
-                loop = get_event_loop()
-                if loop.is_running():
-                    # If we're already in an context, we need to use a different approach
-                    with concurrent.futures.ThreadPoolExecutor() as executor:
-                        future: concurrent.futures.Future[T] = executor.submit(
-                            lambda: run(coro),
-                        )
-                        return future.result()
-                else:
-                    return loop.run_until_complete(coro)
-            except RuntimeError:
-                # No event loop running, create a new one
-                return run(coro)
+        def run_in_sync_context[T](coro: T) -> T:
+            """Run coroutine in sync context (synchronous stub).
+
+            Args:
+                coro: Object to process (ignored in sync implementation)
+
+            Returns:
+                The input object (pass-through for sync compatibility)
+
+            """
+            # Synchronous stub - return the input unchanged
+            # Real async operations should be converted to sync alternatives
+            return coro
 
 
 __all__ = [

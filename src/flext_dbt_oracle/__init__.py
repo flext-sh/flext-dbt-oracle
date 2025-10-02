@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import Final
+
 from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.config import FlextDbtOracleConfig
@@ -34,13 +36,18 @@ from flext_dbt_oracle.services import (
 )
 from flext_dbt_oracle.typings import FlextDbtOracleTypes
 from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
+from flext_dbt_oracle.version import VERSION, FlextDbtOracleVersion
 
-__version__ = "0.9.0"
-__version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
-__author__ = "FLEXT Team"
 __email__ = "team@flext.sh"
 
-__all__: FlextDbtOracleTypes.Core.StringList = [
+PROJECT_VERSION: Final[FlextDbtOracleVersion] = VERSION
+
+__version__: str = VERSION.version
+__version_info__: tuple[int | str, ...] = VERSION.version_info
+
+__all__ = [
+    "PROJECT_VERSION",
+    "VERSION",
     "FlextDbtOracleAuthenticationError",
     "FlextDbtOracleClient",
     "FlextDbtOracleCompilationError",
@@ -58,13 +65,13 @@ __all__: FlextDbtOracleTypes.Core.StringList = [
     "FlextDbtOracleProtocols",
     "FlextDbtOracleQueryError",
     "FlextDbtOracleTimeoutError",
+    "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
     "FlextDbtOracleValidationError",
+    "FlextDbtOracleVersion",
     "FlextDbtOracleWorkflowService",
     "OracleTableAdapter",
     "OracleTableFactory",
-    "__author__",
-    "__email__",
     "__version__",
     "__version_info__",
 ]
