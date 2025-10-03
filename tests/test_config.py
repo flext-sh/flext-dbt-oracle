@@ -7,9 +7,9 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_db_oracle import OracleConfig
 from pydantic import ValidationError
 
-from flext_db_oracle import OracleConfig
 from flext_dbt_oracle import FlextDbtOracleConfig
 
 

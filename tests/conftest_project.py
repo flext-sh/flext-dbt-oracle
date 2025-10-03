@@ -11,9 +11,9 @@ import tempfile
 from collections.abc import Generator
 
 import pytest
+from flext_tests import FlextTestDocker
 
 from flext_core import FlextTypes
-from flext_tests import FlextTestDocker
 
 
 @pytest.fixture(scope="session")
@@ -79,7 +79,7 @@ def set_test_environment() -> Generator[None]:
 
 # dbt configuration fixtures
 @pytest.fixture
-def dbt_oracle_profile() -> FlextTypes.Core.Dict:
+def dbt_oracle_profile() -> FlextTypes.Dict:
     """Dbt Oracle profile configuration for testing."""
     return {
         "config": {
@@ -122,7 +122,7 @@ def dbt_oracle_profile() -> FlextTypes.Core.Dict:
 
 
 @pytest.fixture
-def dbt_project_config() -> FlextTypes.Core.Dict:
+def dbt_project_config() -> FlextTypes.Dict:
     """Dbt project configuration for testing."""
     return {
         "name": "flext_dbt_oracle_test",
@@ -157,7 +157,7 @@ def dbt_project_config() -> FlextTypes.Core.Dict:
 
 # Oracle adapter fixtures
 @pytest.fixture
-def oracle_adapter_config() -> FlextTypes.Core.Dict:
+def oracle_adapter_config() -> FlextTypes.Dict:
     """Oracle adapter configuration for testing."""
     return {
         "type": "oracle",
@@ -182,7 +182,7 @@ def oracle_adapter_config() -> FlextTypes.Core.Dict:
 
 
 @pytest.fixture
-def dbt_model_definitions() -> FlextTypes.Core.Headers:
+def dbt_model_definitions() -> FlextTypes.StringDict:
     """Dbt model SQL definitions for testing."""
     return {
         "staging_customers": """
@@ -240,7 +240,7 @@ def dbt_model_definitions() -> FlextTypes.Core.Headers:
 
 
 @pytest.fixture
-def dbt_macro_definitions() -> FlextTypes.Core.Headers:
+def dbt_macro_definitions() -> FlextTypes.StringDict:
     """Dbt macro definitions for testing."""
     return {
         "oracle_create_table_as": """
@@ -290,7 +290,7 @@ def dbt_macro_definitions() -> FlextTypes.Core.Headers:
 
 # dbt test fixtures
 @pytest.fixture
-def dbt_test_definitions() -> FlextTypes.Core.Headers:
+def dbt_test_definitions() -> FlextTypes.StringDict:
     """Dbt test definitions for testing."""
     return {
         "test_unique_customer_id": """
@@ -317,7 +317,7 @@ def dbt_test_definitions() -> FlextTypes.Core.Headers:
 
 
 @pytest.fixture
-def dbt_source_definitions() -> FlextTypes.Core.Dict:
+def dbt_source_definitions() -> FlextTypes.Dict:
     """Dbt source definitions for testing."""
     return {
         "version": 2,
@@ -370,7 +370,7 @@ def dbt_source_definitions() -> FlextTypes.Core.Dict:
 
 # Oracle SQL fixtures
 @pytest.fixture
-def oracle_sql_queries() -> FlextTypes.Core.Headers:
+def oracle_sql_queries() -> FlextTypes.StringDict:
     """Oracle SQL queries for testing."""
     return {
         "create_test_schema": """
@@ -426,7 +426,7 @@ def oracle_sql_queries() -> FlextTypes.Core.Headers:
 
 # dbt execution fixtures
 @pytest.fixture
-def dbt_run_config() -> FlextTypes.Core.Dict:
+def dbt_run_config() -> FlextTypes.Dict:
     """Dbt run configuration for testing."""
     return {
         "threads": 4,
@@ -442,7 +442,7 @@ def dbt_run_config() -> FlextTypes.Core.Dict:
 
 
 @pytest.fixture
-def dbt_test_config() -> FlextTypes.Core.Dict:
+def dbt_test_config() -> FlextTypes.Dict:
     """Dbt test configuration for testing."""
     return {
         "threads": 2,
@@ -456,7 +456,7 @@ def dbt_test_config() -> FlextTypes.Core.Dict:
 
 # Performance test fixtures
 @pytest.fixture
-def performance_test_config() -> FlextTypes.Core.Dict:
+def performance_test_config() -> FlextTypes.Dict:
     """Performance test configuration."""
     return {
         "large_table_rows": 100000,
@@ -469,7 +469,7 @@ def performance_test_config() -> FlextTypes.Core.Dict:
 
 # Error handling fixtures
 @pytest.fixture
-def dbt_error_scenarios() -> list[FlextTypes.Core.Dict]:
+def dbt_error_scenarios() -> list[FlextTypes.Dict]:
     """Dbt error scenarios for testing."""
     return [
         {
@@ -521,13 +521,13 @@ class MockConnectionManager:
 
     def __init__(self) -> None:
         """Initialize connection manager."""
-        self.connections: FlextTypes.Core.Dict = {}
+        self.connections: FlextTypes.Dict = {}
 
     def open_connection(
         self,
         name: str,
-        config: FlextTypes.Core.Dict,
-    ) -> FlextTypes.Core.Dict:
+        config: FlextTypes.Dict,
+    ) -> FlextTypes.Dict:
         """Open database connection."""
         connection = {
             "name": name,
@@ -553,7 +553,7 @@ class MockSqlExecutor:
         sql: str,
         *,
         auto_begin: bool = True,
-    ) -> tuple[str, FlextTypes.Core.List]:
+    ) -> tuple[str, FlextTypes.List]:
         """Execute SQL statement with reduced branching."""
         # auto_begin parameter is used for future transaction management
         _ = auto_begin  # Mark as used for future implementation
@@ -574,7 +574,7 @@ class MockSqlExecutor:
 class MockModelCompiler:
     """Strategy for model compilation (Single Responsibility Principle)."""
 
-    def compile_model(self, model_sql: str, context: FlextTypes.Core.Dict) -> str:
+    def compile_model(self, model_sql: str, context: FlextTypes.Dict) -> str:
         """Compile dbt model SQL."""
         compiled = model_sql
         vars_dict = context.get("vars", {})
@@ -591,7 +591,7 @@ class MockRelationManager:
         database: str,
         schema: str,
         identifier: str,
-    ) -> FlextTypes.Core.Headers:
+    ) -> FlextTypes.StringDict:
         """Get relation information."""
         return {
             "database": database,
@@ -603,7 +603,7 @@ class MockRelationManager:
     def list_relations_without_caching(
         self,
         schema: str,
-    ) -> list[FlextTypes.Core.Headers]:
+    ) -> list[FlextTypes.StringDict]:
         """List relations in schema."""
         return [
             {"schema": schema, "identifier": "customers", "type": "table"},
@@ -618,17 +618,17 @@ def mock_dbt_oracle_adapter() -> object:
     class MockDbtOracleAdapter:
         """Simplified adapter using composition and Strategy Pattern."""
 
-        def __init__(self, config: FlextTypes.Core.Dict) -> None:
+        def __init__(self, config: FlextTypes.Dict) -> None:
             """Initialize the instance."""
             self.config = config
-            self.compiled_models: FlextTypes.Core.Dict = {}
+            self.compiled_models: FlextTypes.Dict = {}
             # Dependency injection of strategies
             self.connection_manager = MockConnectionManager()
             self.sql_executor = MockSqlExecutor()
             self.model_compiler = MockModelCompiler()
             self.relation_manager = MockRelationManager()
 
-        def open_connection(self, name: str) -> FlextTypes.Core.Dict:
+        def open_connection(self, name: str) -> FlextTypes.Dict:
             """Delegate to connection manager strategy."""
             return self.connection_manager.open_connection(name, self.config)
 
@@ -641,11 +641,11 @@ def mock_dbt_oracle_adapter() -> object:
             sql: str,
             *,
             auto_begin: bool = True,
-        ) -> tuple[str, FlextTypes.Core.List]:
+        ) -> tuple[str, FlextTypes.List]:
             """Delegate to SQL executor strategy."""
             return self.sql_executor.execute(sql, auto_begin)
 
-        def compile_model(self, model_sql: str, context: FlextTypes.Core.Dict) -> str:
+        def compile_model(self, model_sql: str, context: FlextTypes.Dict) -> str:
             """Delegate to model compiler strategy."""
             return self.model_compiler.compile_model(model_sql, context)
 
@@ -654,14 +654,14 @@ def mock_dbt_oracle_adapter() -> object:
             database: str,
             schema: str,
             identifier: str,
-        ) -> FlextTypes.Core.Headers:
+        ) -> FlextTypes.StringDict:
             """Delegate to relation manager strategy."""
             return self.relation_manager.get_relation(database, schema, identifier)
 
         def list_relations_without_caching(
             self,
             schema: str,
-        ) -> list[FlextTypes.Core.Headers]:
+        ) -> list[FlextTypes.StringDict]:
             """Delegate to relation manager strategy."""
             return self.relation_manager.list_relations_without_caching(schema)
 
@@ -677,12 +677,12 @@ def mock_dbt_runner() -> object:
             """Initialize the instance."""
             self.project_dir = project_dir
             self.profiles_dir = profiles_dir
-            self.results: FlextTypes.Core.Dict = {}
+            self.results: FlextTypes.Dict = {}
 
         def run_models(
             self,
-            models: FlextTypes.Core.StringList | None = None,
-        ) -> FlextTypes.Core.Dict:
+            models: FlextTypes.StringList | None = None,
+        ) -> FlextTypes.Dict:
             """Run dbt models."""
             results = []
             models = models or ["dim_customers", "fact_orders"]
@@ -698,8 +698,8 @@ def mock_dbt_runner() -> object:
 
         def run_tests(
             self,
-            models: FlextTypes.Core.StringList | None = None,
-        ) -> FlextTypes.Core.Dict:
+            models: FlextTypes.StringList | None = None,
+        ) -> FlextTypes.Dict:
             """Run dbt tests."""
             # models parameter is used for future model-specific testing
             _ = models  # Mark as used for future implementation
@@ -718,8 +718,8 @@ def mock_dbt_runner() -> object:
 
         def compile(
             self,
-            models: FlextTypes.Core.StringList | None = None,
-        ) -> FlextTypes.Core.Dict:
+            models: FlextTypes.StringList | None = None,
+        ) -> FlextTypes.Dict:
             """Compile dbt models."""
             compiled = {}
             models = models or ["dim_customers", "fact_orders"]

@@ -9,9 +9,9 @@ from __future__ import annotations
 from unittest.mock import Mock, patch
 
 import pytest
+from flext_meltano import BaseRelation
 
 from flext_dbt_oracle import FlextOracleOracleConnectionManager, OracleAdapter
-from flext_meltano import BaseRelation
 
 
 class TestOracleAdapter:

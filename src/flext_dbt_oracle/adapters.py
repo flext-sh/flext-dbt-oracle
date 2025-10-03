@@ -39,11 +39,11 @@ class FlextDbtOracleAdapters:
             """Schema/owner name."""
 
         @property
-        def columns(self: object) -> list[dict[str, str]]:
+        def columns(self: object) -> list[FlextTypes.StringDict]:
             """List of column information as dictionaries."""
 
         @property
-        def metadata(self: object) -> dict[str, object]:
+        def metadata(self: object) -> FlextTypes.Dict:
             """Table metadata information."""
 
     @dataclass
@@ -55,13 +55,13 @@ class FlextDbtOracleAdapters:
         """
 
         _table: FlextDbOracleModels.Table
-        _extra_metadata: dict[str, object]
+        _extra_metadata: FlextTypes.Dict
 
         @classmethod
         def create_from_table(
             cls,
             table: FlextDbOracleModels.Table,
-            metadata: dict[str, object] | None = None,
+            metadata: FlextTypes.Dict | None = None,
         ) -> FlextResult[FlextDbtOracleAdapters.TableAdapter]:
             """Create adapter from actual Table object with optional metadata.
 
@@ -95,8 +95,8 @@ class FlextDbtOracleAdapters:
             cls,
             name: str,
             schema_name: str,
-            columns: list[dict[str, str]] | None = None,
-            metadata: dict[str, object] | None = None,
+            columns: list[FlextTypes.StringDict] | None = None,
+            metadata: FlextTypes.Dict | None = None,
         ) -> FlextResult[FlextDbtOracleAdapters.TableAdapter]:
             """Create adapter from raw metadata (for cases where we build from scratch).
 
@@ -123,7 +123,7 @@ class FlextDbtOracleAdapters:
             # Create a basic Table object (using actual constructor signature)
             try:
                 # Convert column information if provided
-                table_columns: list[object] = list(columns) if columns else []
+                table_columns: FlextTypes.List = list(columns) if columns else []
 
                 table = FlextDbOracleModels.Table(
                     name=name,
@@ -153,7 +153,7 @@ class FlextDbtOracleAdapters:
             return self._table.owner
 
         @property
-        def columns(self: object) -> list[dict[str, str]]:
+        def columns(self: object) -> list[FlextTypes.StringDict]:
             """Column information converted to dictionaries."""
             # Convert Column objects to dictionaries for business logic compatibility
             return [
@@ -166,7 +166,7 @@ class FlextDbtOracleAdapters:
             ]
 
         @property
-        def metadata(self: object) -> dict[str, object]:
+        def metadata(self: object) -> FlextTypes.Dict:
             """Combined metadata from table and extra metadata."""
             base_metadata = {
                 "name": self.name,
@@ -189,7 +189,7 @@ class FlextDbtOracleAdapters:
         @staticmethod
         def from_api_response(
             table_name: str,
-            api_response: dict[str, object],
+            api_response: FlextTypes.Dict,
             schema_name: str | None = None,
         ) -> FlextResult[FlextDbtOracleAdapters.TableAdapter]:
             """Create table adapter from Oracle API response.
@@ -241,7 +241,7 @@ class FlextDbtOracleAdapters:
 
         @staticmethod
         def from_table_list(
-            table_names: list[str],
+            table_names: FlextTypes.StringList,
             schema_name: str = "USER",
         ) -> FlextResult[list[FlextDbtOracleAdapters.TableAdapter]]:
             """Create table adapters from a list of table names.
@@ -280,6 +280,6 @@ class FlextDbtOracleAdapters:
             return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].ok(adapters)
 
 
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTypes.StringList = [
     "FlextDbtOracleAdapters",
 ]

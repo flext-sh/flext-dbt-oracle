@@ -9,9 +9,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import cast, override
 
-from flext_core import FlextLogger, FlextTypes, T
 from flext_db_oracle import FlextDbOracleConfig
 from flext_meltano import Connection, DbtDatabaseError
+
+from flext_core import FlextLogger, FlextTypes, T
 
 
 class FlextDbtOracleConnections:
@@ -87,10 +88,10 @@ class FlextDbtOracleConnections:
         TYPE = "oracle"
 
         @override
-        def __init__(self, profile: FlextTypes.Core.Dict) -> None:
+        def __init__(self, profile: FlextTypes.Dict) -> None:
             """Initialize connection manager."""
             self.profile = profile
-            self._oracle_services: dict[str, object] = {}
+            self._oracle_services: FlextTypes.Dict = {}
             self.thread_connections: dict[str, Connection] = {}
 
         def open(self, connection: Connection) -> Connection:
@@ -116,9 +117,9 @@ class FlextDbtOracleConnections:
             """Handle connection error."""
             raise DbtDatabaseError(error_message)
 
-        def cancel_open(self: object) -> list[str]:
+        def cancel_open(self: object) -> FlextTypes.StringList:
             """Cancel open connections."""
-            cancelled: list[str] = []
+            cancelled: FlextTypes.StringList = []
             for name, connection in self.thread_connections.items():
                 if connection.state == "open":
                     connection.state = "closed"
@@ -148,7 +149,7 @@ class FlextDbtOracleConnections:
         def add_query(
             self,
             sql: str,
-            bindings: FlextTypes.Core.Dict,
+            bindings: FlextTypes.Dict,
         ) -> tuple[Connection, object]:
             """Add query with fallback cursor."""
 
@@ -156,7 +157,7 @@ class FlextDbtOracleConnections:
             @dataclass
             class MockCursor:
                 sql: str
-                bindings: FlextTypes.Core.Dict
+                bindings: FlextTypes.Dict
 
             connection = self.get_thread_connection("default")
             if connection is None:

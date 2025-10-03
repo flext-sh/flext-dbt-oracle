@@ -29,12 +29,12 @@ class FlextDbtOracleModels(FlextModels):
     dbt_model_type: str  # staging, intermediate, marts
     schema_name: str
     table_name: str
-    columns: list[FlextTypes.Core.Dict]
+    columns: list[FlextTypes.Dict]
     materialization: str
     sql_content: str
     description: str
     oracle_source: str
-    dependencies: FlextTypes.Core.StringList
+    dependencies: FlextTypes.StringList
 
     def validate_business_rules(self) -> FlextResult[None]:
         """Validate DBT model business rules."""
@@ -75,10 +75,10 @@ class FlextDbtOracleModels(FlextModels):
         except Exception as e:
             return FlextResult[str].fail(f"SQL file generation failed: {e}")
 
-    def to_schema_entry(self) -> FlextResult[FlextTypes.Core.Dict]:
+    def to_schema_entry(self) -> FlextResult[FlextTypes.Dict]:
         """Convert model to schema.yml entry."""
         try:
-            schema_entry: FlextTypes.Core.Dict = {
+            schema_entry: FlextTypes.Dict = {
                 "name": self.name,
                 "description": self.description,
                 "columns": [
@@ -90,9 +90,9 @@ class FlextDbtOracleModels(FlextModels):
                     for col in self.columns
                 ],
             }
-            return FlextResult[FlextTypes.Core.Dict].ok(schema_entry)
+            return FlextResult[FlextTypes.Dict].ok(schema_entry)
         except Exception as e:
-            return FlextResult[FlextTypes.Core.Dict].fail(
+            return FlextResult[FlextTypes.Dict].fail(
                 f"Schema entry generation failed: {e}"
             )
 
@@ -120,7 +120,7 @@ class FlextDbtOracleModels(FlextModels):
         select * from {{ ref('{{ intermediate_model_name }}') }}
         """
 
-        ORACLE_DATA_TYPE_TESTS: ClassVar[dict[str, list[str]]] = {
+        ORACLE_DATA_TYPE_TESTS: ClassVar[dict[str, FlextTypes.StringList]] = {
             "VARCHAR2": ["not_null", "unique"],
             "NUMBER": ["not_null"],
             "DATE": ["not_null"],
@@ -137,7 +137,7 @@ class FlextDbtOracleModels(FlextModels):
             # For now, we'll create a placeholder implementation
 
         def generate_staging_models(
-            self, schema_names: list[str]
+            self, schema_names: FlextTypes.StringList
         ) -> FlextResult[list[FlextDbtOracleModels]]:
             """Generate staging models from Oracle schema metadata."""
             staging_models: list[FlextDbtOracleModels] = []
@@ -381,6 +381,6 @@ class FlextDbtOracleModels(FlextModels):
                 )
 
 
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTypes.StringList = [
     "FlextDbtOracleModels",
 ]
