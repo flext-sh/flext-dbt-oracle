@@ -34,6 +34,7 @@ from flext_dbt_oracle.services import (
     FlextDbtOracleMonitoringService,
     FlextDbtOracleWorkflowService,
 )
+from flext_dbt_oracle.simple_api import FlextDbtOracle, FlextDbtOracleAPI
 from flext_dbt_oracle.typings import FlextDbtOracleTypes
 from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
 from flext_dbt_oracle.version import VERSION, FlextDbtOracleVersion
@@ -46,8 +47,8 @@ __version__: str = VERSION.version
 __version_info__: tuple[int | str, ...] = VERSION.version_info
 
 __all__ = [
-    "PROJECT_VERSION",
-    "VERSION",
+    "FlextDbtOracle",
+    "FlextDbtOracleAPI",
     "FlextDbtOracleAuthenticationError",
     "FlextDbtOracleClient",
     "FlextDbtOracleCompilationError",
@@ -68,7 +69,6 @@ __all__ = [
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
     "FlextDbtOracleValidationError",
-    "FlextDbtOracleVersion",
     "FlextDbtOracleWorkflowService",
     "OracleTableAdapter",
     "OracleTableFactory",

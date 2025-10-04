@@ -12,9 +12,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
-from flext_db_oracle.models import FlextDbOracleModels
-
 from flext_core import FlextResult, FlextTypes
+from flext_db_oracle.models import FlextDbOracleModels
 
 
 class FlextDbtOracleAdapters:
@@ -280,6 +279,13 @@ class FlextDbtOracleAdapters:
             return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].ok(adapters)
 
 
+# Type aliases for backward compatibility
+OracleTableAdapter = FlextDbtOracleAdapters.TableAdapter
+OracleTableFactory = FlextDbtOracleAdapters.TableFactory
+
+
 __all__: FlextTypes.StringList = [
     "FlextDbtOracleAdapters",
+    "OracleTableAdapter",
+    "OracleTableFactory",
 ]

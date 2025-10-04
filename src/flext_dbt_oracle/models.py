@@ -10,8 +10,8 @@ from pathlib import Path
 from typing import ClassVar, override
 
 import yaml
-
 from flext_core import FlextLogger, FlextModels, FlextResult, FlextTypes
+
 from flext_dbt_oracle.config import FlextDbtOracleConfig
 
 
@@ -381,6 +381,13 @@ class FlextDbtOracleModels(FlextModels):
                 )
 
 
+# Type aliases for backward compatibility
+FlextDbtOracleModel = FlextDbtOracleModels
+FlextDbtOracleModelGenerator = FlextDbtOracleModels._ModelGenerator
+
+
 __all__: FlextTypes.StringList = [
+    "FlextDbtOracleModel",
+    "FlextDbtOracleModelGenerator",
     "FlextDbtOracleModels",
 ]

@@ -9,10 +9,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import cast, override
 
+from flext_core import FlextLogger, FlextTypes, T
 from flext_db_oracle import FlextDbOracleConfig
 from flext_meltano import Connection, DbtDatabaseError
-
-from flext_core import FlextLogger, FlextTypes, T
 
 
 class FlextDbtOracleConnections:

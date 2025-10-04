@@ -8,12 +8,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import ClassVar, Self
 
+from flext_core import FlextConfig, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleModels
 from flext_meltano.config import FlextMeltanoConfig
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
-
-from flext_core import FlextConfig, FlextConstants, FlextResult, FlextTypes
 
 
 class FlextDbtOracleConfig(FlextConfig):
@@ -45,7 +44,7 @@ class FlextDbtOracleConfig(FlextConfig):
     oracle_host: str = Field(default="localhost", description="Oracle database host")
 
     oracle_port: int = Field(
-        default=FlextConstants.Platform.DATABASE_DEFAULT_PORT,
+        default=1521,
         ge=1,
         le=65535,
         description="Oracle database port",
@@ -66,19 +65,19 @@ class FlextDbtOracleConfig(FlextConfig):
     )
 
     oracle_pool_min: int = Field(
-        default=FlextConstants.Performance.MIN_DB_POOL_SIZE,
+        default=2,
         ge=1,
         description="Minimum Oracle connection pool size",
     )
 
     oracle_pool_max: int = Field(
-        default=FlextConstants.Container.DEFAULT_WORKERS * 5,
+        default=20,
         ge=1,
         description="Maximum Oracle connection pool size",
     )
 
     oracle_timeout: int = Field(
-        default=FlextConstants.Network.DEFAULT_TIMEOUT,
+        default=30,
         ge=1,
         description="Oracle connection timeout in seconds",
     )
@@ -95,20 +94,18 @@ class FlextDbtOracleConfig(FlextConfig):
     dbt_target: str = Field(default="dev", description="DBT target environment")
 
     dbt_threads: int = Field(
-        default=FlextConstants.Container.MAX_WORKERS,
+        default=10,
         ge=1,
         description="Number of DBT threads",
     )
 
-    dbt_log_level: str = Field(
-        default=FlextConstants.Logging.DEFAULT_LEVEL, description="DBT logging level"
-    )
+    dbt_log_level: str = Field(default="info", description="DBT logging level")
 
     dbt_schema: str = Field(default="analytics", description="DBT default schema")
 
     # Data Quality Configuration
     min_quality_threshold: float = Field(
-        default=FlextConstants.Quality.DEFAULT_THRESHOLD,
+        default=0.8,
         ge=0.0,
         le=1.0,
         description="Minimum data quality threshold",
@@ -119,20 +116,20 @@ class FlextDbtOracleConfig(FlextConfig):
     )
 
     max_parallel_connections: int = Field(
-        default=FlextConstants.Container.DEFAULT_WORKERS,
+        default=4,
         ge=1,
         description="Maximum parallel Oracle connections",
     )
 
     # Oracle Performance Configuration
     fetch_size: int = Field(
-        default=FlextConstants.Performance.BatchProcessing.MAX_ITEMS,
+        default=10000,
         ge=1,
         description="Oracle fetch size for queries",
     )
 
     batch_size: int = Field(
-        default=FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE,
+        default=1000,
         ge=1,
         description="Batch size for Oracle operations",
     )
@@ -234,8 +231,8 @@ class FlextDbtOracleConfig(FlextConfig):
     @classmethod
     def validate_dbt_log_level(cls, v: str) -> str:
         """Validate DBT log level."""
-        if v.upper() not in FlextConstants.Logging.VALID_LEVELS:
-            valid_levels = ", ".join(FlextConstants.Logging.VALID_LEVELS)
+        if v.upper() not in {"debug", "info", "warning", "error", "critical"}:
+            valid_levels = "debug, info, warning, error, critical"
             msg = f"Invalid DBT log level: {v}. Must be one of: {valid_levels}"
             raise ValueError(msg)
         return v.upper()
@@ -395,11 +392,11 @@ class FlextDbtOracleConfig(FlextConfig):
         """Create configuration optimized for production environment."""
         prod_config = {
             "dbt_target": "production",
-            "dbt_threads": min(4, FlextConstants.Container.MAX_WORKERS),
+            "dbt_threads": min(4, 10),
             "validate_connections": True,
             "enable_parallel_dml": True,
             "oracle_pool_min": 5,
-            "oracle_pool_max": FlextConstants.Container.DEFAULT_WORKERS * 5,
+            "oracle_pool_max": 20,
         }
         config_data = {**prod_config, **overrides}
         try:

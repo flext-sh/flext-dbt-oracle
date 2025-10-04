@@ -9,10 +9,10 @@ import time
 from pathlib import Path
 from typing import override
 
+from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleApi
 from flext_db_oracle.models import FlextDbOracleModels
 
-from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.config import FlextDbtOracleConfig
 from flext_dbt_oracle.constants import FlextDbtOracleConstants
@@ -597,6 +597,11 @@ class FlextDbtOracleWorkflowService:
                 )
 
 
+# Alias for backward compatibility (monitoring is part of workflow service)
+FlextDbtOracleMonitoringService = FlextDbtOracleWorkflowService
+
+
 __all__: FlextTypes.StringList = [
+    "FlextDbtOracleMonitoringService",
     "FlextDbtOracleWorkflowService",
 ]
