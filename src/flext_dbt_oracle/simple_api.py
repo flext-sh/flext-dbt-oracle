@@ -60,7 +60,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
         # Complete FLEXT ecosystem integration
         self._container = FlextContainer.ensure_global_manager().get_or_create()
         self._context = FlextContext()
-        self._logger = FlextLogger(__name__)
+        self.logger = FlextLogger(__name__)
 
     @classmethod
     def create(cls) -> FlextDbtOracle:
@@ -117,7 +117,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
 
         """
         try:
-            self._logger.info("Running Oracle-to-DBT workflow")
+            self.logger.info("Running Oracle-to-DBT workflow")
             return self.workflow_service.run_oracle_to_dbt_workflow(
                 table_names=table_names,
                 schema_name=schema_name,
@@ -145,7 +145,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
 
         """
         try:
-            self._logger.info("Generating DBT models from Oracle tables")
+            self.logger.info("Generating DBT models from Oracle tables")
             return self.workflow_service.generate_dbt_models_from_oracle(
                 table_names=table_names,
                 schema_name=schema_name,
@@ -174,7 +174,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
 
         """
         try:
-            self._logger.info("Extracting Oracle metadata")
+            self.logger.info("Extracting Oracle metadata")
             return self.workflow_service.extract_oracle_metadata(
                 table_names=table_names,
                 schema_name=schema_name,
@@ -200,7 +200,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
 
         """
         try:
-            self._logger.info(f"Monitoring DBT execution: {command}")
+            self.logger.info(f"Monitoring DBT execution: {command}")
             return self.monitoring_service.monitor_dbt_execution(
                 command=command,
                 timeout_seconds=timeout_seconds,
@@ -216,7 +216,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
 
         """
         try:
-            self._logger.info("Validating Oracle connection")
+            self.logger.info("Validating Oracle connection")
             return self.client.validate_connection()
         except Exception as e:
             return FlextResult[bool].fail(f"Connection validation failed: {e}")
@@ -237,7 +237,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
 
         """
         try:
-            self._logger.info(f"Getting Oracle table info: {table_name}")
+            self.logger.info(f"Getting Oracle table info: {table_name}")
             return self.client.get_table_info(
                 table_name=table_name,
                 schema_name=schema_name,

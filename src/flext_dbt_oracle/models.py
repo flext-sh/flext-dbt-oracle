@@ -23,7 +23,7 @@ class FlextDbtOracleModels(FlextModels):
     """
 
     # Shared logger for all DBT Oracle model operations
-    _logger = FlextLogger(__name__)
+    logger = FlextLogger(__name__)
 
     name: str
     dbt_model_type: str  # staging, intermediate, marts
@@ -146,7 +146,7 @@ class FlextDbtOracleModels(FlextModels):
                 # Create staging model for each schema
                 model_result = self._create_staging_model(schema_name)
                 if model_result.is_failure:
-                    FlextDbtOracleModels._logger.warning(
+                    FlextDbtOracleModels.logger.warning(
                         f"Failed to create staging model for {schema_name}: {model_result.error}"
                     )
                     continue
@@ -165,7 +165,7 @@ class FlextDbtOracleModels(FlextModels):
                 # Create intermediate model
                 model_result = self._create_intermediate_model(staging_model)
                 if model_result.is_failure:
-                    FlextDbtOracleModels._logger.warning(
+                    FlextDbtOracleModels.logger.warning(
                         f"Failed to create intermediate model for {staging_model.name}: {model_result.error}"
                     )
                     continue
@@ -184,7 +184,7 @@ class FlextDbtOracleModels(FlextModels):
             for intermediate_model in intermediate_models:
                 model_result = self._create_marts_model(intermediate_model)
                 if model_result.is_failure:
-                    FlextDbtOracleModels._logger.warning(
+                    FlextDbtOracleModels.logger.warning(
                         f"Failed to create marts model for {intermediate_model.name}: {model_result.error}"
                     )
                     continue

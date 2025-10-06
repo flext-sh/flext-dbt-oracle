@@ -56,7 +56,7 @@ class FlextDbtOracleUtilities(FlextUtilities):
         """Initialize FlextDbtOracleUtilities service."""
         super().__init__()
         self._container = FlextContainer.get_global()
-        self._logger = FlextLogger(__name__)
+        self.logger = FlextLogger(__name__)
 
     def execute(self) -> FlextResult[FlextTypes.Dict]:
         """Execute the main DBT Oracle service operation.
@@ -81,7 +81,7 @@ class FlextDbtOracleUtilities(FlextUtilities):
     @property
     def logger(self) -> FlextLogger:
         """Get logger instance."""
-        return self._logger
+        return self.logger
 
     @property
     def container(self) -> FlextContainer:

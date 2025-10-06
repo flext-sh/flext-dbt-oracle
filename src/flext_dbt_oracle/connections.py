@@ -22,7 +22,7 @@ class FlextDbtOracleConnections:
     """
 
     # Shared logger for all Oracle connection operations
-    _logger = FlextLogger(__name__)
+    logger = FlextLogger(__name__)
 
     class Credentials:
         """Oracle database credentials following FLEXT patterns."""

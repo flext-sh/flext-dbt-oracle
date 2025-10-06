@@ -24,7 +24,7 @@ class FlextDbtOracleClient:
     """
 
     # Shared logger for all DBT Oracle client operations
-    _logger = FlextLogger(__name__)
+    logger = FlextLogger(__name__)
 
     @override
     def __init__(
@@ -44,7 +44,7 @@ class FlextDbtOracleClient:
         self._meltano_service: FlextMeltanoService | None = None
         self._dbt_plugin: object | None = None  # FlextDbtPlugin interface
 
-        FlextDbtOracleClient._logger.info(
+        FlextDbtOracleClient.logger.info(
             "Initialized DBT Oracle client with config: %s", self.config
         )
 
@@ -63,9 +63,9 @@ class FlextDbtOracleClient:
             try:
                 # Create Meltano service using project directory
                 self._meltano_service = FlextMeltanoService()
-                FlextDbtOracleClient._logger.info("Created FlextMeltanoService wrapper")
+                FlextDbtOracleClient.logger.info("Created FlextMeltanoService wrapper")
             except Exception as e:
-                FlextDbtOracleClient._logger.warning(
+                FlextDbtOracleClient.logger.warning(
                     "Failed to create FlextMeltanoService: %s", e
                 )
         return self._meltano_service
@@ -78,7 +78,7 @@ class FlextDbtOracleClient:
 
         """
         try:
-            FlextDbtOracleClient._logger.info("Testing Oracle database connection")
+            FlextDbtOracleClient.logger.info("Testing Oracle database connection")
 
             if not self.config.validate_oracle_connection():
                 return FlextResult[FlextTypes.Dict].fail(
@@ -89,14 +89,14 @@ class FlextDbtOracleClient:
             connection_result: FlextResult[object] = self.oracle_api.test_connection()
 
             if connection_result.success:
-                FlextDbtOracleClient._logger.info("Oracle connection test successful")
+                FlextDbtOracleClient.logger.info("Oracle connection test successful")
                 return FlextResult[FlextTypes.Dict].ok(
                     {
                         "status": "connected",
                         "connection_info": connection_result.value,
                     },
                 )
-            FlextDbtOracleClient._logger.error(
+            FlextDbtOracleClient.logger.error(
                 "Oracle connection test failed: %s", connection_result.error
             )
             return FlextResult[FlextTypes.Dict].fail(
@@ -104,7 +104,7 @@ class FlextDbtOracleClient:
             )
 
         except Exception as e:
-            FlextDbtOracleClient._logger.exception(
+            FlextDbtOracleClient.logger.exception(
                 "Unexpected error during Oracle connection test"
             )
             return FlextResult[FlextTypes.Dict].fail(f"Connection test error: {e}")
@@ -125,7 +125,7 @@ class FlextDbtOracleClient:
 
         """
         try:
-            FlextDbtOracleClient._logger.info(
+            FlextDbtOracleClient.logger.info(
                 "Extracting Oracle metadata: schemas=%s, types=%s",
                 schema_names,
                 object_types,
@@ -169,7 +169,7 @@ class FlextDbtOracleClient:
                         self.oracle_api.get_tables(schema)
                     )
                     if not table_names_result.success:
-                        FlextDbtOracleClient._logger.warning(
+                        FlextDbtOracleClient.logger.warning(
                             "Failed to list tables for schema %s: %s",
                             schema,
                             table_names_result.error,
@@ -197,13 +197,13 @@ class FlextDbtOracleClient:
                             if adapter_result.is_success:
                                 tables.append(adapter_result.unwrap())
 
-            FlextDbtOracleClient._logger.info(
+            FlextDbtOracleClient.logger.info(
                 "Successfully extracted %d Oracle tables", len(tables)
             )
             return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].ok(tables)
 
         except Exception as e:
-            FlextDbtOracleClient._logger.exception(
+            FlextDbtOracleClient.logger.exception(
                 "Unexpected error during Oracle metadata extraction"
             )
             return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].fail(
@@ -224,7 +224,7 @@ class FlextDbtOracleClient:
 
         """
         try:
-            FlextDbtOracleClient._logger.info(
+            FlextDbtOracleClient.logger.info(
                 "Validating %d Oracle objects for data quality", len(objects)
             )
 
@@ -239,7 +239,7 @@ class FlextDbtOracleClient:
                 "columns": "total_columns",
             }
 
-            FlextDbtOracleClient._logger.info(
+            FlextDbtOracleClient.logger.info(
                 "Oracle data validation completed: quality_score=%.2f",
                 quality_score,
             )
@@ -259,7 +259,7 @@ class FlextDbtOracleClient:
             )
 
         except Exception as e:
-            FlextDbtOracleClient._logger.exception(
+            FlextDbtOracleClient.logger.exception(
                 "Unexpected error during Oracle validation"
             )
             return FlextResult[FlextTypes.Dict].fail(
@@ -282,7 +282,7 @@ class FlextDbtOracleClient:
 
         """
         try:
-            FlextDbtOracleClient._logger.info(
+            FlextDbtOracleClient.logger.info(
                 "Running DBT transformations on %d Oracle objects, models=%s",
                 len(objects),
                 model_names,
@@ -307,7 +307,7 @@ class FlextDbtOracleClient:
                     "project_path": self.config.dbt_project_dir,
                     "dbt_result": run_result.unwrap(),
                 }
-                FlextDbtOracleClient._logger.info(
+                FlextDbtOracleClient.logger.info(
                     "DBT transformation executed for models: %s",
                     model_names or "all",
                 )
@@ -318,7 +318,7 @@ class FlextDbtOracleClient:
             )
 
         except Exception as e:
-            FlextDbtOracleClient._logger.exception(
+            FlextDbtOracleClient.logger.exception(
                 "Unexpected error during DBT transformation"
             )
             return FlextResult[FlextTypes.Dict].fail(
@@ -342,7 +342,7 @@ class FlextDbtOracleClient:
             FlextResult containing complete pipeline results
 
         """
-        FlextDbtOracleClient._logger.info("Starting full Oracle-to-DBT pipeline")
+        FlextDbtOracleClient.logger.info("Starting full Oracle-to-DBT pipeline")
 
         # Step 1: Test connection
         connection_result: FlextResult[object] = self.test_oracle_connection()
@@ -383,7 +383,7 @@ class FlextDbtOracleClient:
             "pipeline_status": "completed",
         }
 
-        FlextDbtOracleClient._logger.info(
+        FlextDbtOracleClient.logger.info(
             "Full Oracle-to-DBT pipeline completed successfully"
         )
         return FlextResult[FlextTypes.Dict].ok(pipeline_results)
