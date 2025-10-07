@@ -100,11 +100,11 @@ class FlextDbtOracleModels(FlextModels):
     def create_generator(
         cls,
         config: FlextDbtOracleConfig,
-    ) -> FlextDbtOracleModels._ModelGenerator:
+    ) -> FlextDbtOracleModels.ModelGenerator:
         """Create a model generator instance."""
-        return cls._ModelGenerator(config)
+        return cls.ModelGenerator(config)
 
-    class _ModelGenerator:
+    class ModelGenerator:
         """Internal model generator class for DBT Oracle models."""
 
         # Template constants
@@ -383,7 +383,7 @@ class FlextDbtOracleModels(FlextModels):
 
 # Type aliases for backward compatibility
 FlextDbtOracleModel = FlextDbtOracleModels
-FlextDbtOracleModelGenerator = FlextDbtOracleModels._ModelGenerator
+FlextDbtOracleModelGenerator = FlextDbtOracleModels.ModelGenerator
 
 
 __all__: FlextTypes.StringList = [

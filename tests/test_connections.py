@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+import time
+from typing import Never
 from unittest.mock import Mock, patch
 
 import pytest
