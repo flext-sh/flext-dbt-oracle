@@ -18,6 +18,7 @@ class FlextDbtOracleVersion:
     """Version information container for flext-dbt-oracle."""
 
     def __init__(self) -> None:
+        """Initialize version information."""
         self.major = MAJOR
         self.minor = MINOR
         self.patch = PATCH
