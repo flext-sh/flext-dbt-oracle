@@ -2,7 +2,7 @@
 
 **Enterprise-Grade Oracle Database Integration Quality Assurance & Refactoring Guidelines**
 **Version**: 2.1.0 | **Authority**: WORKSPACE | **Updated**: 2025-01-08
-**Environment**: `/home/marlonsc/flext/.venv/bin/python` (No PYTHONPATH required)
+**Environment**: `../.venv/bin/python` (No PYTHONPATH required)
 **Based on**: flext-core 0.9.9 with 75%+ test coverage (PROVEN FOUNDATION)
 **Project Context**: dbt client integration library for Oracle Database within the FLEXT ecosystem (NOT a custom dbt adapter, but high-level orchestration via flext-db-oracle + flext-meltano)
 
@@ -996,7 +996,7 @@ class OracleToDbtModelGenerator:
 ### Before Starting object Oracle Work
 
 - [ ] Read all documentation: `CLAUDE.md`, `FLEXT_REFACTORING_PROMPT.md`, project `README.md`
-- [ ] Verify virtual environment: `/home/marlonsc/flext/.venv/bin/python` (VERIFIED WORKING)
+- [ ] Verify virtual environment: `../.venv/bin/python` (VERIFIED WORKING)
 - [ ] Run baseline Oracle quality assessment using exact commands provided
 - [ ] Plan incremental Oracle improvements (never wholesale rewrites)
 - [ ] Establish measurable success criteria from current Oracle baseline

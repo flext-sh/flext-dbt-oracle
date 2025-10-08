@@ -17,16 +17,15 @@
         "Typing :: Typed",
     ]
     dependencies = [
-        "agate>=1.7,<1.10",
-        "dbt-common>=1.27.0,<2.0.0",
-        "flext-core @ file:///home/marlonsc/flext/flext-core",
-        "flext-db-oracle @ file:///home/marlonsc/flext/flext-db-oracle",
-        "flext-observability @ file:///home/marlonsc/flext/flext-observability",
+        "agate>=1.7",
+        "dbt-common>=1.27.0",
+        "flext-core @ file:../flext-core",
+        "flext-db-oracle @ file:../flext-db-oracle",
+        "flext-observability @ file:../flext-observability",
         "pydantic>=2.11.7",
     ]
     description = "FLEXT DBT Oracle - Modern Oracle Database Adapter for DBT"
     keywords = [
-        "",
         "data-transformation",
         "dbt",
         "enterprise",
