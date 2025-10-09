@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from flext_dbt_oracle.__version__ import __version__, __version_info__
+
 from typing import Final
 
 from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
@@ -38,8 +40,6 @@ from flext_dbt_oracle.simple_api import FlextDbtOracle, FlextDbtOracleAPI
 from flext_dbt_oracle.typings import FlextDbtOracleTypes
 from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
 from flext_dbt_oracle.version import VERSION, FlextDbtOracleVersion
-
-__email__ = "team@flext.sh"
 
 PROJECT_VERSION: Final[FlextDbtOracleVersion] = VERSION
 
