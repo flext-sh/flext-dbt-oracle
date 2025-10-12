@@ -8,13 +8,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextConstants
+from flext_core import FlextCore
 
 
-class FlextDbtOracleConstants(FlextConstants):
+class FlextDbtOracleConstants(FlextCore.Constants):
     """Central container for DBT Oracle-specific constants.
 
-    Follows the same pattern as FlextConstants from flext-core,
+    Follows the same pattern as FlextCore.Constants from flext-core,
     organizing constants into logical categories with type safety.
     """
 
@@ -29,9 +29,11 @@ class FlextDbtOracleConstants(FlextConstants):
         SLOW_QUERY_THRESHOLD = 5.0  # seconds
         VERY_SLOW_QUERY_THRESHOLD = 30.0  # seconds
 
-        # Batch sizes - using FlextConstants composition
-        DEFAULT_BATCH_SIZE = FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
-        MAX_BATCH_SIZE = FlextConstants.Performance.BatchProcessing.MAX_ITEMS
+        # Batch sizes - using FlextCore.Constants composition
+        DEFAULT_BATCH_SIZE = (
+            FlextCore.Constants.Performance.BatchProcessing.DEFAULT_SIZE
+        )
+        MAX_BATCH_SIZE = FlextCore.Constants.Performance.BatchProcessing.MAX_ITEMS
 
         # Connection pool
         MIN_POOL_SIZE = 1
@@ -107,12 +109,14 @@ class FlextDbtOracleConstants(FlextConstants):
         MODERATE_OBJECT_COUNT = 50
         LARGE_DATASET_THRESHOLD = 50
 
-        # Batch processing - using FlextConstants composition
+        # Batch processing - using FlextCore.Constants composition
         OBJECTS_PER_THREAD = 25
         MIN_THREADS = 4
         MAX_THREADS = 8
         LARGE_BATCH_SIZE = 5000
-        DEFAULT_BATCH_SIZE = FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
+        DEFAULT_BATCH_SIZE = (
+            FlextCore.Constants.Performance.BatchProcessing.DEFAULT_SIZE
+        )
 
     class Cache:
         """Cache configuration (use centralized constants)."""

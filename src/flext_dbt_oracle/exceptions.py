@@ -15,40 +15,40 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_core import FlextExceptions, FlextTypes
+from flext_core import FlextCore
 
 
 # ✅ SIMPLIFIED EXCEPTION CLASSES: Use BaseError for all custom exceptions
-class FlextDbtOracleConfigurationError(FlextExceptions.BaseError):
+class FlextDbtOracleConfigurationError(FlextCore.Exceptions.BaseError):
     """Oracle DBT configuration-specific errors."""
 
 
-class FlextDbtOracleConnectionError(FlextExceptions.BaseError):
+class FlextDbtOracleConnectionError(FlextCore.Exceptions.BaseError):
     """Oracle DBT connection-specific errors."""
 
 
-class FlextDbtOracleAuthenticationError(FlextExceptions.BaseError):
+class FlextDbtOracleAuthenticationError(FlextCore.Exceptions.BaseError):
     """Oracle DBT authentication-specific errors."""
 
 
-class FlextDbtOracleProcessingError(FlextExceptions.BaseError):
+class FlextDbtOracleProcessingError(FlextCore.Exceptions.BaseError):
     """Oracle DBT processing-specific errors."""
 
 
-class FlextDbtOracleValidationError(FlextExceptions.BaseError):
+class FlextDbtOracleValidationError(FlextCore.Exceptions.BaseError):
     """Oracle DBT validation-specific errors."""
 
 
-class FlextDbtOracleError(FlextExceptions.BaseError):
+class FlextDbtOracleError(FlextCore.Exceptions.BaseError):
     """Oracle DBT generic errors."""
 
 
-class FlextDbtOracleTimeoutError(FlextExceptions.BaseError):
+class FlextDbtOracleTimeoutError(FlextCore.Exceptions.BaseError):
     """Oracle DBT timeout-specific errors."""
 
 
 # Domain-specific exceptions for Oracle DBT business logic
-class FlextDbtOracleDatabaseError(FlextExceptions.BaseError):
+class FlextDbtOracleDatabaseError(FlextCore.Exceptions.BaseError):
     """Oracle DBT database-specific errors with Oracle context."""
 
     @override
@@ -87,7 +87,7 @@ class FlextDbtOracleDatabaseError(FlextExceptions.BaseError):
         )
 
 
-class FlextDbtOracleExecutionError(FlextExceptions.BaseError):
+class FlextDbtOracleExecutionError(FlextCore.Exceptions.BaseError):
     """Oracle DBT execution-specific errors with execution context."""
 
     @override
@@ -126,7 +126,7 @@ class FlextDbtOracleExecutionError(FlextExceptions.BaseError):
         )
 
 
-class FlextDbtOracleQueryError(FlextExceptions.BaseError):
+class FlextDbtOracleQueryError(FlextCore.Exceptions.BaseError):
     """Oracle DBT query-specific errors with query context."""
 
     @override
@@ -171,7 +171,7 @@ class FlextDbtOracleQueryError(FlextExceptions.BaseError):
         )
 
 
-class FlextDbtOracleModelError(FlextExceptions.BaseError):
+class FlextDbtOracleModelError(FlextCore.Exceptions.BaseError):
     """Oracle DBT model-specific errors with model context."""
 
     @override
@@ -210,7 +210,7 @@ class FlextDbtOracleModelError(FlextExceptions.BaseError):
         )
 
 
-class FlextDbtOracleCompilationError(FlextExceptions.BaseError):
+class FlextDbtOracleCompilationError(FlextCore.Exceptions.BaseError):
     """Oracle DBT compilation errors with compilation context."""
 
     @override
@@ -247,7 +247,7 @@ class FlextDbtOracleCompilationError(FlextExceptions.BaseError):
 
 
 # Export all exception types in alphabetical order
-__all__: FlextTypes.StringList = [
+__all__: FlextCore.Types.StringList = [
     "FlextDbtOracleAuthenticationError",
     "FlextDbtOracleCompilationError",
     "FlextDbtOracleConfigurationError",

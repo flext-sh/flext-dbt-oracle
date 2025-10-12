@@ -10,12 +10,12 @@ from pathlib import Path
 from typing import ClassVar, override
 
 import yaml
-from flext_core import FlextLogger, FlextModels, FlextResult, FlextTypes
+from flext_core import FlextCore
 
 from flext_dbt_oracle.config import FlextDbtOracleConfig
 
 
-class FlextDbtOracleModels(FlextModels):
+class FlextDbtOracleModels(FlextCore.Models):
     """Unified DBT Oracle models collection with generation capabilities.
 
     Immutable representation of a generated DBT model with Oracle-specific metadata
@@ -23,33 +23,35 @@ class FlextDbtOracleModels(FlextModels):
     """
 
     # Shared logger for all DBT Oracle model operations
-    logger = FlextLogger(__name__)
+    logger = FlextCore.Logger(__name__)
 
     name: str
     dbt_model_type: str  # staging, intermediate, marts
     schema_name: str
     table_name: str
-    columns: list[FlextTypes.Dict]
+    columns: list[FlextCore.Types.Dict]
     materialization: str
     sql_content: str
     description: str
     oracle_source: str
-    dependencies: FlextTypes.StringList
+    dependencies: FlextCore.Types.StringList
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextCore.Result[None]:
         """Validate DBT model business rules."""
         try:
             if not self.name.strip():
-                return FlextResult[None].fail("Model name cannot be empty")
+                return FlextCore.Result[None].fail("Model name cannot be empty")
             if self.dbt_model_type not in {"staging", "intermediate", "marts"}:
-                return FlextResult[None].fail("Invalid model_type")
+                return FlextCore.Result[None].fail("Invalid model_type")
             if not self.schema_name.strip() or not self.table_name.strip():
-                return FlextResult[None].fail("Schema and table names cannot be empty")
+                return FlextCore.Result[None].fail(
+                    "Schema and table names cannot be empty"
+                )
             if not self.sql_content.strip():
-                return FlextResult[None].fail("SQL content cannot be empty")
-            return FlextResult[None].ok(None)
+                return FlextCore.Result[None].fail("SQL content cannot be empty")
+            return FlextCore.Result[None].ok(None)
         except Exception as e:
-            return FlextResult[None].fail(f"Business rule validation failed: {e}")
+            return FlextCore.Result[None].fail(f"Business rule validation failed: {e}")
 
     def get_file_path(self) -> str:
         """Get the file path for this DBT model."""
@@ -59,7 +61,7 @@ class FlextDbtOracleModels(FlextModels):
         """Get the schema file path for this DBT model."""
         return f"models/{self.dbt_model_type}/schema.yml"
 
-    def to_sql_file(self) -> FlextResult[str]:
+    def to_sql_file(self) -> FlextCore.Result[str]:
         """Convert model to SQL file content."""
         try:
             config_block = f"""
@@ -71,14 +73,14 @@ class FlextDbtOracleModels(FlextModels):
   )
 }}}}"""
             content = f"{config_block}\n\n{self.sql_content}"
-            return FlextResult[str].ok(content)
+            return FlextCore.Result[str].ok(content)
         except Exception as e:
-            return FlextResult[str].fail(f"SQL file generation failed: {e}")
+            return FlextCore.Result[str].fail(f"SQL file generation failed: {e}")
 
-    def to_schema_entry(self) -> FlextResult[FlextTypes.Dict]:
+    def to_schema_entry(self) -> FlextCore.Result[FlextCore.Types.Dict]:
         """Convert model to schema.yml entry."""
         try:
-            schema_entry: FlextTypes.Dict = {
+            schema_entry: FlextCore.Types.Dict = {
                 "name": self.name,
                 "description": self.description,
                 "columns": [
@@ -90,9 +92,9 @@ class FlextDbtOracleModels(FlextModels):
                     for col in self.columns
                 ],
             }
-            return FlextResult[FlextTypes.Dict].ok(schema_entry)
+            return FlextCore.Result[FlextCore.Types.Dict].ok(schema_entry)
         except Exception as e:
-            return FlextResult[FlextTypes.Dict].fail(
+            return FlextCore.Result[FlextCore.Types.Dict].fail(
                 f"Schema entry generation failed: {e}"
             )
 
@@ -120,7 +122,7 @@ class FlextDbtOracleModels(FlextModels):
         select * from {{ ref('{{ intermediate_model_name }}') }}
         """
 
-        ORACLE_DATA_TYPE_TESTS: ClassVar[dict[str, FlextTypes.StringList]] = {
+        ORACLE_DATA_TYPE_TESTS: ClassVar[dict[str, FlextCore.Types.StringList]] = {
             "VARCHAR2": ["not_null", "unique"],
             "NUMBER": ["not_null"],
             "DATE": ["not_null"],
@@ -137,8 +139,8 @@ class FlextDbtOracleModels(FlextModels):
             # For now, we'll create a placeholder implementation
 
         def generate_staging_models(
-            self, schema_names: FlextTypes.StringList
-        ) -> FlextResult[list[FlextDbtOracleModels]]:
+            self, schema_names: FlextCore.Types.StringList
+        ) -> FlextCore.Result[list[FlextDbtOracleModels]]:
             """Generate staging models from Oracle schema metadata."""
             staging_models: list[FlextDbtOracleModels] = []
 
@@ -153,11 +155,11 @@ class FlextDbtOracleModels(FlextModels):
 
                 staging_models.append(model_result.unwrap())
 
-            return FlextResult[list[FlextDbtOracleModels]].ok(staging_models)
+            return FlextCore.Result[list[FlextDbtOracleModels]].ok(staging_models)
 
         def generate_intermediate_models(
             self, staging_models: list[FlextDbtOracleModels]
-        ) -> FlextResult[list[FlextDbtOracleModels]]:
+        ) -> FlextCore.Result[list[FlextDbtOracleModels]]:
             """Generate intermediate models from staging models."""
             intermediate_models: list[FlextDbtOracleModels] = []
 
@@ -172,11 +174,11 @@ class FlextDbtOracleModels(FlextModels):
 
                 intermediate_models.append(model_result.unwrap())
 
-            return FlextResult[list[FlextDbtOracleModels]].ok(intermediate_models)
+            return FlextCore.Result[list[FlextDbtOracleModels]].ok(intermediate_models)
 
         def generate_marts_models(
             self, intermediate_models: list[FlextDbtOracleModels]
-        ) -> FlextResult[list[FlextDbtOracleModels]]:
+        ) -> FlextCore.Result[list[FlextDbtOracleModels]]:
             """Generate marts models from intermediate models."""
             marts_models: list[FlextDbtOracleModels] = []
 
@@ -191,11 +193,11 @@ class FlextDbtOracleModels(FlextModels):
 
                 marts_models.append(model_result.unwrap())
 
-            return FlextResult[list[FlextDbtOracleModels]].ok(marts_models)
+            return FlextCore.Result[list[FlextDbtOracleModels]].ok(marts_models)
 
         def write_models_to_disk(
             self, models: list[FlextDbtOracleModels], output_dir: str
-        ) -> FlextResult[None]:
+        ) -> FlextCore.Result[None]:
             """Write generated models to disk."""
             try:
                 output_path = Path(output_dir)
@@ -205,7 +207,7 @@ class FlextDbtOracleModels(FlextModels):
                     # Write SQL file
                     sql_result = model.to_sql_file()
                     if sql_result.is_failure:
-                        return FlextResult[None].fail(
+                        return FlextCore.Result[None].fail(
                             f"Failed to generate SQL for {model.name}: {sql_result.error}"
                         )
 
@@ -219,7 +221,7 @@ class FlextDbtOracleModels(FlextModels):
                     # Write schema entry
                     schema_result = model.to_schema_entry()
                     if schema_result.is_failure:
-                        return FlextResult[None].fail(
+                        return FlextCore.Result[None].fail(
                             f"Failed to generate schema for {model.name}: {schema_result.error}"
                         )
 
@@ -249,14 +251,16 @@ class FlextDbtOracleModels(FlextModels):
                     with Path(schema_file_path).open("w", encoding="utf-8") as f:
                         yaml.dump(schema_data, f, default_flow_style=False, indent=2)
 
-                return FlextResult[None].ok(None)
+                return FlextCore.Result[None].ok(None)
 
             except Exception as e:
-                return FlextResult[None].fail(f"Failed to write models to disk: {e}")
+                return FlextCore.Result[None].fail(
+                    f"Failed to write models to disk: {e}"
+                )
 
         def _create_staging_model(
             self, schema_name: str
-        ) -> FlextResult[FlextDbtOracleModels]:
+        ) -> FlextCore.Result[FlextDbtOracleModels]:
             """Create a staging model from Oracle schema metadata."""
             try:
                 # Generate SQL content for a sample table
@@ -279,16 +283,16 @@ class FlextDbtOracleModels(FlextModels):
                     dependencies=[],
                 )
 
-                return FlextResult[FlextDbtOracleModels].ok(staging_model)
+                return FlextCore.Result[FlextDbtOracleModels].ok(staging_model)
 
             except Exception as e:
-                return FlextResult[FlextDbtOracleModels].fail(
+                return FlextCore.Result[FlextDbtOracleModels].fail(
                     f"Failed to create staging model: {e}"
                 )
 
         def _create_intermediate_model(
             self, staging_model: FlextDbtOracleModels
-        ) -> FlextResult[FlextDbtOracleModels]:
+        ) -> FlextCore.Result[FlextDbtOracleModels]:
             """Create an intermediate model from staging model."""
             try:
                 intermediate_name = staging_model.name.replace("stg_", "int_")
@@ -324,16 +328,16 @@ class FlextDbtOracleModels(FlextModels):
                     dependencies=[staging_model.name],
                 )
 
-                return FlextResult[FlextDbtOracleModels].ok(intermediate_model)
+                return FlextCore.Result[FlextDbtOracleModels].ok(intermediate_model)
 
             except Exception as e:
-                return FlextResult[FlextDbtOracleModels].fail(
+                return FlextCore.Result[FlextDbtOracleModels].fail(
                     f"Failed to create intermediate model: {e}"
                 )
 
         def _create_marts_model(
             self, intermediate_model: FlextDbtOracleModels
-        ) -> FlextResult[FlextDbtOracleModels]:
+        ) -> FlextCore.Result[FlextDbtOracleModels]:
             """Create a marts model from intermediate model."""
             try:
                 marts_name = intermediate_model.name.replace("int_", "mart_")
@@ -373,10 +377,10 @@ class FlextDbtOracleModels(FlextModels):
                     dependencies=[intermediate_model.name],
                 )
 
-                return FlextResult[FlextDbtOracleModels].ok(marts_model)
+                return FlextCore.Result[FlextDbtOracleModels].ok(marts_model)
 
             except Exception as e:
-                return FlextResult[FlextDbtOracleModels].fail(
+                return FlextCore.Result[FlextDbtOracleModels].fail(
                     f"Failed to create marts model: {e}"
                 )
 
@@ -386,7 +390,7 @@ FlextDbtOracleModel = FlextDbtOracleModels
 FlextDbtOracleModelGenerator = FlextDbtOracleModels.ModelGenerator
 
 
-__all__: FlextTypes.StringList = [
+__all__: FlextCore.Types.StringList = [
     "FlextDbtOracleModel",
     "FlextDbtOracleModelGenerator",
     "FlextDbtOracleModels",
