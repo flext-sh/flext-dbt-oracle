@@ -153,7 +153,7 @@ class FlextDbtOracleClient:
                         )
                         meta = self.oracle_api.get_table_metadata(table_name)
                         if meta.success and isinstance(meta.value, dict):
-                            # Convert dict metadata using adapter factory
+                            # Convert dict[str, object] metadata using adapter factory
                             table_metadata = meta.value
                             # Create adapter from API response
                             adapter_result = (
@@ -192,7 +192,7 @@ class FlextDbtOracleClient:
                         )
                         meta = self.oracle_api.get_table_metadata(table_name, schema)
                         if meta.success and isinstance(meta.value, dict):
-                            # Convert dict metadata using adapter factory
+                            # Convert dict[str, object] metadata using adapter factory
                             table_metadata = meta.value
                             # Create adapter from API response
                             adapter_result = (
