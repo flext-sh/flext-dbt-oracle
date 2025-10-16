@@ -21,7 +21,6 @@ class FlextDbtOracleProtocols:
     # RE-EXPORT FOUNDATION PROTOCOLS (EXPLICIT PATTERN)
     # ============================================================================
 
-
     # ============================================================================
     # DBT ORACLE-SPECIFIC PROTOCOLS (DOMAIN NAMESPACE)
     # ============================================================================

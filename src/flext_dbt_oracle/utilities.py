@@ -66,20 +66,18 @@ class FlextDbtOracleUtilities(FlextUtilities):
             FlextResult[FlextTypes.Dict]: Service status and capabilities.
 
         """
-        return FlextResult[FlextTypes.Dict].ok(
-            {
-                "status": "operational",
-                "service": "flext-dbt-oracle-utilities",
-                "capabilities": [
-                    "oracle_adapter_management",
-                    "oracle_connection_pooling",
-                    "dbt_model_generation",
-                    "oracle_sql_optimization",
-                    "performance_tuning",
-                    "data_warehouse_patterns",
-                ],
-            }
-        )
+        return FlextResult[FlextTypes.Dict].ok({
+            "status": "operational",
+            "service": "flext-dbt-oracle-utilities",
+            "capabilities": [
+                "oracle_adapter_management",
+                "oracle_connection_pooling",
+                "dbt_model_generation",
+                "oracle_sql_optimization",
+                "performance_tuning",
+                "data_warehouse_patterns",
+            ],
+        })
 
     @property
     def logger(self) -> FlextLogger:
@@ -245,20 +243,18 @@ class FlextDbtOracleUtilities(FlextUtilities):
                     return FlextResult[FlextTypes.Dict].ok(validation_results)
 
                 # Simulate connection validation (in real implementation, use actual Oracle connection)
-                validation_results.update(
-                    {
-                        "connection_valid": True,
-                        "oracle_version": "19c Enterprise Edition",
-                        "schema_accessible": True,
-                        "dbt_compatible": True,
-                        "performance_metrics": {
-                            "connection_time_ms": 150,
-                            "query_response_time_ms": 50,
-                            "available_connections": 95,
-                            "memory_usage_mb": 256,
-                        },
-                    }
-                )
+                validation_results.update({
+                    "connection_valid": True,
+                    "oracle_version": "19c Enterprise Edition",
+                    "schema_accessible": True,
+                    "dbt_compatible": True,
+                    "performance_metrics": {
+                        "connection_time_ms": 150,
+                        "query_response_time_ms": 50,
+                        "available_connections": 95,
+                        "memory_usage_mb": 256,
+                    },
+                })
 
                 # Add performance recommendations
                 if (
@@ -333,13 +329,11 @@ class FlextDbtOracleUtilities(FlextUtilities):
                         select_clauses.append(f"    {col_name}")
 
                 # Add Oracle-specific metadata
-                select_clauses.extend(
-                    [
-                        "    sysdate as dbt_loaded_at",
-                        "    ora_rowscn as oracle_scn",
-                        "    rowid as oracle_rowid",
-                    ]
-                )
+                select_clauses.extend([
+                    "    sysdate as dbt_loaded_at",
+                    "    ora_rowscn as oracle_scn",
+                    "    rowid as oracle_rowid",
+                ])
 
                 # Validate table name to prevent SQL injection
                 if (
@@ -693,6 +687,7 @@ where f.is_active = 1
 
                     # Use string formatting to avoid SQL injection warnings
                     # Note: This is a DBT model template, not direct SQL execution
+
                     model_template = f"""{{{{
     config(
         materialized='table',
@@ -745,6 +740,7 @@ select * from final
 
                     # Use string formatting to avoid SQL injection warnings
                     # Note: This is a DBT model template, not direct SQL execution
+
                     model_template = f"""{{{{
     config(
         materialized='table',
@@ -820,50 +816,42 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                     ]
 
                     if date_columns:
-                        partitioning_strategy.update(
-                            {
-                                "partition_type": "range",
-                                "partition_column": date_columns[0]["name"],
-                                "partition_interval": "MONTHLY"
-                                if growth_rate
-                                > FlextDbtOracleUtilities.ORACLE_GROWTH_RATE_THRESHOLD_GB
-                                else "QUARTERLY",
-                                "compression": "advanced",
-                            }
-                        )
+                        partitioning_strategy.update({
+                            "partition_type": "range",
+                            "partition_column": date_columns[0]["name"],
+                            "partition_interval": "MONTHLY"
+                            if growth_rate
+                            > FlextDbtOracleUtilities.ORACLE_GROWTH_RATE_THRESHOLD_GB
+                            else "QUARTERLY",
+                            "compression": "advanced",
+                        })
 
                         # Add subpartitioning for very large tables
                         if (
                             table_size_gb
                             > FlextDbtOracleUtilities.ORACLE_VERY_LARGE_TABLE_SIZE_GB
                         ):
-                            partitioning_strategy.update(
-                                {
-                                    "subpartition_type": "hash",
-                                    "subpartition_count": min(
-                                        64, max(4, table_size_gb // 100)
-                                    ),
-                                }
-                            )
+                            partitioning_strategy.update({
+                                "subpartition_type": "hash",
+                                "subpartition_count": min(
+                                    64, max(4, table_size_gb // 100)
+                                ),
+                            })
 
                 # Indexing strategy based on query patterns
                 for pattern in query_patterns:
                     if pattern.get("type") == "filter":
-                        partitioning_strategy["indexing_strategy"].append(
-                            {
-                                "type": "btree",
-                                "columns": pattern.get("columns", []),
-                                "local": True,  # Local index for partitioned tables
-                            }
-                        )
+                        partitioning_strategy["indexing_strategy"].append({
+                            "type": "btree",
+                            "columns": pattern.get("columns", []),
+                            "local": True,  # Local index for partitioned tables
+                        })
                     elif pattern.get("type") == "join":
-                        partitioning_strategy["indexing_strategy"].append(
-                            {
-                                "type": "btree",
-                                "columns": pattern.get("join_columns", []),
-                                "local": False,  # Global index for joins
-                            }
-                        )
+                        partitioning_strategy["indexing_strategy"].append({
+                            "type": "btree",
+                            "columns": pattern.get("join_columns", []),
+                            "local": False,  # Global index for joins
+                        })
 
                 # Maintenance schedule
                 if partitioning_strategy["partition_type"] != "none":
@@ -935,47 +923,33 @@ from {{{{ ref('stg_{dimension_name}') }}}}
 
                     # Oracle-specific column tests
                     if column_config.get("data_type") == "NUMBER":
-                        column_tests.append(
-                            {
-                                "oracle_numeric_range": {
-                                    "min_value": column_config.get("min_value", 0),
-                                    "max_value": column_config.get(
-                                        "max_value", 999999999
-                                    ),
-                                }
+                        column_tests.append({
+                            "oracle_numeric_range": {
+                                "min_value": column_config.get("min_value", 0),
+                                "max_value": column_config.get("max_value", 999999999),
                             }
-                        )
+                        })
 
                     if column_config.get("data_type") == "VARCHAR2":
-                        column_tests.append(
-                            {
-                                "oracle_string_length": {
-                                    "max_length": column_config.get("max_length", 4000),
-                                }
+                        column_tests.append({
+                            "oracle_string_length": {
+                                "max_length": column_config.get("max_length", 4000),
                             }
-                        )
+                        })
 
                     if column_config.get("data_type") in {"DATE", "TIMESTAMP"}:
-                        column_tests.append(
-                            {
-                                "oracle_date_range": {
-                                    "min_date": column_config.get(
-                                        "min_date", "1900-01-01"
-                                    ),
-                                    "max_date": column_config.get(
-                                        "max_date", "2100-12-31"
-                                    ),
-                                }
+                        column_tests.append({
+                            "oracle_date_range": {
+                                "min_date": column_config.get("min_date", "1900-01-01"),
+                                "max_date": column_config.get("max_date", "2100-12-31"),
                             }
-                        )
+                        })
 
-                    tests["models"][0]["columns"].append(
-                        {
-                            "name": column,
-                            "description": f"Oracle tests for {column}",
-                            "tests": column_tests,
-                        }
-                    )
+                    tests["models"][0]["columns"].append({
+                        "name": column,
+                        "description": f"Oracle tests for {column}",
+                        "tests": column_tests,
+                    })
 
                 return FlextResult[FlextTypes.Dict].ok(tests)
 

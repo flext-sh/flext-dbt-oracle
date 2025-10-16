@@ -101,6 +101,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
         self,
         table_names: FlextTypes.StringList | None = None,
         schema_name: str | None = None,
+        *,
         generate_models: bool = True,
         run_tests: bool = False,
     ) -> FlextResult[FlextTypes.Dict]:
@@ -158,6 +159,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
         self,
         table_names: FlextTypes.StringList | None = None,
         schema_name: str | None = None,
+        *,
         include_constraints: bool = True,
         include_indexes: bool = True,
     ) -> FlextResult[FlextTypes.Dict]:
