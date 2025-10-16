@@ -8,20 +8,20 @@ from __future__ import annotations
 from pathlib import Path
 from typing import ClassVar, Self
 
-from flext_core import FlextCore
+from flext_core import FlextConfig, FlextResult, FlextTypes
 from flext_db_oracle import FlextDbOracleModels
 from flext_meltano.config import FlextMeltanoConfig
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
 
-class FlextDbtOracleConfig(FlextCore.Config):
+class FlextDbtOracleConfig(FlextConfig):
     """Configuration for DBT Oracle transformations.
 
     Follows standardized [Project]Config pattern:
-    - Extends FlextCore.Config from flext-core
+    - Extends FlextConfig from flext-core
     - Uses SecretStr for sensitive data
-    - All defaults from FlextCore.Constants
+    - All defaults from FlextConstants
     - Proper Pydantic 2 validation
     - Enhanced singleton pattern with inverse dependency injection
 
@@ -141,7 +141,7 @@ class FlextDbtOracleConfig(FlextCore.Config):
     optimizer_mode: str = Field(default="ALL_ROWS", description="Oracle optimizer mode")
 
     # Oracle-specific mappings (ClassVar - not configurable)
-    oracle_schema_mapping: ClassVar[FlextCore.Types.StringDict] = {
+    oracle_schema_mapping: ClassVar[FlextTypes.StringDict] = {
         "raw_tables": "stg_raw_tables",
         "views": "stg_views",
         "sequences": "stg_sequences",
@@ -152,7 +152,7 @@ class FlextDbtOracleConfig(FlextCore.Config):
         "indexes": "stg_indexes",
     }
 
-    oracle_column_mapping: ClassVar[FlextCore.Types.StringDict] = {
+    oracle_column_mapping: ClassVar[FlextTypes.StringDict] = {
         "TABLE_NAME": "table_name",
         "COLUMN_NAME": "column_name",
         "DATA_TYPE": "data_type",
@@ -169,20 +169,20 @@ class FlextDbtOracleConfig(FlextCore.Config):
         "LAST_DDL_TIME": "last_modified_date",
     }
 
-    required_oracle_objects: ClassVar[FlextCore.Types.StringList] = [
+    required_oracle_objects: ClassVar[FlextTypes.StringList] = [
         "TABLE_NAME",
         "OWNER",
         "OBJECT_TYPE",
     ]
 
-    materialization_mapping: ClassVar[FlextCore.Types.StringDict] = {
+    materialization_mapping: ClassVar[FlextTypes.StringDict] = {
         "staging": "view",
         "intermediate": "view",
         "marts": "table",
         "snapshots": "incremental",
     }
 
-    oracle_type_mapping: ClassVar[FlextCore.Types.StringDict] = {
+    oracle_type_mapping: ClassVar[FlextTypes.StringDict] = {
         "VARCHAR2": "string",
         "NVARCHAR2": "string",
         "CHAR": "string",
@@ -305,7 +305,7 @@ class FlextDbtOracleConfig(FlextCore.Config):
             environment=environment,
         )
 
-    def get_oracle_quality_config(self) -> FlextCore.Types.Dict:
+    def get_oracle_quality_config(self) -> FlextTypes.Dict:
         """Get data quality configuration for Oracle validation."""
         return {
             "min_quality_threshold": self.min_quality_threshold,
@@ -314,7 +314,7 @@ class FlextDbtOracleConfig(FlextCore.Config):
             "max_parallel_connections": self.max_parallel_connections,
         }
 
-    def get_performance_config(self) -> FlextCore.Types.Dict:
+    def get_performance_config(self) -> FlextTypes.Dict:
         """Get Oracle performance configuration."""
         return {
             "fetch_size": self.fetch_size,
@@ -323,7 +323,7 @@ class FlextDbtOracleConfig(FlextCore.Config):
             "optimizer_mode": self.optimizer_mode,
         }
 
-    def get_dbt_config(self) -> FlextCore.Types.Dict:
+    def get_dbt_config(self) -> FlextTypes.Dict:
         """Get DBT configuration dictionary."""
         return {
             "project_dir": self.dbt_project_dir,
@@ -368,7 +368,7 @@ class FlextDbtOracleConfig(FlextCore.Config):
         return all(required_fields) and has_connection_identifier
 
     @classmethod
-    def create_for_development(cls, **overrides: object) -> FlextCore.Result[Self]:
+    def create_for_development(cls, **overrides: object) -> FlextResult[Self]:
         """Create configuration optimized for development environment."""
         dev_config = {
             "dbt_target": "development",
@@ -383,14 +383,12 @@ class FlextDbtOracleConfig(FlextCore.Config):
             instance = cls.get_or_create_shared_instance(
                 project_name="flext-dbt-oracle", **config_data
             )
-            return FlextCore.Result[Self].ok(instance)
+            return FlextResult[Self].ok(instance)
         except Exception as e:
-            return FlextCore.Result[Self].fail(
-                f"Development config creation failed: {e}"
-            )
+            return FlextResult[Self].fail(f"Development config creation failed: {e}")
 
     @classmethod
-    def create_for_production(cls, **overrides: object) -> FlextCore.Result[Self]:
+    def create_for_production(cls, **overrides: object) -> FlextResult[Self]:
         """Create configuration optimized for production environment."""
         prod_config = {
             "dbt_target": "production",
@@ -405,14 +403,12 @@ class FlextDbtOracleConfig(FlextCore.Config):
             instance = cls.get_or_create_shared_instance(
                 project_name="flext-dbt-oracle", **config_data
             )
-            return FlextCore.Result[Self].ok(instance)
+            return FlextResult[Self].ok(instance)
         except Exception as e:
-            return FlextCore.Result[Self].fail(
-                f"Production config creation failed: {e}"
-            )
+            return FlextResult[Self].fail(f"Production config creation failed: {e}")
 
     @classmethod
-    def create_for_testing(cls, **overrides: object) -> FlextCore.Result[Self]:
+    def create_for_testing(cls, **overrides: object) -> FlextResult[Self]:
         """Create configuration optimized for testing environment."""
         test_config = {
             "dbt_target": "test",
@@ -428,14 +424,14 @@ class FlextDbtOracleConfig(FlextCore.Config):
             instance = cls.get_or_create_shared_instance(
                 project_name="flext-dbt-oracle", **config_data
             )
-            return FlextCore.Result[Self].ok(instance)
+            return FlextResult[Self].ok(instance)
         except Exception as e:
-            return FlextCore.Result[Self].fail(f"Testing config creation failed: {e}")
+            return FlextResult[Self].fail(f"Testing config creation failed: {e}")
 
     @classmethod
     def create_for_environment(
         cls, environment: str, **overrides: object
-    ) -> FlextCore.Result[Self]:
+    ) -> FlextResult[Self]:
         """Create configuration for specific environment."""
         if environment == "production":
             return cls.create_for_production(**overrides)
@@ -443,11 +439,11 @@ class FlextDbtOracleConfig(FlextCore.Config):
             return cls.create_for_development(**overrides)
         if environment == "testing":
             return cls.create_for_testing(**overrides)
-        return FlextCore.Result[Self].fail(f"Unknown environment: {environment}")
+        return FlextResult[Self].fail(f"Unknown environment: {environment}")
 
     @classmethod
     def get_global_instance(cls) -> Self:
-        """Get the global singleton instance using enhanced FlextCore.Config pattern."""
+        """Get the global singleton instance using enhanced FlextConfig pattern."""
         return cls.get_or_create_shared_instance(project_name="flext-dbt-oracle")
 
     @classmethod
@@ -456,6 +452,6 @@ class FlextDbtOracleConfig(FlextCore.Config):
         cls.reset_shared_instance(project_name="flext-dbt-oracle")
 
 
-__all__: FlextCore.Types.StringList = [
+__all__: FlextTypes.StringList = [
     "FlextDbtOracleConfig",
 ]

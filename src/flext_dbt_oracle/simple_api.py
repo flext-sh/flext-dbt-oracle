@@ -10,7 +10,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from flext_core import FlextCore
+from flext_core import (
+    FlextContainer,
+    FlextContext,
+    FlextLogger,
+    FlextResult,
+    FlextService,
+    FlextTypes,
+)
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.config import FlextDbtOracleConfig
@@ -20,7 +27,7 @@ from flext_dbt_oracle.services import (
 )
 
 
-class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
+class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
     """Unified DBT Oracle facade with complete FLEXT ecosystem integration.
 
     This is the single unified class for the flext-dbt-oracle domain providing
@@ -34,10 +41,10 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
     - Direct use of flext-core centralized services
 
     **FLEXT INTEGRATION**: Complete integration with flext-core patterns:
-    - FlextCore.Container for dependency injection
-    - FlextCore.Context for operation context
-    - FlextCore.Logger for structured logging
-    - FlextCore.Result for railway-oriented error handling
+    - FlextContainer for dependency injection
+    - FlextContext for operation context
+    - FlextLogger for structured logging
+    - FlextResult for railway-oriented error handling
 
     **PYTHON 3.13+ COMPATIBILITY**: Uses modern patterns and latest type features.
     """
@@ -51,9 +58,9 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
         self._monitoring_service: FlextDbtOracleMonitoringService | None = None
 
         # Complete FLEXT ecosystem integration
-        self._container = FlextCore.Container.get_global().clear()().get_or_create()
-        self._context = FlextCore.Context()
-        self.logger = FlextCore.Logger(__name__)
+        self._container = FlextContainer.get_global().clear()().get_or_create()
+        self._context = FlextContext()
+        self.logger = FlextLogger(__name__)
 
     @classmethod
     def create(cls) -> FlextDbtOracle:
@@ -87,16 +94,16 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
         return self._config
 
     # =============================================================================
-    # MAIN WORKFLOW OPERATIONS - Enhanced with FlextCore.Result error handling
+    # MAIN WORKFLOW OPERATIONS - Enhanced with FlextResult error handling
     # =============================================================================
 
     def run_oracle_to_dbt_workflow(
         self,
-        table_names: FlextCore.Types.StringList | None = None,
+        table_names: FlextTypes.StringList | None = None,
         schema_name: str | None = None,
         generate_models: bool = True,
         run_tests: bool = False,
-    ) -> FlextCore.Result[FlextCore.Types.Dict]:
+    ) -> FlextResult[FlextTypes.Dict]:
         """Run complete Oracle-to-DBT workflow.
 
         Args:
@@ -106,7 +113,7 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
             run_tests: Whether to run DBT tests
 
         Returns:
-            FlextCore.Result containing workflow results
+            FlextResult containing workflow results
 
         """
         try:
@@ -118,16 +125,14 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
                 run_tests=run_tests,
             )
         except Exception as e:
-            return FlextCore.Result[FlextCore.Types.Dict].fail(
-                f"Workflow execution failed: {e}"
-            )
+            return FlextResult[FlextTypes.Dict].fail(f"Workflow execution failed: {e}")
 
     def generate_dbt_models_from_oracle(
         self,
-        table_names: FlextCore.Types.StringList | None = None,
+        table_names: FlextTypes.StringList | None = None,
         schema_name: str | None = None,
         output_dir: Path | str | None = None,
-    ) -> FlextCore.Result[FlextCore.Types.Dict]:
+    ) -> FlextResult[FlextTypes.Dict]:
         """Generate DBT models from Oracle tables.
 
         Args:
@@ -136,7 +141,7 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
             output_dir: Output directory for generated models
 
         Returns:
-            FlextCore.Result containing model generation results
+            FlextResult containing model generation results
 
         """
         try:
@@ -147,17 +152,15 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
                 output_dir=output_dir,
             )
         except Exception as e:
-            return FlextCore.Result[FlextCore.Types.Dict].fail(
-                f"Model generation failed: {e}"
-            )
+            return FlextResult[FlextTypes.Dict].fail(f"Model generation failed: {e}")
 
     def extract_oracle_metadata(
         self,
-        table_names: FlextCore.Types.StringList | None = None,
+        table_names: FlextTypes.StringList | None = None,
         schema_name: str | None = None,
         include_constraints: bool = True,
         include_indexes: bool = True,
-    ) -> FlextCore.Result[FlextCore.Types.Dict]:
+    ) -> FlextResult[FlextTypes.Dict]:
         """Extract Oracle database metadata.
 
         Args:
@@ -167,7 +170,7 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
             include_indexes: Whether to include index information
 
         Returns:
-            FlextCore.Result containing metadata extraction results
+            FlextResult containing metadata extraction results
 
         """
         try:
@@ -179,15 +182,13 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
                 include_indexes=include_indexes,
             )
         except Exception as e:
-            return FlextCore.Result[FlextCore.Types.Dict].fail(
-                f"Metadata extraction failed: {e}"
-            )
+            return FlextResult[FlextTypes.Dict].fail(f"Metadata extraction failed: {e}")
 
     def monitor_dbt_execution(
         self,
         command: str,
         timeout_seconds: int = 300,
-    ) -> FlextCore.Result[FlextCore.Types.Dict]:
+    ) -> FlextResult[FlextTypes.Dict]:
         """Monitor DBT command execution with metrics.
 
         Args:
@@ -195,7 +196,7 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
             timeout_seconds: Timeout for command execution
 
         Returns:
-            FlextCore.Result containing monitoring results
+            FlextResult containing monitoring results
 
         """
         try:
@@ -205,28 +206,26 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
                 timeout_seconds=timeout_seconds,
             )
         except Exception as e:
-            return FlextCore.Result[FlextCore.Types.Dict].fail(
-                f"Monitoring failed: {e}"
-            )
+            return FlextResult[FlextTypes.Dict].fail(f"Monitoring failed: {e}")
 
-    def validate_oracle_connection(self) -> FlextCore.Result[bool]:
+    def validate_oracle_connection(self) -> FlextResult[bool]:
         """Validate Oracle database connection.
 
         Returns:
-            FlextCore.Result containing connection validation result
+            FlextResult containing connection validation result
 
         """
         try:
             self.logger.info("Validating Oracle connection")
             return self.client.validate_connection()
         except Exception as e:
-            return FlextCore.Result[bool].fail(f"Connection validation failed: {e}")
+            return FlextResult[bool].fail(f"Connection validation failed: {e}")
 
     def get_oracle_table_info(
         self,
         table_name: str,
         schema_name: str | None = None,
-    ) -> FlextCore.Result[FlextCore.Types.Dict]:
+    ) -> FlextResult[FlextTypes.Dict]:
         """Get detailed information about an Oracle table.
 
         Args:
@@ -234,7 +233,7 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
             schema_name: Schema name
 
         Returns:
-            FlextCore.Result containing table information
+            FlextResult containing table information
 
         """
         try:
@@ -244,7 +243,7 @@ class FlextDbtOracle(FlextCore.Service[FlextDbtOracleConfig]):
                 schema_name=schema_name,
             )
         except Exception as e:
-            return FlextCore.Result[FlextCore.Types.Dict].fail(
+            return FlextResult[FlextTypes.Dict].fail(
                 f"Table info retrieval failed: {e}"
             )
 

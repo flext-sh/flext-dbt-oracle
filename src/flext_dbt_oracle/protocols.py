@@ -2,11 +2,11 @@
 
 from typing import Protocol, runtime_checkable
 
-from flext_core import FlextCore
+from flext_core import FlextProtocols, FlextResult, FlextTypes
 
 
 class FlextDbtOracleProtocols:
-    """DBT Oracle protocols with explicit re-exports from FlextCore.Protocols foundation.
+    """DBT Oracle protocols with explicit re-exports from FlextProtocols foundation.
 
     This class provides protocol definitions for DBT operations with Oracle database integration,
     data transformation, modeling, and enterprise Oracle analytics patterns.
@@ -21,12 +21,6 @@ class FlextDbtOracleProtocols:
     # RE-EXPORT FOUNDATION PROTOCOLS (EXPLICIT PATTERN)
     # ============================================================================
 
-    Foundation = FlextCore.Protocols.Foundation
-    Domain = FlextCore.Protocols.Domain
-    Application = FlextCore.Protocols.Application
-    Infrastructure = FlextCore.Protocols.Infrastructure
-    Extensions = FlextCore.Protocols.Extensions
-    Commands = FlextCore.Protocols.Commands
 
     # ============================================================================
     # DBT ORACLE-SPECIFIC PROTOCOLS (DOMAIN NAMESPACE)
@@ -36,14 +30,14 @@ class FlextDbtOracleProtocols:
         """DBT Oracle domain protocols for Oracle database transformation and analytics."""
 
         @runtime_checkable
-        class DbtProtocol(FlextCore.Protocols.Domain.Service, Protocol):
+        class DbtProtocol(FlextProtocols.Service, Protocol):
             """Protocol for DBT operations with Oracle data."""
 
             def run_dbt_models(
                 self,
-                models: FlextCore.Types.StringList | None = None,
-                config: FlextCore.Types.Dict | None = None,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                models: FlextTypes.StringList | None = None,
+                config: FlextTypes.Dict | None = None,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Run DBT models with Oracle data sources.
 
                 Args:
@@ -51,15 +45,15 @@ class FlextDbtOracleProtocols:
                     config: DBT configuration parameters
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: DBT run results or error
+                    FlextResult[FlextTypes.Dict]: DBT run results or error
 
                 """
 
             def test_dbt_models(
                 self,
-                models: FlextCore.Types.StringList | None = None,
-                config: FlextCore.Types.Dict | None = None,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                models: FlextTypes.StringList | None = None,
+                config: FlextTypes.Dict | None = None,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Test DBT models with Oracle data validation.
 
                 Args:
@@ -67,15 +61,15 @@ class FlextDbtOracleProtocols:
                     config: DBT test configuration
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: DBT test results or error
+                    FlextResult[FlextTypes.Dict]: DBT test results or error
 
                 """
 
             def compile_dbt_models(
                 self,
-                models: FlextCore.Types.StringList | None = None,
-                config: FlextCore.Types.Dict | None = None,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                models: FlextTypes.StringList | None = None,
+                config: FlextTypes.Dict | None = None,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Compile DBT models for Oracle data processing.
 
                 Args:
@@ -83,38 +77,38 @@ class FlextDbtOracleProtocols:
                     config: DBT compilation configuration
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: DBT compilation results or error
+                    FlextResult[FlextTypes.Dict]: DBT compilation results or error
 
                 """
 
-            def get_dbt_manifest(self) -> FlextCore.Result[FlextCore.Types.Dict]:
+            def get_dbt_manifest(self) -> FlextResult[FlextTypes.Dict]:
                 """Get DBT manifest with Oracle model definitions.
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: DBT manifest or error
+                    FlextResult[FlextTypes.Dict]: DBT manifest or error
 
                 """
 
-            def validate_dbt_project(self, project_path: str) -> FlextCore.Result[bool]:
+            def validate_dbt_project(self, project_path: str) -> FlextResult[bool]:
                 """Validate DBT project configuration for Oracle integration.
 
                 Args:
                     project_path: Path to DBT project directory
 
                 Returns:
-                    FlextCore.Result[bool]: Validation status or error
+                    FlextResult[bool]: Validation status or error
 
                 """
 
         @runtime_checkable
-        class OracleIntegrationProtocol(FlextCore.Protocols.Domain.Service, Protocol):
+        class OracleIntegrationProtocol(FlextProtocols.Service, Protocol):
             """Protocol for Oracle database integration operations."""
 
             def extract_oracle_data(
                 self,
-                oracle_config: FlextCore.Types.Dict,
-                extraction_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[list[FlextCore.Types.Dict]]:
+                oracle_config: FlextTypes.Dict,
+                extraction_config: FlextTypes.Dict,
+            ) -> FlextResult[list[FlextTypes.Dict]]:
                 """Extract data from Oracle database for DBT processing.
 
                 Args:
@@ -122,15 +116,15 @@ class FlextDbtOracleProtocols:
                     extraction_config: Data extraction parameters
 
                 Returns:
-                    FlextCore.Result[list[FlextCore.Types.Dict]]: Extracted Oracle data or error
+                    FlextResult[list[FlextTypes.Dict]]: Extracted Oracle data or error
 
                 """
 
             def transform_oracle_to_dbt_format(
                 self,
-                oracle_data: list[FlextCore.Types.Dict],
-                transformation_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[list[FlextCore.Types.Dict]]:
+                oracle_data: list[FlextTypes.Dict],
+                transformation_config: FlextTypes.Dict,
+            ) -> FlextResult[list[FlextTypes.Dict]]:
                 """Transform Oracle data to DBT-compatible format.
 
                 Args:
@@ -138,15 +132,15 @@ class FlextDbtOracleProtocols:
                     transformation_config: Transformation parameters
 
                 Returns:
-                    FlextCore.Result[list[FlextCore.Types.Dict]]: Transformed data or error
+                    FlextResult[list[FlextTypes.Dict]]: Transformed data or error
 
                 """
 
             def validate_oracle_data_quality(
                 self,
-                data: list[FlextCore.Types.Dict],
-                quality_rules: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                data: list[FlextTypes.Dict],
+                quality_rules: FlextTypes.Dict,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Validate Oracle data quality for DBT processing.
 
                 Args:
@@ -154,15 +148,15 @@ class FlextDbtOracleProtocols:
                     quality_rules: Data quality validation rules
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Quality validation results or error
+                    FlextResult[FlextTypes.Dict]: Quality validation results or error
 
                 """
 
             def sync_oracle_to_warehouse(
                 self,
-                oracle_data: list[FlextCore.Types.Dict],
-                warehouse_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                oracle_data: list[FlextTypes.Dict],
+                warehouse_config: FlextTypes.Dict,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Sync Oracle data to data warehouse for DBT processing.
 
                 Args:
@@ -170,19 +164,19 @@ class FlextDbtOracleProtocols:
                     warehouse_config: Data warehouse configuration
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Sync operation results or error
+                    FlextResult[FlextTypes.Dict]: Sync operation results or error
 
                 """
 
         @runtime_checkable
-        class ModelingProtocol(FlextCore.Protocols.Domain.Service, Protocol):
+        class ModelingProtocol(FlextProtocols.Service, Protocol):
             """Protocol for Oracle data modeling operations."""
 
             def create_table_dimension(
                 self,
-                oracle_tables: list[FlextCore.Types.Dict],
-                dimension_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                oracle_tables: list[FlextTypes.Dict],
+                dimension_config: FlextTypes.Dict,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Create table dimension model from Oracle table data.
 
                 Args:
@@ -190,15 +184,15 @@ class FlextDbtOracleProtocols:
                     dimension_config: Dimension modeling configuration
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Table dimension model or error
+                    FlextResult[FlextTypes.Dict]: Table dimension model or error
 
                 """
 
             def create_schema_dimension(
                 self,
-                oracle_schemas: list[FlextCore.Types.Dict],
-                dimension_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                oracle_schemas: list[FlextTypes.Dict],
+                dimension_config: FlextTypes.Dict,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Create schema dimension model from Oracle schema data.
 
                 Args:
@@ -206,15 +200,15 @@ class FlextDbtOracleProtocols:
                     dimension_config: Dimension modeling configuration
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Schema dimension model or error
+                    FlextResult[FlextTypes.Dict]: Schema dimension model or error
 
                 """
 
             def create_performance_models(
                 self,
-                oracle_performance_data: list[FlextCore.Types.Dict],
-                modeling_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                oracle_performance_data: list[FlextTypes.Dict],
+                modeling_config: FlextTypes.Dict,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Create performance models from Oracle performance data.
 
                 Args:
@@ -222,15 +216,15 @@ class FlextDbtOracleProtocols:
                     modeling_config: Performance modeling configuration
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Performance models or error
+                    FlextResult[FlextTypes.Dict]: Performance models or error
 
                 """
 
             def generate_fact_tables(
                 self,
-                dimensions: list[FlextCore.Types.Dict],
-                fact_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[list[FlextCore.Types.Dict]]:
+                dimensions: list[FlextTypes.Dict],
+                fact_config: FlextTypes.Dict,
+            ) -> FlextResult[list[FlextTypes.Dict]]:
                 """Generate fact tables from Oracle dimensions.
 
                 Args:
@@ -238,19 +232,19 @@ class FlextDbtOracleProtocols:
                     fact_config: Fact table configuration
 
                 Returns:
-                    FlextCore.Result[list[FlextCore.Types.Dict]]: Generated fact tables or error
+                    FlextResult[list[FlextTypes.Dict]]: Generated fact tables or error
 
                 """
 
         @runtime_checkable
-        class TransformationProtocol(FlextCore.Protocols.Domain.Service, Protocol):
+        class TransformationProtocol(FlextProtocols.Service, Protocol):
             """Protocol for Oracle data transformation operations."""
 
             def normalize_oracle_data_types(
                 self,
-                oracle_data: list[FlextCore.Types.Dict],
-                normalization_rules: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[list[FlextCore.Types.Dict]]:
+                oracle_data: list[FlextTypes.Dict],
+                normalization_rules: FlextTypes.Dict,
+            ) -> FlextResult[list[FlextTypes.Dict]]:
                 """Normalize Oracle data types for consistent DBT processing.
 
                 Args:
@@ -258,15 +252,15 @@ class FlextDbtOracleProtocols:
                     normalization_rules: Data type normalization rules
 
                 Returns:
-                    FlextCore.Result[list[FlextCore.Types.Dict]]: Normalized Oracle data or error
+                    FlextResult[list[FlextTypes.Dict]]: Normalized Oracle data or error
 
                 """
 
             def apply_oracle_specific_transformations(
                 self,
-                oracle_data: list[FlextCore.Types.Dict],
-                transformation_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[list[FlextCore.Types.Dict]]:
+                oracle_data: list[FlextTypes.Dict],
+                transformation_config: FlextTypes.Dict,
+            ) -> FlextResult[list[FlextTypes.Dict]]:
                 """Apply Oracle-specific data transformations.
 
                 Args:
@@ -274,15 +268,15 @@ class FlextDbtOracleProtocols:
                     transformation_config: Oracle transformation configuration
 
                 Returns:
-                    FlextCore.Result[list[FlextCore.Types.Dict]]: Transformed data or error
+                    FlextResult[list[FlextTypes.Dict]]: Transformed data or error
 
                 """
 
             def apply_business_rules(
                 self,
-                data: list[FlextCore.Types.Dict],
-                business_rules: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[list[FlextCore.Types.Dict]]:
+                data: list[FlextTypes.Dict],
+                business_rules: FlextTypes.Dict,
+            ) -> FlextResult[list[FlextTypes.Dict]]:
                 """Apply business rules to Oracle data transformations.
 
                 Args:
@@ -290,15 +284,15 @@ class FlextDbtOracleProtocols:
                     business_rules: Business transformation rules
 
                 Returns:
-                    FlextCore.Result[list[FlextCore.Types.Dict]]: Transformed data or error
+                    FlextResult[list[FlextTypes.Dict]]: Transformed data or error
 
                 """
 
             def optimize_oracle_queries(
                 self,
-                query_config: FlextCore.Types.Dict,
-                optimization_rules: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                query_config: FlextTypes.Dict,
+                optimization_rules: FlextTypes.Dict,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Optimize Oracle queries for DBT processing.
 
                 Args:
@@ -306,75 +300,75 @@ class FlextDbtOracleProtocols:
                     optimization_rules: Query optimization rules
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Optimized query configuration or error
+                    FlextResult[FlextTypes.Dict]: Optimized query configuration or error
 
                 """
 
         @runtime_checkable
-        class MacroProtocol(FlextCore.Protocols.Domain.Service, Protocol):
+        class MacroProtocol(FlextProtocols.Service, Protocol):
             """Protocol for DBT macro operations with Oracle data."""
 
             def generate_oracle_source_macro(
-                self, source_config: FlextCore.Types.Dict
-            ) -> FlextCore.Result[str]:
+                self, source_config: FlextTypes.Dict
+            ) -> FlextResult[str]:
                 """Generate DBT macro for Oracle data sources.
 
                 Args:
                     source_config: Oracle source configuration
 
                 Returns:
-                    FlextCore.Result[str]: Generated DBT macro or error
+                    FlextResult[str]: Generated DBT macro or error
 
                 """
 
             def create_oracle_test_macro(
-                self, test_config: FlextCore.Types.Dict
-            ) -> FlextCore.Result[str]:
+                self, test_config: FlextTypes.Dict
+            ) -> FlextResult[str]:
                 """Create DBT test macro for Oracle data validation.
 
                 Args:
                     test_config: Oracle test configuration
 
                 Returns:
-                    FlextCore.Result[str]: Generated test macro or error
+                    FlextResult[str]: Generated test macro or error
 
                 """
 
             def generate_oracle_transformation_macro(
-                self, transformation_config: FlextCore.Types.Dict
-            ) -> FlextCore.Result[str]:
+                self, transformation_config: FlextTypes.Dict
+            ) -> FlextResult[str]:
                 """Generate DBT transformation macro for Oracle data.
 
                 Args:
                     transformation_config: Oracle transformation configuration
 
                 Returns:
-                    FlextCore.Result[str]: Generated transformation macro or error
+                    FlextResult[str]: Generated transformation macro or error
 
                 """
 
             def create_oracle_snapshot_macro(
-                self, snapshot_config: FlextCore.Types.Dict
-            ) -> FlextCore.Result[str]:
+                self, snapshot_config: FlextTypes.Dict
+            ) -> FlextResult[str]:
                 """Create DBT snapshot macro for Oracle data versioning.
 
                 Args:
                     snapshot_config: Oracle snapshot configuration
 
                 Returns:
-                    FlextCore.Result[str]: Generated snapshot macro or error
+                    FlextResult[str]: Generated snapshot macro or error
 
                 """
 
         @runtime_checkable
-        class QualityProtocol(FlextCore.Protocols.Domain.Service, Protocol):
+        class QualityProtocol(FlextProtocols.Service, Protocol):
             """Protocol for Oracle data quality operations."""
 
             def validate_oracle_schema_compliance(
                 self,
-                oracle_data: list[FlextCore.Types.Dict],
-                schema_rules: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                oracle_data: list[FlextTypes.Dict],
+                schema_rules: FlextTypes.Dict,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Validate Oracle data against schema compliance rules.
 
                 Args:
@@ -382,15 +376,15 @@ class FlextDbtOracleProtocols:
                     schema_rules: Schema compliance rules
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Schema validation results or error
+                    FlextResult[FlextTypes.Dict]: Schema validation results or error
 
                 """
 
             def check_data_completeness(
                 self,
-                data: list[FlextCore.Types.Dict],
-                completeness_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                data: list[FlextTypes.Dict],
+                completeness_config: FlextTypes.Dict,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Check Oracle data completeness for DBT processing.
 
                 Args:
@@ -398,15 +392,15 @@ class FlextDbtOracleProtocols:
                     completeness_config: Completeness validation configuration
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Completeness check results or error
+                    FlextResult[FlextTypes.Dict]: Completeness check results or error
 
                 """
 
             def detect_data_anomalies(
                 self,
-                data: list[FlextCore.Types.Dict],
-                anomaly_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[list[FlextCore.Types.Dict]]:
+                data: list[FlextTypes.Dict],
+                anomaly_config: FlextTypes.Dict,
+            ) -> FlextResult[list[FlextTypes.Dict]]:
                 """Detect anomalies in Oracle data for quality assurance.
 
                 Args:
@@ -414,15 +408,15 @@ class FlextDbtOracleProtocols:
                     anomaly_config: Anomaly detection configuration
 
                 Returns:
-                    FlextCore.Result[list[FlextCore.Types.Dict]]: Detected anomalies or error
+                    FlextResult[list[FlextTypes.Dict]]: Detected anomalies or error
 
                 """
 
             def generate_quality_report(
                 self,
-                quality_results: list[FlextCore.Types.Dict],
-                report_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                quality_results: list[FlextTypes.Dict],
+                report_config: FlextTypes.Dict,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Generate data quality report for Oracle DBT processing.
 
                 Args:
@@ -430,19 +424,19 @@ class FlextDbtOracleProtocols:
                     report_config: Report generation configuration
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Quality report or error
+                    FlextResult[FlextTypes.Dict]: Quality report or error
 
                 """
 
         @runtime_checkable
-        class PerformanceProtocol(FlextCore.Protocols.Domain.Service, Protocol):
+        class PerformanceProtocol(FlextProtocols.Service, Protocol):
             """Protocol for DBT Oracle performance optimization operations."""
 
             def optimize_dbt_models(
                 self,
-                model_config: FlextCore.Types.Dict,
-                performance_metrics: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                model_config: FlextTypes.Dict,
+                performance_metrics: FlextTypes.Dict,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Optimize DBT models for Oracle data processing performance.
 
                 Args:
@@ -450,15 +444,15 @@ class FlextDbtOracleProtocols:
                     performance_metrics: Current performance metrics
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Optimization recommendations or error
+                    FlextResult[FlextTypes.Dict]: Optimization recommendations or error
 
                 """
 
             def tune_oracle_connections(
                 self,
-                connection_config: FlextCore.Types.Dict,
-                tuning_config: FlextCore.Types.Dict,
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                connection_config: FlextTypes.Dict,
+                tuning_config: FlextTypes.Dict,
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Tune Oracle connections for improved DBT performance.
 
                 Args:
@@ -466,43 +460,43 @@ class FlextDbtOracleProtocols:
                     tuning_config: Connection tuning parameters
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Tuned connection configuration or error
+                    FlextResult[FlextTypes.Dict]: Tuned connection configuration or error
 
                 """
 
             def monitor_dbt_performance(
-                self, run_results: FlextCore.Types.Dict
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                self, run_results: FlextTypes.Dict
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Monitor DBT performance with Oracle data processing.
 
                 Args:
                     run_results: DBT run results
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Performance metrics or error
+                    FlextResult[FlextTypes.Dict]: Performance metrics or error
 
                 """
 
             def optimize_oracle_queries(
-                self, query_config: FlextCore.Types.Dict
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                self, query_config: FlextTypes.Dict
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Optimize Oracle queries for DBT data processing.
 
                 Args:
                     query_config: Oracle query configuration
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Query optimization results or error
+                    FlextResult[FlextTypes.Dict]: Query optimization results or error
 
                 """
 
         @runtime_checkable
-        class MonitoringProtocol(FlextCore.Protocols.Domain.Service, Protocol):
+        class MonitoringProtocol(FlextProtocols.Service, Protocol):
             """Protocol for DBT Oracle monitoring operations."""
 
             def track_dbt_run_metrics(
-                self, run_id: str, metrics: FlextCore.Types.Dict
-            ) -> FlextCore.Result[bool]:
+                self, run_id: str, metrics: FlextTypes.Dict
+            ) -> FlextResult[bool]:
                 """Track DBT run metrics for Oracle data processing.
 
                 Args:
@@ -510,41 +504,41 @@ class FlextDbtOracleProtocols:
                     metrics: Run metrics data
 
                 Returns:
-                    FlextCore.Result[bool]: Metric tracking success status
+                    FlextResult[bool]: Metric tracking success status
 
                 """
 
             def monitor_oracle_data_freshness(
-                self, freshness_config: FlextCore.Types.Dict
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                self, freshness_config: FlextTypes.Dict
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Monitor Oracle data freshness for DBT processing.
 
                 Args:
                     freshness_config: Data freshness monitoring configuration
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Data freshness status or error
+                    FlextResult[FlextTypes.Dict]: Data freshness status or error
 
                 """
 
-            def get_health_status(self) -> FlextCore.Result[FlextCore.Types.Dict]:
+            def get_health_status(self) -> FlextResult[FlextTypes.Dict]:
                 """Get DBT Oracle integration health status.
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Health status or error
+                    FlextResult[FlextTypes.Dict]: Health status or error
 
                 """
 
             def create_monitoring_dashboard(
-                self, dashboard_config: FlextCore.Types.Dict
-            ) -> FlextCore.Result[FlextCore.Types.Dict]:
+                self, dashboard_config: FlextTypes.Dict
+            ) -> FlextResult[FlextTypes.Dict]:
                 """Create monitoring dashboard for DBT Oracle operations.
 
                 Args:
                     dashboard_config: Dashboard configuration
 
                 Returns:
-                    FlextCore.Result[FlextCore.Types.Dict]: Dashboard creation result or error
+                    FlextResult[FlextTypes.Dict]: Dashboard creation result or error
 
                 """
 

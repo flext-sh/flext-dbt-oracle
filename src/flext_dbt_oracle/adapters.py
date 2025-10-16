@@ -13,7 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
-from flext_core import FlextCore
+from flext_core import FlextResult, FlextTypes
 from flext_db_oracle.models import FlextDbOracleModels
 
 
@@ -39,11 +39,11 @@ class FlextDbtOracleAdapters:
             """Schema/owner name."""
 
         @property
-        def columns(self: object) -> list[FlextCore.Types.StringDict]:
+        def columns(self: object) -> list[FlextTypes.StringDict]:
             """List of column information as dictionaries."""
 
         @property
-        def metadata(self: object) -> FlextCore.Types.Dict:
+        def metadata(self: object) -> FlextTypes.Dict:
             """Table metadata information."""
 
     @dataclass
@@ -55,14 +55,14 @@ class FlextDbtOracleAdapters:
         """
 
         _table: FlextDbOracleModels.Table
-        _extra_metadata: FlextCore.Types.Dict
+        _extra_metadata: FlextTypes.Dict
 
         @classmethod
         def create_from_table(
             cls,
             table: FlextDbOracleModels.Table,
-            metadata: FlextCore.Types.Dict | None = None,
-        ) -> FlextCore.Result[FlextDbtOracleAdapters.TableAdapter]:
+            metadata: FlextTypes.Dict | None = None,
+        ) -> FlextResult[FlextDbtOracleAdapters.TableAdapter]:
             """Create adapter from actual Table object with optional metadata.
 
             Args:
@@ -70,20 +70,20 @@ class FlextDbtOracleAdapters:
                 metadata: Optional additional metadata
 
             Returns:
-                FlextCore.Result containing the adapter
+                FlextResult containing the adapter
 
             """
             if not table:
-                return FlextCore.Result[FlextDbtOracleAdapters.TableAdapter].fail(
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
                     "Table cannot be None"
                 )
 
             if not table.name:
-                return FlextCore.Result[FlextDbtOracleAdapters.TableAdapter].fail(
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
                     "Table name cannot be empty"
                 )
 
-            return FlextCore.Result[FlextDbtOracleAdapters.TableAdapter].ok(
+            return FlextResult[FlextDbtOracleAdapters.TableAdapter].ok(
                 cls(
                     _table=table,
                     _extra_metadata=metadata or {},
@@ -95,9 +95,9 @@ class FlextDbtOracleAdapters:
             cls,
             name: str,
             schema_name: str,
-            columns: list[FlextCore.Types.StringDict] | None = None,
-            metadata: FlextCore.Types.Dict | None = None,
-        ) -> FlextCore.Result[FlextDbtOracleAdapters.TableAdapter]:
+            columns: list[FlextTypes.StringDict] | None = None,
+            metadata: FlextTypes.Dict | None = None,
+        ) -> FlextResult[FlextDbtOracleAdapters.TableAdapter]:
             """Create adapter from raw metadata (for cases where we build from scratch).
 
             Args:
@@ -107,23 +107,23 @@ class FlextDbtOracleAdapters:
                 metadata: Additional metadata
 
             Returns:
-                FlextCore.Result containing the adapter
+                FlextResult containing the adapter
 
             """
             if not name:
-                return FlextCore.Result[FlextDbtOracleAdapters.TableAdapter].fail(
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
                     "Table name cannot be empty"
                 )
 
             if not schema_name:
-                return FlextCore.Result[FlextDbtOracleAdapters.TableAdapter].fail(
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
                     "Schema name cannot be empty"
                 )
 
             # Create a basic Table object (using actual constructor signature)
             try:
                 # Convert column information if provided
-                table_columns: FlextCore.Types.List = list(columns) if columns else []
+                table_columns: FlextTypes.List = list(columns) if columns else []
 
                 table = FlextDbOracleModels.Table(
                     name=name,
@@ -131,11 +131,11 @@ class FlextDbtOracleAdapters:
                     columns=table_columns,  # Use provided columns
                 )
             except Exception as e:
-                return FlextCore.Result[FlextDbtOracleAdapters.TableAdapter].fail(
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
                     f"Failed to create Table: {e}"
                 )
 
-            return FlextCore.Result[FlextDbtOracleAdapters.TableAdapter].ok(
+            return FlextResult[FlextDbtOracleAdapters.TableAdapter].ok(
                 cls(
                     _table=table,
                     _extra_metadata=metadata or {},
@@ -153,7 +153,7 @@ class FlextDbtOracleAdapters:
             return self._table.owner
 
         @property
-        def columns(self: object) -> list[FlextCore.Types.StringDict]:
+        def columns(self: object) -> list[FlextTypes.StringDict]:
             """Column information converted to dictionaries."""
             # Convert Column objects to dictionaries for business logic compatibility
             return [
@@ -166,7 +166,7 @@ class FlextDbtOracleAdapters:
             ]
 
         @property
-        def metadata(self: object) -> FlextCore.Types.Dict:
+        def metadata(self: object) -> FlextTypes.Dict:
             """Combined metadata from table and extra metadata."""
             base_metadata = {
                 "name": self.name,
@@ -189,9 +189,9 @@ class FlextDbtOracleAdapters:
         @staticmethod
         def from_api_response(
             table_name: str,
-            api_response: FlextCore.Types.Dict,
+            api_response: FlextTypes.Dict,
             schema_name: str | None = None,
-        ) -> FlextCore.Result[FlextDbtOracleAdapters.TableAdapter]:
+        ) -> FlextResult[FlextDbtOracleAdapters.TableAdapter]:
             """Create table adapter from Oracle API response.
 
             Args:
@@ -200,16 +200,16 @@ class FlextDbtOracleAdapters:
                 schema_name: Optional schema name (inferred if not provided)
 
             Returns:
-                FlextCore.Result containing the table adapter
+                FlextResult containing the table adapter
 
             """
             if not table_name:
-                return FlextCore.Result[FlextDbtOracleAdapters.TableAdapter].fail(
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
                     "Table name required"
                 )
 
             if not isinstance(api_response, dict):
-                return FlextCore.Result[FlextDbtOracleAdapters.TableAdapter].fail(
+                return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
                     "API response must be a dictionary",
                 )
 
@@ -241,9 +241,9 @@ class FlextDbtOracleAdapters:
 
         @staticmethod
         def from_table_list(
-            table_names: FlextCore.Types.StringList,
+            table_names: FlextTypes.StringList,
             schema_name: str = "USER",
-        ) -> FlextCore.Result[list[FlextDbtOracleAdapters.TableAdapter]]:
+        ) -> FlextResult[list[FlextDbtOracleAdapters.TableAdapter]]:
             """Create table adapters from a list of table names.
 
             Args:
@@ -251,13 +251,11 @@ class FlextDbtOracleAdapters:
                 schema_name: Schema name for all tables
 
             Returns:
-                FlextCore.Result containing list of table adapters
+                FlextResult containing list of table adapters
 
             """
             if not table_names:
-                return FlextCore.Result[
-                    list[FlextDbtOracleAdapters.TableAdapter]
-                ].ok([])
+                return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].ok([])
 
             adapters: list[FlextDbtOracleAdapters.TableAdapter] = []
             for table_name in table_names:
@@ -273,15 +271,13 @@ class FlextDbtOracleAdapters:
                     if adapter_result.is_success:
                         adapters.append(adapter_result.unwrap())
                     else:
-                        return FlextCore.Result[
+                        return FlextResult[
                             list[FlextDbtOracleAdapters.TableAdapter]
                         ].fail(
                             f"Failed to create adapter for table {table_name}: {adapter_result.error}",
                         )
 
-            return FlextCore.Result[list[FlextDbtOracleAdapters.TableAdapter]].ok(
-                adapters
-            )
+            return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].ok(adapters)
 
 
 # Type aliases for backward compatibility
@@ -289,7 +285,7 @@ OracleTableAdapter = FlextDbtOracleAdapters.TableAdapter
 OracleTableFactory = FlextDbtOracleAdapters.TableFactory
 
 
-__all__: FlextCore.Types.StringList = [
+__all__: FlextTypes.StringList = [
     "FlextDbtOracleAdapters",
     "OracleTableAdapter",
     "OracleTableFactory",

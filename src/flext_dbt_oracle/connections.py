@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import cast, override
 
-from flext_core import FlextCore, T
+from flext_core import FlextLogger, FlextTypes, T
 from flext_db_oracle import FlextDbOracleConfig
 from flext_meltano import Connection, DbtDatabaseError
 
@@ -23,7 +23,7 @@ class FlextDbtOracleConnections:
     """
 
     # Shared logger for all Oracle connection operations
-    logger = FlextCore.Logger(__name__)
+    logger = FlextLogger(__name__)
 
     class Credentials:
         """Oracle database credentials following FLEXT patterns."""
@@ -88,10 +88,10 @@ class FlextDbtOracleConnections:
         TYPE = "oracle"
 
         @override
-        def __init__(self, profile: FlextCore.Types.Dict) -> None:
+        def __init__(self, profile: FlextTypes.Dict) -> None:
             """Initialize connection manager."""
             self.profile = profile
-            self._oracle_services: FlextCore.Types.Dict = {}
+            self._oracle_services: FlextTypes.Dict = {}
             self.thread_connections: dict[str, Connection] = {}
 
         def open(self, connection: Connection) -> Connection:
@@ -117,9 +117,9 @@ class FlextDbtOracleConnections:
             """Handle connection error."""
             raise DbtDatabaseError(error_message)
 
-        def cancel_open(self: object) -> FlextCore.Types.StringList:
+        def cancel_open(self: object) -> FlextTypes.StringList:
             """Cancel open connections."""
-            cancelled: FlextCore.Types.StringList = []
+            cancelled: FlextTypes.StringList = []
             for name, connection in self.thread_connections.items():
                 if connection.state == "open":
                     connection.state = "closed"
@@ -149,7 +149,7 @@ class FlextDbtOracleConnections:
         def add_query(
             self,
             sql: str,
-            bindings: FlextCore.Types.Dict,
+            bindings: FlextTypes.Dict,
         ) -> tuple[Connection, object]:
             """Add query with fallback cursor."""
 
@@ -157,7 +157,7 @@ class FlextDbtOracleConnections:
             @dataclass
             class MockCursor:
                 sql: str
-                bindings: FlextCore.Types.Dict
+                bindings: FlextTypes.Dict
 
             connection = self.get_thread_connection("default")
             if connection is None:
