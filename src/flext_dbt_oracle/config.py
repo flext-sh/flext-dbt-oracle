@@ -8,7 +8,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import ClassVar, Self
 
-from flext_core import FlextConfig, FlextResult, FlextTypes
+from flext_core import FlextConfig, FlextResult
 from flext_db_oracle import FlextDbOracleModels
 from flext_meltano.config import FlextMeltanoConfig
 from pydantic import Field, SecretStr, field_validator, model_validator
@@ -141,7 +141,7 @@ class FlextDbtOracleConfig(FlextConfig):
     optimizer_mode: str = Field(default="ALL_ROWS", description="Oracle optimizer mode")
 
     # Oracle-specific mappings (ClassVar - not configurable)
-    oracle_schema_mapping: ClassVar[FlextTypes.StringDict] = {
+    oracle_schema_mapping: ClassVar[dict[str, str]] = {
         "raw_tables": "stg_raw_tables",
         "views": "stg_views",
         "sequences": "stg_sequences",
@@ -152,7 +152,7 @@ class FlextDbtOracleConfig(FlextConfig):
         "indexes": "stg_indexes",
     }
 
-    oracle_column_mapping: ClassVar[FlextTypes.StringDict] = {
+    oracle_column_mapping: ClassVar[dict[str, str]] = {
         "TABLE_NAME": "table_name",
         "COLUMN_NAME": "column_name",
         "DATA_TYPE": "data_type",
@@ -169,20 +169,20 @@ class FlextDbtOracleConfig(FlextConfig):
         "LAST_DDL_TIME": "last_modified_date",
     }
 
-    required_oracle_objects: ClassVar[FlextTypes.StringList] = [
+    required_oracle_objects: ClassVar[list[str]] = [
         "TABLE_NAME",
         "OWNER",
         "OBJECT_TYPE",
     ]
 
-    materialization_mapping: ClassVar[FlextTypes.StringDict] = {
+    materialization_mapping: ClassVar[dict[str, str]] = {
         "staging": "view",
         "intermediate": "view",
         "marts": "table",
         "snapshots": "incremental",
     }
 
-    oracle_type_mapping: ClassVar[FlextTypes.StringDict] = {
+    oracle_type_mapping: ClassVar[dict[str, str]] = {
         "VARCHAR2": "string",
         "NVARCHAR2": "string",
         "CHAR": "string",
@@ -305,7 +305,7 @@ class FlextDbtOracleConfig(FlextConfig):
             environment=environment,
         )
 
-    def get_oracle_quality_config(self) -> FlextTypes.Dict:
+    def get_oracle_quality_config(self) -> dict[str, object]:
         """Get data quality configuration for Oracle validation."""
         return {
             "min_quality_threshold": self.min_quality_threshold,
@@ -314,7 +314,7 @@ class FlextDbtOracleConfig(FlextConfig):
             "max_parallel_connections": self.max_parallel_connections,
         }
 
-    def get_performance_config(self) -> FlextTypes.Dict:
+    def get_performance_config(self) -> dict[str, object]:
         """Get Oracle performance configuration."""
         return {
             "fetch_size": self.fetch_size,
@@ -323,7 +323,7 @@ class FlextDbtOracleConfig(FlextConfig):
             "optimizer_mode": self.optimizer_mode,
         }
 
-    def get_dbt_config(self) -> FlextTypes.Dict:
+    def get_dbt_config(self) -> dict[str, object]:
         """Get DBT configuration dictionary."""
         return {
             "project_dir": self.dbt_project_dir,
@@ -452,6 +452,6 @@ class FlextDbtOracleConfig(FlextConfig):
         cls.reset_shared_instance(project_name="flext-dbt-oracle")
 
 
-__all__: FlextTypes.StringList = [
+__all__: list[str] = [
     "FlextDbtOracleConfig",
 ]

@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import cast, override
 
-from flext_core import FlextLogger, FlextTypes, T
+from flext_core import FlextLogger, T
 from flext_db_oracle import FlextDbOracleConfig
 from flext_meltano import Connection, DbtDatabaseError
 
@@ -88,10 +88,10 @@ class FlextDbtOracleConnections:
         TYPE = "oracle"
 
         @override
-        def __init__(self, profile: FlextTypes.Dict) -> None:
+        def __init__(self, profile: dict[str, object]) -> None:
             """Initialize connection manager."""
             self.profile = profile
-            self._oracle_services: FlextTypes.Dict = {}
+            self._oracle_services: dict[str, object] = {}
             self.thread_connections: dict[str, Connection] = {}
 
         def open(self, connection: Connection) -> Connection:
@@ -117,9 +117,9 @@ class FlextDbtOracleConnections:
             """Handle connection error."""
             raise DbtDatabaseError(error_message)
 
-        def cancel_open(self: object) -> FlextTypes.StringList:
+        def cancel_open(self: object) -> list[str]:
             """Cancel open connections."""
-            cancelled: FlextTypes.StringList = []
+            cancelled: list[str] = []
             for name, connection in self.thread_connections.items():
                 if connection.state == "open":
                     connection.state = "closed"
@@ -149,7 +149,7 @@ class FlextDbtOracleConnections:
         def add_query(
             self,
             sql: str,
-            bindings: FlextTypes.Dict,
+            bindings: dict[str, object],
         ) -> tuple[Connection, object]:
             """Add query with fallback cursor."""
 
@@ -157,7 +157,7 @@ class FlextDbtOracleConnections:
             @dataclass
             class MockCursor:
                 sql: str
-                bindings: FlextTypes.Dict
+                bindings: dict[str, object]
 
             connection = self.get_thread_connection("default")
             if connection is None:

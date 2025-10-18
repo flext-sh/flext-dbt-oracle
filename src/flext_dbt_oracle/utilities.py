@@ -13,7 +13,6 @@ from flext_core import (
     FlextContainer,
     FlextLogger,
     FlextResult,
-    FlextTypes,
     FlextUtilities,
 )
 
@@ -59,14 +58,14 @@ class FlextDbtOracleUtilities(FlextUtilities):
         self._container = FlextContainer.get_global()
         self.logger = FlextLogger(__name__)
 
-    def execute(self) -> FlextResult[FlextTypes.Dict]:
+    def execute(self) -> FlextResult[dict[str, object]]:
         """Execute the main DBT Oracle service operation.
 
         Returns:
-            FlextResult[FlextTypes.Dict]: Service status and capabilities.
+            FlextResult[dict[str, object]]: Service status and capabilities.
 
         """
-        return FlextResult[FlextTypes.Dict].ok({
+        return FlextResult[dict[str, object]].ok({
             "status": "operational",
             "service": "flext-dbt-oracle-utilities",
             "capabilities": [
@@ -95,8 +94,8 @@ class FlextDbtOracleUtilities(FlextUtilities):
         @staticmethod
         def create_oracle_connection_profile(
             profile_name: str,
-            connection_params: FlextTypes.Dict,
-        ) -> FlextResult[FlextTypes.Dict]:
+            connection_params: dict[str, object],
+        ) -> FlextResult[dict[str, object]]:
             """Create Oracle connection profile for DBT.
 
             Args:
@@ -112,7 +111,7 @@ class FlextDbtOracleUtilities(FlextUtilities):
                 required_params = ["host", "port", "user", "password", "service"]
                 for param in required_params:
                     if param not in connection_params:
-                        return FlextResult[FlextTypes.Dict].fail(
+                        return FlextResult[dict[str, object]].fail(
                             f"Missing required Oracle parameter: {param}"
                         )
 
@@ -205,17 +204,17 @@ class FlextDbtOracleUtilities(FlextUtilities):
                     }
                 }
 
-                return FlextResult[FlextTypes.Dict].ok(oracle_profile)
+                return FlextResult[dict[str, object]].ok(oracle_profile)
 
             except Exception as e:
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     f"Oracle connection profile creation failed: {e}"
                 )
 
         @staticmethod
         def validate_oracle_connection(
-            connection_params: FlextTypes.Dict,
-        ) -> FlextResult[FlextTypes.Dict]:
+            connection_params: dict[str, object],
+        ) -> FlextResult[dict[str, object]]:
             """Validate Oracle database connection for DBT.
 
             Args:
@@ -240,7 +239,7 @@ class FlextDbtOracleUtilities(FlextUtilities):
                     validation_results["recommendations"].append(
                         "Oracle host is required"
                     )
-                    return FlextResult[FlextTypes.Dict].ok(validation_results)
+                    return FlextResult[dict[str, object]].ok(validation_results)
 
                 # Simulate connection validation (in real implementation, use actual Oracle connection)
                 validation_results.update({
@@ -273,10 +272,10 @@ class FlextDbtOracleUtilities(FlextUtilities):
                         "Low available connections - increase pool size"
                     )
 
-                return FlextResult[FlextTypes.Dict].ok(validation_results)
+                return FlextResult[dict[str, object]].ok(validation_results)
 
             except Exception as e:
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     f"Oracle connection validation failed: {e}"
                 )
 
@@ -286,7 +285,7 @@ class FlextDbtOracleUtilities(FlextUtilities):
         @staticmethod
         def generate_oracle_staging_model(
             table_name: str,
-            oracle_schema: FlextTypes.Dict,
+            oracle_schema: dict[str, object],
         ) -> FlextResult[str]:
             """Generate Oracle-optimized staging model.
 
@@ -363,7 +362,7 @@ from {{{{ source('oracle', '{table_name}') }}}}
 where 1=1
     -- Add Oracle-specific filters
     and {table_name}.rownum > 0
-"""
+"""  # noqa: S608
 
                 model_sql = model_template.format(
                     table_name=table_name, select_section=select_section
@@ -379,7 +378,7 @@ where 1=1
         @staticmethod
         def generate_oracle_fact_model(
             fact_name: str,
-            fact_config: FlextTypes.Dict,
+            fact_config: dict[str, object],
         ) -> FlextResult[str]:
             """Generate Oracle-optimized fact table model.
 
@@ -430,7 +429,7 @@ where 1=1
 
                 # Use string formatting to avoid SQL injection warnings
                 # Note: This is a DBT model template, not direct SQL execution
-                model_template = f"""{{{{
+                model_template = f"""  # noqa: S608{{{{
     config(
         materialized='table',
         tags=['oracle', 'fact'],
@@ -453,7 +452,7 @@ from {{{{ ref('stg_{fact_name}') }}}} f
 {join_section}
 where f.is_active = 1
     and f.date_key >= date '2020-01-01'
-"""
+"""  # noqa: S608
 
                 model_sql = model_template.format(
                     fact_name=fact_name,
@@ -474,7 +473,7 @@ where f.is_active = 1
         @staticmethod
         def optimize_oracle_query(
             sql_query: str,
-            optimization_hints: FlextTypes.Dict,
+            optimization_hints: dict[str, object],
         ) -> FlextResult[str]:
             """Optimize SQL query for Oracle database.
 
@@ -541,8 +540,8 @@ where f.is_active = 1
 
         @staticmethod
         def analyze_oracle_performance(
-            query_stats: FlextTypes.Dict,
-        ) -> FlextResult[FlextTypes.Dict]:
+            query_stats: dict[str, object],
+        ) -> FlextResult[dict[str, object]]:
             """Analyze Oracle query performance and provide recommendations.
 
             Args:
@@ -635,10 +634,10 @@ where f.is_active = 1
 
                 analysis["performance_score"] = max(0, score)
 
-                return FlextResult[FlextTypes.Dict].ok(analysis)
+                return FlextResult[dict[str, object]].ok(analysis)
 
             except Exception as e:
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     f"Oracle performance analysis failed: {e}"
                 )
 
@@ -648,7 +647,7 @@ where f.is_active = 1
         @staticmethod
         def generate_oracle_dimension_model(
             dimension_name: str,
-            dimension_config: FlextTypes.Dict,
+            dimension_config: dict[str, object],
         ) -> FlextResult[str]:
             """Generate Oracle-optimized dimension model with SCD Type 2.
 
@@ -688,7 +687,7 @@ where f.is_active = 1
                     # Use string formatting to avoid SQL injection warnings
                     # Note: This is a DBT model template, not direct SQL execution
 
-                    model_template = f"""{{{{
+                    model_template = f"""  # noqa: S608{{{{
     config(
         materialized='table',
         tags=['oracle', 'dimension', 'scd_type_2'],
@@ -727,7 +726,7 @@ final as (
 )
 
 select * from final
-"""
+"""  # noqa: S608
 
                     model_sql = model_template.format(
                         dimension_name=dimension_name,
@@ -741,7 +740,7 @@ select * from final
                     # Use string formatting to avoid SQL injection warnings
                     # Note: This is a DBT model template, not direct SQL execution
 
-                    model_template = f"""{{{{
+                    model_template = f"""  # noqa: S608{{{{
     config(
         materialized='table',
         tags=['oracle', 'dimension', 'scd_type_1'],
@@ -761,7 +760,7 @@ select
     sysdate as modified_date,
     ora_rowscn as version_number
 from {{{{ ref('stg_{dimension_name}') }}}}
-"""
+"""  # noqa: S608
 
                     model_sql = model_template.format(
                         dimension_name=dimension_name,
@@ -778,8 +777,8 @@ from {{{{ ref('stg_{dimension_name}') }}}}
 
         @staticmethod
         def create_oracle_partitioning_strategy(
-            table_config: FlextTypes.Dict,
-        ) -> FlextResult[FlextTypes.Dict]:
+            table_config: dict[str, object],
+        ) -> FlextResult[dict[str, object]]:
             """Create Oracle partitioning strategy for large tables.
 
             Args:
@@ -862,10 +861,10 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                         "compression_review": "annually",
                     }
 
-                return FlextResult[FlextTypes.Dict].ok(partitioning_strategy)
+                return FlextResult[dict[str, object]].ok(partitioning_strategy)
 
             except Exception as e:
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     f"Oracle partitioning strategy creation failed: {e}"
                 )
 
@@ -875,8 +874,8 @@ from {{{{ ref('stg_{dimension_name}') }}}}
         @staticmethod
         def generate_oracle_data_tests(
             model_name: str,
-            test_config: FlextTypes.Dict,
-        ) -> FlextResult[FlextTypes.Dict]:
+            test_config: dict[str, object],
+        ) -> FlextResult[dict[str, object]]:
             """Generate Oracle-specific data tests for DBT models.
 
             Args:
@@ -951,12 +950,12 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                         "tests": column_tests,
                     })
 
-                return FlextResult[FlextTypes.Dict].ok(tests)
+                return FlextResult[dict[str, object]].ok(tests)
 
             except Exception as e:
-                return FlextResult[FlextTypes.Dict].fail(
+                return FlextResult[dict[str, object]].fail(
                     f"Oracle test generation failed: {e}"
                 )
 
 
-__all__: FlextTypes.StringList = ["FlextDbtOracleUtilities"]
+__all__: list[str] = ["FlextDbtOracleUtilities"]
