@@ -362,7 +362,7 @@ from {{{{ source('oracle', '{table_name}') }}}}
 where 1=1
     -- Add Oracle-specific filters
     and {table_name}.rownum > 0
-"""  # noqa: S608
+"""
 
                 model_sql = model_template.format(
                     table_name=table_name, select_section=select_section
@@ -429,7 +429,7 @@ where 1=1
 
                 # Use string formatting to avoid SQL injection warnings
                 # Note: This is a DBT model template, not direct SQL execution
-                model_template = f"""  # noqa: S608{{{{
+                model_template = f"""
     config(
         materialized='table',
         tags=['oracle', 'fact'],
@@ -452,7 +452,7 @@ from {{{{ ref('stg_{fact_name}') }}}} f
 {join_section}
 where f.is_active = 1
     and f.date_key >= date '2020-01-01'
-"""  # noqa: S608
+"""
 
                 model_sql = model_template.format(
                     fact_name=fact_name,
@@ -687,7 +687,7 @@ where f.is_active = 1
                     # Use string formatting to avoid SQL injection warnings
                     # Note: This is a DBT model template, not direct SQL execution
 
-                    model_template = f"""  # noqa: S608{{{{
+                    model_template = f"""
     config(
         materialized='table',
         tags=['oracle', 'dimension', 'scd_type_2'],
@@ -726,7 +726,7 @@ final as (
 )
 
 select * from final
-"""  # noqa: S608
+"""
 
                     model_sql = model_template.format(
                         dimension_name=dimension_name,
@@ -740,7 +740,7 @@ select * from final
                     # Use string formatting to avoid SQL injection warnings
                     # Note: This is a DBT model template, not direct SQL execution
 
-                    model_template = f"""  # noqa: S608{{{{
+                    model_template = f"""
     config(
         materialized='table',
         tags=['oracle', 'dimension', 'scd_type_1'],
@@ -760,7 +760,7 @@ select
     sysdate as modified_date,
     ora_rowscn as version_number
 from {{{{ ref('stg_{dimension_name}') }}}}
-"""  # noqa: S608
+"""
 
                     model_sql = model_template.format(
                         dimension_name=dimension_name,
