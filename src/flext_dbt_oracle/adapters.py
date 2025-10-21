@@ -66,11 +66,11 @@ class FlextDbtOracleAdapters:
             """Create adapter from actual Table object with optional metadata.
 
             Args:
-                table: The actual FlextDbOracleModels.Table instance
-                metadata: Optional additional metadata
+            table: The actual FlextDbOracleModels.Table instance
+            metadata: Optional additional metadata
 
             Returns:
-                FlextResult containing the adapter
+            FlextResult containing the adapter
 
             """
             if not table:
@@ -101,13 +101,13 @@ class FlextDbtOracleAdapters:
             """Create adapter from raw metadata (for cases where we build from scratch).
 
             Args:
-                name: Table name
-                schema_name: Schema/owner name
-                columns: Column information
-                metadata: Additional metadata
+            name: Table name
+            schema_name: Schema/owner name
+            columns: Column information
+            metadata: Additional metadata
 
             Returns:
-                FlextResult containing the adapter
+            FlextResult containing the adapter
 
             """
             if not name:
@@ -195,12 +195,12 @@ class FlextDbtOracleAdapters:
             """Create table adapter from Oracle API response.
 
             Args:
-                table_name: Name of the table
-                api_response: Dictionary response from Oracle API
-                schema_name: Optional schema name (inferred if not provided)
+            table_name: Name of the table
+            api_response: Dictionary response from Oracle API
+            schema_name: Optional schema name (inferred if not provided)
 
             Returns:
-                FlextResult containing the table adapter
+            FlextResult containing the table adapter
 
             """
             if not table_name:
@@ -247,11 +247,11 @@ class FlextDbtOracleAdapters:
             """Create table adapters from a list of table names.
 
             Args:
-                table_names: List of table names
-                schema_name: Schema name for all tables
+            table_names: List of table names
+            schema_name: Schema name for all tables
 
             Returns:
-                FlextResult containing list of table adapters
+            FlextResult containing list of table adapters
 
             """
             if not table_names:

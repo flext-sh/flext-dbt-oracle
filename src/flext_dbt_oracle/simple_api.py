@@ -32,20 +32,20 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
     This is the single unified class for the flext-dbt-oracle domain providing
     access to all DBT Oracle domain functionality with centralized patterns.
 
-    **UNIFIED CLASS PATTERN**: One class per module with nested helpers only.
-    **CENTRALIZED APPROACH**: All operations follow centralized patterns:
+    UNIFIED CLASS PATTERN: One class per module with nested helpers only.
+    CENTRALIZED APPROACH: All operations follow centralized patterns:
     - FlextDbtOracle.* for DBT Oracle-specific operations
     - Centralized validation through FlextDbtOracleWorkflowService
     - No wrappers, aliases, or fallbacks
     - Direct use of flext-core centralized services
 
-    **FLEXT INTEGRATION**: Complete integration with flext-core patterns:
+    FLEXT INTEGRATION: Complete integration with flext-core patterns:
     - FlextContainer for dependency injection
     - FlextContext for operation context
     - FlextLogger for structured logging
     - FlextResult for railway-oriented error handling
 
-    **PYTHON 3.13+ COMPATIBILITY**: Uses modern patterns and latest type features.
+    PYTHON 3.13+ COMPATIBILITY: Uses modern patterns and latest type features.
     """
 
     def __init__(self, config: FlextDbtOracleConfig | None = None) -> None:
@@ -107,13 +107,13 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
         """Run complete Oracle-to-DBT workflow.
 
         Args:
-            table_names: List of table names to process (None for all)
-            schema_name: Oracle schema name
-            generate_models: Whether to generate DBT models
-            run_tests: Whether to run DBT tests
+        table_names: List of table names to process (None for all)
+        schema_name: Oracle schema name
+        generate_models: Whether to generate DBT models
+        run_tests: Whether to run DBT tests
 
         Returns:
-            FlextResult containing workflow results
+        FlextResult containing workflow results
 
         """
         try:
@@ -138,12 +138,12 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
         """Generate DBT models from Oracle tables.
 
         Args:
-            table_names: List of table names to process
-            schema_name: Oracle schema name
-            output_dir: Output directory for generated models
+        table_names: List of table names to process
+        schema_name: Oracle schema name
+        output_dir: Output directory for generated models
 
         Returns:
-            FlextResult containing model generation results
+        FlextResult containing model generation results
 
         """
         try:
@@ -167,13 +167,13 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
         """Extract Oracle database metadata.
 
         Args:
-            table_names: List of table names to process
-            schema_name: Oracle schema name
-            include_constraints: Whether to include constraint information
-            include_indexes: Whether to include index information
+        table_names: List of table names to process
+        schema_name: Oracle schema name
+        include_constraints: Whether to include constraint information
+        include_indexes: Whether to include index information
 
         Returns:
-            FlextResult containing metadata extraction results
+        FlextResult containing metadata extraction results
 
         """
         try:
@@ -197,11 +197,11 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
         """Monitor DBT command execution with metrics.
 
         Args:
-            command: DBT command to execute
-            timeout_seconds: Timeout for command execution
+        command: DBT command to execute
+        timeout_seconds: Timeout for command execution
 
         Returns:
-            FlextResult containing monitoring results
+        FlextResult containing monitoring results
 
         """
         try:
@@ -217,7 +217,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
         """Validate Oracle database connection.
 
         Returns:
-            FlextResult containing connection validation result
+        FlextResult containing connection validation result
 
         """
         try:
@@ -234,11 +234,11 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
         """Get detailed information about an Oracle table.
 
         Args:
-            table_name: Name of the table
-            schema_name: Schema name
+        table_name: Name of the table
+        schema_name: Schema name
 
         Returns:
-            FlextResult containing table information
+        FlextResult containing table information
 
         """
         try:

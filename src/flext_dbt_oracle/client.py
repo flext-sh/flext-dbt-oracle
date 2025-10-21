@@ -34,7 +34,7 @@ class FlextDbtOracleClient:
         """Initialize DBT Oracle client.
 
         Args:
-            config: Configuration for Oracle and DBT operations
+        config: Configuration for Oracle and DBT operations
 
         """
         self.config: dict[str, object] = (
@@ -74,7 +74,7 @@ class FlextDbtOracleClient:
         """Test Oracle database connection.
 
         Returns:
-            FlextResult containing connection test results
+        FlextResult containing connection test results
 
         """
         try:
@@ -117,11 +117,11 @@ class FlextDbtOracleClient:
         """Extract Oracle database metadata for DBT processing.
 
         Args:
-            schema_names: List of schema names to extract (None = all accessible)
-            object_types: List of object types to extract (None = all types)
+        schema_names: List of schema names to extract (None = all accessible)
+        object_types: List of object types to extract (None = all types)
 
         Returns:
-            FlextResult containing list of Oracle objects
+        FlextResult containing list of Oracle objects
 
         """
         try:
@@ -217,10 +217,10 @@ class FlextDbtOracleClient:
         """Validate Oracle data quality for DBT processing.
 
         Args:
-            objects: List of Oracle objects to validate
+        objects: List of Oracle objects to validate
 
         Returns:
-            FlextResult containing validation metrics
+        FlextResult containing validation metrics
 
         """
         try:
@@ -274,11 +274,11 @@ class FlextDbtOracleClient:
         """Transform Oracle data using DBT models.
 
         Args:
-            objects: Oracle objects to transform
-            model_names: Specific DBT models to run (None = all)
+        objects: Oracle objects to transform
+        model_names: Specific DBT models to run (None = all)
 
         Returns:
-            FlextResult containing transformation results
+        FlextResult containing transformation results
 
         """
         try:
@@ -334,12 +334,12 @@ class FlextDbtOracleClient:
         """Run complete Oracle to DBT transformation pipeline.
 
         Args:
-            schema_names: Oracle schemas to process
-            object_types: Oracle object types to process
-            model_names: DBT models to run
+        schema_names: Oracle schemas to process
+        object_types: Oracle object types to process
+        model_names: DBT models to run
 
         Returns:
-            FlextResult containing complete pipeline results
+        FlextResult containing complete pipeline results
 
         """
         FlextDbtOracleClient.logger.info("Starting full Oracle-to-DBT pipeline")

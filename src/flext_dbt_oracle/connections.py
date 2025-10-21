@@ -183,10 +183,10 @@ class FlextDbtOracleConnections:
             """Run coroutine in sync context (synchronous stub).
 
             Args:
-                coro: Object to process (ignored in sync implementation)
+            coro: Object to process (ignored in sync implementation)
 
             Returns:
-                The input object (pass-through for sync compatibility)
+            The input object (pass-through for sync compatibility)
 
             """
             # Synchronous stub - return the input unchanged

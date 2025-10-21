@@ -20,7 +20,7 @@ from flext_core import (
 class FlextDbtOracleUtilities(FlextUtilities):
     """Single unified utilities class for DBT Oracle database operations.
 
-    Provides comprehensive DBT Oracle utilities for Oracle database integration,
+    Provides complete DBT Oracle utilities for Oracle database integration,
     DBT adapter management, and Oracle-specific transformations without duplicating functionality.
     Uses FlextDbtOracleModels for all domain-specific data structures.
 
@@ -62,7 +62,7 @@ class FlextDbtOracleUtilities(FlextUtilities):
         """Execute the main DBT Oracle service operation.
 
         Returns:
-            FlextResult[dict[str, object]]: Service status and capabilities.
+        FlextResult[dict[str, object]]: Service status and capabilities.
 
         """
         return FlextResult[dict[str, object]].ok({
@@ -99,11 +99,11 @@ class FlextDbtOracleUtilities(FlextUtilities):
             """Create Oracle connection profile for DBT.
 
             Args:
-                profile_name: Name of the DBT profile
-                connection_params: Oracle connection parameters
+            profile_name: Name of the DBT profile
+            connection_params: Oracle connection parameters
 
             Returns:
-                FlextResult containing DBT profile configuration or error
+            FlextResult containing DBT profile configuration or error
 
             """
             try:
@@ -218,10 +218,10 @@ class FlextDbtOracleUtilities(FlextUtilities):
             """Validate Oracle database connection for DBT.
 
             Args:
-                connection_params: Oracle connection parameters to validate
+            connection_params: Oracle connection parameters to validate
 
             Returns:
-                FlextResult containing validation results or error
+            FlextResult containing validation results or error
 
             """
             try:
@@ -290,11 +290,11 @@ class FlextDbtOracleUtilities(FlextUtilities):
             """Generate Oracle-optimized staging model.
 
             Args:
-                table_name: Oracle table name
-                oracle_schema: Oracle table schema information
+            table_name: Oracle table name
+            oracle_schema: Oracle table schema information
 
             Returns:
-                FlextResult containing DBT model SQL or error
+            FlextResult containing DBT model SQL or error
 
             """
             try:
@@ -349,19 +349,19 @@ class FlextDbtOracleUtilities(FlextUtilities):
                 # Use string formatting to avoid SQL injection warnings
                 # Note: This is a DBT model template, not direct SQL execution
                 model_template = f"""{{{{
-    config(
-        materialized='view',
-        tags=['oracle', 'staging'],
-        description='Oracle staging model for {table_name}'
-    )
+ config(
+ materialized='view',
+ tags=['oracle', 'staging'],
+ description='Oracle staging model for {table_name}'
+ )
 }}}}
 
 select
 {select_section}
 from {{{{ source('oracle', '{table_name}') }}}}
 where 1=1
-    -- Add Oracle-specific filters
-    and {table_name}.rownum > 0
+ -- Add Oracle-specific filters
+ and {table_name}.rownum > 0
 """
 
                 model_sql = model_template.format(
@@ -383,11 +383,11 @@ where 1=1
             """Generate Oracle-optimized fact table model.
 
             Args:
-                fact_name: Name of the fact table
-                fact_config: Fact table configuration
+            fact_name: Name of the fact table
+            fact_config: Fact table configuration
 
             Returns:
-                FlextResult containing fact model SQL or error
+            FlextResult containing fact model SQL or error
 
             """
             try:
@@ -430,28 +430,28 @@ where 1=1
                 # Use string formatting to avoid SQL injection warnings
                 # Note: This is a DBT model template, not direct SQL execution
                 model_template = f"""
-    config(
-        materialized='table',
-        tags=['oracle', 'fact'],
-        description='Oracle fact table for {fact_name}',
-        indexes=[
-            {{'columns': ['date_key'], 'type': 'btree'}},
-            {{'columns': ['created_date'], 'type': 'btree'}}
-        ],
-        partition_by={{'field': 'date_key', 'data_type': 'date'}},
-        cluster_by=['date_key']
-    )
+ config(
+ materialized='table',
+ tags=['oracle', 'fact'],
+ description='Oracle fact table for {fact_name}',
+ indexes=[
+ {{'columns': ['date_key'], 'type': 'btree'}},
+ {{'columns': ['created_date'], 'type': 'btree'}}
+ ],
+ partition_by={{'field': 'date_key', 'data_type': 'date'}},
+ cluster_by=['date_key']
+ )
 }}}}
 
 select
 {select_section},
-    -- Oracle-specific audit columns
-    sysdate as dbt_updated_at,
-    ora_rowscn as oracle_version
+ -- Oracle-specific audit columns
+ sysdate as dbt_updated_at,
+ ora_rowscn as oracle_version
 from {{{{ ref('stg_{fact_name}') }}}} f
 {join_section}
 where f.is_active = 1
-    and f.date_key >= date '2020-01-01'
+ and f.date_key >= date '2020-01-01'
 """
 
                 model_sql = model_template.format(
@@ -478,11 +478,11 @@ where f.is_active = 1
             """Optimize SQL query for Oracle database.
 
             Args:
-                sql_query: Original SQL query
-                optimization_hints: Optimization configuration
+            sql_query: Original SQL query
+            optimization_hints: Optimization configuration
 
             Returns:
-                FlextResult containing optimized SQL or error
+            FlextResult containing optimized SQL or error
 
             """
             try:
@@ -545,10 +545,10 @@ where f.is_active = 1
             """Analyze Oracle query performance and provide recommendations.
 
             Args:
-                query_stats: Oracle query execution statistics
+            query_stats: Oracle query execution statistics
 
             Returns:
-                FlextResult containing performance analysis or error
+            FlextResult containing performance analysis or error
 
             """
             try:
@@ -652,11 +652,11 @@ where f.is_active = 1
             """Generate Oracle-optimized dimension model with SCD Type 2.
 
             Args:
-                dimension_name: Name of the dimension
-                dimension_config: Dimension configuration
+            dimension_name: Name of the dimension
+            dimension_config: Dimension configuration
 
             Returns:
-                FlextResult containing dimension model SQL or error
+            FlextResult containing dimension model SQL or error
 
             """
             try:
@@ -688,41 +688,41 @@ where f.is_active = 1
                     # Note: This is a DBT model template, not direct SQL execution
 
                     model_template = f"""
-    config(
-        materialized='table',
-        tags=['oracle', 'dimension', 'scd_type_2'],
-        description='Oracle SCD Type 2 dimension for {dimension_name}',
-        indexes=[
-            {{'columns': ['{business_key}'], 'type': 'btree'}},
-            {{'columns': ['effective_date', 'expiration_date'], 'type': 'btree'}}
-        ],
-        partition_by={{'field': 'effective_date', 'data_type': 'date'}}
-    )
+ config(
+ materialized='table',
+ tags=['oracle', 'dimension', 'scd_type_2'],
+ description='Oracle SCD Type 2 dimension for {dimension_name}',
+ indexes=[
+ {{'columns': ['{business_key}'], 'type': 'btree'}},
+ {{'columns': ['effective_date', 'expiration_date'], 'type': 'btree'}}
+ ],
+ partition_by={{'field': 'effective_date', 'data_type': 'date'}}
+ )
 }}}}
 
 with source_data as (
-    select
-        {business_key},
-        {attributes_str},
-        effective_date,
-        lead(effective_date) over (partition by {business_key} order by effective_date) as next_effective_date,
-        row_number() over (partition by {business_key} order by effective_date desc) as rn
-    from {{{{ ref('stg_{dimension_name}') }}}}
+ select
+ {business_key},
+ {attributes_str},
+ effective_date,
+ lead(effective_date) over (partition by {business_key} order by effective_date) as next_effective_date,
+ row_number() over (partition by {business_key} order by effective_date desc) as rn
+ from {{{{ ref('stg_{dimension_name}') }}}}
 ),
 
 final as (
-    select
-        {{{{ dbt_utils.surrogate_key(['{business_key}', 'effective_date']) }}}} as {dimension_name}_sk,
-        {business_key},
-        {attributes_str},
-        effective_date,
-        coalesce(next_effective_date - 1, date '2999-12-31') as expiration_date,
-        case when rn = 1 then 'Y' else 'N' end as current_flag,
-        -- Oracle-specific audit columns
-        sysdate as created_date,
-        sysdate as modified_date,
-        ora_rowscn as version_number
-    from source_data
+ select
+ {{{{ dbt_utils.surrogate_key(['{business_key}', 'effective_date']) }}}} as {dimension_name}_sk,
+ {business_key},
+ {attributes_str},
+ effective_date,
+ coalesce(next_effective_date - 1, date '2999-12-31') as expiration_date,
+ case when rn = 1 then 'Y' else 'N' end as current_flag,
+ -- Oracle-specific audit columns
+ sysdate as created_date,
+ sysdate as modified_date,
+ ora_rowscn as version_number
+ from source_data
 )
 
 select * from final
@@ -741,24 +741,24 @@ select * from final
                     # Note: This is a DBT model template, not direct SQL execution
 
                     model_template = f"""
-    config(
-        materialized='table',
-        tags=['oracle', 'dimension', 'scd_type_1'],
-        description='Oracle SCD Type 1 dimension for {dimension_name}',
-        indexes=[
-            {{'columns': ['{business_key}'], 'type': 'btree', 'unique': true}}
-        ]
-    )
+ config(
+ materialized='table',
+ tags=['oracle', 'dimension', 'scd_type_1'],
+ description='Oracle SCD Type 1 dimension for {dimension_name}',
+ indexes=[
+ {{'columns': ['{business_key}'], 'type': 'btree', 'unique': true}}
+ ]
+ )
 }}}}
 
 select
-    {{{{ dbt_utils.surrogate_key(['{business_key}']) }}}} as {dimension_name}_sk,
-    {business_key},
-    {attributes_str},
-    -- Oracle-specific audit columns
-    sysdate as created_date,
-    sysdate as modified_date,
-    ora_rowscn as version_number
+ {{{{ dbt_utils.surrogate_key(['{business_key}']) }}}} as {dimension_name}_sk,
+ {business_key},
+ {attributes_str},
+ -- Oracle-specific audit columns
+ sysdate as created_date,
+ sysdate as modified_date,
+ ora_rowscn as version_number
 from {{{{ ref('stg_{dimension_name}') }}}}
 """
 
@@ -782,10 +782,10 @@ from {{{{ ref('stg_{dimension_name}') }}}}
             """Create Oracle partitioning strategy for large tables.
 
             Args:
-                table_config: Table configuration and characteristics
+            table_config: Table configuration and characteristics
 
             Returns:
-                FlextResult containing partitioning strategy or error
+            FlextResult containing partitioning strategy or error
 
             """
             try:
@@ -879,11 +879,11 @@ from {{{{ ref('stg_{dimension_name}') }}}}
             """Generate Oracle-specific data tests for DBT models.
 
             Args:
-                model_name: Name of the model to test
-                test_config: Test configuration parameters
+            model_name: Name of the model to test
+            test_config: Test configuration parameters
 
             Returns:
-                FlextResult containing test configuration or error
+            FlextResult containing test configuration or error
 
             """
             try:

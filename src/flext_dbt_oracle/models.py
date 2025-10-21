@@ -65,11 +65,11 @@ class FlextDbtOracleModels(FlextModels):
         try:
             config_block = f"""
 {{{{
-  config(
-    materialized='{self.materialization}',
-    schema='{self.schema_name}',
-    alias='{self.table_name}'
-  )
+ config(
+ materialized='{self.materialization}',
+ schema='{self.schema_name}',
+ alias='{self.table_name}'
+ )
 }}}}"""
             content = f"{config_block}\n\n{self.sql_content}"
             return FlextResult[str].ok(content)
@@ -110,16 +110,16 @@ class FlextDbtOracleModels(FlextModels):
 
         # Template constants
         STAGING_TEMPLATE: ClassVar[str] = """
-        select * from {{ source('{{ schema_name }}', '{{ table_name }}') }}
-        """
+ select * from {{ source('{{ schema_name }}', '{{ table_name }}') }}
+ """
 
         INTERMEDIATE_TEMPLATE: ClassVar[str] = """
-        select * from {{ ref('{{ staging_model_name }}') }}
-        """
+ select * from {{ ref('{{ staging_model_name }}') }}
+ """
 
         MARTS_TEMPLATE: ClassVar[str] = """
-        select * from {{ ref('{{ intermediate_model_name }}') }}
-        """
+ select * from {{ ref('{{ intermediate_model_name }}') }}
+ """
 
         ORACLE_DATA_TYPE_TESTS: ClassVar[dict[str, list[str]]] = {
             "VARCHAR2": ["not_null", "unique"],

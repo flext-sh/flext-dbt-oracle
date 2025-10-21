@@ -40,11 +40,11 @@ class FlextDbtOracleProtocols:
                 """Run DBT models with Oracle data sources.
 
                 Args:
-                    models: Specific models to run, or None for all models
-                    config: DBT configuration parameters
+                models: Specific models to run, or None for all models
+                config: DBT configuration parameters
 
                 Returns:
-                    FlextResult[dict[str, object]]: DBT run results or error
+                FlextResult[dict[str, object]]: DBT run results or error
 
                 """
 
@@ -56,11 +56,11 @@ class FlextDbtOracleProtocols:
                 """Test DBT models with Oracle data validation.
 
                 Args:
-                    models: Specific models to test, or None for all models
-                    config: DBT test configuration
+                models: Specific models to test, or None for all models
+                config: DBT test configuration
 
                 Returns:
-                    FlextResult[dict[str, object]]: DBT test results or error
+                FlextResult[dict[str, object]]: DBT test results or error
 
                 """
 
@@ -72,11 +72,11 @@ class FlextDbtOracleProtocols:
                 """Compile DBT models for Oracle data processing.
 
                 Args:
-                    models: Specific models to compile, or None for all models
-                    config: DBT compilation configuration
+                models: Specific models to compile, or None for all models
+                config: DBT compilation configuration
 
                 Returns:
-                    FlextResult[dict[str, object]]: DBT compilation results or error
+                FlextResult[dict[str, object]]: DBT compilation results or error
 
                 """
 
@@ -84,7 +84,7 @@ class FlextDbtOracleProtocols:
                 """Get DBT manifest with Oracle model definitions.
 
                 Returns:
-                    FlextResult[dict[str, object]]: DBT manifest or error
+                FlextResult[dict[str, object]]: DBT manifest or error
 
                 """
 
@@ -92,10 +92,10 @@ class FlextDbtOracleProtocols:
                 """Validate DBT project configuration for Oracle integration.
 
                 Args:
-                    project_path: Path to DBT project directory
+                project_path: Path to DBT project directory
 
                 Returns:
-                    FlextResult[bool]: Validation status or error
+                FlextResult[bool]: Validation status or error
 
                 """
 
@@ -111,11 +111,11 @@ class FlextDbtOracleProtocols:
                 """Extract data from Oracle database for DBT processing.
 
                 Args:
-                    oracle_config: Oracle connection configuration
-                    extraction_config: Data extraction parameters
+                oracle_config: Oracle connection configuration
+                extraction_config: Data extraction parameters
 
                 Returns:
-                    FlextResult[list[dict[str, object]]]: Extracted Oracle data or error
+                FlextResult[list[dict[str, object]]]: Extracted Oracle data or error
 
                 """
 
@@ -127,11 +127,11 @@ class FlextDbtOracleProtocols:
                 """Transform Oracle data to DBT-compatible format.
 
                 Args:
-                    oracle_data: Raw Oracle data
-                    transformation_config: Transformation parameters
+                oracle_data: Raw Oracle data
+                transformation_config: Transformation parameters
 
                 Returns:
-                    FlextResult[list[dict[str, object]]]: Transformed data or error
+                FlextResult[list[dict[str, object]]]: Transformed data or error
 
                 """
 
@@ -143,11 +143,11 @@ class FlextDbtOracleProtocols:
                 """Validate Oracle data quality for DBT processing.
 
                 Args:
-                    data: Oracle data to validate
-                    quality_rules: Data quality validation rules
+                data: Oracle data to validate
+                quality_rules: Data quality validation rules
 
                 Returns:
-                    FlextResult[dict[str, object]]: Quality validation results or error
+                FlextResult[dict[str, object]]: Quality validation results or error
 
                 """
 
@@ -159,11 +159,11 @@ class FlextDbtOracleProtocols:
                 """Sync Oracle data to data warehouse for DBT processing.
 
                 Args:
-                    oracle_data: Oracle data to sync
-                    warehouse_config: Data warehouse configuration
+                oracle_data: Oracle data to sync
+                warehouse_config: Data warehouse configuration
 
                 Returns:
-                    FlextResult[dict[str, object]]: Sync operation results or error
+                FlextResult[dict[str, object]]: Sync operation results or error
 
                 """
 
@@ -179,11 +179,11 @@ class FlextDbtOracleProtocols:
                 """Create table dimension model from Oracle table data.
 
                 Args:
-                    oracle_tables: Oracle table data
-                    dimension_config: Dimension modeling configuration
+                oracle_tables: Oracle table data
+                dimension_config: Dimension modeling configuration
 
                 Returns:
-                    FlextResult[dict[str, object]]: Table dimension model or error
+                FlextResult[dict[str, object]]: Table dimension model or error
 
                 """
 
@@ -195,11 +195,11 @@ class FlextDbtOracleProtocols:
                 """Create schema dimension model from Oracle schema data.
 
                 Args:
-                    oracle_schemas: Oracle schema data
-                    dimension_config: Dimension modeling configuration
+                oracle_schemas: Oracle schema data
+                dimension_config: Dimension modeling configuration
 
                 Returns:
-                    FlextResult[dict[str, object]]: Schema dimension model or error
+                FlextResult[dict[str, object]]: Schema dimension model or error
 
                 """
 
@@ -211,11 +211,11 @@ class FlextDbtOracleProtocols:
                 """Create performance models from Oracle performance data.
 
                 Args:
-                    oracle_performance_data: Oracle performance metrics
-                    modeling_config: Performance modeling configuration
+                oracle_performance_data: Oracle performance metrics
+                modeling_config: Performance modeling configuration
 
                 Returns:
-                    FlextResult[dict[str, object]]: Performance models or error
+                FlextResult[dict[str, object]]: Performance models or error
 
                 """
 
@@ -227,11 +227,11 @@ class FlextDbtOracleProtocols:
                 """Generate fact tables from Oracle dimensions.
 
                 Args:
-                    dimensions: Oracle dimension models
-                    fact_config: Fact table configuration
+                dimensions: Oracle dimension models
+                fact_config: Fact table configuration
 
                 Returns:
-                    FlextResult[list[dict[str, object]]]: Generated fact tables or error
+                FlextResult[list[dict[str, object]]]: Generated fact tables or error
 
                 """
 
@@ -247,11 +247,11 @@ class FlextDbtOracleProtocols:
                 """Normalize Oracle data types for consistent DBT processing.
 
                 Args:
-                    oracle_data: Raw Oracle data
-                    normalization_rules: Data type normalization rules
+                oracle_data: Raw Oracle data
+                normalization_rules: Data type normalization rules
 
                 Returns:
-                    FlextResult[list[dict[str, object]]]: Normalized Oracle data or error
+                FlextResult[list[dict[str, object]]]: Normalized Oracle data or error
 
                 """
 
@@ -263,11 +263,11 @@ class FlextDbtOracleProtocols:
                 """Apply Oracle-specific data transformations.
 
                 Args:
-                    oracle_data: Oracle data to transform
-                    transformation_config: Oracle transformation configuration
+                oracle_data: Oracle data to transform
+                transformation_config: Oracle transformation configuration
 
                 Returns:
-                    FlextResult[list[dict[str, object]]]: Transformed data or error
+                FlextResult[list[dict[str, object]]]: Transformed data or error
 
                 """
 
@@ -279,11 +279,11 @@ class FlextDbtOracleProtocols:
                 """Apply business rules to Oracle data transformations.
 
                 Args:
-                    data: Oracle data to transform
-                    business_rules: Business transformation rules
+                data: Oracle data to transform
+                business_rules: Business transformation rules
 
                 Returns:
-                    FlextResult[list[dict[str, object]]]: Transformed data or error
+                FlextResult[list[dict[str, object]]]: Transformed data or error
 
                 """
 
@@ -295,11 +295,11 @@ class FlextDbtOracleProtocols:
                 """Optimize Oracle queries for DBT processing.
 
                 Args:
-                    query_config: Oracle query configuration
-                    optimization_rules: Query optimization rules
+                query_config: Oracle query configuration
+                optimization_rules: Query optimization rules
 
                 Returns:
-                    FlextResult[dict[str, object]]: Optimized query configuration or error
+                FlextResult[dict[str, object]]: Optimized query configuration or error
 
                 """
 
@@ -313,10 +313,10 @@ class FlextDbtOracleProtocols:
                 """Generate DBT macro for Oracle data sources.
 
                 Args:
-                    source_config: Oracle source configuration
+                source_config: Oracle source configuration
 
                 Returns:
-                    FlextResult[str]: Generated DBT macro or error
+                FlextResult[str]: Generated DBT macro or error
 
                 """
 
@@ -326,10 +326,10 @@ class FlextDbtOracleProtocols:
                 """Create DBT test macro for Oracle data validation.
 
                 Args:
-                    test_config: Oracle test configuration
+                test_config: Oracle test configuration
 
                 Returns:
-                    FlextResult[str]: Generated test macro or error
+                FlextResult[str]: Generated test macro or error
 
                 """
 
@@ -339,10 +339,10 @@ class FlextDbtOracleProtocols:
                 """Generate DBT transformation macro for Oracle data.
 
                 Args:
-                    transformation_config: Oracle transformation configuration
+                transformation_config: Oracle transformation configuration
 
                 Returns:
-                    FlextResult[str]: Generated transformation macro or error
+                FlextResult[str]: Generated transformation macro or error
 
                 """
 
@@ -352,10 +352,10 @@ class FlextDbtOracleProtocols:
                 """Create DBT snapshot macro for Oracle data versioning.
 
                 Args:
-                    snapshot_config: Oracle snapshot configuration
+                snapshot_config: Oracle snapshot configuration
 
                 Returns:
-                    FlextResult[str]: Generated snapshot macro or error
+                FlextResult[str]: Generated snapshot macro or error
 
                 """
 
@@ -371,11 +371,11 @@ class FlextDbtOracleProtocols:
                 """Validate Oracle data against schema compliance rules.
 
                 Args:
-                    oracle_data: Oracle data to validate
-                    schema_rules: Schema compliance rules
+                oracle_data: Oracle data to validate
+                schema_rules: Schema compliance rules
 
                 Returns:
-                    FlextResult[dict[str, object]]: Schema validation results or error
+                FlextResult[dict[str, object]]: Schema validation results or error
 
                 """
 
@@ -387,11 +387,11 @@ class FlextDbtOracleProtocols:
                 """Check Oracle data completeness for DBT processing.
 
                 Args:
-                    data: Oracle data to check
-                    completeness_config: Completeness validation configuration
+                data: Oracle data to check
+                completeness_config: Completeness validation configuration
 
                 Returns:
-                    FlextResult[dict[str, object]]: Completeness check results or error
+                FlextResult[dict[str, object]]: Completeness check results or error
 
                 """
 
@@ -403,11 +403,11 @@ class FlextDbtOracleProtocols:
                 """Detect anomalies in Oracle data for quality assurance.
 
                 Args:
-                    data: Oracle data to analyze
-                    anomaly_config: Anomaly detection configuration
+                data: Oracle data to analyze
+                anomaly_config: Anomaly detection configuration
 
                 Returns:
-                    FlextResult[list[dict[str, object]]]: Detected anomalies or error
+                FlextResult[list[dict[str, object]]]: Detected anomalies or error
 
                 """
 
@@ -419,11 +419,11 @@ class FlextDbtOracleProtocols:
                 """Generate data quality report for Oracle DBT processing.
 
                 Args:
-                    quality_results: Quality validation results
-                    report_config: Report generation configuration
+                quality_results: Quality validation results
+                report_config: Report generation configuration
 
                 Returns:
-                    FlextResult[dict[str, object]]: Quality report or error
+                FlextResult[dict[str, object]]: Quality report or error
 
                 """
 
@@ -439,11 +439,11 @@ class FlextDbtOracleProtocols:
                 """Optimize DBT models for Oracle data processing performance.
 
                 Args:
-                    model_config: DBT model configuration
-                    performance_metrics: Current performance metrics
+                model_config: DBT model configuration
+                performance_metrics: Current performance metrics
 
                 Returns:
-                    FlextResult[dict[str, object]]: Optimization recommendations or error
+                FlextResult[dict[str, object]]: Optimization recommendations or error
 
                 """
 
@@ -455,11 +455,11 @@ class FlextDbtOracleProtocols:
                 """Tune Oracle connections for improved DBT performance.
 
                 Args:
-                    connection_config: Oracle connection configuration
-                    tuning_config: Connection tuning parameters
+                connection_config: Oracle connection configuration
+                tuning_config: Connection tuning parameters
 
                 Returns:
-                    FlextResult[dict[str, object]]: Tuned connection configuration or error
+                FlextResult[dict[str, object]]: Tuned connection configuration or error
 
                 """
 
@@ -469,10 +469,10 @@ class FlextDbtOracleProtocols:
                 """Monitor DBT performance with Oracle data processing.
 
                 Args:
-                    run_results: DBT run results
+                run_results: DBT run results
 
                 Returns:
-                    FlextResult[dict[str, object]]: Performance metrics or error
+                FlextResult[dict[str, object]]: Performance metrics or error
 
                 """
 
@@ -482,10 +482,10 @@ class FlextDbtOracleProtocols:
                 """Optimize Oracle queries for DBT data processing.
 
                 Args:
-                    query_config: Oracle query configuration
+                query_config: Oracle query configuration
 
                 Returns:
-                    FlextResult[dict[str, object]]: Query optimization results or error
+                FlextResult[dict[str, object]]: Query optimization results or error
 
                 """
 
@@ -499,11 +499,11 @@ class FlextDbtOracleProtocols:
                 """Track DBT run metrics for Oracle data processing.
 
                 Args:
-                    run_id: DBT run identifier
-                    metrics: Run metrics data
+                run_id: DBT run identifier
+                metrics: Run metrics data
 
                 Returns:
-                    FlextResult[bool]: Metric tracking success status
+                FlextResult[bool]: Metric tracking success status
 
                 """
 
@@ -513,10 +513,10 @@ class FlextDbtOracleProtocols:
                 """Monitor Oracle data freshness for DBT processing.
 
                 Args:
-                    freshness_config: Data freshness monitoring configuration
+                freshness_config: Data freshness monitoring configuration
 
                 Returns:
-                    FlextResult[dict[str, object]]: Data freshness status or error
+                FlextResult[dict[str, object]]: Data freshness status or error
 
                 """
 
@@ -524,7 +524,7 @@ class FlextDbtOracleProtocols:
                 """Get DBT Oracle integration health status.
 
                 Returns:
-                    FlextResult[dict[str, object]]: Health status or error
+                FlextResult[dict[str, object]]: Health status or error
 
                 """
 
@@ -534,10 +534,10 @@ class FlextDbtOracleProtocols:
                 """Create monitoring dashboard for DBT Oracle operations.
 
                 Args:
-                    dashboard_config: Dashboard configuration
+                dashboard_config: Dashboard configuration
 
                 Returns:
-                    FlextResult[dict[str, object]]: Dashboard creation result or error
+                FlextResult[dict[str, object]]: Dashboard creation result or error
 
                 """
 

@@ -39,13 +39,13 @@ class FlextDbtOracleWorkflowService:
         """Initialize workflow service.
 
         Args:
-            config: Configuration for Oracle and DBT operations
+        config: Configuration for Oracle and DBT operations
 
         """
         self.config = config or FlextDbtOracleConfig.get_global_instance()
         self.client = FlextDbtOracleClient(self.config)
 
-        # ZERO TOLERANCE FIX: Use FlextDbtOracleUtilities for ALL business operations
+        # Zero Tolerance FIX: Use FlextDbtOracleUtilities for ALL business operations
         self._utilities = FlextDbtOracleUtilities()
 
         # Initialize Oracle API for model generation
@@ -69,12 +69,12 @@ class FlextDbtOracleWorkflowService:
         """Run complete metadata extraction to model generation workflow.
 
         Args:
-            schema_names: Oracle schemas to process (None = all accessible)
-            object_types: Oracle object types to process (None = all types)
-            output_path: Path to write generated models (None = current directory)
+        schema_names: Oracle schemas to process (None = all accessible)
+        object_types: Oracle object types to process (None = all types)
+        output_path: Path to write generated models (None = current directory)
 
         Returns:
-            FlextResult containing workflow results and statistics
+        FlextResult containing workflow results and statistics
 
         """
         try:
@@ -206,14 +206,14 @@ class FlextDbtOracleWorkflowService:
         """Run complete Oracle transformation pipeline with optional model generation.
 
         Args:
-            schema_names: Oracle schemas to process
-            object_types: Oracle object types to process
-            model_names: Specific DBT models to run (None = all)
-            generate_models: Whether to generate models before running DBT
-            models_output_path: Path for generated models
+        schema_names: Oracle schemas to process
+        object_types: Oracle object types to process
+        model_names: Specific DBT models to run (None = all)
+        generate_models: Whether to generate models before running DBT
+        models_output_path: Path for generated models
 
         Returns:
-            FlextResult containing complete pipeline results
+        FlextResult containing complete pipeline results
 
         """
         try:
@@ -281,10 +281,10 @@ class FlextDbtOracleWorkflowService:
     ) -> FlextResult[dict[str, object]]:
         """Validate all prerequisites for running Oracle-to-DBT workflows using utilities.
 
-        ZERO TOLERANCE FIX: Now uses FlextDbtOracleUtilities for validation.
+        Zero Tolerance FIX: Now uses FlextDbtOracleUtilities for validation.
 
         Returns:
-            FlextResult containing validation results
+        FlextResult containing validation results
 
         """
         try:
@@ -292,7 +292,7 @@ class FlextDbtOracleWorkflowService:
                 "Validating workflow prerequisites using utilities..."
             )
 
-            # ZERO TOLERANCE FIX: Use utilities for validation operations
+            # Zero Tolerance FIX: Use utilities for validation operations
             validation_result = (
                 self._utilities.OracleAdapterManagement.validate_oracle_connection(
                     self.config
@@ -304,7 +304,7 @@ class FlextDbtOracleWorkflowService:
                     f"Oracle configuration validation failed: {validation_result.error}"
                 )
 
-            # Use utilities for comprehensive prerequisite validation
+            # Use utilities for complete prerequisite validation
             prerequisites_result = FlextResult[
                 dict[str, object]
             ].ok({})  # Stub for missing class
@@ -349,10 +349,10 @@ class FlextDbtOracleWorkflowService:
         """Get recommendations for optimal workflow configuration.
 
         Args:
-            oracle_objects: Oracle objects to analyze (None = extract from database)
+        oracle_objects: Oracle objects to analyze (None = extract from database)
 
         Returns:
-            FlextResult containing workflow recommendations
+        FlextResult containing workflow recommendations
 
         """
         try:
@@ -521,7 +521,7 @@ class FlextDbtOracleWorkflowService:
             """Initialize monitoring service.
 
             Args:
-                config: Configuration for monitoring settings
+            config: Configuration for monitoring settings
 
             """
             self.config = config
@@ -537,12 +537,12 @@ class FlextDbtOracleWorkflowService:
             """Track workflow execution metrics.
 
             Args:
-                workflow_type: Type of workflow being executed
-                workflow_params: Workflow parameters (currently unused but kept for API compatibility)
-                workflow_params: Parameters passed to workflow
+            workflow_type: Type of workflow being executed
+            workflow_params: Workflow parameters (currently unused but kept for API compatibility)
+            workflow_params: Parameters passed to workflow
 
             Returns:
-                Dictionary containing execution tracking information
+            Dictionary containing execution tracking information
 
             """
             _ = workflow_params  # Parameter required by API but not used in stub implementation
@@ -567,8 +567,8 @@ class FlextDbtOracleWorkflowService:
             """Log workflow completion metrics.
 
             Args:
-                tracking_info: Tracking information from track_workflow_execution
-                result: Workflow execution result
+            tracking_info: Tracking information from track_workflow_execution
+            result: Workflow execution result
 
             """
             end_time = time.time()
