@@ -6,7 +6,7 @@ Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from pathlib import Path
-from typing import ClassVar, Self
+from typing import ClassVar, Literal, Self
 
 from flext_core import FlextConfig, FlextResult
 from flext_db_oracle import FlextDbOracleModels
@@ -99,7 +99,9 @@ class FlextDbtOracleConfig(FlextConfig):
         description="Number of DBT threads",
     )
 
-    dbt_log_level: str = Field(default="info", description="DBT logging level")
+    dbt_log_level: Literal["debug", "info", "warning", "error", "critical"] = Field(
+        default="info", description="DBT logging level"
+    )
 
     dbt_schema: str = Field(default="analytics", description="DBT default schema")
 
@@ -226,16 +228,6 @@ class FlextDbtOracleConfig(FlextConfig):
             msg = f"Invalid DBT target: {v}. Must be one of: {valid_list}"
             raise ValueError(msg)
         return v.lower()
-
-    @field_validator("dbt_log_level")
-    @classmethod
-    def validate_dbt_log_level(cls, v: str) -> str:
-        """Validate DBT log level."""
-        if v.upper() not in {"debug", "info", "warning", "error", "critical"}:
-            valid_levels = "debug, info, warning, error, critical"
-            msg = f"Invalid DBT log level: {v}. Must be one of: {valid_levels}"
-            raise ValueError(msg)
-        return v.upper()
 
     @field_validator("optimizer_mode")
     @classmethod
