@@ -470,8 +470,9 @@ where f.is_active = 1
     class OracleSqlOptimization:
         """Oracle SQL optimization and performance utilities."""
 
-        @staticmethod
+        @classmethod
         def optimize_oracle_query(
+            cls,
             sql_query: str,
             optimization_hints: dict[str, object],
         ) -> FlextResult[str]:
@@ -490,53 +491,86 @@ where f.is_active = 1
 
                 # Add Oracle hints if specified
                 if optimization_hints.get("use_hints", True):
-                    hint_clauses = []
-
-                    # Index hints
-                    if optimization_hints.get("force_index"):
-                        hint_clauses.append(
-                            f"INDEX({optimization_hints['force_index']})"
-                        )
-
-                    # Parallelism hints
-                    if optimization_hints.get("parallel_degree"):
-                        hint_clauses.append(
-                            f"PARALLEL({optimization_hints['parallel_degree']})"
-                        )
-
-                    # Join hints
-                    if optimization_hints.get("join_method") == "hash":
-                        hint_clauses.append("USE_HASH")
-                    elif optimization_hints.get("join_method") == "nested_loop":
-                        hint_clauses.append("USE_NL")
-
-                    # Cache hints
-                    if optimization_hints.get("result_cache", True):
-                        hint_clauses.append("RESULT_CACHE")
-
-                    if hint_clauses:
-                        hint_comment = f"/*+ {' '.join(hint_clauses)} */"
-                        optimized_sql = optimized_sql.replace(
-                            "select", f"select {hint_comment}", 1
-                        )
+                    hint_clauses = cls._build_oracle_hint_clauses(optimization_hints)
+                    optimized_sql = cls._apply_oracle_hints_to_query(
+                        optimized_sql, hint_clauses
+                    )
 
                 # Add Oracle-specific optimizations
-                if optimization_hints.get("add_rownum_filter", True) and (
-                    "limit" not in optimized_sql.lower()
-                    and "rownum" not in optimized_sql.lower()
-                ):
-                    # Add rownum filter for large result sets
-                    optimized_sql += "\nand rownum <= 1000000"
+                optimized_sql = cls._apply_oracle_specific_optimizations(
+                    optimized_sql, optimization_hints
+                )
 
                 # Add bind variable placeholders for better plan reuse
                 if optimization_hints.get("use_bind_variables", True):
-                    # This would be more sophisticated in real implementation
-                    optimized_sql = optimized_sql.replace("= 'literal'", "= :bind_var")
+                    optimized_sql = cls._apply_bind_variable_optimization(optimized_sql)
 
                 return FlextResult[str].ok(optimized_sql)
 
             except Exception as e:
                 return FlextResult[str].fail(f"Oracle SQL optimization failed: {e}")
+
+        @staticmethod
+        def _build_oracle_hint_clauses(
+            optimization_hints: dict[str, object],
+        ) -> list[str]:
+            """Build Oracle hint clauses from optimization hints."""
+            hint_clauses = []
+
+            # Index hints
+            if optimization_hints.get("force_index"):
+                hint_clauses.append(f"INDEX({optimization_hints['force_index']})")
+
+            # Parallelism hints
+            if optimization_hints.get("parallel_degree"):
+                hint_clauses.append(
+                    f"PARALLEL({optimization_hints['parallel_degree']})"
+                )
+
+            # Join hints
+            if optimization_hints.get("join_method") == "hash":
+                hint_clauses.append("USE_HASH")
+            elif optimization_hints.get("join_method") == "nested_loop":
+                hint_clauses.append("USE_NL")
+
+            # Cache hints
+            if optimization_hints.get("result_cache", True):
+                hint_clauses.append("RESULT_CACHE")
+
+            return hint_clauses
+
+        @staticmethod
+        def _apply_oracle_hints_to_query(
+            sql_query: str, hint_clauses: list[str]
+        ) -> str:
+            """Apply Oracle hints to SQL query."""
+            if not hint_clauses:
+                return sql_query
+
+            hint_comment = f"/*+ {' '.join(hint_clauses)} */"
+            return sql_query.replace("select", f"select {hint_comment}", 1)
+
+        @staticmethod
+        def _apply_oracle_specific_optimizations(
+            sql_query: str, optimization_hints: dict[str, object]
+        ) -> str:
+            """Apply Oracle-specific optimizations."""
+            optimized_sql = sql_query
+
+            if optimization_hints.get("add_rownum_filter", True) and (
+                "limit" not in optimized_sql.lower()
+                and "rownum" not in optimized_sql.lower()
+            ):
+                # Add rownum filter for large result sets
+                optimized_sql += "\nand rownum <= 1000000"
+
+            return optimized_sql
+
+        @staticmethod
+        def _apply_bind_variable_optimization(sql_query: str) -> str:
+            """Apply bind variable optimization for better plan reuse."""
+            # This would be more sophisticated in real implementation
+            return sql_query.replace("= 'literal'", "= :bind_var")
 
         @staticmethod
         def analyze_oracle_performance(

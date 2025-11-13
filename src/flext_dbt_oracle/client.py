@@ -134,81 +134,87 @@ class FlextDbtOracleClient:
             # Build metadata using available API: tables only
             target_schemas = schema_names or []
             tables: list[FlextDbtOracleAdapters.TableAdapter] = []
+
             if not target_schemas:
-                # If no schemas provided, try a simple default: current user schema via get_tables(None)
-                table_names_result: FlextResult[object] = self.oracle_api.get_tables()
-                if table_names_result.success:
-                    for table_dict in table_names_result.value or []:
-                        # Extract table name from dictionary with proper type casting
-                        table_name = (
-                            str(table_dict.get("name", ""))
-                            if isinstance(table_dict, dict)
-                            else str(table_dict)
-                        )
-                        meta = self.oracle_api.get_table_metadata(table_name)
-                        if meta.success and isinstance(meta.value, dict):
-                            # Convert dict[str, object] metadata using adapter factory
-                            table_metadata = meta.value
-                            # Create adapter from API response
-                            adapter_result = (
-                                FlextDbtOracleAdapters.TableFactory.from_api_response(
-                                    table_name=table_name,
-                                    api_response=table_metadata,
-                                    schema_name=None,  # Will be inferred from response
-                                )
-                            )
-                            if adapter_result.is_success:
-                                tables.append(adapter_result.unwrap())
-                else:
-                    return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].fail(
-                        f"Failed to list tables: {table_names_result.error}",
-                    )
+                tables.extend(self._extract_tables_from_default_schema())
             else:
                 for schema in target_schemas:
-                    table_names_result: FlextResult[object] = (
-                        self.oracle_api.get_tables(schema)
-                    )
-                    if not table_names_result.success:
-                        FlextDbtOracleClient.logger.warning(
-                            "Failed to list tables for schema %s: %s",
-                            schema,
-                            table_names_result.error,
-                        )
-                        continue
-                    for table_dict in table_names_result.value or []:
-                        # Extract table name from dictionary with proper type casting
-                        table_name = (
-                            str(table_dict.get("name", ""))
-                            if isinstance(table_dict, dict)
-                            else str(table_dict)
-                        )
-                        meta = self.oracle_api.get_table_metadata(table_name, schema)
-                        if meta.success and isinstance(meta.value, dict):
-                            # Convert dict[str, object] metadata using adapter factory
-                            table_metadata = meta.value
-                            # Create adapter from API response
-                            adapter_result = (
-                                FlextDbtOracleAdapters.TableFactory.from_api_response(
-                                    table_name=table_name,
-                                    api_response=table_metadata,
-                                    schema_name=schema,
-                                )
-                            )
-                            if adapter_result.is_success:
-                                tables.append(adapter_result.unwrap())
-
-            FlextDbtOracleClient.logger.info(
-                "Successfully extracted %d Oracle tables", len(tables)
-            )
-            return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].ok(tables)
+                    tables.extend(self._extract_tables_from_schema(schema))
 
         except Exception as e:
-            FlextDbtOracleClient.logger.exception(
-                "Unexpected error during Oracle metadata extraction"
-            )
             return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].fail(
-                f"Metadata extraction error: {e}",
+                f"Oracle metadata extraction failed: {e}",
             )
+
+        FlextDbtOracleClient.logger.info(
+            "Extracted %d Oracle objects successfully", len(tables)
+        )
+        return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].ok(tables)
+
+    def _extract_tables_from_default_schema(
+        self,
+    ) -> list[FlextDbtOracleAdapters.TableAdapter]:
+        """Extract tables from default schema (no schema specified)."""
+        tables = []
+        table_names_result: FlextResult[object] = self.oracle_api.get_tables()
+        if not table_names_result.success:
+            FlextDbtOracleClient.logger.warning(
+                "Failed to list tables for default schema: %s", table_names_result.error
+            )
+            return tables
+
+        for table_dict in table_names_result.value or []:
+            table_name = self._extract_table_name(table_dict)
+            if table_name:
+                table_adapter = self._create_table_adapter(table_name, None)
+                if table_adapter:
+                    tables.append(table_adapter)
+        return tables
+
+    def _extract_tables_from_schema(
+        self, schema: str
+    ) -> list[FlextDbtOracleAdapters.TableAdapter]:
+        """Extract tables from a specific schema."""
+        tables = []
+        table_names_result: FlextResult[object] = self.oracle_api.get_tables(schema)
+        if not table_names_result.success:
+            FlextDbtOracleClient.logger.warning(
+                "Failed to list tables for schema %s: %s",
+                schema,
+                table_names_result.error,
+            )
+            return tables
+
+        for table_dict in table_names_result.value or []:
+            table_name = self._extract_table_name(table_dict)
+            if table_name:
+                table_adapter = self._create_table_adapter(table_name, schema)
+                if table_adapter:
+                    tables.append(table_adapter)
+        return tables
+
+    def _extract_table_name(self, table_dict: object) -> str | None:
+        """Extract table name from table dictionary."""
+        if isinstance(table_dict, dict):
+            return str(table_dict.get("name", ""))
+        return str(table_dict) if table_dict else None
+
+    def _create_table_adapter(
+        self, table_name: str, schema_name: str | None
+    ) -> FlextDbtOracleAdapters.TableAdapter | None:
+        """Create table adapter from API response."""
+        meta = self.oracle_api.get_table_metadata(table_name, schema_name)
+        if not (meta.success and isinstance(meta.value, dict)):
+            return None
+
+        table_metadata = meta.value
+        adapter_result = FlextDbtOracleAdapters.TableFactory.from_api_response(
+            table_name=table_name,
+            api_response=table_metadata,
+            schema_name=schema_name,
+        )
+
+        return adapter_result.unwrap() if adapter_result.is_success else None
 
     def validate_oracle_data(
         self,
