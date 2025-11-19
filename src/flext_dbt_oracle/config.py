@@ -15,15 +15,23 @@ from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
 
-class FlextDbtOracleConfig(FlextConfig):
+@FlextConfig.auto_register("dbt_oracle")
+class FlextDbtOracleConfig(FlextConfig.AutoConfig):
     """Configuration for DBT Oracle transformations.
 
+    **ARCHITECTURAL PATTERN**: Zero-Boilerplate Auto-Registration
+
+    This class uses FlextConfig.AutoConfig for automatic:
+    - Singleton pattern (thread-safe)
+    - Namespace registration (accessible via config.dbt_oracle)
+    - Environment variable loading from FLEXT_DBT_ORACLE_* variables
+    - .env file loading (production/development)
+    - Automatic type conversion and validation via Pydantic v2
+
     Follows standardized [Project]Config pattern:
-    - Extends FlextConfig from flext-core
     - Uses SecretStr for sensitive data
     - All defaults from FlextConstants
     - Proper Pydantic 2 validation
-    - Enhanced singleton pattern with inverse dependency injection
 
     Combines Oracle database settings with DBT execution configuration.
     """
