@@ -9,6 +9,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import Literal
+
 from flext_core import FlextConstants
 
 
@@ -135,3 +137,15 @@ class FlextDbtOracleConstants(FlextConstants):
         LOG_LEVEL_WARNING = 30
         LOG_LEVEL_ERROR = 40
         LOG_LEVEL_CRITICAL = 50
+
+    class Literals:
+        """Type-safe string literals for DBT Oracle operations.
+
+        Python 3.13+ best practice: Use TypeAlias for better type checking.
+        """
+
+        # DBT log level literal - matches DBT log levels
+        DbtLogLevelLiteral: type = Literal[
+            "debug", "info", "warning", "error", "critical"
+        ]
+        """DBT log level literal."""

@@ -6,13 +6,15 @@ Copyright (c) 2025 FLEXT Team. All rights reserved. SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from pathlib import Path
-from typing import ClassVar, Literal, Self
+from typing import ClassVar, Self
 
 from flext_core import FlextConfig, FlextResult
 from flext_db_oracle import FlextDbOracleModels
 from flext_meltano.config import FlextMeltanoConfig
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
+
+from flext_dbt_oracle.constants import FlextDbtOracleConstants
 
 
 @FlextConfig.auto_register("dbt_oracle")
@@ -107,7 +109,7 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
         description="Number of DBT threads",
     )
 
-    dbt_log_level: Literal["debug", "info", "warning", "error", "critical"] = Field(
+    dbt_log_level: FlextDbtOracleConstants.Literals.DbtLogLevelLiteral = Field(
         default="info", description="DBT logging level"
     )
 
