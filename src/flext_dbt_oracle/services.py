@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 from typing import override
 
-from flext_core import FlextLogger, FlextResult, FlextTypes
+from flext_core import FlextLogger, FlextResult, t
 from flext_db_oracle import FlextDbOracleApi
 from flext_db_oracle.models import FlextDbOracleModels
 
@@ -220,7 +220,7 @@ class FlextDbtOracleWorkflowService:
             FlextDbtOracleWorkflowService.logger.info(
                 "Starting full Oracle transformation pipeline"
             )
-            pipeline_results: FlextTypes.NestedDict = {}
+            pipeline_results: t.NestedDict = {}
 
             # Step 1: Generate models if requested
             if generate_models:

@@ -13,11 +13,11 @@ from flext_core import (
     FlextContainer,
     FlextLogger,
     FlextResult,
-    FlextUtilities,
+    u,
 )
 
 
-class FlextDbtOracleUtilities(FlextUtilities):
+class FlextDbtOracleUtilities(u):
     """Single unified utilities class for DBT Oracle database operations.
 
     Provides complete DBT Oracle utilities for Oracle database integration,

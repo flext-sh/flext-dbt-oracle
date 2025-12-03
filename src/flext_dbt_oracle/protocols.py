@@ -2,11 +2,11 @@
 
 from typing import Protocol, runtime_checkable
 
-from flext_core import FlextProtocols, FlextResult
+from flext_core import FlextResult, p
 
 
 class FlextDbtOracleProtocols:
-    """DBT Oracle protocols with explicit re-exports from FlextProtocols foundation.
+    """DBT Oracle protocols with explicit re-exports from p foundation.
 
     This class provides protocol definitions for DBT operations with Oracle database integration,
     data transformation, modeling, and enterprise Oracle analytics patterns.
@@ -29,7 +29,7 @@ class FlextDbtOracleProtocols:
         """DBT Oracle domain protocols for Oracle database transformation and analytics."""
 
         @runtime_checkable
-        class DbtProtocol(FlextProtocols.Service, Protocol):
+        class DbtProtocol(p.Service, Protocol):
             """Protocol for DBT operations with Oracle data."""
 
             def run_dbt_models(
@@ -100,7 +100,7 @@ class FlextDbtOracleProtocols:
                 """
 
         @runtime_checkable
-        class OracleIntegrationProtocol(FlextProtocols.Service, Protocol):
+        class OracleIntegrationProtocol(p.Service, Protocol):
             """Protocol for Oracle database integration operations."""
 
             def extract_oracle_data(
@@ -168,7 +168,7 @@ class FlextDbtOracleProtocols:
                 """
 
         @runtime_checkable
-        class ModelingProtocol(FlextProtocols.Service, Protocol):
+        class ModelingProtocol(p.Service, Protocol):
             """Protocol for Oracle data modeling operations."""
 
             def create_table_dimension(
@@ -236,7 +236,7 @@ class FlextDbtOracleProtocols:
                 """
 
         @runtime_checkable
-        class TransformationProtocol(FlextProtocols.Service, Protocol):
+        class TransformationProtocol(p.Service, Protocol):
             """Protocol for Oracle data transformation operations."""
 
             def normalize_oracle_data_types(
@@ -304,7 +304,7 @@ class FlextDbtOracleProtocols:
                 """
 
         @runtime_checkable
-        class MacroProtocol(FlextProtocols.Service, Protocol):
+        class MacroProtocol(p.Service, Protocol):
             """Protocol for DBT macro operations with Oracle data."""
 
             def generate_oracle_source_macro(
@@ -360,7 +360,7 @@ class FlextDbtOracleProtocols:
                 """
 
         @runtime_checkable
-        class QualityProtocol(FlextProtocols.Service, Protocol):
+        class QualityProtocol(p.Service, Protocol):
             """Protocol for Oracle data quality operations."""
 
             def validate_oracle_schema_compliance(
@@ -428,7 +428,7 @@ class FlextDbtOracleProtocols:
                 """
 
         @runtime_checkable
-        class PerformanceProtocol(FlextProtocols.Service, Protocol):
+        class PerformanceProtocol(p.Service, Protocol):
             """Protocol for DBT Oracle performance optimization operations."""
 
             def optimize_dbt_models(
@@ -490,7 +490,7 @@ class FlextDbtOracleProtocols:
                 """
 
         @runtime_checkable
-        class MonitoringProtocol(FlextProtocols.Service, Protocol):
+        class MonitoringProtocol(p.Service, Protocol):
             """Protocol for DBT Oracle monitoring operations."""
 
             def track_dbt_run_metrics(
