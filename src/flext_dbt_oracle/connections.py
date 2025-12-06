@@ -109,7 +109,7 @@ class FlextDbtOracleConnections:
                 return connection
             except Exception as e:
                 self._handle_connection_error(
-                    f"Connection {connection.name} failed: {e}"
+                    f"Connection {connection.name} failed: {e}",
                 )
                 raise
 

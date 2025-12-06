@@ -146,6 +146,10 @@ class FlextDbtOracleConstants(FlextConstants):
 
         # DBT log level literal - matches DBT log levels
         DbtLogLevelLiteral: type = Literal[
-            "debug", "info", "warning", "error", "critical"
+            "debug",
+            "info",
+            "warning",
+            "error",
+            "critical",
         ]
         """DBT log level literal."""

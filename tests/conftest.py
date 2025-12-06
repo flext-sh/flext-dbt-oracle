@@ -12,17 +12,17 @@ import tempfile
 from collections.abc import Generator
 
 import pytest
-from flext_tests import FlextTestDocker
+from flext_tests import FlextTestsDocker
 
 
 @pytest.fixture(scope="session")
-def docker_control() -> FlextTestDocker:
-    """Provide FlextTestDocker instance for container management."""
-    return FlextTestDocker()
+def docker_control() -> FlextTestsDocker:
+    """Provide FlextTestsDocker instance for container management."""
+    return FlextTestsDocker()
 
 
 @pytest.fixture(scope="session")
-def shared_oracle_container(docker_control: FlextTestDocker) -> FlextTestDocker:
+def shared_oracle_container(docker_control: FlextTestsDocker) -> FlextTestsDocker:
     """Start and maintain flext-oracle-db-test container.
 
     Container auto-starts if not running and remains running after tests.

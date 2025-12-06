@@ -67,11 +67,13 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
     oracle_username: str = Field(default="", description="Oracle username")
 
     oracle_password: SecretStr = Field(
-        default_factory=lambda: SecretStr(""), description="Oracle password (sensitive)"
+        default_factory=lambda: SecretStr(""),
+        description="Oracle password (sensitive)",
     )
 
     oracle_protocol: str = Field(
-        default="tcp", description="Oracle connection protocol"
+        default="tcp",
+        description="Oracle connection protocol",
     )
 
     oracle_pool_min: int = Field(
@@ -93,7 +95,8 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
     )
 
     oracle_encoding: str = Field(
-        default="utf-8", description="Oracle connection encoding"
+        default="utf-8",
+        description="Oracle connection encoding",
     )
 
     # DBT Execution Configuration - using Field() with proper defaults
@@ -110,7 +113,8 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
     )
 
     dbt_log_level: FlextDbtOracleConstants.Literals.DbtLogLevelLiteral = Field(
-        default="info", description="DBT logging level"
+        default="info",
+        description="DBT logging level",
     )
 
     dbt_schema: str = Field(default="analytics", description="DBT default schema")
@@ -124,7 +128,8 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
     )
 
     validate_connections: bool = Field(
-        default=True, description="Enable connection validation"
+        default=True,
+        description="Enable connection validation",
     )
 
     max_parallel_connections: int = Field(
@@ -147,7 +152,8 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
     )
 
     enable_parallel_dml: bool = Field(
-        default=True, description="Enable Oracle parallel DML"
+        default=True,
+        description="Enable Oracle parallel DML",
     )
 
     optimizer_mode: str = Field(default="ALL_ROWS", description="Oracle optimizer mode")
@@ -383,7 +389,8 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
         config_data = {**dev_config, **overrides}
         try:
             instance = cls.get_or_create_shared_instance(
-                project_name="flext-dbt-oracle", **config_data
+                project_name="flext-dbt-oracle",
+                **config_data,
             )
             return FlextResult[Self].ok(instance)
         except Exception as e:
@@ -403,7 +410,8 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
         config_data = {**prod_config, **overrides}
         try:
             instance = cls.get_or_create_shared_instance(
-                project_name="flext-dbt-oracle", **config_data
+                project_name="flext-dbt-oracle",
+                **config_data,
             )
             return FlextResult[Self].ok(instance)
         except Exception as e:
@@ -424,7 +432,8 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
         config_data = {**test_config, **overrides}
         try:
             instance = cls.get_or_create_shared_instance(
-                project_name="flext-dbt-oracle", **config_data
+                project_name="flext-dbt-oracle",
+                **config_data,
             )
             return FlextResult[Self].ok(instance)
         except Exception as e:
@@ -432,7 +441,9 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
 
     @classmethod
     def create_for_environment(
-        cls, environment: str, **overrides: object
+        cls,
+        environment: str,
+        **overrides: object,
     ) -> FlextResult[Self]:
         """Create configuration for specific environment."""
         if environment == "production":

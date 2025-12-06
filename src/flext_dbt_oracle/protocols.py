@@ -308,7 +308,8 @@ class FlextDbtOracleProtocols:
             """Protocol for DBT macro operations with Oracle data."""
 
             def generate_oracle_source_macro(
-                self, source_config: dict[str, object]
+                self,
+                source_config: dict[str, object],
             ) -> FlextResult[str]:
                 """Generate DBT macro for Oracle data sources.
 
@@ -321,7 +322,8 @@ class FlextDbtOracleProtocols:
                 """
 
             def create_oracle_test_macro(
-                self, test_config: dict[str, object]
+                self,
+                test_config: dict[str, object],
             ) -> FlextResult[str]:
                 """Create DBT test macro for Oracle data validation.
 
@@ -334,7 +336,8 @@ class FlextDbtOracleProtocols:
                 """
 
             def generate_oracle_transformation_macro(
-                self, transformation_config: dict[str, object]
+                self,
+                transformation_config: dict[str, object],
             ) -> FlextResult[str]:
                 """Generate DBT transformation macro for Oracle data.
 
@@ -347,7 +350,8 @@ class FlextDbtOracleProtocols:
                 """
 
             def create_oracle_snapshot_macro(
-                self, snapshot_config: dict[str, object]
+                self,
+                snapshot_config: dict[str, object],
             ) -> FlextResult[str]:
                 """Create DBT snapshot macro for Oracle data versioning.
 
@@ -464,7 +468,8 @@ class FlextDbtOracleProtocols:
                 """
 
             def monitor_dbt_performance(
-                self, run_results: dict[str, object]
+                self,
+                run_results: dict[str, object],
             ) -> FlextResult[dict[str, object]]:
                 """Monitor DBT performance with Oracle data processing.
 
@@ -477,7 +482,8 @@ class FlextDbtOracleProtocols:
                 """
 
             def optimize_oracle_queries(
-                self, query_config: dict[str, object]
+                self,
+                query_config: dict[str, object],
             ) -> FlextResult[dict[str, object]]:
                 """Optimize Oracle queries for DBT data processing.
 
@@ -494,7 +500,9 @@ class FlextDbtOracleProtocols:
             """Protocol for DBT Oracle monitoring operations."""
 
             def track_dbt_run_metrics(
-                self, run_id: str, metrics: dict[str, object]
+                self,
+                run_id: str,
+                metrics: dict[str, object],
             ) -> FlextResult[bool]:
                 """Track DBT run metrics for Oracle data processing.
 
@@ -508,7 +516,8 @@ class FlextDbtOracleProtocols:
                 """
 
             def monitor_oracle_data_freshness(
-                self, freshness_config: dict[str, object]
+                self,
+                freshness_config: dict[str, object],
             ) -> FlextResult[dict[str, object]]:
                 """Monitor Oracle data freshness for DBT processing.
 
@@ -529,7 +538,8 @@ class FlextDbtOracleProtocols:
                 """
 
             def create_monitoring_dashboard(
-                self, dashboard_config: dict[str, object]
+                self,
+                dashboard_config: dict[str, object],
             ) -> FlextResult[dict[str, object]]:
                 """Create monitoring dashboard for DBT Oracle operations.
 
@@ -546,38 +556,77 @@ class FlextDbtOracleProtocols:
     # ============================================================================
 
     # DBT operations
-    DbtProtocol = DbtOracle.DbtProtocol
+    @runtime_checkable
+    class DbtProtocol(DbtOracle.DbtProtocol):
+        """DbtProtocol - real inheritance."""
 
     # Oracle integration
-    OracleIntegrationProtocol = DbtOracle.OracleIntegrationProtocol
+    @runtime_checkable
+    class OracleIntegrationProtocol(DbtOracle.OracleIntegrationProtocol):
+        """OracleIntegrationProtocol - real inheritance."""
 
     # Data modeling
-    ModelingProtocol = DbtOracle.ModelingProtocol
+    @runtime_checkable
+    class ModelingProtocol(DbtOracle.ModelingProtocol):
+        """ModelingProtocol - real inheritance."""
 
     # Transformations
-    TransformationProtocol = DbtOracle.TransformationProtocol
+    @runtime_checkable
+    class TransformationProtocol(DbtOracle.TransformationProtocol):
+        """TransformationProtocol - real inheritance."""
 
     # DBT macros
-    MacroProtocol = DbtOracle.MacroProtocol
+    @runtime_checkable
+    class MacroProtocol(DbtOracle.MacroProtocol):
+        """MacroProtocol - real inheritance."""
 
     # Data quality
-    QualityProtocol = DbtOracle.QualityProtocol
+    @runtime_checkable
+    class QualityProtocol(DbtOracle.QualityProtocol):
+        """QualityProtocol - real inheritance."""
 
     # Performance optimization
-    PerformanceProtocol = DbtOracle.PerformanceProtocol
+    @runtime_checkable
+    class PerformanceProtocol(DbtOracle.PerformanceProtocol):
+        """PerformanceProtocol - real inheritance."""
 
     # Monitoring
-    MonitoringProtocol = DbtOracle.MonitoringProtocol
+    @runtime_checkable
+    class MonitoringProtocol(DbtOracle.MonitoringProtocol):
+        """MonitoringProtocol - real inheritance."""
 
     # Convenience aliases for downstream usage
-    DbtOracleProtocol = DbtOracle.DbtProtocol
-    DbtOracleIntegrationProtocol = DbtOracle.OracleIntegrationProtocol
-    DbtOracleModelingProtocol = DbtOracle.ModelingProtocol
-    DbtOracleTransformationProtocol = DbtOracle.TransformationProtocol
-    DbtOracleMacroProtocol = DbtOracle.MacroProtocol
-    DbtOracleQualityProtocol = DbtOracle.QualityProtocol
-    DbtOraclePerformanceProtocol = DbtOracle.PerformanceProtocol
-    DbtOracleMonitoringProtocol = DbtOracle.MonitoringProtocol
+    @runtime_checkable
+    class DbtOracleProtocol(DbtOracle.DbtProtocol):
+        """DbtOracleProtocol - real inheritance."""
+
+    @runtime_checkable
+    class DbtOracleIntegrationProtocol(DbtOracle.OracleIntegrationProtocol):
+        """DbtOracleIntegrationProtocol - real inheritance."""
+
+    @runtime_checkable
+    class DbtOracleModelingProtocol(DbtOracle.ModelingProtocol):
+        """DbtOracleModelingProtocol - real inheritance."""
+
+    @runtime_checkable
+    class DbtOracleTransformationProtocol(DbtOracle.TransformationProtocol):
+        """DbtOracleTransformationProtocol - real inheritance."""
+
+    @runtime_checkable
+    class DbtOracleMacroProtocol(DbtOracle.MacroProtocol):
+        """DbtOracleMacroProtocol - real inheritance."""
+
+    @runtime_checkable
+    class DbtOracleQualityProtocol(DbtOracle.QualityProtocol):
+        """DbtOracleQualityProtocol - real inheritance."""
+
+    @runtime_checkable
+    class DbtOraclePerformanceProtocol(DbtOracle.PerformanceProtocol):
+        """DbtOraclePerformanceProtocol - real inheritance."""
+
+    @runtime_checkable
+    class DbtOracleMonitoringProtocol(DbtOracle.MonitoringProtocol):
+        """DbtOracleMonitoringProtocol - real inheritance."""
 
 
 __all__ = [

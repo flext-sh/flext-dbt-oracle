@@ -126,7 +126,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
             )
         except Exception as e:
             return FlextResult[dict[str, object]].fail(
-                f"Workflow execution failed: {e}"
+                f"Workflow execution failed: {e}",
             )
 
     def generate_dbt_models_from_oracle(
@@ -186,7 +186,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
             )
         except Exception as e:
             return FlextResult[dict[str, object]].fail(
-                f"Metadata extraction failed: {e}"
+                f"Metadata extraction failed: {e}",
             )
 
     def monitor_dbt_execution(
@@ -205,7 +205,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
 
         """
         try:
-            self.logger.info(f"Monitoring DBT execution: {command}")
+            self.logger.info("Monitoring DBT execution: %s", command)
             return self.monitoring_service.monitor_dbt_execution(
                 command=command,
                 timeout_seconds=timeout_seconds,
@@ -242,14 +242,14 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
 
         """
         try:
-            self.logger.info(f"Getting Oracle table info: {table_name}")
+            self.logger.info("Getting Oracle table info: %s", table_name)
             return self.client.get_table_info(
                 table_name=table_name,
                 schema_name=schema_name,
             )
         except Exception as e:
             return FlextResult[dict[str, object]].fail(
-                f"Table info retrieval failed: {e}"
+                f"Table info retrieval failed: {e}",
             )
 
 

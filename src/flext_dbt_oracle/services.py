@@ -105,7 +105,8 @@ class FlextDbtOracleWorkflowService:
 
             oracle_objects = metadata_result.value or []
             FlextDbtOracleWorkflowService.logger.info(
-                "Extracted metadata for %d Oracle objects", len(oracle_objects)
+                "Extracted metadata for %d Oracle objects",
+                len(oracle_objects),
             )
 
             # Step 3: Generate staging models
@@ -124,7 +125,7 @@ class FlextDbtOracleWorkflowService:
 
             # Step 4: Generate intermediate models
             FlextDbtOracleWorkflowService.logger.info(
-                "Generating intermediate models..."
+                "Generating intermediate models...",
             )
             intermediate_result = self.model_generator.generate_intermediate_models(
                 staging_models,
@@ -151,7 +152,8 @@ class FlextDbtOracleWorkflowService:
             # Step 6: Write all models to disk
             all_models = staging_models + intermediate_models + marts_models
             FlextDbtOracleWorkflowService.logger.info(
-                "Writing %d models to disk...", len(all_models)
+                "Writing %d models to disk...",
+                len(all_models),
             )
 
             write_result = self.model_generator.write_models_to_disk(
@@ -188,7 +190,7 @@ class FlextDbtOracleWorkflowService:
 
         except Exception as e:
             FlextDbtOracleWorkflowService.logger.exception(
-                "Unexpected error in metadata-to-models workflow"
+                "Unexpected error in metadata-to-models workflow",
             )
             return FlextResult[dict[str, object]].fail(
                 f"Metadata-to-models workflow failed: {e}",
@@ -218,14 +220,14 @@ class FlextDbtOracleWorkflowService:
         """
         try:
             FlextDbtOracleWorkflowService.logger.info(
-                "Starting full Oracle transformation pipeline"
+                "Starting full Oracle transformation pipeline",
             )
             pipeline_results: t.NestedDict = {}
 
             # Step 1: Generate models if requested
             if generate_models:
                 FlextDbtOracleWorkflowService.logger.info(
-                    "Generating DBT models from Oracle metadata..."
+                    "Generating DBT models from Oracle metadata...",
                 )
                 models_result = self.run_metadata_to_models_workflow(
                     schema_names,
@@ -241,7 +243,7 @@ class FlextDbtOracleWorkflowService:
 
             # Step 2: Run DBT transformation pipeline
             FlextDbtOracleWorkflowService.logger.info(
-                "Running DBT transformation pipeline..."
+                "Running DBT transformation pipeline...",
             )
             transformation_result = self.client.run_full_pipeline(
                 schema_names,
@@ -264,13 +266,13 @@ class FlextDbtOracleWorkflowService:
             }
 
             FlextDbtOracleWorkflowService.logger.info(
-                "Full Oracle transformation pipeline completed successfully"
+                "Full Oracle transformation pipeline completed successfully",
             )
             return FlextResult[dict[str, object]].ok(full_results)
 
         except Exception as e:
             FlextDbtOracleWorkflowService.logger.exception(
-                "Unexpected error in full transformation pipeline"
+                "Unexpected error in full transformation pipeline",
             )
             return FlextResult[dict[str, object]].fail(
                 f"Full transformation pipeline failed: {e}",
@@ -289,19 +291,19 @@ class FlextDbtOracleWorkflowService:
         """
         try:
             FlextDbtOracleWorkflowService.logger.info(
-                "Validating workflow prerequisites using utilities..."
+                "Validating workflow prerequisites using utilities...",
             )
 
             # Zero Tolerance FIX: Use utilities for validation operations
             validation_result = (
                 self._utilities.OracleAdapterManagement.validate_oracle_connection(
-                    self.config
+                    self.config,
                 )
             )
 
             if validation_result.is_failure:
                 return FlextResult[dict[str, object]].fail(
-                    f"Oracle configuration validation failed: {validation_result.error}"
+                    f"Oracle configuration validation failed: {validation_result.error}",
                 )
 
             # Use utilities for complete prerequisite validation
@@ -311,7 +313,7 @@ class FlextDbtOracleWorkflowService:
 
             if prerequisites_result.is_failure:
                 return FlextResult[dict[str, object]].fail(
-                    f"DBT prerequisites validation failed: {prerequisites_result.error}"
+                    f"DBT prerequisites validation failed: {prerequisites_result.error}",
                 )
 
             # Use utilities for performance validation
@@ -330,13 +332,13 @@ class FlextDbtOracleWorkflowService:
             }
 
             FlextDbtOracleWorkflowService.logger.info(
-                "Workflow prerequisites validation completed using utilities"
+                "Workflow prerequisites validation completed using utilities",
             )
             return FlextResult[dict[str, object]].ok(validation_results)
 
         except Exception as e:
             FlextDbtOracleWorkflowService.logger.exception(
-                "Unexpected error during prerequisites validation"
+                "Unexpected error during prerequisites validation",
             )
             return FlextResult[dict[str, object]].fail(
                 f"Prerequisites validation failed: {e}",
@@ -357,7 +359,7 @@ class FlextDbtOracleWorkflowService:
         """
         try:
             FlextDbtOracleWorkflowService.logger.info(
-                "Generating workflow recommendations..."
+                "Generating workflow recommendations...",
             )
 
             # Extract objects if not provided
@@ -490,13 +492,14 @@ class FlextDbtOracleWorkflowService:
             }
 
             FlextDbtOracleWorkflowService.logger.info(
-                "Generated %d workflow recommendations", len(recommendations)
+                "Generated %d workflow recommendations",
+                len(recommendations),
             )
             return FlextResult[dict[str, object]].ok(results)
 
         except Exception as e:
             FlextDbtOracleWorkflowService.logger.exception(
-                "Unexpected error generating workflow recommendations"
+                "Unexpected error generating workflow recommendations",
             )
             return FlextResult[dict[str, object]].fail(
                 f"Recommendations generation failed: {e}",
@@ -526,7 +529,7 @@ class FlextDbtOracleWorkflowService:
             """
             self.config = config
             FlextDbtOracleWorkflowService.logger.info(
-                "Initialized Oracle DBT monitoring service"
+                "Initialized Oracle DBT monitoring service",
             )
 
         def track_workflow_execution(
@@ -589,11 +592,13 @@ class FlextDbtOracleWorkflowService:
 
             if result.is_success:
                 FlextDbtOracleWorkflowService.logger.info(
-                    "Workflow completed successfully: %s", completion_info
+                    "Workflow completed successfully: %s",
+                    completion_info,
                 )
             else:
                 FlextDbtOracleWorkflowService.logger.error(
-                    "Workflow failed: %s", completion_info
+                    "Workflow failed: %s",
+                    completion_info,
                 )
 
 

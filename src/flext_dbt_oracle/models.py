@@ -94,7 +94,7 @@ class FlextDbtOracleModels(FlextModels):
             return FlextResult[dict[str, object]].ok(schema_entry)
         except Exception as e:
             return FlextResult[dict[str, object]].fail(
-                f"Schema entry generation failed: {e}"
+                f"Schema entry generation failed: {e}",
             )
 
     @classmethod
@@ -138,7 +138,8 @@ class FlextDbtOracleModels(FlextModels):
             # For now, we'll create a placeholder implementation
 
         def generate_staging_models(
-            self, schema_names: list[str]
+            self,
+            schema_names: list[str],
         ) -> FlextResult[list[FlextDbtOracleModels]]:
             """Generate staging models from Oracle schema metadata."""
             staging_models: list[FlextDbtOracleModels] = []
@@ -148,7 +149,7 @@ class FlextDbtOracleModels(FlextModels):
                 model_result = self._create_staging_model(schema_name)
                 if model_result.is_failure:
                     FlextDbtOracleModels.logger.warning(
-                        f"Failed to create staging model for {schema_name}: {model_result.error}"
+                        f"Failed to create staging model for {schema_name}: {model_result.error}",
                     )
                     continue
 
@@ -157,7 +158,8 @@ class FlextDbtOracleModels(FlextModels):
             return FlextResult[list[FlextDbtOracleModels]].ok(staging_models)
 
         def generate_intermediate_models(
-            self, staging_models: list[FlextDbtOracleModels]
+            self,
+            staging_models: list[FlextDbtOracleModels],
         ) -> FlextResult[list[FlextDbtOracleModels]]:
             """Generate intermediate models from staging models."""
             intermediate_models: list[FlextDbtOracleModels] = []
@@ -167,7 +169,7 @@ class FlextDbtOracleModels(FlextModels):
                 model_result = self._create_intermediate_model(staging_model)
                 if model_result.is_failure:
                     FlextDbtOracleModels.logger.warning(
-                        f"Failed to create intermediate model for {staging_model.name}: {model_result.error}"
+                        f"Failed to create intermediate model for {staging_model.name}: {model_result.error}",
                     )
                     continue
 
@@ -176,7 +178,8 @@ class FlextDbtOracleModels(FlextModels):
             return FlextResult[list[FlextDbtOracleModels]].ok(intermediate_models)
 
         def generate_marts_models(
-            self, intermediate_models: list[FlextDbtOracleModels]
+            self,
+            intermediate_models: list[FlextDbtOracleModels],
         ) -> FlextResult[list[FlextDbtOracleModels]]:
             """Generate marts models from intermediate models."""
             marts_models: list[FlextDbtOracleModels] = []
@@ -186,7 +189,7 @@ class FlextDbtOracleModels(FlextModels):
                 model_result = self._create_marts_model(intermediate_model)
                 if model_result.is_failure:
                     FlextDbtOracleModels.logger.warning(
-                        f"Failed to create marts model for {intermediate_model.name}: {model_result.error}"
+                        f"Failed to create marts model for {intermediate_model.name}: {model_result.error}",
                     )
                     continue
 
@@ -195,7 +198,9 @@ class FlextDbtOracleModels(FlextModels):
             return FlextResult[list[FlextDbtOracleModels]].ok(marts_models)
 
         def write_models_to_disk(
-            self, models: list[FlextDbtOracleModels], output_dir: str
+            self,
+            models: list[FlextDbtOracleModels],
+            output_dir: str,
         ) -> FlextResult[None]:
             """Write generated models to disk."""
             try:
@@ -207,7 +212,7 @@ class FlextDbtOracleModels(FlextModels):
                     sql_result = model.to_sql_file()
                     if sql_result.is_failure:
                         return FlextResult[None].fail(
-                            f"Failed to generate SQL for {model.name}: {sql_result.error}"
+                            f"Failed to generate SQL for {model.name}: {sql_result.error}",
                         )
 
                     sql_content = sql_result.unwrap()
@@ -221,7 +226,7 @@ class FlextDbtOracleModels(FlextModels):
                     schema_result = model.to_schema_entry()
                     if schema_result.is_failure:
                         return FlextResult[None].fail(
-                            f"Failed to generate schema for {model.name}: {schema_result.error}"
+                            f"Failed to generate schema for {model.name}: {schema_result.error}",
                         )
 
                     schema_entry = schema_result.unwrap()
@@ -256,7 +261,8 @@ class FlextDbtOracleModels(FlextModels):
                 return FlextResult[None].fail(f"Failed to write models to disk: {e}")
 
         def _create_staging_model(
-            self, schema_name: str
+            self,
+            schema_name: str,
         ) -> FlextResult[FlextDbtOracleModels]:
             """Create a staging model from Oracle schema metadata."""
             try:
@@ -284,11 +290,12 @@ class FlextDbtOracleModels(FlextModels):
 
             except Exception as e:
                 return FlextResult[FlextDbtOracleModels].fail(
-                    f"Failed to create staging model: {e}"
+                    f"Failed to create staging model: {e}",
                 )
 
         def _create_intermediate_model(
-            self, staging_model: FlextDbtOracleModels
+            self,
+            staging_model: FlextDbtOracleModels,
         ) -> FlextResult[FlextDbtOracleModels]:
             """Create an intermediate model from staging model."""
             try:
@@ -329,11 +336,12 @@ class FlextDbtOracleModels(FlextModels):
 
             except Exception as e:
                 return FlextResult[FlextDbtOracleModels].fail(
-                    f"Failed to create intermediate model: {e}"
+                    f"Failed to create intermediate model: {e}",
                 )
 
         def _create_marts_model(
-            self, intermediate_model: FlextDbtOracleModels
+            self,
+            intermediate_model: FlextDbtOracleModels,
         ) -> FlextResult[FlextDbtOracleModels]:
             """Create a marts model from intermediate model."""
             try:
@@ -378,13 +386,16 @@ class FlextDbtOracleModels(FlextModels):
 
             except Exception as e:
                 return FlextResult[FlextDbtOracleModels].fail(
-                    f"Failed to create marts model: {e}"
+                    f"Failed to create marts model: {e}",
                 )
 
 
 # Type aliases for backward compatibility
 FlextDbtOracleModel = FlextDbtOracleModels
-FlextDbtOracleModelGenerator = FlextDbtOracleModels.ModelGenerator
+
+
+class FlextDbtOracleModelGenerator(FlextDbtOracleModels.ModelGenerator):
+    """FlextDbtOracleModelGenerator - real inheritance."""
 
 
 __all__: list[str] = [

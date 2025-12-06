@@ -112,7 +112,7 @@ class FlextDbtOracleUtilities(u):
                 for param in required_params:
                     if param not in connection_params:
                         return FlextResult[dict[str, object]].fail(
-                            f"Missing required Oracle parameter: {param}"
+                            f"Missing required Oracle parameter: {param}",
                         )
 
                 # Create Oracle-specific profile
@@ -124,7 +124,8 @@ class FlextDbtOracleUtilities(u):
                                 "type": "oracle",
                                 "host": connection_params["host"],
                                 "port": connection_params.get(
-                                    "port", FlextDbtOracleUtilities.ORACLE_DEFAULT_PORT
+                                    "port",
+                                    FlextDbtOracleUtilities.ORACLE_DEFAULT_PORT,
                                 ),
                                 "user": connection_params["user"],
                                 "password": connection_params["password"],
@@ -133,12 +134,14 @@ class FlextDbtOracleUtilities(u):
                                     FlextDbtOracleUtilities.ORACLE_DEFAULT_SERVICE,
                                 ),
                                 "schema": connection_params.get(
-                                    "schema", connection_params["user"].upper()
+                                    "schema",
+                                    connection_params["user"].upper(),
                                 ),
                                 "threads": connection_params.get("threads", 4),
                                 "keepalives_idle": 0,
                                 "search_path": connection_params.get(
-                                    "search_path", connection_params["user"].upper()
+                                    "search_path",
+                                    connection_params["user"].upper(),
                                 ),
                                 # Oracle-specific settings
                                 "protocol": "tcp",
@@ -146,36 +149,43 @@ class FlextDbtOracleUtilities(u):
                                 "retry_delay": 5,
                                 "pool_size": connection_params.get("pool_size", 5),
                                 "max_overflow": connection_params.get(
-                                    "max_overflow", 10
+                                    "max_overflow",
+                                    10,
                                 ),
                                 "pool_timeout": connection_params.get(
-                                    "pool_timeout", 30
+                                    "pool_timeout",
+                                    30,
                                 ),
                                 "pool_recycle": connection_params.get(
-                                    "pool_recycle", 3600
+                                    "pool_recycle",
+                                    3600,
                                 ),
                             },
                             "prod": {
                                 "type": "oracle",
                                 "host": connection_params.get(
-                                    "prod_host", connection_params["host"]
+                                    "prod_host",
+                                    connection_params["host"],
                                 ),
                                 "port": connection_params.get(
                                     "prod_port",
                                     FlextDbtOracleUtilities.ORACLE_DEFAULT_PORT,
                                 ),
                                 "user": connection_params.get(
-                                    "prod_user", connection_params["user"]
+                                    "prod_user",
+                                    connection_params["user"],
                                 ),
                                 "password": connection_params.get(
-                                    "prod_password", connection_params["password"]
+                                    "prod_password",
+                                    connection_params["password"],
                                 ),
                                 "service": connection_params.get(
                                     "prod_service",
                                     FlextDbtOracleUtilities.ORACLE_DEFAULT_SERVICE,
                                 ),
                                 "schema": connection_params.get(
-                                    "prod_schema", connection_params["user"].upper()
+                                    "prod_schema",
+                                    connection_params["user"].upper(),
                                 ),
                                 "threads": connection_params.get("prod_threads", 8),
                                 "keepalives_idle": 0,
@@ -188,27 +198,31 @@ class FlextDbtOracleUtilities(u):
                                 "retry_limit": 5,
                                 "retry_delay": 10,
                                 "pool_size": connection_params.get(
-                                    "prod_pool_size", 20
+                                    "prod_pool_size",
+                                    20,
                                 ),
                                 "max_overflow": connection_params.get(
-                                    "prod_max_overflow", 30
+                                    "prod_max_overflow",
+                                    30,
                                 ),
                                 "pool_timeout": connection_params.get(
-                                    "prod_pool_timeout", 60
+                                    "prod_pool_timeout",
+                                    60,
                                 ),
                                 "pool_recycle": connection_params.get(
-                                    "prod_pool_recycle", 1800
+                                    "prod_pool_recycle",
+                                    1800,
                                 ),
                             },
                         },
-                    }
+                    },
                 }
 
                 return FlextResult[dict[str, object]].ok(oracle_profile)
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Oracle connection profile creation failed: {e}"
+                    f"Oracle connection profile creation failed: {e}",
                 )
 
         @staticmethod
@@ -237,7 +251,7 @@ class FlextDbtOracleUtilities(u):
                 # Basic connection parameter validation
                 if not connection_params.get("host"):
                     validation_results["recommendations"].append(
-                        "Oracle host is required"
+                        "Oracle host is required",
                     )
                     return FlextResult[dict[str, object]].ok(validation_results)
 
@@ -261,7 +275,7 @@ class FlextDbtOracleUtilities(u):
                     > FlextDbtOracleUtilities.ORACLE_CONNECTION_TIME_THRESHOLD_MS
                 ):
                     validation_results["recommendations"].append(
-                        "Connection time is high - consider connection pooling"
+                        "Connection time is high - consider connection pooling",
                     )
 
                 if (
@@ -269,14 +283,14 @@ class FlextDbtOracleUtilities(u):
                     < FlextDbtOracleUtilities.ORACLE_MIN_AVAILABLE_CONNECTIONS
                 ):
                     validation_results["recommendations"].append(
-                        "Low available connections - increase pool size"
+                        "Low available connections - increase pool size",
                     )
 
                 return FlextResult[dict[str, object]].ok(validation_results)
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Oracle connection validation failed: {e}"
+                    f"Oracle connection validation failed: {e}",
                 )
 
     class OracleModelGeneration:
@@ -310,17 +324,17 @@ class FlextDbtOracleUtilities(u):
                     if col_type.startswith("NUMBER"):
                         if "," in col_type:  # NUMBER(p,s) - decimal
                             select_clauses.append(
-                                f"    cast({col_name} as number) as {col_name}"
+                                f"    cast({col_name} as number) as {col_name}",
                             )
                         else:  # NUMBER(p) - integer
                             select_clauses.append(
-                                f"    cast({col_name} as integer) as {col_name}"
+                                f"    cast({col_name} as integer) as {col_name}",
                             )
                     elif col_type.startswith("VARCHAR2"):
                         select_clauses.append(f"    trim({col_name}) as {col_name}")
                     elif col_type in {"DATE", "TIMESTAMP"}:
                         select_clauses.append(
-                            f"    cast({col_name} as timestamp) as {col_name}"
+                            f"    cast({col_name} as timestamp) as {col_name}",
                         )
                     elif col_type == "CLOB":
                         select_clauses.append(f"    to_char({col_name}) as {col_name}")
@@ -340,7 +354,7 @@ class FlextDbtOracleUtilities(u):
                     or not table_name.replace("_", "").replace("-", "").isalnum()
                 ):
                     return FlextResult[str].fail(
-                        "Invalid table name for Oracle model generation"
+                        "Invalid table name for Oracle model generation",
                     )
 
                 # Build model SQL with safe formatting
@@ -365,14 +379,15 @@ where 1=1
 """
 
                 model_sql = model_template.format(
-                    table_name=table_name, select_section=select_section
+                    table_name=table_name,
+                    select_section=select_section,
                 )
 
                 return FlextResult[str].ok(model_sql)
 
             except Exception as e:
                 return FlextResult[str].fail(
-                    f"Oracle staging model generation failed: {e}"
+                    f"Oracle staging model generation failed: {e}",
                 )
 
         @staticmethod
@@ -404,7 +419,7 @@ where 1=1
                     fact_key = dim.get("fact_key")
 
                     join_clauses.append(
-                        f"left join {{{{ ref('dim_{dim_name}') }}}} {dim_name[0]} on f.{fact_key} = {dim_name[0]}.{dim_key}"
+                        f"left join {{{{ ref('dim_{dim_name}') }}}} {dim_name[0]} on f.{fact_key} = {dim_name[0]}.{dim_key}",
                     )
                     select_clauses.append(f"    {dim_name[0]}.{dim_key}")
 
@@ -420,7 +435,7 @@ where 1=1
                     or not fact_name.replace("_", "").replace("-", "").isalnum()
                 ):
                     return FlextResult[str].fail(
-                        "Invalid fact name for Oracle model generation"
+                        "Invalid fact name for Oracle model generation",
                     )
 
                 # Build fact model SQL with safe formatting
@@ -464,7 +479,7 @@ where f.is_active = 1
 
             except Exception as e:
                 return FlextResult[str].fail(
-                    f"Oracle fact model generation failed: {e}"
+                    f"Oracle fact model generation failed: {e}",
                 )
 
     class OracleSqlOptimization:
@@ -493,12 +508,14 @@ where f.is_active = 1
                 if optimization_hints.get("use_hints", True):
                     hint_clauses = cls._build_oracle_hint_clauses(optimization_hints)
                     optimized_sql = cls._apply_oracle_hints_to_query(
-                        optimized_sql, hint_clauses
+                        optimized_sql,
+                        hint_clauses,
                     )
 
                 # Add Oracle-specific optimizations
                 optimized_sql = cls._apply_oracle_specific_optimizations(
-                    optimized_sql, optimization_hints
+                    optimized_sql,
+                    optimization_hints,
                 )
 
                 # Add bind variable placeholders for better plan reuse
@@ -524,7 +541,7 @@ where f.is_active = 1
             # Parallelism hints
             if optimization_hints.get("parallel_degree"):
                 hint_clauses.append(
-                    f"PARALLEL({optimization_hints['parallel_degree']})"
+                    f"PARALLEL({optimization_hints['parallel_degree']})",
                 )
 
             # Join hints
@@ -541,7 +558,8 @@ where f.is_active = 1
 
         @staticmethod
         def _apply_oracle_hints_to_query(
-            sql_query: str, hint_clauses: list[str]
+            sql_query: str,
+            hint_clauses: list[str],
         ) -> str:
             """Apply Oracle hints to SQL query."""
             if not hint_clauses:
@@ -552,7 +570,8 @@ where f.is_active = 1
 
         @staticmethod
         def _apply_oracle_specific_optimizations(
-            sql_query: str, optimization_hints: dict[str, object]
+            sql_query: str,
+            optimization_hints: dict[str, object],
         ) -> str:
             """Apply Oracle-specific optimizations."""
             optimized_sql = sql_query
@@ -638,7 +657,7 @@ where f.is_active = 1
                     score -= 25
                     analysis["bottlenecks"].append("High physical I/O operations")
                     analysis["recommendations"].append(
-                        "Consider adding indexes or optimizing joins"
+                        "Consider adding indexes or optimizing joins",
                     )
 
                 if (
@@ -646,10 +665,10 @@ where f.is_active = 1
                     < FlextDbtOracleUtilities.ORACLE_CPU_UTILIZATION_THRESHOLD
                 ):  # Low CPU utilization
                     analysis["bottlenecks"].append(
-                        "Low CPU utilization - likely I/O bound"
+                        "Low CPU utilization - likely I/O bound",
                     )
                     analysis["recommendations"].append(
-                        "Optimize I/O operations and consider SSD storage"
+                        "Optimize I/O operations and consider SSD storage",
                     )
 
                 # Specific Oracle recommendations
@@ -658,12 +677,12 @@ where f.is_active = 1
                     > FlextDbtOracleUtilities.ORACLE_HIGH_BUFFER_GETS_THRESHOLD
                 ):
                     analysis["recommendations"].append(
-                        "High buffer gets - consider query rewrite or partitioning"
+                        "High buffer gets - consider query rewrite or partitioning",
                     )
 
                 if query_stats.get("parse_calls", 0) > query_stats.get("executions", 1):
                     analysis["recommendations"].append(
-                        "High parse ratio - use bind variables to improve cursor reuse"
+                        "High parse ratio - use bind variables to improve cursor reuse",
                     )
 
                 analysis["performance_score"] = max(0, score)
@@ -672,7 +691,7 @@ where f.is_active = 1
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Oracle performance analysis failed: {e}"
+                    f"Oracle performance analysis failed: {e}",
                 )
 
     class DataWarehousePatterns:
@@ -704,14 +723,14 @@ where f.is_active = 1
                     or not dimension_name.replace("_", "").replace("-", "").isalnum()
                 ):
                     return FlextResult[str].fail(
-                        "Invalid dimension name for Oracle model generation"
+                        "Invalid dimension name for Oracle model generation",
                     )
                 if (
                     not business_key
                     or not business_key.replace("_", "").replace("-", "").isalnum()
                 ):
                     return FlextResult[str].fail(
-                        "Invalid business key for Oracle model generation"
+                        "Invalid business key for Oracle model generation",
                     )
 
                 if scd_type == "type_2":
@@ -806,7 +825,7 @@ from {{{{ ref('stg_{dimension_name}') }}}}
 
             except Exception as e:
                 return FlextResult[str].fail(
-                    f"Oracle dimension model generation failed: {e}"
+                    f"Oracle dimension model generation failed: {e}",
                 )
 
         @staticmethod
@@ -867,7 +886,8 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                             partitioning_strategy.update({
                                 "subpartition_type": "hash",
                                 "subpartition_count": min(
-                                    64, max(4, table_size_gb // 100)
+                                    64,
+                                    max(4, table_size_gb // 100),
                                 ),
                             })
 
@@ -899,7 +919,7 @@ from {{{{ ref('stg_{dimension_name}') }}}}
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Oracle partitioning strategy creation failed: {e}"
+                    f"Oracle partitioning strategy creation failed: {e}",
                 )
 
     class OracleTestGeneration:
@@ -934,19 +954,20 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                                 # Oracle-specific tests
                                 {
                                     "oracle_row_count": {
-                                        "min_count": test_config.get("min_rows", 1)
-                                    }
+                                        "min_count": test_config.get("min_rows", 1),
+                                    },
                                 },
                                 {
                                     "oracle_data_freshness": {
                                         "max_age_hours": test_config.get(
-                                            "max_age_hours", 24
-                                        )
-                                    }
+                                            "max_age_hours",
+                                            24,
+                                        ),
+                                    },
                                 },
                             ],
                             "columns": [],
-                        }
+                        },
                     ],
                 }
 
@@ -960,14 +981,14 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                             "oracle_numeric_range": {
                                 "min_value": column_config.get("min_value", 0),
                                 "max_value": column_config.get("max_value", 999999999),
-                            }
+                            },
                         })
 
                     if column_config.get("data_type") == "VARCHAR2":
                         column_tests.append({
                             "oracle_string_length": {
                                 "max_length": column_config.get("max_length", 4000),
-                            }
+                            },
                         })
 
                     if column_config.get("data_type") in {"DATE", "TIMESTAMP"}:
@@ -975,7 +996,7 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                             "oracle_date_range": {
                                 "min_date": column_config.get("min_date", "1900-01-01"),
                                 "max_date": column_config.get("max_date", "2100-12-31"),
-                            }
+                            },
                         })
 
                     tests["models"][0]["columns"].append({
@@ -988,7 +1009,7 @@ from {{{{ ref('stg_{dimension_name}') }}}}
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Oracle test generation failed: {e}"
+                    f"Oracle test generation failed: {e}",
                 )
 
 

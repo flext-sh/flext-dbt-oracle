@@ -75,12 +75,12 @@ class FlextDbtOracleAdapters:
             """
             if not table:
                 return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
-                    "Table cannot be None"
+                    "Table cannot be None",
                 )
 
             if not table.name:
                 return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
-                    "Table name cannot be empty"
+                    "Table name cannot be empty",
                 )
 
             return FlextResult[FlextDbtOracleAdapters.TableAdapter].ok(
@@ -112,12 +112,12 @@ class FlextDbtOracleAdapters:
             """
             if not name:
                 return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
-                    "Table name cannot be empty"
+                    "Table name cannot be empty",
                 )
 
             if not schema_name:
                 return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
-                    "Schema name cannot be empty"
+                    "Schema name cannot be empty",
                 )
 
             # Create a basic Table object (using actual constructor signature)
@@ -132,7 +132,7 @@ class FlextDbtOracleAdapters:
                 )
             except Exception as e:
                 return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
-                    f"Failed to create Table: {e}"
+                    f"Failed to create Table: {e}",
                 )
 
             return FlextResult[FlextDbtOracleAdapters.TableAdapter].ok(
@@ -205,7 +205,7 @@ class FlextDbtOracleAdapters:
             """
             if not table_name:
                 return FlextResult[FlextDbtOracleAdapters.TableAdapter].fail(
-                    "Table name required"
+                    "Table name required",
                 )
 
             if not isinstance(api_response, dict):
@@ -280,9 +280,13 @@ class FlextDbtOracleAdapters:
             return FlextResult[list[FlextDbtOracleAdapters.TableAdapter]].ok(adapters)
 
 
-# Type aliases for backward compatibility
-OracleTableAdapter = FlextDbtOracleAdapters.TableAdapter
-OracleTableFactory = FlextDbtOracleAdapters.TableFactory
+# Type classes with real inheritance for backward compatibility
+class OracleTableAdapter(FlextDbtOracleAdapters.TableAdapter):
+    """OracleTableAdapter - real inheritance from FlextDbtOracleAdapters.TableAdapter."""
+
+
+class OracleTableFactory(FlextDbtOracleAdapters.TableFactory):
+    """OracleTableFactory - real inheritance from FlextDbtOracleAdapters.TableFactory."""
 
 
 __all__: list[str] = [
