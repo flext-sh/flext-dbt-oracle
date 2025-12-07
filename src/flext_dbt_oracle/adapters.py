@@ -271,9 +271,7 @@ class FlextDbtOracleAdapters:
                     if adapter_result.is_success:
                         adapters.append(adapter_result.unwrap())
                     else:
-                        return r[
-                            list[FlextDbtOracleAdapters.TableAdapter]
-                        ].fail(
+                        return r[list[FlextDbtOracleAdapters.TableAdapter]].fail(
                             f"Failed to create adapter for table {table_name}: {adapter_result.error}",
                         )
 
