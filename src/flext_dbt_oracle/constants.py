@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from enum import StrEnum
 from typing import Literal
 
 from flext_core import FlextConstants
@@ -21,8 +22,11 @@ class FlextDbtOracleConstants(FlextConstants):
     organizing constants into logical categories with type safety.
     """
 
-    class Performance:
-        """Performance thresholds and limits."""
+    class DbtOraclePerformance:
+        """DBT Oracle-specific performance thresholds and limits.
+
+        Note: Does not override parent Performance class to avoid inheritance conflicts.
+        """
 
         # Object count thresholds
         LARGE_OBJECT_COUNT_THRESHOLD = 100
@@ -62,27 +66,51 @@ class FlextDbtOracleConstants(FlextConstants):
     class DBT:
         """DBT-specific constants."""
 
-        # Model types
-        MODEL_TYPE_TABLE = "table"
-        MODEL_TYPE_VIEW = "view"
-        MODEL_TYPE_INCREMENTAL = "incremental"
-        MODEL_TYPE_EPHEMERAL = "ephemeral"
+        class ModelTypes(StrEnum):
+            """DBT model types using StrEnum for type safety.
 
-        # Materialization strategies
-        MATERIALIZATION_TABLE = "table"
-        MATERIALIZATION_VIEW = "view"
-        MATERIALIZATION_INCREMENTAL = "incremental"
+            DRY Pattern:
+                StrEnum is the single source of truth. Use ModelTypes.TABLE.value
+                or ModelTypes.TABLE directly - no base strings needed.
+            """
 
-        # Test severity levels
-        TEST_SEVERITY_WARN = "warn"
-        TEST_SEVERITY_ERROR = "error"
+            TABLE = "table"
+            VIEW = "view"
+            INCREMENTAL = "incremental"
+            EPHEMERAL = "ephemeral"
+
+        class Materialization(StrEnum):
+            """DBT materialization strategies using StrEnum for type safety.
+
+            DRY Pattern:
+                StrEnum is the single source of truth. Use Materialization.TABLE.value
+                or Materialization.TABLE directly - no base strings needed.
+            """
+
+            TABLE = "table"
+            VIEW = "view"
+            INCREMENTAL = "incremental"
+
+        class TestSeverity(StrEnum):
+            """DBT test severity levels using StrEnum for type safety.
+
+            DRY Pattern:
+                StrEnum is the single source of truth. Use TestSeverity.WARN.value
+                or TestSeverity.WARN directly - no base strings needed.
+            """
+
+            WARN = "warn"
+            ERROR = "error"
 
         # Freshness check intervals (in hours)
         FRESHNESS_WARN_AFTER = 24
         FRESHNESS_ERROR_AFTER = 48
 
-    class Validation:
-        """Validation thresholds and limits."""
+    class DbtOracleValidation:
+        """DBT Oracle-specific validation thresholds and limits.
+
+        Note: Does not override parent Validation class to avoid inheritance conflicts.
+        """
 
         # Row count thresholds for data quality
         MIN_ROW_COUNT_WARNING = 0
@@ -128,8 +156,11 @@ class FlextDbtOracleConstants(FlextConstants):
         MAX_CACHE_ENTRIES = 10000
         CACHE_CLEANUP_INTERVAL = 300  # 5 minutes
 
-    class Logging:
-        """Logging configuration."""
+    class DbtOracleLogging:
+        """DBT Oracle-specific logging configuration.
+
+        Note: Does not override parent Logging class to avoid inheritance conflicts.
+        """
 
         # Log levels as integers for comparison
         LOG_LEVEL_DEBUG = 10
@@ -138,18 +169,39 @@ class FlextDbtOracleConstants(FlextConstants):
         LOG_LEVEL_ERROR = 40
         LOG_LEVEL_CRITICAL = 50
 
-    class Literals:
-        """Type-safe string literals for DBT Oracle operations.
+    # Type-safe literals - PEP 695 syntax for type checking
+    # All Literal types reference StrEnum members where available - NO string duplication!
+    type DbtLogLevelLiteral = Literal[
+        "debug",
+        "info",
+        "warning",
+        "error",
+        "critical",
+    ]
+    """DBT log level literal - no corresponding StrEnum (acceptable pattern)."""
 
-        Python 3.13+ best practice: Use TypeAlias for better type checking.
-        """
+    type ModelTypeLiteral = Literal[
+        DBT.ModelTypes.TABLE,
+        DBT.ModelTypes.VIEW,
+        DBT.ModelTypes.INCREMENTAL,
+        DBT.ModelTypes.EPHEMERAL,
+    ]
+    """DBT model type literal - references DBT.ModelTypes StrEnum members."""
 
-        # DBT log level literal - matches DBT log levels
-        DbtLogLevelLiteral: type = Literal[
-            "debug",
-            "info",
-            "warning",
-            "error",
-            "critical",
-        ]
-        """DBT log level literal."""
+    type MaterializationLiteral = Literal[
+        DBT.Materialization.TABLE,
+        DBT.Materialization.VIEW,
+        DBT.Materialization.INCREMENTAL,
+    ]
+    """DBT materialization literal - references DBT.Materialization StrEnum members."""
+
+    type TestSeverityLiteral = Literal[
+        DBT.TestSeverity.WARN,
+        DBT.TestSeverity.ERROR,
+    ]
+    """DBT test severity literal - references DBT.TestSeverity StrEnum members."""
+
+
+c = FlextDbtOracleConstants
+
+__all__ = ["FlextDbtOracleConstants", "c"]

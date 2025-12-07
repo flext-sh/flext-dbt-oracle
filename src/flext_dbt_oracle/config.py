@@ -112,7 +112,7 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
         description="Number of DBT threads",
     )
 
-    dbt_log_level: FlextDbtOracleConstants.Literals.DbtLogLevelLiteral = Field(
+    dbt_log_level: FlextDbtOracleConstants.DbtLogLevelLiteral = Field(
         default="info",
         description="DBT logging level",
     )

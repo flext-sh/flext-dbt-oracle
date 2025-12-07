@@ -2,41 +2,35 @@
 
 from typing import Protocol, runtime_checkable
 
-from flext_core import FlextResult, p
+from flext_db_oracle.protocols import FlextDbOracleProtocols as p_db_oracle
+from flext_meltano.protocols import FlextMeltanoProtocols as p_meltano
 
 
-class FlextDbtOracleProtocols:
-    """DBT Oracle protocols with explicit re-exports from p foundation.
+class FlextDbtOracleProtocols(p_meltano, p_db_oracle):
+    """DBT Oracle protocols extending Oracle and Meltano protocols.
 
-    This class provides protocol definitions for DBT operations with Oracle database integration,
-    data transformation, modeling, and enterprise Oracle analytics patterns.
+    Extends both FlextDbOracleProtocols and FlextMeltanoProtocols via multiple inheritance
+    to inherit all Oracle protocols, Meltano protocols, and foundation protocols.
 
-    Domain Extension Pattern (Phase 3):
-    - Explicit re-export of foundation protocols (not inheritance)
-    - Domain-specific protocols organized in DbtOracle namespace
-    - 100% backward compatibility through aliases
+    Architecture:
+    - EXTENDS: FlextDbOracleProtocols (inherits .Database.* protocols)
+    - EXTENDS: FlextMeltanoProtocols (inherits .Meltano.* protocols)
+    - ADDS: DBT Oracle-specific protocols in DbtOracle namespace
+    - PROVIDES: Root-level alias `p` for convenient access
     """
-
-    # ============================================================================
-    # RE-EXPORT FOUNDATION PROTOCOLS (EXPLICIT PATTERN)
-    # ============================================================================
-
-    # ============================================================================
-    # DBT ORACLE-SPECIFIC PROTOCOLS (DOMAIN NAMESPACE)
-    # ============================================================================
 
     class DbtOracle:
         """DBT Oracle domain protocols for Oracle database transformation and analytics."""
 
         @runtime_checkable
-        class DbtProtocol(p.Service, Protocol):
+        class DbtProtocol(p_db_oracle.Service[object], Protocol):
             """Protocol for DBT operations with Oracle data."""
 
             def run_dbt_models(
                 self,
                 models: list[str] | None = None,
                 config: dict[str, object] | None = None,
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Run DBT models with Oracle data sources.
 
                 Args:
@@ -44,15 +38,16 @@ class FlextDbtOracleProtocols:
                 config: DBT configuration parameters
 
                 Returns:
-                FlextResult[dict[str, object]]: DBT run results or error
+                r[dict[str, object]]: DBT run results or error
 
                 """
+                ...
 
             def test_dbt_models(
                 self,
                 models: list[str] | None = None,
                 config: dict[str, object] | None = None,
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Test DBT models with Oracle data validation.
 
                 Args:
@@ -60,15 +55,16 @@ class FlextDbtOracleProtocols:
                 config: DBT test configuration
 
                 Returns:
-                FlextResult[dict[str, object]]: DBT test results or error
+                r[dict[str, object]]: DBT test results or error
 
                 """
+                ...
 
             def compile_dbt_models(
                 self,
                 models: list[str] | None = None,
                 config: dict[str, object] | None = None,
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Compile DBT models for Oracle data processing.
 
                 Args:
@@ -76,38 +72,43 @@ class FlextDbtOracleProtocols:
                 config: DBT compilation configuration
 
                 Returns:
-                FlextResult[dict[str, object]]: DBT compilation results or error
+                r[dict[str, object]]: DBT compilation results or error
 
                 """
+                ...
 
-            def get_dbt_manifest(self) -> FlextResult[dict[str, object]]:
+            def get_dbt_manifest(
+                self,
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Get DBT manifest with Oracle model definitions.
 
                 Returns:
-                FlextResult[dict[str, object]]: DBT manifest or error
+                r[dict[str, object]]: DBT manifest or error
 
                 """
+                ...
 
-            def validate_dbt_project(self, project_path: str) -> FlextResult[bool]:
+            def validate_dbt_project(self, project_path: str) -> p_meltano.Result[bool]:
                 """Validate DBT project configuration for Oracle integration.
 
                 Args:
                 project_path: Path to DBT project directory
 
                 Returns:
-                FlextResult[bool]: Validation status or error
+                r[bool]: Validation status or error
 
                 """
+                ...
 
         @runtime_checkable
-        class OracleIntegrationProtocol(p.Service, Protocol):
+        class OracleIntegrationProtocol(p_db_oracle.Service[object], Protocol):
             """Protocol for Oracle database integration operations."""
 
             def extract_oracle_data(
                 self,
                 oracle_config: dict[str, object],
                 extraction_config: dict[str, object],
-            ) -> FlextResult[list[dict[str, object]]]:
+            ) -> p_meltano.Result[list[dict[str, object]]]:
                 """Extract data from Oracle database for DBT processing.
 
                 Args:
@@ -115,15 +116,16 @@ class FlextDbtOracleProtocols:
                 extraction_config: Data extraction parameters
 
                 Returns:
-                FlextResult[list[dict[str, object]]]: Extracted Oracle data or error
+                r[list[dict[str, object]]]: Extracted Oracle data or error
 
                 """
+                ...
 
             def transform_oracle_to_dbt_format(
                 self,
                 oracle_data: list[dict[str, object]],
                 transformation_config: dict[str, object],
-            ) -> FlextResult[list[dict[str, object]]]:
+            ) -> p_meltano.Result[list[dict[str, object]]]:
                 """Transform Oracle data to DBT-compatible format.
 
                 Args:
@@ -131,15 +133,16 @@ class FlextDbtOracleProtocols:
                 transformation_config: Transformation parameters
 
                 Returns:
-                FlextResult[list[dict[str, object]]]: Transformed data or error
+                r[list[dict[str, object]]]: Transformed data or error
 
                 """
+                ...
 
             def validate_oracle_data_quality(
                 self,
                 data: list[dict[str, object]],
                 quality_rules: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Validate Oracle data quality for DBT processing.
 
                 Args:
@@ -147,15 +150,16 @@ class FlextDbtOracleProtocols:
                 quality_rules: Data quality validation rules
 
                 Returns:
-                FlextResult[dict[str, object]]: Quality validation results or error
+                r[dict[str, object]]: Quality validation results or error
 
                 """
+                ...
 
             def sync_oracle_to_warehouse(
                 self,
                 oracle_data: list[dict[str, object]],
                 warehouse_config: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Sync Oracle data to data warehouse for DBT processing.
 
                 Args:
@@ -163,19 +167,20 @@ class FlextDbtOracleProtocols:
                 warehouse_config: Data warehouse configuration
 
                 Returns:
-                FlextResult[dict[str, object]]: Sync operation results or error
+                r[dict[str, object]]: Sync operation results or error
 
                 """
+                ...
 
         @runtime_checkable
-        class ModelingProtocol(p.Service, Protocol):
+        class ModelingProtocol(p_db_oracle.Service[object], Protocol):
             """Protocol for Oracle data modeling operations."""
 
             def create_table_dimension(
                 self,
                 oracle_tables: list[dict[str, object]],
                 dimension_config: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Create table dimension model from Oracle table data.
 
                 Args:
@@ -183,15 +188,16 @@ class FlextDbtOracleProtocols:
                 dimension_config: Dimension modeling configuration
 
                 Returns:
-                FlextResult[dict[str, object]]: Table dimension model or error
+                r[dict[str, object]]: Table dimension model or error
 
                 """
+                ...
 
             def create_schema_dimension(
                 self,
                 oracle_schemas: list[dict[str, object]],
                 dimension_config: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Create schema dimension model from Oracle schema data.
 
                 Args:
@@ -199,15 +205,16 @@ class FlextDbtOracleProtocols:
                 dimension_config: Dimension modeling configuration
 
                 Returns:
-                FlextResult[dict[str, object]]: Schema dimension model or error
+                r[dict[str, object]]: Schema dimension model or error
 
                 """
+                ...
 
             def create_performance_models(
                 self,
                 oracle_performance_data: list[dict[str, object]],
                 modeling_config: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Create performance models from Oracle performance data.
 
                 Args:
@@ -215,15 +222,16 @@ class FlextDbtOracleProtocols:
                 modeling_config: Performance modeling configuration
 
                 Returns:
-                FlextResult[dict[str, object]]: Performance models or error
+                r[dict[str, object]]: Performance models or error
 
                 """
+                ...
 
             def generate_fact_tables(
                 self,
                 dimensions: list[dict[str, object]],
                 fact_config: dict[str, object],
-            ) -> FlextResult[list[dict[str, object]]]:
+            ) -> p_meltano.Result[list[dict[str, object]]]:
                 """Generate fact tables from Oracle dimensions.
 
                 Args:
@@ -231,19 +239,20 @@ class FlextDbtOracleProtocols:
                 fact_config: Fact table configuration
 
                 Returns:
-                FlextResult[list[dict[str, object]]]: Generated fact tables or error
+                r[list[dict[str, object]]]: Generated fact tables or error
 
                 """
+                ...
 
         @runtime_checkable
-        class TransformationProtocol(p.Service, Protocol):
+        class TransformationProtocol(p_db_oracle.Service[object], Protocol):
             """Protocol for Oracle data transformation operations."""
 
             def normalize_oracle_data_types(
                 self,
                 oracle_data: list[dict[str, object]],
                 normalization_rules: dict[str, object],
-            ) -> FlextResult[list[dict[str, object]]]:
+            ) -> p_meltano.Result[list[dict[str, object]]]:
                 """Normalize Oracle data types for consistent DBT processing.
 
                 Args:
@@ -251,15 +260,16 @@ class FlextDbtOracleProtocols:
                 normalization_rules: Data type normalization rules
 
                 Returns:
-                FlextResult[list[dict[str, object]]]: Normalized Oracle data or error
+                r[list[dict[str, object]]]: Normalized Oracle data or error
 
                 """
+                ...
 
             def apply_oracle_specific_transformations(
                 self,
                 oracle_data: list[dict[str, object]],
                 transformation_config: dict[str, object],
-            ) -> FlextResult[list[dict[str, object]]]:
+            ) -> p_meltano.Result[list[dict[str, object]]]:
                 """Apply Oracle-specific data transformations.
 
                 Args:
@@ -267,15 +277,16 @@ class FlextDbtOracleProtocols:
                 transformation_config: Oracle transformation configuration
 
                 Returns:
-                FlextResult[list[dict[str, object]]]: Transformed data or error
+                r[list[dict[str, object]]]: Transformed data or error
 
                 """
+                ...
 
             def apply_business_rules(
                 self,
                 data: list[dict[str, object]],
                 business_rules: dict[str, object],
-            ) -> FlextResult[list[dict[str, object]]]:
+            ) -> p_meltano.Result[list[dict[str, object]]]:
                 """Apply business rules to Oracle data transformations.
 
                 Args:
@@ -283,15 +294,16 @@ class FlextDbtOracleProtocols:
                 business_rules: Business transformation rules
 
                 Returns:
-                FlextResult[list[dict[str, object]]]: Transformed data or error
+                r[list[dict[str, object]]]: Transformed data or error
 
                 """
+                ...
 
             def optimize_oracle_queries(
                 self,
                 query_config: dict[str, object],
                 optimization_rules: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Optimize Oracle queries for DBT processing.
 
                 Args:
@@ -299,79 +311,84 @@ class FlextDbtOracleProtocols:
                 optimization_rules: Query optimization rules
 
                 Returns:
-                FlextResult[dict[str, object]]: Optimized query configuration or error
+                r[dict[str, object]]: Optimized query configuration or error
 
                 """
+                ...
 
         @runtime_checkable
-        class MacroProtocol(p.Service, Protocol):
+        class MacroProtocol(p_db_oracle.Service[object], Protocol):
             """Protocol for DBT macro operations with Oracle data."""
 
             def generate_oracle_source_macro(
                 self,
                 source_config: dict[str, object],
-            ) -> FlextResult[str]:
+            ) -> p_meltano.Result[str]:
                 """Generate DBT macro for Oracle data sources.
 
                 Args:
                 source_config: Oracle source configuration
 
                 Returns:
-                FlextResult[str]: Generated DBT macro or error
+                r[str]: Generated DBT macro or error
 
                 """
+                ...
 
             def create_oracle_test_macro(
                 self,
                 test_config: dict[str, object],
-            ) -> FlextResult[str]:
+            ) -> p_meltano.Result[str]:
                 """Create DBT test macro for Oracle data validation.
 
                 Args:
                 test_config: Oracle test configuration
 
                 Returns:
-                FlextResult[str]: Generated test macro or error
+                r[str]: Generated test macro or error
 
                 """
+                ...
 
             def generate_oracle_transformation_macro(
                 self,
                 transformation_config: dict[str, object],
-            ) -> FlextResult[str]:
+            ) -> p_meltano.Result[str]:
                 """Generate DBT transformation macro for Oracle data.
 
                 Args:
                 transformation_config: Oracle transformation configuration
 
                 Returns:
-                FlextResult[str]: Generated transformation macro or error
+                r[str]: Generated transformation macro or error
 
                 """
+                ...
 
             def create_oracle_snapshot_macro(
                 self,
                 snapshot_config: dict[str, object],
-            ) -> FlextResult[str]:
+            ) -> p_meltano.Result[str]:
                 """Create DBT snapshot macro for Oracle data versioning.
 
                 Args:
                 snapshot_config: Oracle snapshot configuration
 
                 Returns:
-                FlextResult[str]: Generated snapshot macro or error
+                r[str]: Generated snapshot macro or error
 
                 """
+                ...
 
         @runtime_checkable
-        class QualityProtocol(p.Service, Protocol):
+        class QualityProtocol(p_db_oracle.Service[object], Protocol):
             """Protocol for Oracle data quality operations."""
 
             def validate_oracle_schema_compliance(
                 self,
                 oracle_data: list[dict[str, object]],
                 schema_rules: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Validate Oracle data against schema compliance rules.
 
                 Args:
@@ -379,15 +396,16 @@ class FlextDbtOracleProtocols:
                 schema_rules: Schema compliance rules
 
                 Returns:
-                FlextResult[dict[str, object]]: Schema validation results or error
+                r[dict[str, object]]: Schema validation results or error
 
                 """
+                ...
 
             def check_data_completeness(
                 self,
                 data: list[dict[str, object]],
                 completeness_config: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Check Oracle data completeness for DBT processing.
 
                 Args:
@@ -395,15 +413,16 @@ class FlextDbtOracleProtocols:
                 completeness_config: Completeness validation configuration
 
                 Returns:
-                FlextResult[dict[str, object]]: Completeness check results or error
+                r[dict[str, object]]: Completeness check results or error
 
                 """
+                ...
 
             def detect_data_anomalies(
                 self,
                 data: list[dict[str, object]],
                 anomaly_config: dict[str, object],
-            ) -> FlextResult[list[dict[str, object]]]:
+            ) -> p_meltano.Result[list[dict[str, object]]]:
                 """Detect anomalies in Oracle data for quality assurance.
 
                 Args:
@@ -411,15 +430,16 @@ class FlextDbtOracleProtocols:
                 anomaly_config: Anomaly detection configuration
 
                 Returns:
-                FlextResult[list[dict[str, object]]]: Detected anomalies or error
+                r[list[dict[str, object]]]: Detected anomalies or error
 
                 """
+                ...
 
             def generate_quality_report(
                 self,
                 quality_results: list[dict[str, object]],
                 report_config: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Generate data quality report for Oracle DBT processing.
 
                 Args:
@@ -427,19 +447,20 @@ class FlextDbtOracleProtocols:
                 report_config: Report generation configuration
 
                 Returns:
-                FlextResult[dict[str, object]]: Quality report or error
+                r[dict[str, object]]: Quality report or error
 
                 """
+                ...
 
         @runtime_checkable
-        class PerformanceProtocol(p.Service, Protocol):
+        class PerformanceProtocol(p_db_oracle.Service[object], Protocol):
             """Protocol for DBT Oracle performance optimization operations."""
 
             def optimize_dbt_models(
                 self,
                 model_config: dict[str, object],
                 performance_metrics: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Optimize DBT models for Oracle data processing performance.
 
                 Args:
@@ -447,15 +468,16 @@ class FlextDbtOracleProtocols:
                 performance_metrics: Current performance metrics
 
                 Returns:
-                FlextResult[dict[str, object]]: Optimization recommendations or error
+                r[dict[str, object]]: Optimization recommendations or error
 
                 """
+                ...
 
             def tune_oracle_connections(
                 self,
                 connection_config: dict[str, object],
                 tuning_config: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Tune Oracle connections for improved DBT performance.
 
                 Args:
@@ -463,47 +485,50 @@ class FlextDbtOracleProtocols:
                 tuning_config: Connection tuning parameters
 
                 Returns:
-                FlextResult[dict[str, object]]: Tuned connection configuration or error
+                r[dict[str, object]]: Tuned connection configuration or error
 
                 """
+                ...
 
             def monitor_dbt_performance(
                 self,
                 run_results: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Monitor DBT performance with Oracle data processing.
 
                 Args:
                 run_results: DBT run results
 
                 Returns:
-                FlextResult[dict[str, object]]: Performance metrics or error
+                r[dict[str, object]]: Performance metrics or error
 
                 """
+                ...
 
             def optimize_oracle_queries(
                 self,
                 query_config: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Optimize Oracle queries for DBT data processing.
 
                 Args:
                 query_config: Oracle query configuration
 
                 Returns:
-                FlextResult[dict[str, object]]: Query optimization results or error
+                r[dict[str, object]]: Query optimization results or error
 
                 """
+                ...
 
         @runtime_checkable
-        class MonitoringProtocol(p.Service, Protocol):
+        class MonitoringProtocol(p_db_oracle.Service[object], Protocol):
             """Protocol for DBT Oracle monitoring operations."""
 
             def track_dbt_run_metrics(
                 self,
                 run_id: str,
                 metrics: dict[str, object],
-            ) -> FlextResult[bool]:
+            ) -> p_meltano.Result[bool]:
                 """Track DBT run metrics for Oracle data processing.
 
                 Args:
@@ -511,124 +536,57 @@ class FlextDbtOracleProtocols:
                 metrics: Run metrics data
 
                 Returns:
-                FlextResult[bool]: Metric tracking success status
+                r[bool]: Metric tracking success status
 
                 """
+                ...
 
             def monitor_oracle_data_freshness(
                 self,
                 freshness_config: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Monitor Oracle data freshness for DBT processing.
 
                 Args:
                 freshness_config: Data freshness monitoring configuration
 
                 Returns:
-                FlextResult[dict[str, object]]: Data freshness status or error
+                r[dict[str, object]]: Data freshness status or error
 
                 """
+                ...
 
-            def get_health_status(self) -> FlextResult[dict[str, object]]:
+            def get_health_status(
+                self,
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Get DBT Oracle integration health status.
 
                 Returns:
-                FlextResult[dict[str, object]]: Health status or error
+                r[dict[str, object]]: Health status or error
 
                 """
+                ...
 
             def create_monitoring_dashboard(
                 self,
                 dashboard_config: dict[str, object],
-            ) -> FlextResult[dict[str, object]]:
+            ) -> p_meltano.Result[dict[str, object]]:
                 """Create monitoring dashboard for DBT Oracle operations.
 
                 Args:
                 dashboard_config: Dashboard configuration
 
                 Returns:
-                FlextResult[dict[str, object]]: Dashboard creation result or error
+                r[dict[str, object]]: Dashboard creation result or error
 
                 """
+                ...
 
-    # ============================================================================
-    # BACKWARD COMPATIBILITY ALIASES (100% COMPATIBILITY)
-    # ============================================================================
 
-    # DBT operations
-    @runtime_checkable
-    class DbtProtocol(DbtOracle.DbtProtocol):
-        """DbtProtocol - real inheritance."""
-
-    # Oracle integration
-    @runtime_checkable
-    class OracleIntegrationProtocol(DbtOracle.OracleIntegrationProtocol):
-        """OracleIntegrationProtocol - real inheritance."""
-
-    # Data modeling
-    @runtime_checkable
-    class ModelingProtocol(DbtOracle.ModelingProtocol):
-        """ModelingProtocol - real inheritance."""
-
-    # Transformations
-    @runtime_checkable
-    class TransformationProtocol(DbtOracle.TransformationProtocol):
-        """TransformationProtocol - real inheritance."""
-
-    # DBT macros
-    @runtime_checkable
-    class MacroProtocol(DbtOracle.MacroProtocol):
-        """MacroProtocol - real inheritance."""
-
-    # Data quality
-    @runtime_checkable
-    class QualityProtocol(DbtOracle.QualityProtocol):
-        """QualityProtocol - real inheritance."""
-
-    # Performance optimization
-    @runtime_checkable
-    class PerformanceProtocol(DbtOracle.PerformanceProtocol):
-        """PerformanceProtocol - real inheritance."""
-
-    # Monitoring
-    @runtime_checkable
-    class MonitoringProtocol(DbtOracle.MonitoringProtocol):
-        """MonitoringProtocol - real inheritance."""
-
-    # Convenience aliases for downstream usage
-    @runtime_checkable
-    class DbtOracleProtocol(DbtOracle.DbtProtocol):
-        """DbtOracleProtocol - real inheritance."""
-
-    @runtime_checkable
-    class DbtOracleIntegrationProtocol(DbtOracle.OracleIntegrationProtocol):
-        """DbtOracleIntegrationProtocol - real inheritance."""
-
-    @runtime_checkable
-    class DbtOracleModelingProtocol(DbtOracle.ModelingProtocol):
-        """DbtOracleModelingProtocol - real inheritance."""
-
-    @runtime_checkable
-    class DbtOracleTransformationProtocol(DbtOracle.TransformationProtocol):
-        """DbtOracleTransformationProtocol - real inheritance."""
-
-    @runtime_checkable
-    class DbtOracleMacroProtocol(DbtOracle.MacroProtocol):
-        """DbtOracleMacroProtocol - real inheritance."""
-
-    @runtime_checkable
-    class DbtOracleQualityProtocol(DbtOracle.QualityProtocol):
-        """DbtOracleQualityProtocol - real inheritance."""
-
-    @runtime_checkable
-    class DbtOraclePerformanceProtocol(DbtOracle.PerformanceProtocol):
-        """DbtOraclePerformanceProtocol - real inheritance."""
-
-    @runtime_checkable
-    class DbtOracleMonitoringProtocol(DbtOracle.MonitoringProtocol):
-        """DbtOracleMonitoringProtocol - real inheritance."""
-
+# Runtime alias for simplified usage
+p = FlextDbtOracleProtocols
 
 __all__ = [
     "FlextDbtOracleProtocols",
+    "p",
 ]
