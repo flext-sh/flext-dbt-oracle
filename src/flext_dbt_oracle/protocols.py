@@ -15,8 +15,24 @@ class FlextDbtOracleProtocols(p_meltano, p_db_oracle):
     Architecture:
     - EXTENDS: FlextDbOracleProtocols (inherits .Database.* protocols)
     - EXTENDS: FlextMeltanoProtocols (inherits .Meltano.* protocols)
-    - ADDS: DBT Oracle-specific protocols in DbtOracle namespace
+    - ADDS: DBT Oracle-specific protocols in Dbt.Oracle namespace
     - PROVIDES: Root-level alias `p` for convenient access
+
+    Usage:
+    from flext_dbt_oracle.protocols import p
+
+    # Foundation protocols (inherited)
+    result: p.Result[str]
+    service: p.Service[str]
+
+    # Oracle protocols (inherited)
+    connection: p.Database.ConnectionProtocol
+
+    # Meltano protocols (inherited)
+    dbt: p.Meltano.DbtProtocol
+
+    # DBT Oracle-specific protocols
+    dbt_protocol: p.DbtOracle.DbtProtocol
     """
 
     class DbtOracle:
@@ -505,7 +521,7 @@ class FlextDbtOracleProtocols(p_meltano, p_db_oracle):
                 """
                 ...
 
-            def optimize_oracle_queries(
+            def optimize_oracle_query_performance(
                 self,
                 query_config: dict[str, object],
             ) -> p_meltano.Result[dict[str, object]]:

@@ -1,0 +1,44 @@
+# flext-dbt-oracle Documentation
+
+## 📚 Table of Contents
+
+### Quick Start
+- [Getting Started](./getting-started.md) - Installation and basic usage (5 min)
+- [Configuration](./configuration.md) - Configuration options
+- [Examples](../examples/README.md) - Working code examples
+
+### Architecture
+- [Overview](./architecture.md) - Architecture patterns
+- [API Reference](./api-reference.md) - Complete API documentation
+- [Design Patterns](./architecture/patterns.md) - Design patterns used
+
+### Development
+- [Development Setup](./development.md) - Setup for contributors
+- [Testing](./testing.md) - Testing strategies
+- [Troubleshooting](./troubleshooting.md) - Common issues
+
+### Integration
+- [FLEXT Ecosystem](../../docs/architecture/README.md) - Workspace integration
+- [Related Projects](../../docs/projects/README.md) - Related projects
+
+## 🎯 Key Features
+
+- **Oracle Integration**: High-performance Oracle Database connectivity with connection pooling
+- **Custom dbt Adapter**: Purpose-built Oracle adapter with FLEXT ecosystem integration
+- **Advanced SQL Optimization**: Oracle-specific query optimizations and performance tuning
+- **Connection Management**: Connection pooling via flext-db-oracle
+- **Type Safety**: Full MyPy strict typing with validation
+
+## 🔗 External Links
+
+- [Workspace Documentation](../../docs/index.md)
+- [Contributing Guide](../../CONTRIBUTING.md)
+- [License](../LICENSE)
+
+## 📊 Status
+
+**Version**: 1.0.0 (Release Preparation)
+**Status**: ✅ Production ready
+**Coverage**: 90%+
+**Documentation**: ⏳ In progress
+

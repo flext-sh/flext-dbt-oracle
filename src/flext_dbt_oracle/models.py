@@ -12,6 +12,7 @@ from typing import ClassVar, override
 
 import yaml
 from flext_core import FlextLogger, FlextModels, FlextResult
+from flext_core.utilities import u
 
 from flext_dbt_oracle.config import FlextDbtOracleConfig
 
@@ -22,6 +23,14 @@ class FlextDbtOracleModels(FlextModels):
     Immutable representation of a generated DBT model with Oracle-specific metadata
     and integrated generation functionality following FLEXT unified class pattern.
     """
+
+    def __init_subclass__(cls, **kwargs: object) -> None:
+        """Warn when FlextDbtOracleModels is subclassed directly."""
+        super().__init_subclass__(**kwargs)
+        u.Deprecation.warn_once(
+            f"subclass:{cls.__name__}",
+            "Subclassing FlextDbtOracleModels is deprecated. Use FlextModels.DbtOracle instead.",
+        )
 
     # Shared logger for all DBT Oracle model operations
     logger = FlextLogger(__name__)
@@ -398,8 +407,14 @@ class FlextDbtOracleModelGenerator(FlextDbtOracleModels.ModelGenerator):
     """FlextDbtOracleModelGenerator - real inheritance."""
 
 
+# Short aliases
+m = FlextDbtOracleModels
+m_dbt_oracle = FlextDbtOracleModels
+
 __all__: list[str] = [
     "FlextDbtOracleModel",
     "FlextDbtOracleModelGenerator",
     "FlextDbtOracleModels",
+    "m",
+    "m_dbt_oracle",
 ]
