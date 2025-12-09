@@ -307,9 +307,9 @@ class FlextDbtOracleWorkflowService:
                 )
 
             # Use utilities for complete prerequisite validation
-            prerequisites_result = FlextResult[dict[str, object]].ok(
-                {}
-            )  # Stub for missing class
+            prerequisites_result = FlextResult[
+                dict[str, object]
+            ].ok({})  # Stub for missing class
 
             if prerequisites_result.is_failure:
                 return FlextResult[dict[str, object]].fail(
@@ -317,9 +317,9 @@ class FlextDbtOracleWorkflowService:
                 )
 
             # Use utilities for performance validation
-            performance_result = FlextResult[dict[str, object]].ok(
-                {}
-            )  # Stub for missing class
+            performance_result = FlextResult[
+                dict[str, object]
+            ].ok({})  # Stub for missing class
 
             validation_results: dict[str, object] = {
                 "oracle_config": validation_result.unwrap(),
