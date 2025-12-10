@@ -162,7 +162,7 @@ class FlextDbtOracleModels(FlextModels):
                     )
                     continue
 
-                staging_models.append(model_result.unwrap())
+                staging_models.append(model_result.value)
 
             return FlextResult[list[FlextDbtOracleModels]].ok(staging_models)
 
@@ -182,7 +182,7 @@ class FlextDbtOracleModels(FlextModels):
                     )
                     continue
 
-                intermediate_models.append(model_result.unwrap())
+                intermediate_models.append(model_result.value)
 
             return FlextResult[list[FlextDbtOracleModels]].ok(intermediate_models)
 
@@ -202,7 +202,7 @@ class FlextDbtOracleModels(FlextModels):
                     )
                     continue
 
-                marts_models.append(model_result.unwrap())
+                marts_models.append(model_result.value)
 
             return FlextResult[list[FlextDbtOracleModels]].ok(marts_models)
 
@@ -224,7 +224,7 @@ class FlextDbtOracleModels(FlextModels):
                             f"Failed to generate SQL for {model.name}: {sql_result.error}",
                         )
 
-                    sql_content = sql_result.unwrap()
+                    sql_content = sql_result.value
                     sql_file_path = output_path / model.get_file_path()
                     sql_file_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -238,7 +238,7 @@ class FlextDbtOracleModels(FlextModels):
                             f"Failed to generate schema for {model.name}: {schema_result.error}",
                         )
 
-                    schema_entry = schema_result.unwrap()
+                    schema_entry = schema_result.value
                     schema_file_path = output_path / model.get_schema_file_path()
                     schema_file_path.parent.mkdir(parents=True, exist_ok=True)
 

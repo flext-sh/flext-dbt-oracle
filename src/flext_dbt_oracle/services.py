@@ -322,9 +322,9 @@ class FlextDbtOracleWorkflowService:
             ].ok({})  # Stub for missing class
 
             validation_results: dict[str, object] = {
-                "oracle_config": validation_result.unwrap(),
-                "dbt_prerequisites": prerequisites_result.unwrap(),
-                "system_performance": performance_result.unwrap()
+                "oracle_config": validation_result.value,
+                "dbt_prerequisites": prerequisites_result.value,
+                "system_performance": performance_result.value
                 if performance_result.is_success
                 else {"status": "warning"},
                 "overall_status": "passed",

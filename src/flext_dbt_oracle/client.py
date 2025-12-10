@@ -222,7 +222,7 @@ class FlextDbtOracleClient:
             schema_name=schema_name,
         )
 
-        return adapter_result.unwrap() if adapter_result.is_success else None
+        return adapter_result.value if adapter_result.is_success else None
 
     def validate_oracle_data(
         self,
@@ -320,7 +320,7 @@ class FlextDbtOracleClient:
                     "status": "success",
                     "models_executed": model_names or "all",
                     "project_path": self.config.dbt_project_dir,
-                    "dbt_result": run_result.unwrap(),
+                    "dbt_result": run_result.value,
                 }
                 FlextDbtOracleClient.logger.info(
                     "DBT transformation executed for models: %s",
