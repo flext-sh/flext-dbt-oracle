@@ -19,14 +19,14 @@ from flext_core import (
 )
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
-from flext_dbt_oracle.config import FlextDbtOracleConfig
+from flext_dbt_oracle.config import FlextDbtOracleSettings
 from flext_dbt_oracle.services import (
     FlextDbtOracleMonitoringService,
     FlextDbtOracleWorkflowService,
 )
 
 
-class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
+class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
     """Unified DBT Oracle facade with complete FLEXT ecosystem integration.
 
     This is the single unified class for the flext-dbt-oracle domain providing
@@ -48,10 +48,10 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
     PYTHON 3.13+ COMPATIBILITY: Uses modern patterns and latest type features.
     """
 
-    def __init__(self, config: FlextDbtOracleConfig | None = None) -> None:
+    def __init__(self, config: FlextDbtOracleSettings | None = None) -> None:
         """Initialize the unified DBT Oracle service."""
         super().__init__()
-        self._config = config or FlextDbtOracleConfig()
+        self._config = config or FlextDbtOracleSettings()
         self._client: FlextDbtOracleClient | None = None
         self._workflow_service: FlextDbtOracleWorkflowService | None = None
         self._monitoring_service: FlextDbtOracleMonitoringService | None = None
@@ -88,7 +88,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleConfig]):
         return self._monitoring_service
 
     @property
-    def config(self) -> FlextDbtOracleConfig:
+    def config(self) -> FlextDbtOracleSettings:
         """Get the current configuration."""
         return self._config
 

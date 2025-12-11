@@ -11,16 +11,16 @@ import pytest
 
 from flext_dbt_oracle import (
     FlextDbtOracleClient,
-    FlextDbtOracleConfig,
     FlextDbtOracleModel,
     FlextDbtOracleModelGenerator,
+    FlextDbtOracleSettings,
 )
 
 
 def test_basic_import() -> None:
     """Test basic adapter imports work."""
     assert FlextDbtOracleClient is not None
-    assert FlextDbtOracleConfig is not None
+    assert FlextDbtOracleSettings is not None
     assert FlextDbtOracleModel is not None
     assert FlextDbtOracleModelGenerator is not None
 
@@ -36,7 +36,7 @@ def test_credentials_class() -> None:
     """Test credentials class is available."""
     # This test will need to be updated based on actual implementation
     # For now, just test that the config class exists
-    assert FlextDbtOracleConfig is not None
+    assert FlextDbtOracleSettings is not None
 
 
 @pytest.mark.unit

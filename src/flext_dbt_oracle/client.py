@@ -12,7 +12,7 @@ from flext_db_oracle import FlextDbOracleApi
 from flext_meltano import FlextMeltanoService
 
 from flext_dbt_oracle.adapters import FlextDbtOracleAdapters
-from flext_dbt_oracle.config import FlextDbtOracleConfig
+from flext_dbt_oracle.config import FlextDbtOracleSettings
 
 
 class FlextDbtOracleClient:
@@ -29,7 +29,7 @@ class FlextDbtOracleClient:
     @override
     def __init__(
         self,
-        config: FlextDbtOracleConfig | None = None,
+        config: FlextDbtOracleSettings | None = None,
     ) -> None:
         """Initialize DBT Oracle client.
 
@@ -38,7 +38,7 @@ class FlextDbtOracleClient:
 
         """
         self.config: dict[str, object] = (
-            config or FlextDbtOracleConfig.get_global_instance()
+            config or FlextDbtOracleSettings.get_global_instance()
         )
         self._oracle_api: FlextDbOracleApi | None = None
         self._meltano_service: FlextMeltanoService | None = None

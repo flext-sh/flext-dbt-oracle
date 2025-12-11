@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from typing import cast, override
 
 from flext_core import FlextLogger, T
-from flext_db_oracle import FlextDbOracleConfig
+from flext_db_oracle import FlextDbOracleSettings
 from flext_meltano import Connection, DbtDatabaseError
 
 
@@ -72,9 +72,9 @@ class FlextDbtOracleConnections:
             """Get database identifier (service_name or sid)."""
             return self.service_name or self.sid or "XE"
 
-        def to_oracle_config(self: object) -> FlextDbOracleConfig:
+        def to_oracle_config(self: object) -> FlextDbOracleSettings:
             """Convert to Oracle config."""
-            return FlextDbOracleConfig(
+            return FlextDbOracleSettings(
                 oracle_host=self.host,
                 oracle_port=self.port,
                 oracle_username=self.username,

@@ -14,7 +14,7 @@ from flext_db_oracle import FlextDbOracleApi
 from flext_db_oracle.models import FlextDbOracleModels
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
-from flext_dbt_oracle.config import FlextDbtOracleConfig
+from flext_dbt_oracle.config import FlextDbtOracleSettings
 from flext_dbt_oracle.constants import FlextDbtOracleConstants
 from flext_dbt_oracle.models import FlextDbtOracleModels
 from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
@@ -34,7 +34,7 @@ class FlextDbtOracleWorkflowService:
     @override
     def __init__(
         self,
-        config: FlextDbtOracleConfig | None = None,
+        config: FlextDbtOracleSettings | None = None,
     ) -> None:
         """Initialize workflow service.
 
@@ -42,7 +42,7 @@ class FlextDbtOracleWorkflowService:
         config: Configuration for Oracle and DBT operations
 
         """
-        self.config = config or FlextDbtOracleConfig.get_global_instance()
+        self.config = config or FlextDbtOracleSettings.get_global_instance()
         self.client = FlextDbtOracleClient(self.config)
 
         # Zero Tolerance FIX: Use FlextDbtOracleUtilities for ALL business operations
@@ -508,7 +508,7 @@ class FlextDbtOracleWorkflowService:
     @classmethod
     def create_monitoring_service(
         cls,
-        config: FlextDbtOracleConfig,
+        config: FlextDbtOracleSettings,
     ) -> _MonitoringService:
         """Factory method to create monitoring service instance."""
         return cls._MonitoringService(config)
@@ -519,7 +519,7 @@ class FlextDbtOracleWorkflowService:
         @override
         def __init__(
             self,
-            config: FlextDbtOracleConfig,
+            config: FlextDbtOracleSettings,
         ) -> None:
             """Initialize monitoring service.
 

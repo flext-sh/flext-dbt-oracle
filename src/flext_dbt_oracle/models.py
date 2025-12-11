@@ -14,7 +14,7 @@ import yaml
 from flext_core import FlextLogger, FlextModels, FlextResult
 from flext_core.utilities import u
 
-from flext_dbt_oracle.config import FlextDbtOracleConfig
+from flext_dbt_oracle.config import FlextDbtOracleSettings
 
 
 class FlextDbtOracleModels(FlextModels):
@@ -109,7 +109,7 @@ class FlextDbtOracleModels(FlextModels):
     @classmethod
     def create_generator(
         cls,
-        config: FlextDbtOracleConfig,
+        config: FlextDbtOracleSettings,
     ) -> FlextDbtOracleModels.ModelGenerator:
         """Create a model generator instance."""
         return cls.ModelGenerator(config)
@@ -139,7 +139,7 @@ class FlextDbtOracleModels(FlextModels):
         @override
         def __init__(
             self,
-            config: FlextDbtOracleConfig,
+            config: FlextDbtOracleSettings,
         ) -> None:
             """Initialize the model generator."""
             self.config = config

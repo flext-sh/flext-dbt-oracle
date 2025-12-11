@@ -11,7 +11,7 @@ from typing import Final
 
 from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
 from flext_dbt_oracle.client import FlextDbtOracleClient
-from flext_dbt_oracle.config import FlextDbtOracleConfig
+from flext_dbt_oracle.config import FlextDbtOracleSettings
 from flext_dbt_oracle.models import (
     FlextDbtOracleModel,
     FlextDbtOracleModelGenerator,
@@ -35,11 +35,11 @@ __all__ = [
     "FlextDbtOracle",
     "FlextDbtOracleAPI",
     "FlextDbtOracleClient",
-    "FlextDbtOracleConfig",
     "FlextDbtOracleModel",
     "FlextDbtOracleModelGenerator",
     "FlextDbtOracleMonitoringService",
     "FlextDbtOracleProtocols",
+    "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
     "FlextDbtOracleWorkflowService",

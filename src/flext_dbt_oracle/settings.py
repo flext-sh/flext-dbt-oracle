@@ -8,22 +8,22 @@ from __future__ import annotations
 from pathlib import Path
 from typing import ClassVar, Self
 
-from flext_core import FlextConfig, FlextResult
+from flext_core import FlextResult, FlextSettings
 from flext_db_oracle import FlextDbOracleModels
-from flext_meltano.config import FlextMeltanoConfig
+from flext_meltano.settings import FlextMeltanoSettings
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
 from flext_dbt_oracle.constants import FlextDbtOracleConstants
 
 
-@FlextConfig.auto_register("dbt_oracle")
-class FlextDbtOracleConfig(FlextConfig.AutoConfig):
+@FlextSettings.auto_register("dbt_oracle")
+class FlextDbtOracleSettings(FlextSettings.AutoConfig):
     """Configuration for DBT Oracle transformations.
 
     **ARCHITECTURAL PATTERN**: Zero-Boilerplate Auto-Registration
 
-    This class uses FlextConfig.AutoConfig for automatic:
+    This class uses FlextSettings.AutoConfig for automatic:
     - Singleton pattern (thread-safe)
     - Namespace registration (accessible via config.dbt_oracle)
     - Environment variable loading from FLEXT_DBT_ORACLE_* variables
@@ -293,7 +293,7 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
             timeout=self.oracle_timeout,
         )
 
-    def get_meltano_config(self) -> FlextMeltanoConfig:
+    def get_meltano_config(self) -> FlextMeltanoSettings:
         """Get Meltano configuration for flext-meltano integration."""
         # Map dbt_target to environment
         environment_mapping = {
@@ -308,7 +308,7 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
 
         environment = environment_mapping.get(self.dbt_target, "development")
 
-        return FlextMeltanoConfig(
+        return FlextMeltanoSettings(
             project_root=Path(self.dbt_project_dir),
             environment=environment,
         )
@@ -456,7 +456,7 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
 
     @classmethod
     def get_global_instance(cls) -> Self:
-        """Get the global singleton instance using enhanced FlextConfig pattern."""
+        """Get the global singleton instance using enhanced FlextSettings pattern."""
         return cls.get_or_create_shared_instance(project_name="flext-dbt-oracle")
 
     @classmethod
@@ -466,5 +466,5 @@ class FlextDbtOracleConfig(FlextConfig.AutoConfig):
 
 
 __all__: list[str] = [
-    "FlextDbtOracleConfig",
+    "FlextDbtOracleSettings",
 ]
