@@ -19,11 +19,11 @@ from flext_core import (
 )
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
-from flext_dbt_oracle.config import FlextDbtOracleSettings
 from flext_dbt_oracle.services import (
     FlextDbtOracleMonitoringService,
     FlextDbtOracleWorkflowService,
 )
+from flext_dbt_oracle.settings import FlextDbtOracleSettings
 
 
 class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
