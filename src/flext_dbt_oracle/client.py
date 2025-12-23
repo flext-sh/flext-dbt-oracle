@@ -12,7 +12,7 @@ from flext_db_oracle import FlextDbOracleApi
 from flext_meltano import FlextMeltanoService
 
 from flext_dbt_oracle.adapters import FlextDbtOracleAdapters
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
+from flext_dbt_oracle.config import FlextDbtOracleSettings
 
 
 class FlextDbtOracleClient:

@@ -14,9 +14,9 @@ from flext_db_oracle import FlextDbOracleApi
 from flext_db_oracle.models import FlextDbOracleModels
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
+from flext_dbt_oracle.config import FlextDbtOracleSettings
 from flext_dbt_oracle.constants import FlextDbtOracleConstants
 from flext_dbt_oracle.models import FlextDbtOracleModels
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
 from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
 
 
