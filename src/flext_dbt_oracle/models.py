@@ -228,8 +228,7 @@ class FlextDbtOracleModels(FlextModels):
                     sql_file_path = output_path / model.get_file_path()
                     sql_file_path.parent.mkdir(parents=True, exist_ok=True)
 
-                    with Path(sql_file_path).open("w", encoding="utf-8") as f:
-                        f.write(sql_content)
+                    Path(sql_file_path).write_text(sql_content, encoding="utf-8")
 
                     # Write schema entry
                     schema_result = model.to_schema_entry()
