@@ -10,13 +10,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from flext_core import (
-    FlextContainer,
+from flext import FlextContainer,
     FlextContext,
     FlextLogger,
     FlextResult,
-    FlextService,
-)
+    FlextService
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.config import FlextDbtOracleSettings

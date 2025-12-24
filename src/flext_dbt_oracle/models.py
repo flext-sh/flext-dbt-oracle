@@ -11,9 +11,9 @@ from pathlib import Path
 from typing import ClassVar, override
 
 import yaml
-from flext_core import FlextLogger, FlextModels, FlextResult
 from flext_core.utilities import u
 
+from flext import FlextLogger, FlextModels, FlextResult
 from flext_dbt_oracle.config import FlextDbtOracleSettings
 
 

@@ -8,12 +8,12 @@ from __future__ import annotations
 from pathlib import Path
 from typing import ClassVar, Self
 
-from flext_core import FlextResult, FlextSettings
 from flext_db_oracle import FlextDbOracleModels
 from flext_meltano.settings import FlextMeltanoSettings
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
+from flext import FlextResult, FlextSettings
 from flext_dbt_oracle.constants import FlextDbtOracleConstants
 
 

@@ -7,10 +7,10 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_core import FlextLogger, FlextResult
 from flext_db_oracle import FlextDbOracleApi
 from flext_meltano import FlextMeltanoService
 
+from flext import FlextLogger, FlextResult
 from flext_dbt_oracle.adapters import FlextDbtOracleAdapters
 from flext_dbt_oracle.config import FlextDbtOracleSettings
 
