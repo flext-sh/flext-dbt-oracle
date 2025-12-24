@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from flext import FlextContainer,
+from flext_core import  FlextContainer,
     FlextLogger,
     FlextResult,
     u

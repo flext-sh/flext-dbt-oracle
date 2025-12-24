@@ -9,10 +9,10 @@ import time
 from pathlib import Path
 from typing import override
 
+from flext_core import FlextLogger, FlextResult, t
 from flext_db_oracle import FlextDbOracleApi
 from flext_db_oracle.models import FlextDbOracleModels
 
-from flext import FlextLogger, FlextResult, t
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.config import FlextDbtOracleSettings
 from flext_dbt_oracle.constants import FlextDbtOracleConstants

@@ -12,7 +12,7 @@ from __future__ import annotations
 from enum import StrEnum
 from typing import Literal
 
-from flext import FlextConstants
+from flext_core import FlextConstants
 
 
 class FlextDbtOracleConstants(FlextConstants):

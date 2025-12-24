@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from flext import FlextTypes
+from flext_core import FlextTypes
 
 # =============================================================================
 # DBT ORACLE-SPECIFIC TYPE VARIABLES - Domain-specific TypeVars for DBT Oracle operations
@@ -189,7 +189,8 @@ class FlextDbtOracleTypes(FlextTypes):
         type SchemaAdapter = dict[str, str | list[str] | dict[str, object]]
         """Oracle schema adapter type."""
         type TransactionAdapter = dict[
-            str, bool | str | dict[str, FlextTypes.JsonValue],
+            str,
+            bool | str | dict[str, FlextTypes.JsonValue],
         ]
         """Oracle transaction adapter type."""
         type CursorAdapter = dict[str, str | int | dict[str, object]]
