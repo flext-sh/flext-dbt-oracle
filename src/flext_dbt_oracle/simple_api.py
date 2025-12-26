@@ -10,18 +10,20 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from flext_core import  FlextContainer,
+from flext_core import (
+    FlextContainer,
     FlextContext,
     FlextLogger,
     FlextResult,
-    FlextService
+    FlextService,
+)
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
-from flext_dbt_oracle.config import FlextDbtOracleSettings
 from flext_dbt_oracle.services import (
     FlextDbtOracleMonitoringService,
     FlextDbtOracleWorkflowService,
 )
+from flext_dbt_oracle.settings import FlextDbtOracleSettings
 
 
 class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):

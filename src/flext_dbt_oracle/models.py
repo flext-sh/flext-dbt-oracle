@@ -14,7 +14,7 @@ import yaml
 from flext_core import FlextLogger, FlextModels, FlextResult
 from flext_core.utilities import u
 
-from flext_dbt_oracle.config import FlextDbtOracleSettings
+from flext_dbt_oracle.settings import FlextDbtOracleSettings
 
 
 class FlextDbtOracleModels(FlextModels):

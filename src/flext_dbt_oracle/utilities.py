@@ -9,10 +9,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from flext_core import  FlextContainer,
-    FlextLogger,
-    FlextResult,
-    u
+from flext_core import FlextContainer, FlextLogger, FlextResult, u
 
 
 class FlextDbtOracleUtilities(u):

@@ -1,42 +1,33 @@
-"""Modern Oracle Database DBT Integration for FLEXT ecosystem.
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
-"""
+"""FLEXT Enterprise - dbt-oracle adapter component."""
 
 from __future__ import annotations
 
-from typing import Final
-
+# Import local classes
 from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
 from flext_dbt_oracle.client import FlextDbtOracleClient
-from flext_dbt_oracle.config import FlextDbtOracleSettings
 from flext_dbt_oracle.models import (
-    FlextDbtOracleModel,
     FlextDbtOracleModelGenerator,
+    FlextDbtOracleModels,
 )
 from flext_dbt_oracle.protocols import FlextDbtOracleProtocols
 from flext_dbt_oracle.services import (
     FlextDbtOracleMonitoringService,
     FlextDbtOracleWorkflowService,
 )
+from flext_dbt_oracle.settings import FlextDbtOracleSettings
 from flext_dbt_oracle.simple_api import FlextDbtOracle, FlextDbtOracleAPI
 from flext_dbt_oracle.typings import FlextDbtOracleTypes
 from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
-from flext_dbt_oracle.version import VERSION, FlextDbtOracleVersion
 
-PROJECT_VERSION: Final[FlextDbtOracleVersion] = VERSION
-
-__version__: str = VERSION.version
-__version_info__: tuple[int | str, ...] = VERSION.version_info
+__version__ = "1.0.0"
+__version_info__ = (1, 0, 0)
 
 __all__ = [
     "FlextDbtOracle",
     "FlextDbtOracleAPI",
     "FlextDbtOracleClient",
-    "FlextDbtOracleModel",
     "FlextDbtOracleModelGenerator",
+    "FlextDbtOracleModels",
     "FlextDbtOracleMonitoringService",
     "FlextDbtOracleProtocols",
     "FlextDbtOracleSettings",
