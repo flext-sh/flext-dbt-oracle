@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import cast, override
+from typing import override
 
 from flext_core import FlextLogger, T
 from flext_db_oracle import FlextDbOracleSettings
@@ -98,13 +98,16 @@ class FlextDbtOracleConnections:
             """Open connection."""
             try:
                 connection.state = "open"
+                # Type narrowing - credentials should be Credentials
+                if not isinstance(
+                    connection.credentials, FlextDbtOracleConnections.Credentials
+                ):
+                    msg = "Invalid credentials type"
+                    raise DbtDatabaseError(msg)
                 connection.handle = {
                     "connection_service": "None",
                     "query_service": "None",
-                    "oracle_config": cast(
-                        "FlextDbtOracleConnections.Credentials",
-                        connection.credentials,
-                    ).to_oracle_config(),
+                    "oracle_config": connection.credentials.to_oracle_config(),
                 }
                 return connection
             except Exception as e:

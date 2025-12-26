@@ -42,15 +42,19 @@ class FlextDbtOracleTypes(FlextTypes):
         Python 3.13+ best practice: Use TypeAlias for better type checking.
         """
 
-        type ProjectConfiguration = dict[str, object | dict[str, object]]
+        type ProjectConfiguration = dict[
+            str, FlextTypes.JsonValue | dict[str, FlextTypes.JsonValue]
+        ]
         """DBT project configuration type."""
         type ModelConfiguration = dict[str, str | dict[str, FlextTypes.JsonValue]]
         """DBT model configuration type."""
-        type SourceConfiguration = dict[str, str | list[dict[str, object]]]
+        type SourceConfiguration = dict[
+            str, str | list[dict[str, FlextTypes.JsonValue]]
+        ]
         """DBT source configuration type."""
-        type ProfileConfiguration = dict[str, object]
+        type ProfileConfiguration = dict[str, FlextTypes.JsonValue]
         """DBT profile configuration type."""
-        type MacroConfiguration = dict[str, str | dict[str, object]]
+        type MacroConfiguration = dict[str, str | dict[str, FlextTypes.JsonValue]]
         """DBT macro configuration type."""
         type TestConfiguration = dict[str, str | bool | list[str]]
         """DBT test configuration type."""
