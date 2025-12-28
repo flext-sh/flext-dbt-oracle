@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import ClassVar, override
 
 import yaml
-from flext_core import FlextLogger, FlextModels, FlextResult
+from flext_core import FlextLogger, FlextModels, FlextResult, t
 from flext_core.utilities import u
 
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
@@ -39,7 +39,7 @@ class FlextDbtOracleModels(FlextModels):
     dbt_model_type: str  # staging, intermediate, marts
     schema_name: str
     table_name: str
-    columns: list[dict[str, object]]
+    columns: list[dict[str, t.GeneralValueType]]
     materialization: str
     sql_content: str
     description: str
@@ -85,10 +85,10 @@ class FlextDbtOracleModels(FlextModels):
         except Exception as e:
             return FlextResult[str].fail(f"SQL file generation failed: {e}")
 
-    def to_schema_entry(self) -> FlextResult[dict[str, object]]:
+    def to_schema_entry(self) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Convert model to schema.yml entry."""
         try:
-            schema_entry: dict[str, object] = {
+            schema_entry: dict[str, t.GeneralValueType] = {
                 "name": self.name,
                 "description": self.description,
                 "columns": [
@@ -100,9 +100,9 @@ class FlextDbtOracleModels(FlextModels):
                     for col in self.columns
                 ],
             }
-            return FlextResult[dict[str, object]].ok(schema_entry)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(schema_entry)
         except Exception as e:
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Schema entry generation failed: {e}",
             )
 

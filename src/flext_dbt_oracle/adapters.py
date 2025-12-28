@@ -13,7 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
-from flext_core import r
+from flext_core import r, t
 from flext_db_oracle.models import FlextDbOracleModels
 
 
@@ -43,7 +43,7 @@ class FlextDbtOracleAdapters:
             """List of column information as dictionaries."""
 
         @property
-        def metadata(self: object) -> dict[str, object]:
+        def metadata(self: object) -> dict[str, t.GeneralValueType]:
             """Table metadata information."""
 
     @dataclass
@@ -55,13 +55,13 @@ class FlextDbtOracleAdapters:
         """
 
         _table: FlextDbOracleModels.Table
-        _extra_metadata: dict[str, object]
+        _extra_metadata: dict[str, t.GeneralValueType]
 
         @classmethod
         def create_from_table(
             cls,
             table: FlextDbOracleModels.Table,
-            metadata: dict[str, object] | None = None,
+            metadata: dict[str, t.GeneralValueType] | None = None,
         ) -> r[FlextDbtOracleAdapters.TableAdapter]:
             """Create adapter from actual Table object with optional metadata.
 
@@ -96,7 +96,7 @@ class FlextDbtOracleAdapters:
             name: str,
             schema_name: str,
             columns: list[dict[str, str]] | None = None,
-            metadata: dict[str, object] | None = None,
+            metadata: dict[str, t.GeneralValueType] | None = None,
         ) -> r[FlextDbtOracleAdapters.TableAdapter]:
             """Create adapter from raw metadata (for cases where we build from scratch).
 
@@ -123,7 +123,9 @@ class FlextDbtOracleAdapters:
             # Create a basic Table object (using actual constructor signature)
             try:
                 # Convert column information if provided
-                table_columns: list[object] = list(columns) if columns else []
+                table_columns: list[t.GeneralValueType] = (
+                    list(columns) if columns else []
+                )
 
                 table = FlextDbOracleModels.Table(
                     name=name,
@@ -166,7 +168,7 @@ class FlextDbtOracleAdapters:
             ]
 
         @property
-        def metadata(self: object) -> dict[str, object]:
+        def metadata(self: object) -> dict[str, t.GeneralValueType]:
             """Combined metadata from table and extra metadata."""
             base_metadata = {
                 "name": self.name,
@@ -189,7 +191,7 @@ class FlextDbtOracleAdapters:
         @staticmethod
         def from_api_response(
             table_name: str,
-            api_response: dict[str, object],
+            api_response: dict[str, t.GeneralValueType],
             schema_name: str | None = None,
         ) -> r[FlextDbtOracleAdapters.TableAdapter]:
             """Create table adapter from Oracle API response.

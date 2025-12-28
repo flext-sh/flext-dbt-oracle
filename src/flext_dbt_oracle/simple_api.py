@@ -16,6 +16,7 @@ from flext_core import (
     FlextLogger,
     FlextResult,
     FlextService,
+    t,
 )
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
@@ -103,7 +104,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
         *,
         generate_models: bool = True,
         run_tests: bool = False,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Run complete Oracle-to-DBT workflow.
 
         Args:
@@ -125,7 +126,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
                 run_tests=run_tests,
             )
         except Exception as e:
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Workflow execution failed: {e}",
             )
 
@@ -134,7 +135,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
         table_names: list[str] | None = None,
         schema_name: str | None = None,
         output_dir: Path | str | None = None,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Generate DBT models from Oracle tables.
 
         Args:
@@ -154,7 +155,9 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
                 output_dir=output_dir,
             )
         except Exception as e:
-            return FlextResult[dict[str, object]].fail(f"Model generation failed: {e}")
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
+                f"Model generation failed: {e}"
+            )
 
     def extract_oracle_metadata(
         self,
@@ -163,7 +166,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
         *,
         include_constraints: bool = True,
         include_indexes: bool = True,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Extract Oracle database metadata.
 
         Args:
@@ -185,7 +188,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
                 include_indexes=include_indexes,
             )
         except Exception as e:
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Metadata extraction failed: {e}",
             )
 
@@ -193,7 +196,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
         self,
         command: str,
         timeout_seconds: int = 300,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Monitor DBT command execution with metrics.
 
         Args:
@@ -211,7 +214,9 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
                 timeout_seconds=timeout_seconds,
             )
         except Exception as e:
-            return FlextResult[dict[str, object]].fail(f"Monitoring failed: {e}")
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
+                f"Monitoring failed: {e}"
+            )
 
     def validate_oracle_connection(self) -> FlextResult[bool]:
         """Validate Oracle database connection.
@@ -230,7 +235,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
         self,
         table_name: str,
         schema_name: str | None = None,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Get detailed information about an Oracle table.
 
         Args:
@@ -248,7 +253,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
                 schema_name=schema_name,
             )
         except Exception as e:
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Table info retrieval failed: {e}",
             )
 

@@ -8,7 +8,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import ClassVar, Self
 
-from flext_core import FlextResult, FlextSettings
+from flext_core import FlextResult, FlextSettings, t
 from flext_db_oracle import FlextDbOracleModels
 from flext_meltano.settings import FlextMeltanoSettings
 from pydantic import Field, SecretStr, field_validator, model_validator
@@ -313,7 +313,7 @@ class FlextDbtOracleSettings(FlextSettings.AutoConfig):
             environment=environment,
         )
 
-    def get_oracle_quality_config(self) -> dict[str, object]:
+    def get_oracle_quality_config(self) -> dict[str, t.GeneralValueType]:
         """Get data quality configuration for Oracle validation."""
         return {
             "min_quality_threshold": self.min_quality_threshold,
@@ -322,7 +322,7 @@ class FlextDbtOracleSettings(FlextSettings.AutoConfig):
             "max_parallel_connections": self.max_parallel_connections,
         }
 
-    def get_performance_config(self) -> dict[str, object]:
+    def get_performance_config(self) -> dict[str, t.GeneralValueType]:
         """Get Oracle performance configuration."""
         return {
             "fetch_size": self.fetch_size,
@@ -331,7 +331,7 @@ class FlextDbtOracleSettings(FlextSettings.AutoConfig):
             "optimizer_mode": self.optimizer_mode,
         }
 
-    def get_dbt_config(self) -> dict[str, object]:
+    def get_dbt_config(self) -> dict[str, t.GeneralValueType]:
         """Get DBT configuration dictionary."""
         return {
             "project_dir": self.dbt_project_dir,
