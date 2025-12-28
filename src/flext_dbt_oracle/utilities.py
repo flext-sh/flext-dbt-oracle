@@ -7,9 +7,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import ClassVar
-
 from flext_core import FlextContainer, FlextLogger, FlextResult, t, u
+
+from flext_dbt_oracle.constants import c
 
 
 class FlextDbtOracleUtilities(u):
@@ -25,27 +25,9 @@ class FlextDbtOracleUtilities(u):
     - Oracle SQL optimization and performance tuning
     - Oracle data warehouse patterns and best practices
     - Oracle-specific testing and validation
+
+    Oracle performance constants are defined in constants.py under c.DbtOraclePerformance.*
     """
-
-    # Oracle connection constants
-    ORACLE_DEFAULT_PORT: ClassVar[int] = 1521
-    ORACLE_DEFAULT_SERVICE: ClassVar[str] = "XEPDB1"
-    ORACLE_MAX_CONNECTIONS: ClassVar[int] = 100
-    ORACLE_CONNECTION_TIMEOUT: ClassVar[int] = 30
-
-    # Oracle performance threshold constants
-    ORACLE_CONNECTION_TIME_THRESHOLD_MS: ClassVar[int] = 1000
-    ORACLE_MIN_AVAILABLE_CONNECTIONS: ClassVar[int] = 10
-    ORACLE_EXECUTION_TIME_THRESHOLD_HIGH_MS: ClassVar[int] = 10000
-    ORACLE_EXECUTION_TIME_THRESHOLD_MEDIUM_MS: ClassVar[int] = 5000
-    ORACLE_EXECUTION_TIME_THRESHOLD_LOW_MS: ClassVar[int] = 1000
-    ORACLE_HIGH_IO_OPERATIONS_THRESHOLD: ClassVar[int] = 100000
-    ORACLE_CPU_UTILIZATION_THRESHOLD: ClassVar[float] = 0.1
-    ORACLE_HIGH_BUFFER_GETS_THRESHOLD: ClassVar[int] = 1000000
-    ORACLE_LARGE_TABLE_SIZE_GB: ClassVar[int] = 100
-    ORACLE_HIGH_GROWTH_RATE_GB: ClassVar[int] = 10
-    ORACLE_GROWTH_RATE_THRESHOLD_GB: ClassVar[int] = 5
-    ORACLE_VERY_LARGE_TABLE_SIZE_GB: ClassVar[int] = 1000
 
     def __init__(self) -> None:
         """Initialize FlextDbtOracleUtilities service."""
@@ -120,13 +102,13 @@ class FlextDbtOracleUtilities(u):
                                 "host": connection_params["host"],
                                 "port": connection_params.get(
                                     "port",
-                                    FlextDbtOracleUtilities.ORACLE_DEFAULT_PORT,
+                                    c.DbtOraclePerformance.DEFAULT_PORT,
                                 ),
                                 "user": connection_params["user"],
                                 "password": connection_params["password"],
                                 "service": connection_params.get(
                                     "service",
-                                    FlextDbtOracleUtilities.ORACLE_DEFAULT_SERVICE,
+                                    c.DbtOraclePerformance.DEFAULT_SERVICE,
                                 ),
                                 "schema": connection_params.get(
                                     "schema",
@@ -164,7 +146,7 @@ class FlextDbtOracleUtilities(u):
                                 ),
                                 "port": connection_params.get(
                                     "prod_port",
-                                    FlextDbtOracleUtilities.ORACLE_DEFAULT_PORT,
+                                    c.DbtOraclePerformance.DEFAULT_PORT,
                                 ),
                                 "user": connection_params.get(
                                     "prod_user",
@@ -176,7 +158,7 @@ class FlextDbtOracleUtilities(u):
                                 ),
                                 "service": connection_params.get(
                                     "prod_service",
-                                    FlextDbtOracleUtilities.ORACLE_DEFAULT_SERVICE,
+                                    c.DbtOraclePerformance.DEFAULT_SERVICE,
                                 ),
                                 "schema": connection_params.get(
                                     "prod_schema",
@@ -269,7 +251,7 @@ class FlextDbtOracleUtilities(u):
                 # Add performance recommendations
                 if (
                     validation_results["performance_metrics"]["connection_time_ms"]
-                    > FlextDbtOracleUtilities.ORACLE_CONNECTION_TIME_THRESHOLD_MS
+                    > c.DbtOraclePerformance.CONNECTION_TIME_THRESHOLD_MS
                 ):
                     validation_results["recommendations"].append(
                         "Connection time is high - consider connection pooling",
@@ -277,7 +259,7 @@ class FlextDbtOracleUtilities(u):
 
                 if (
                     validation_results["performance_metrics"]["available_connections"]
-                    < FlextDbtOracleUtilities.ORACLE_MIN_AVAILABLE_CONNECTIONS
+                    < c.DbtOraclePerformance.MIN_AVAILABLE_CONNECTIONS
                 ):
                     validation_results["recommendations"].append(
                         "Low available connections - increase pool size",
@@ -633,23 +615,22 @@ where f.is_active = 1
                 score = 100
                 if (
                     execution_time
-                    > FlextDbtOracleUtilities.ORACLE_EXECUTION_TIME_THRESHOLD_HIGH_MS
+                    > c.DbtOraclePerformance.EXECUTION_TIME_THRESHOLD_HIGH_MS
                 ):  # > 10 seconds
                     score -= 30
                 elif (
                     execution_time
-                    > FlextDbtOracleUtilities.ORACLE_EXECUTION_TIME_THRESHOLD_MEDIUM_MS
+                    > c.DbtOraclePerformance.EXECUTION_TIME_THRESHOLD_MEDIUM_MS
                 ):  # > 5 seconds
                     score -= 15
                 elif (
                     execution_time
-                    > FlextDbtOracleUtilities.ORACLE_EXECUTION_TIME_THRESHOLD_LOW_MS
+                    > c.DbtOraclePerformance.EXECUTION_TIME_THRESHOLD_LOW_MS
                 ):  # > 1 second
                     score -= 5
 
                 if (
-                    io_operations
-                    > FlextDbtOracleUtilities.ORACLE_HIGH_IO_OPERATIONS_THRESHOLD
+                    io_operations > c.DbtOraclePerformance.HIGH_IO_OPERATIONS_THRESHOLD
                 ):  # High I/O
                     score -= 25
                     analysis["bottlenecks"].append("High physical I/O operations")
@@ -659,7 +640,7 @@ where f.is_active = 1
 
                 if (
                     cpu_time / execution_time
-                    < FlextDbtOracleUtilities.ORACLE_CPU_UTILIZATION_THRESHOLD
+                    < c.DbtOraclePerformance.CPU_UTILIZATION_THRESHOLD
                 ):  # Low CPU utilization
                     analysis["bottlenecks"].append(
                         "Low CPU utilization - likely I/O bound",
@@ -669,10 +650,7 @@ where f.is_active = 1
                     )
 
                 # Specific Oracle recommendations
-                if (
-                    buffer_gets
-                    > FlextDbtOracleUtilities.ORACLE_HIGH_BUFFER_GETS_THRESHOLD
-                ):
+                if buffer_gets > c.DbtOraclePerformance.HIGH_BUFFER_GETS_THRESHOLD:
                     analysis["recommendations"].append(
                         "High buffer gets - consider query rewrite or partitioning",
                     )
@@ -855,8 +833,8 @@ from {{{{ ref('stg_{dimension_name}') }}}}
 
                 # Determine partitioning strategy based on size and growth
                 if (
-                    table_size_gb > FlextDbtOracleUtilities.ORACLE_LARGE_TABLE_SIZE_GB
-                    or growth_rate > FlextDbtOracleUtilities.ORACLE_HIGH_GROWTH_RATE_GB
+                    table_size_gb > c.DbtOraclePerformance.LARGE_TABLE_SIZE_GB
+                    or growth_rate > c.DbtOraclePerformance.HIGH_GROWTH_RATE_GB
                 ):
                     date_columns = [
                         col
@@ -870,7 +848,7 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                             "partition_column": date_columns[0]["name"],
                             "partition_interval": "MONTHLY"
                             if growth_rate
-                            > FlextDbtOracleUtilities.ORACLE_GROWTH_RATE_THRESHOLD_GB
+                            > c.DbtOraclePerformance.GROWTH_RATE_THRESHOLD_GB
                             else "QUARTERLY",
                             "compression": "advanced",
                         })
@@ -878,7 +856,7 @@ from {{{{ ref('stg_{dimension_name}') }}}}
                         # Add subpartitioning for very large tables
                         if (
                             table_size_gb
-                            > FlextDbtOracleUtilities.ORACLE_VERY_LARGE_TABLE_SIZE_GB
+                            > c.DbtOraclePerformance.VERY_LARGE_TABLE_SIZE_GB
                         ):
                             partitioning_strategy.update({
                                 "subpartition_type": "hash",

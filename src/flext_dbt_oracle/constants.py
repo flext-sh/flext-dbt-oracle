@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from enum import StrEnum
-from typing import Literal
+from typing import Final, Literal
 
 from flext_core import FlextConstants
 
@@ -45,6 +45,24 @@ class FlextDbtOracleConstants(FlextConstants):
         MAX_POOL_SIZE = 20
         DEFAULT_POOL_SIZE = 5
 
+        # Oracle configuration thresholds (from utilities.py)
+        DEFAULT_PORT: Final[int] = 1521
+        DEFAULT_SERVICE: Final[str] = "XEPDB1"
+        MAX_CONNECTIONS: Final[int] = 100
+        CONNECTION_TIMEOUT: Final[int] = 30
+        CONNECTION_TIME_THRESHOLD_MS: Final[int] = 1000
+        MIN_AVAILABLE_CONNECTIONS: Final[int] = 10
+        EXECUTION_TIME_THRESHOLD_HIGH_MS: Final[int] = 10000
+        EXECUTION_TIME_THRESHOLD_MEDIUM_MS: Final[int] = 5000
+        EXECUTION_TIME_THRESHOLD_LOW_MS: Final[int] = 1000
+        HIGH_IO_OPERATIONS_THRESHOLD: Final[int] = 100000
+        CPU_UTILIZATION_THRESHOLD: Final[float] = 0.1
+        HIGH_BUFFER_GETS_THRESHOLD: Final[int] = 1000000
+        LARGE_TABLE_SIZE_GB: Final[int] = 100
+        HIGH_GROWTH_RATE_GB: Final[int] = 10
+        GROWTH_RATE_THRESHOLD_GB: Final[int] = 5
+        VERY_LARGE_TABLE_SIZE_GB: Final[int] = 1000
+
     class Oracle:
         """Oracle-specific constants."""
 
@@ -62,6 +80,32 @@ class FlextDbtOracleConstants(FlextConstants):
 
         # Default port
         DEFAULT_PORT = 1521  # Standard Oracle port
+
+        class Performance:
+            """Oracle connection and performance thresholds.
+
+            Migrated from utilities.py ClassVar constants to centralized Final constants.
+            """
+
+            # Oracle connection constants
+            DEFAULT_PORT: Final[int] = 1521
+            DEFAULT_SERVICE: Final[str] = "XEPDB1"
+            MAX_CONNECTIONS: Final[int] = 100
+            CONNECTION_TIMEOUT: Final[int] = 30
+
+            # Oracle performance threshold constants
+            CONNECTION_TIME_THRESHOLD_MS: Final[int] = 1000
+            MIN_AVAILABLE_CONNECTIONS: Final[int] = 10
+            EXECUTION_TIME_THRESHOLD_HIGH_MS: Final[int] = 10000
+            EXECUTION_TIME_THRESHOLD_MEDIUM_MS: Final[int] = 5000
+            EXECUTION_TIME_THRESHOLD_LOW_MS: Final[int] = 1000
+            HIGH_IO_OPERATIONS_THRESHOLD: Final[int] = 100000
+            CPU_UTILIZATION_THRESHOLD: Final[float] = 0.1
+            HIGH_BUFFER_GETS_THRESHOLD: Final[int] = 1000000
+            LARGE_TABLE_SIZE_GB: Final[int] = 100
+            HIGH_GROWTH_RATE_GB: Final[int] = 10
+            GROWTH_RATE_THRESHOLD_GB: Final[int] = 5
+            VERY_LARGE_TABLE_SIZE_GB: Final[int] = 1000
 
     class DBT:
         """DBT-specific constants."""
