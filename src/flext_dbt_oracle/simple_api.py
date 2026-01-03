@@ -11,9 +11,6 @@ from __future__ import annotations
 from pathlib import Path
 
 from flext_core import (
-    FlextContainer,
-    FlextContext,
-    FlextLogger,
     FlextResult,
     FlextService,
     t,
@@ -40,11 +37,8 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
     - No wrappers, aliases, or fallbacks
     - Direct use of flext-core centralized services
 
-    FLEXT INTEGRATION: Complete integration with flext-core patterns:
-    - FlextContainer for dependency injection
-    - FlextContext for operation context
-    - FlextLogger for structured logging
-    - FlextResult for railway-oriented error handling
+    FLEXT INTEGRATION: Complete integration with flext-core patterns via
+    FlextService base class (automatic container, context, logger, config).
 
     PYTHON 3.13+ COMPATIBILITY: Uses modern patterns and latest type features.
     """
@@ -56,11 +50,7 @@ class FlextDbtOracle(FlextService[FlextDbtOracleSettings]):
         self._client: FlextDbtOracleClient | None = None
         self._workflow_service: FlextDbtOracleWorkflowService | None = None
         self._monitoring_service: FlextDbtOracleMonitoringService | None = None
-
-        # Complete FLEXT ecosystem integration
-        self._container = FlextContainer.get_global().clear()().get_or_create()
-        self._context = FlextContext()
-        self.logger = FlextLogger(__name__)
+        # Note: container, context, and logger are provided automatically by FlextService
 
     @classmethod
     def create(cls) -> FlextDbtOracle:

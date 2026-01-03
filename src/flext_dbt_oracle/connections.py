@@ -54,7 +54,7 @@ class FlextDbtOracleConnections:
             self.type = "oracle"
             self.unique_field = self.host
 
-        def _connection_keys(self: object) -> tuple[str, ...]:
+        def _connection_keys(self) -> tuple[str, ...]:
             """Get connection keys for pooling."""
             return (
                 "host",
@@ -120,7 +120,7 @@ class FlextDbtOracleConnections:
             """Handle connection error."""
             raise DbtDatabaseError(error_message)
 
-        def cancel_open(self: object) -> list[str]:
+        def cancel_open(self) -> list[str]:
             """Cancel open connections."""
             cancelled: list[str] = []
             for name, connection in self.thread_connections.items():
@@ -140,7 +140,7 @@ class FlextDbtOracleConnections:
             class MockResponse:
                 @override
                 @override
-                def __init__(self: object) -> None:
+                def __init__(self) -> None:
                     self.code = "SELECT"
                     self.rows_affected = 0
 
@@ -168,13 +168,13 @@ class FlextDbtOracleConnections:
             cursor = MockCursor(sql, bindings)
             return connection, cursor
 
-        def begin(self: object) -> None:
+        def begin(self) -> None:
             """Begin transaction."""
 
-        def commit(self: object) -> None:
+        def commit(self) -> None:
             """Commit transaction."""
 
-        def rollback(self: object) -> None:
+        def rollback(self) -> None:
             """Rollback transaction."""
 
     class Utilities:

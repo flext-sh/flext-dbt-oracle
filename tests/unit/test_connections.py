@@ -129,7 +129,7 @@ class TestConnectionManager:
         # Mock successful connection test
         mock_result = Mock()
         mock_result.is_failure = False
-        mock_result.success = True
+        mock_result.is_success = True
         mock_run.return_value = mock_result
 
         # Create connection object
@@ -229,7 +229,7 @@ class TestExecuteQueries:
         # Setup mocks
         mock_result = Mock()
         mock_result.is_failure = False
-        mock_result.success = True
+        mock_result.is_success = True
         mock_result.data = Mock()
         mock_result.data.rows = []
         mock_result.data.columns = ["col1", "col2"]

@@ -31,19 +31,19 @@ class FlextDbtOracleAdapters:
         """
 
         @property
-        def name(self: object) -> str:
+        def name(self) -> str:
             """Table name."""
 
         @property
-        def schema_name(self: object) -> str:
+        def schema_name(self) -> str:
             """Schema/owner name."""
 
         @property
-        def columns(self: object) -> list[dict[str, str]]:
+        def columns(self) -> list[dict[str, str]]:
             """List of column information as dictionaries."""
 
         @property
-        def metadata(self: object) -> dict[str, t.GeneralValueType]:
+        def metadata(self) -> dict[str, t.GeneralValueType]:
             """Table metadata information."""
 
     @dataclass
@@ -145,17 +145,17 @@ class FlextDbtOracleAdapters:
             )
 
         @property
-        def name(self: object) -> str:
+        def name(self) -> str:
             """Table name from the adapted table."""
             return self._table.name
 
         @property
-        def schema_name(self: object) -> str:
+        def schema_name(self) -> str:
             """Schema name (mapped from 'owner' attribute)."""
             return self._table.owner
 
         @property
-        def columns(self: object) -> list[dict[str, str]]:
+        def columns(self) -> list[dict[str, str]]:
             """Column information converted to dictionaries."""
             # Convert Column objects to dictionaries for business logic compatibility
             return [
@@ -168,7 +168,7 @@ class FlextDbtOracleAdapters:
             ]
 
         @property
-        def metadata(self: object) -> dict[str, t.GeneralValueType]:
+        def metadata(self) -> dict[str, t.GeneralValueType]:
             """Combined metadata from table and extra metadata."""
             base_metadata = {
                 "name": self.name,
@@ -178,7 +178,7 @@ class FlextDbtOracleAdapters:
             # Merge with extra metadata
             return {**base_metadata, **self._extra_metadata}
 
-        def get_underlying_table(self: object) -> FlextDbOracleModels.Table:
+        def get_underlying_table(self) -> FlextDbOracleModels.Table:
             """Get the underlying Table object for operations that need it."""
             return self._table
 

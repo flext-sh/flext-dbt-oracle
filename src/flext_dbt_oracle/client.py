@@ -50,7 +50,7 @@ class FlextDbtOracleClient:
         )
 
     @property
-    def oracle_api(self: object) -> FlextDbOracleApi:
+    def oracle_api(self) -> FlextDbOracleApi:
         """Get or create Oracle API instance."""
         if self._oracle_api is None:
             oracle_config: dict[str, t.GeneralValueType] = (
@@ -60,7 +60,7 @@ class FlextDbtOracleClient:
         return self._oracle_api
 
     @property
-    def meltano_service(self: object) -> FlextMeltanoService | None:
+    def meltano_service(self) -> FlextMeltanoService | None:
         """Get or create FlextMeltanoService instance."""
         if self._meltano_service is None:
             try:
@@ -75,7 +75,7 @@ class FlextDbtOracleClient:
         return self._meltano_service
 
     def test_oracle_connection(
-        self: object,
+        self,
     ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Test Oracle database connection.
 
@@ -94,7 +94,7 @@ class FlextDbtOracleClient:
             # Test connection using flext-db-oracle API
             connection_result: FlextResult[object] = self.oracle_api.test_connection()
 
-            if connection_result.success:
+            if connection_result.is_success:
                 FlextDbtOracleClient.logger.info("Oracle connection test successful")
                 return FlextResult[dict[str, t.GeneralValueType]].ok(
                     {
@@ -167,7 +167,7 @@ class FlextDbtOracleClient:
         """Extract tables from default schema (no schema specified)."""
         tables = []
         table_names_result: FlextResult[object] = self.oracle_api.get_tables()
-        if not table_names_result.success:
+        if not table_names_result.is_success:
             FlextDbtOracleClient.logger.warning(
                 "Failed to list tables for default schema: %s",
                 table_names_result.error,
@@ -189,7 +189,7 @@ class FlextDbtOracleClient:
         """Extract tables from a specific schema."""
         tables = []
         table_names_result: FlextResult[object] = self.oracle_api.get_tables(schema)
-        if not table_names_result.success:
+        if not table_names_result.is_success:
             FlextDbtOracleClient.logger.warning(
                 "Failed to list tables for schema %s: %s",
                 schema,
@@ -218,7 +218,7 @@ class FlextDbtOracleClient:
     ) -> FlextDbtOracleAdapters.TableAdapter | None:
         """Create table adapter from API response."""
         meta = self.oracle_api.get_table_metadata(table_name, schema_name)
-        if not (meta.success and isinstance(meta.value, dict)):
+        if not (meta.is_success and isinstance(meta.value, dict)):
             return None
 
         table_metadata = meta.value
@@ -321,7 +321,7 @@ class FlextDbtOracleClient:
                 model_names=model_names,
             )
 
-            if run_result.success:
+            if run_result.is_success:
                 executed: dict[str, t.GeneralValueType] = {
                     "status": "success",
                     "models_executed": model_names or "all",
@@ -367,7 +367,7 @@ class FlextDbtOracleClient:
 
         # Step 1: Test connection
         connection_result: FlextResult[object] = self.test_oracle_connection()
-        if not connection_result.success:
+        if not connection_result.is_success:
             return connection_result
 
         # Step 2: Extract metadata
@@ -375,7 +375,7 @@ class FlextDbtOracleClient:
             schema_names,
             object_types,
         )
-        if not extract_result.success:
+        if not extract_result.is_success:
             return FlextResult[dict[str, t.GeneralValueType]].fail(
                 extract_result.error or "Metadata extraction failed",
             )
@@ -384,7 +384,7 @@ class FlextDbtOracleClient:
 
         # Step 3: Validate data quality
         validate_result: FlextResult[object] = self.validate_oracle_data(objects)
-        if not validate_result.success:
+        if not validate_result.is_success:
             return validate_result
 
         # Step 4: Transform with DBT
@@ -392,7 +392,7 @@ class FlextDbtOracleClient:
             objects,
             model_names or [],
         )
-        if not transform_result.success:
+        if not transform_result.is_success:
             return FlextResult[dict[str, t.GeneralValueType]].fail(
                 transform_result.error or "Transformation failed",
             )
