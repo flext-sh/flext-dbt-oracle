@@ -65,7 +65,7 @@ class FlextDbtOracleUtilities(u):
         """Get container instance."""
         return self._container
 
-    class OracleAdapterManagement:
+    class DbtOracle:
         """Oracle adapter configuration and management utilities."""
 
         @staticmethod

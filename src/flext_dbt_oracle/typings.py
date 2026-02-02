@@ -36,7 +36,7 @@ class FlextDbtOracleTypes(FlextTypes):
     # DBT PROJECT TYPES - DBT project configuration types for Oracle
     # =========================================================================
 
-    class DbtProject:
+    class DbtOracle:
         """DBT Oracle project complex types.
 
         Python 3.13+ best practice: Use TypeAlias for better type checking.
@@ -287,23 +287,6 @@ class FlextDbtOracleTypes(FlextTypes):
         """Oracle analytics configuration type."""
         type DbtOraclePipelineConfig = dict[str, FlextTypes.GeneralValueType]
         """DBT Oracle pipeline configuration type."""
-
-    class DbtOracle:
-        """DBT Oracle types namespace for cross-project access.
-
-        Provides organized access to all DBT Oracle types for other FLEXT projects.
-        Usage: Other projects can reference `t.DbtOracle.OracleData.*`, `t.DbtOracle.Project.*`, etc.
-        This enables consistent namespace patterns for cross-project type access.
-
-        Examples:
-            from flext_dbt_oracle.typings import t
-            config: t.DbtOracle.Project.DbtOracleProjectConfig = ...
-            table: t.DbtOracle.OracleData.OracleTable = ...
-
-        Note: Namespace composition via inheritance - no aliases needed.
-        Access parent namespaces directly through inheritance.
-
-        """
 
 
 # Alias for simplified usage

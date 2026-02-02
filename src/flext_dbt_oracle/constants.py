@@ -22,7 +22,7 @@ class FlextDbtOracleConstants(FlextConstants):
     organizing constants into logical categories with type safety.
     """
 
-    class DbtOraclePerformance:
+    class DbtOracle:
         """DBT Oracle-specific performance thresholds and limits.
 
         Note: Does not override parent Performance class to avoid inheritance conflicts.

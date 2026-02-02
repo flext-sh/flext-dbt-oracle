@@ -114,7 +114,7 @@ class FlextDbtOracleModels(FlextModels):
         """Create a model generator instance."""
         return cls.ModelGenerator(config)
 
-    class ModelGenerator:
+    class DbtOracle:
         """Internal model generator class for DBT Oracle models."""
 
         # Template constants
