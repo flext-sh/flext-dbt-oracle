@@ -222,7 +222,7 @@ class FlextDbtOracleWorkflowService:
             FlextDbtOracleWorkflowService.logger.info(
                 "Starting full Oracle transformation pipeline",
             )
-            pipeline_results: t.NestedDict = {}
+            pipeline_results: dict[str, t.GeneralValueType] = {}
 
             # Step 1: Generate models if requested
             if generate_models:
