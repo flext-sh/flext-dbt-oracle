@@ -7,7 +7,7 @@
 
 **FLEXT-DBT-Oracle** is a specialized dbt adapter designed for optimal performance on Oracle platforms. It provides native connectivity, parallel execution support, and data warehouse features tailored for Oracle Database environments (19c+).
 
-Part of the [FLEXT](https://github.com/flext/flext) ecosystem.
+Part of the [FLEXT](https://github.com/flext-sh/flext) ecosystem.
 
 ## 🚀 Key Features
 
