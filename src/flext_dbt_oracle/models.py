@@ -46,20 +46,20 @@ class FlextDbtOracleModels(FlextModels):
     oracle_source: str
     dependencies: list[str]
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[bool]:
         """Validate DBT model business rules."""
         try:
             if not self.name.strip():
-                return FlextResult[None].fail("Model name cannot be empty")
+                return FlextResult[bool].fail("Model name cannot be empty")
             if self.dbt_model_type not in {"staging", "intermediate", "marts"}:
-                return FlextResult[None].fail("Invalid model_type")
+                return FlextResult[bool].fail("Invalid model_type")
             if not self.schema_name.strip() or not self.table_name.strip():
-                return FlextResult[None].fail("Schema and table names cannot be empty")
+                return FlextResult[bool].fail("Schema and table names cannot be empty")
             if not self.sql_content.strip():
-                return FlextResult[None].fail("SQL content cannot be empty")
-            return FlextResult[None].ok(None)
+                return FlextResult[bool].fail("SQL content cannot be empty")
+            return FlextResult[bool].ok(value=True)
         except Exception as e:
-            return FlextResult[None].fail(f"Business rule validation failed: {e}")
+            return FlextResult[bool].fail(f"Business rule validation failed: {e}")
 
     def get_file_path(self) -> str:
         """Get the file path for this DBT model."""
@@ -210,7 +210,7 @@ class FlextDbtOracleModels(FlextModels):
             self,
             models: list[FlextDbtOracleModels],
             output_dir: str,
-        ) -> FlextResult[None]:
+        ) -> FlextResult[bool]:
             """Write generated models to disk."""
             try:
                 output_path = Path(output_dir)
@@ -220,7 +220,7 @@ class FlextDbtOracleModels(FlextModels):
                     # Write SQL file
                     sql_result = model.to_sql_file()
                     if sql_result.is_failure:
-                        return FlextResult[None].fail(
+                        return FlextResult[bool].fail(
                             f"Failed to generate SQL for {model.name}: {sql_result.error}",
                         )
 
@@ -233,7 +233,7 @@ class FlextDbtOracleModels(FlextModels):
                     # Write schema entry
                     schema_result = model.to_schema_entry()
                     if schema_result.is_failure:
-                        return FlextResult[None].fail(
+                        return FlextResult[bool].fail(
                             f"Failed to generate schema for {model.name}: {schema_result.error}",
                         )
 
@@ -263,10 +263,10 @@ class FlextDbtOracleModels(FlextModels):
                     with Path(schema_file_path).open("w", encoding="utf-8") as f:
                         yaml.dump(schema_data, f, default_flow_style=False, indent=2)
 
-                return FlextResult[None].ok(None)
+                return FlextResult[bool].ok(value=True)
 
             except Exception as e:
-                return FlextResult[None].fail(f"Failed to write models to disk: {e}")
+                return FlextResult[bool].fail(f"Failed to write models to disk: {e}")
 
         def _create_staging_model(
             self,
