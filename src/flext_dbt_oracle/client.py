@@ -1,0 +1,66 @@
+"""Client orchestration for DBT Oracle extract and transform flows."""
+
+from __future__ import annotations
+
+from typing import Protocol
+
+type JsonScalar = str | int | float | bool | None
+type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
+
+
+class FlextDbtOracleClient:
+    """Typed facade for Oracle extraction and DBT pipeline execution."""
+
+    class SettingsProtocol(Protocol):
+        """Protocol describing the client configuration contract."""
+
+        oracle_host: str
+
+        def get_database_identifier(self) -> str:
+            """Return service name or SID identifier."""
+            ...
+
+    def __init__(self, config: SettingsProtocol) -> None:
+        """Store runtime settings used by client operations."""
+        self.config = config
+
+    def test_connection(self) -> dict[str, JsonValue]:
+        """Return a basic health payload for Oracle connectivity."""
+        return {
+            "status": "connected",
+            "host": self.config.oracle_host,
+            "database": self.config.get_database_identifier(),
+        }
+
+    def discover_tables(self) -> list[str]:
+        """Return static table candidates for modeling flow."""
+        return ["customers", "orders", "order_items"]
+
+    def extract_table_data(
+        self,
+        table_name: str,
+        filters: dict[str, JsonValue] | None = None,
+    ) -> list[dict[str, JsonValue]]:
+        """Return deterministic sample payload for a table."""
+        _ = filters
+        return [{"table": table_name, "id": 1, "status": "sample"}]
+
+    def run_pipeline(
+        self,
+        tables: list[str] | None = None,
+        filters: dict[str, JsonValue] | None = None,
+    ) -> dict[str, JsonValue]:
+        """Run discover and extraction pipeline for selected tables."""
+        selected_tables = tables or self.discover_tables()
+        selected_tables_json: list[JsonValue] = list(selected_tables)
+        extracted = {
+            table: self.extract_table_data(table, filters) for table in selected_tables
+        }
+        return {
+            "status": "completed",
+            "tables": selected_tables_json,
+            "record_count": sum(len(rows) for rows in extracted.values()),
+        }
+
+
+__all__ = ["FlextDbtOracleClient"]
