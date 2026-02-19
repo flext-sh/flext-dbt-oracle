@@ -1,8 +1,5 @@
 # flext-dbt-oracle - Oracle dbt Package
 PROJECT_NAME := flext-dbt-oracle
-COV_DIR := flext_dbt_oracle
-MIN_COVERAGE := 90
-
 include ../base.mk
 
 # === PROJECT-SPECIFIC TARGETS ===
