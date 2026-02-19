@@ -1,7 +1,7 @@
 # FLEXT-DBT-Oracle
 
-
 <!-- TOC START -->
+
 - [🚀 Key Features](#-key-features)
 - [📦 Installation](#-installation)
 - [🛠️ Usage](#-usage)
@@ -11,6 +11,7 @@
 - [🏗️ Architecture](#-architecture)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
+
 <!-- TOC END -->
 
 [![dbt 1.6+](https://img.shields.io/badge/dbt-1.6+-orange.svg)](https://getdbt.com)
