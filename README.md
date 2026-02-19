@@ -1,5 +1,18 @@
 # FLEXT-DBT-Oracle
 
+
+<!-- TOC START -->
+- [🚀 Key Features](#-key-features)
+- [📦 Installation](#-installation)
+- [🛠️ Usage](#-usage)
+  - [Parallel Query Configuration](#parallel-query-configuration)
+  - [Applying Oracle Hints](#applying-oracle-hints)
+  - [Partition Management](#partition-management)
+- [🏗️ Architecture](#-architecture)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+<!-- TOC END -->
+
 [![dbt 1.6+](https://img.shields.io/badge/dbt-1.6+-orange.svg)](https://getdbt.com)
 [![Oracle Database](https://img.shields.io/badge/Oracle-19c%2B-red.svg)](https://www.oracle.com/database/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

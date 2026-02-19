@@ -8,7 +8,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_core import FlextContainer, FlextLogger, FlextResult, t, u
-
 from flext_dbt_oracle.constants import c
 
 
@@ -339,8 +338,7 @@ class FlextDbtOracleUtilities(u):
                 # Build model SQL with safe formatting
                 select_section = "\n".join(select_clauses)
 
-                # Use string formatting to avoid SQL injection warnings
-                # Note: This is a DBT model template, not direct SQL execution
+                # nosec B608
                 model_template = f"""{{{{
  config(
  materialized='view',
@@ -712,9 +710,7 @@ where f.is_active = 1
                     # SCD Type 2 implementation with Oracle-specific features
                     attributes_str = ", ".join(attributes)
 
-                    # Use string formatting to avoid SQL injection warnings
-                    # Note: This is a DBT model template, not direct SQL execution
-
+                    # nosec B608
                     model_template = f"""
  config(
  materialized='table',
@@ -765,9 +761,7 @@ select * from final
                     # SCD Type 1 implementation
                     attributes_str = ", ".join(attributes)
 
-                    # Use string formatting to avoid SQL injection warnings
-                    # Note: This is a DBT model template, not direct SQL execution
-
+                    # nosec B608
                     model_template = f"""
  config(
  materialized='table',

@@ -13,7 +13,6 @@ from typing import ClassVar, override
 import yaml
 from flext_core import FlextLogger, FlextModels, FlextResult, t
 from flext_core.utilities import u
-
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
 
 
@@ -275,9 +274,8 @@ class FlextDbtOracleModels(FlextModels):
             """Create a staging model from Oracle schema metadata."""
             try:
                 # Generate SQL content for a sample table
-                # Use secure template formatting to avoid S608 false positive
                 schema_lower = schema_name.lower()
-                sql_content = (
+                sql_content = (  # nosec B608
                     f"select *\nfrom {{{{ source('{schema_lower}', 'sample_table') }}}}"
                 )
 
@@ -312,7 +310,7 @@ class FlextDbtOracleModels(FlextModels):
                 # Generate basic transformation SQL
                 # Use secure template formatting to avoid S608 false positive
                 staging_model_name = staging_model.name
-                sql_content = (
+                sql_content = (  # nosec B608
                     "select\n"
                     "    *,\n"
                     "    current_timestamp as dbt_updated_at\n"
@@ -356,9 +354,8 @@ class FlextDbtOracleModels(FlextModels):
                 marts_name = intermediate_model.name.replace("int_", "mart_")
 
                 # Generate business logic SQL
-                # Use secure template formatting to avoid S608 false positive
                 intermediate_model_name = intermediate_model.name
-                sql_content = (
+                sql_content = (  # nosec B608
                     "{{ config(materialized='table') }}\n\n"
                     "select\n"
                     "    *,\n"

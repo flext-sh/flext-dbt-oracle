@@ -10,11 +10,10 @@ from typing import ClassVar, Self
 
 from flext_core import FlextResult, FlextSettings, t
 from flext_db_oracle import FlextDbOracleModels
+from flext_dbt_oracle.constants import FlextDbtOracleConstants
 from flext_meltano.settings import FlextMeltanoSettings
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
-
-from flext_dbt_oracle.constants import FlextDbtOracleConstants
 
 
 @FlextSettings.auto_register("dbt_oracle")

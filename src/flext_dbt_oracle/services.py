@@ -12,7 +12,6 @@ from typing import override
 from flext_core import FlextLogger, FlextResult, t
 from flext_db_oracle import FlextDbOracleApi
 from flext_db_oracle.models import FlextDbOracleModels
-
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.constants import FlextDbtOracleConstants
 from flext_dbt_oracle.models import FlextDbtOracleModels

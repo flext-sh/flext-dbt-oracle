@@ -9,10 +9,9 @@ from typing import override
 
 from flext_core import FlextLogger, FlextResult, t
 from flext_db_oracle import FlextDbOracleApi
-from flext_meltano import FlextMeltanoService
-
 from flext_dbt_oracle.adapters import FlextDbtOracleAdapters
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
+from flext_meltano import FlextMeltanoService
 
 
 class FlextDbtOracleClient:
