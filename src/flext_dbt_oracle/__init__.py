@@ -15,13 +15,12 @@ from flext_dbt_oracle.services import (
     FlextDbtOracleWorkflowService,
 )
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
-from flext_dbt_oracle.simple_api import FlextDbtOracle, FlextDbtOracleAPI
+from flext_dbt_oracle.simple_api import FlextDbtOracle
 from flext_dbt_oracle.typings import FlextDbtOracleTypes
 from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
 
 __all__ = [
     "FlextDbtOracle",
-    "FlextDbtOracleAPI",
     "FlextDbtOracleClient",
     "FlextDbtOracleModelGenerator",
     "FlextDbtOracleModels",

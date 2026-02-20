@@ -7,6 +7,7 @@ from os import getenv
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.services import FlextDbtOracleWorkflowService
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
+from pydantic import SecretStr
 
 type JsonScalar = str | int | float | bool | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
@@ -20,7 +21,7 @@ class FlextDbtOracle:
         self.config = config or FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="user",
-            oracle_password=getenv("FLEXT_DBT_ORACLE_PASSWORD", ""),
+            oracle_password=SecretStr(getenv("FLEXT_DBT_ORACLE_PASSWORD", "")),
         )
         self.client = FlextDbtOracleClient(self.config)
         self.workflow_service = FlextDbtOracleWorkflowService()
@@ -47,6 +48,4 @@ class FlextDbtOracle:
         }
 
 
-FlextDbtOracleAPI = FlextDbtOracle
-
-__all__ = ["FlextDbtOracle", "FlextDbtOracleAPI"]
+__all__ = ["FlextDbtOracle"]
