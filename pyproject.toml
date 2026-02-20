@@ -4,7 +4,7 @@ requires = [ "poetry-core>=2.0", "poetry-core>=2" ]
 
 [project]
 name = "flext-dbt-oracle"
-version = "0.10.0"
+version = "0.11.0"
 description = "FLEXT dbt Oracle - dbt Models for Oracle Database"
 readme = "README.md"
 keywords = [
