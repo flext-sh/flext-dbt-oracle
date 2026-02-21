@@ -39,7 +39,7 @@ class FlextDbtOracleModelGenerator:
             FlextDbtOracleModel(
                 name=f"stg_oracle_{table}",
                 table_name=f"stg_{table}",
-                sql_content=f"select * from {{{{ source('oracle', '{table}') }}}}",
+                sql_content=f"select * from {{{{ source('oracle', '{table}') }}}}",  # nosec B608
                 description=f"Staging model for {table}",
             )
             for table in source_tables
