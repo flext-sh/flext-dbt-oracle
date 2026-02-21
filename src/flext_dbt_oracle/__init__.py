@@ -16,7 +16,7 @@ from flext_dbt_oracle.services import (
 )
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
 from flext_dbt_oracle.simple_api import FlextDbtOracle
-from flext_dbt_oracle.typings import FlextDbtOracleTypes
+from flext_dbt_oracle.typings import FlextDbtOracleTypes, t
 from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
 
 __all__ = [
@@ -34,4 +34,5 @@ __all__ = [
     "OracleTableFactory",
     "__version__",
     "__version_info__",
+    "t",
 ]

@@ -9,10 +9,13 @@ from __future__ import annotations
 
 import os
 import tempfile
+import typing
 from collections.abc import Generator
 
 import pytest
-from flext_core import FlextTypes as t
+
+from flext_dbt_oracle import t
+
 from flext_tests import FlextTestsDocker
 
 
@@ -22,20 +25,24 @@ def docker_control() -> FlextTestsDocker:
     return FlextTestsDocker()
 
 
-@pytest.fixture(scope="session")
-def shared_oracle_container(docker_control: FlextTestsDocker) -> FlextTestsDocker:
+def shared_oracle_container(
+    docker_control: FlextTestsDocker,
+) -> Generator[str]:
     """Start and maintain flext-oracle-db-test container.
 
     Container auto-starts if not running and remains running after tests.
     """
-    result = docker_control.start_container("flext-oracle-db-test")
+    result = docker_control.start_existing_container("flext-oracle-db-test")
     if result.is_failure:
         pytest.skip(f"Failed to start Oracle container: {result.error}")
 
     yield "flext-oracle-db-test"
 
     # Keep container running after tests
-    docker_control.stop_container("flext-oracle-db-test", remove=False)
+    try:
+        docker_control.get_client().containers.get("flext-oracle-db-test").stop()
+    except Exception:
+        pass
 
 
 # Oracle shared container environment setup
@@ -521,7 +528,7 @@ class MockConnectionManager:
 
     def __init__(self) -> None:
         """Initialize connection manager."""
-        self.connections: dict[str, t.GeneralValueType] = {}
+        self.connections: dict[str, dict[str, t.GeneralValueType]] = {}
 
     def open_connection(
         self,
@@ -529,12 +536,15 @@ class MockConnectionManager:
         config: dict[str, t.GeneralValueType],
     ) -> dict[str, t.GeneralValueType]:
         """Open database connection."""
-        connection = {
-            "name": name,
-            "state": "open",
-            "handle": f"mock_handle_{name}",
-            "credentials": config,
-        }
+        connection = typing.cast(
+            "dict[str, t.GeneralValueType]",
+            {
+                "name": name,
+                "state": "open",
+                "handle": f"mock_handle_{name}",
+                "credentials": config,
+            },
+        )
         self.connections[name] = connection
         return connection
 
@@ -558,10 +568,10 @@ class MockSqlExecutor:
         # auto_begin parameter is used for future transaction management
         _ = auto_begin  # Mark as used for future implementation
 
-        sql_strategies = {
+        sql_strategies: dict[str, tuple[str, list[t.GeneralValueType]]] = {
             "CREATE TABLE": ("CREATE", []),
             "INSERT": ("INSERT", []),
-            "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
+            "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),  # type: ignore[dict-item]
         }
 
         for keyword, result in sql_strategies.items():
@@ -579,7 +589,9 @@ class MockModelCompiler:
     ) -> str:
         """Compile dbt model SQL."""
         compiled = model_sql
-        vars_dict = context.get("vars", {})
+        vars_dict = typing.cast(
+            "dict[str, t.GeneralValueType]", context.get("vars", {})
+        )
         for var, value in vars_dict.items():
             compiled = compiled.replace(f"{{{{ var('{var}') }}}}", str(value))
         return compiled
@@ -613,124 +625,126 @@ class MockRelationManager:
         ]
 
 
+class MockDbtOracleAdapter:
+    """Simplified adapter using composition and Strategy Pattern."""
+
+    def __init__(self, config: dict[str, t.GeneralValueType]) -> None:
+        """Initialize the instance."""
+        self.config = config
+        self.compiled_models: dict[str, t.GeneralValueType] = {}
+        # Dependency injection of strategies
+        self.connection_manager = MockConnectionManager()
+        self.sql_executor = MockSqlExecutor()
+        self.model_compiler = MockModelCompiler()
+        self.relation_manager = MockRelationManager()
+
+    def open_connection(self, name: str) -> dict[str, t.GeneralValueType]:
+        """Delegate to connection manager strategy."""
+        return self.connection_manager.open_connection(name, self.config)
+
+    def close_connection(self, name: str) -> None:
+        """Delegate to connection manager strategy."""
+        self.connection_manager.close_connection(name)
+
+    def execute(
+        self,
+        sql: str,
+        *,
+        auto_begin: bool = True,
+    ) -> tuple[str, list[t.GeneralValueType]]:
+        """Delegate to SQL executor strategy."""
+        return self.sql_executor.execute(sql, auto_begin=auto_begin)  # type: ignore[arg-type]
+
+    def compile_model(
+        self, model_sql: str, context: dict[str, t.GeneralValueType]
+    ) -> str:
+        """Delegate to model compiler strategy."""
+        return self.model_compiler.compile_model(model_sql, context)
+
+    def get_relation(
+        self,
+        database: str,
+        schema: str,
+        identifier: str,
+    ) -> dict[str, str]:
+        """Delegate to relation manager strategy."""
+        return self.relation_manager.get_relation(database, schema, identifier)
+
+    def list_relations_without_caching(
+        self,
+        schema: str,
+    ) -> list[dict[str, str]]:
+        """Delegate to relation manager strategy."""
+        return self.relation_manager.list_relations_without_caching(schema)
+
+
 @pytest.fixture
-def mock_dbt_oracle_adapter() -> object:
+def mock_dbt_oracle_adapter() -> type[MockDbtOracleAdapter]:
     """Mock dbt Oracle adapter using Strategy Pattern for complexity reduction."""
-
-    class MockDbtOracleAdapter:
-        """Simplified adapter using composition and Strategy Pattern."""
-
-        def __init__(self, config: dict[str, t.GeneralValueType]) -> None:
-            """Initialize the instance."""
-            self.config = config
-            self.compiled_models: dict[str, t.GeneralValueType] = {}
-            # Dependency injection of strategies
-            self.connection_manager = MockConnectionManager()
-            self.sql_executor = MockSqlExecutor()
-            self.model_compiler = MockModelCompiler()
-            self.relation_manager = MockRelationManager()
-
-        def open_connection(self, name: str) -> dict[str, t.GeneralValueType]:
-            """Delegate to connection manager strategy."""
-            return self.connection_manager.open_connection(name, self.config)
-
-        def close_connection(self, name: str) -> None:
-            """Delegate to connection manager strategy."""
-            self.connection_manager.close_connection(name)
-
-        def execute(
-            self,
-            sql: str,
-            *,
-            auto_begin: bool = True,
-        ) -> tuple[str, list[t.GeneralValueType]]:
-            """Delegate to SQL executor strategy."""
-            return self.sql_executor.execute(sql, auto_begin)
-
-        def compile_model(
-            self, model_sql: str, context: dict[str, t.GeneralValueType]
-        ) -> str:
-            """Delegate to model compiler strategy."""
-            return self.model_compiler.compile_model(model_sql, context)
-
-        def get_relation(
-            self,
-            database: str,
-            schema: str,
-            identifier: str,
-        ) -> dict[str, str]:
-            """Delegate to relation manager strategy."""
-            return self.relation_manager.get_relation(database, schema, identifier)
-
-        def list_relations_without_caching(
-            self,
-            schema: str,
-        ) -> list[dict[str, str]]:
-            """Delegate to relation manager strategy."""
-            return self.relation_manager.list_relations_without_caching(schema)
-
     return MockDbtOracleAdapter
 
 
+class MockDbtRunner:
+    """Mock dbt runner."""
+
+    def __init__(self, project_dir: str, profiles_dir: str) -> None:
+        """Initialize the instance."""
+        self.project_dir = project_dir
+        self.profiles_dir = profiles_dir
+        self.results: dict[str, t.GeneralValueType] = {}
+
+    def run_models(
+        self,
+        models: list[str] | None = None,
+    ) -> dict[str, t.GeneralValueType]:
+        """Run dbt models."""
+        results = []
+        models = models or ["dim_customers", "fact_orders"]
+        for model in models:
+            result = {
+                "unique_id": f"model.test.{model}",
+                "status": "success",
+                "execution_time": 2.5,
+                "rows_affected": 1000,
+            }
+            results.append(result)
+        return {"results": results, "elapsed_time": 10.5}
+
+    def run_tests(
+        self,
+        models: list[str] | None = None,
+    ) -> dict[str, t.GeneralValueType]:
+        """Run dbt tests."""
+        # models parameter is used for future model-specific testing
+        _ = models  # Mark as used for future implementation
+
+        results = []
+        tests = ["test_unique_customer_id", "test_not_null_order_id"]
+        for test in tests:
+            result = {
+                "unique_id": f"test.test.{test}",
+                "status": "pass",
+                "execution_time": 1.2,
+                "failures": 0,
+            }
+            results.append(result)
+        return {"results": results, "elapsed_time": 5.0}
+
+    def compile(
+        self,
+        models: list[str] | None = None,
+    ) -> dict[str, t.GeneralValueType]:
+        """Compile dbt models."""
+        compiled = {}
+        models = models or ["dim_customers", "fact_orders"]
+        for model in models:
+            # Mock compiled SQL - not executed, just static template for testing
+            # This is a mock SQL template, not actual SQL execution
+            compiled[model] = f"SELECT * FROM compiled_{model}"
+        return {"compiled": compiled}
+
+
 @pytest.fixture
-def mock_dbt_runner() -> object:
+def mock_dbt_runner() -> type[MockDbtRunner]:
     """Mock dbt runner for testing."""
-
-    class MockDbtRunner:
-        def __init__(self, project_dir: str, profiles_dir: str) -> None:
-            """Initialize the instance."""
-            self.project_dir = project_dir
-            self.profiles_dir = profiles_dir
-            self.results: dict[str, t.GeneralValueType] = {}
-
-        def run_models(
-            self,
-            models: list[str] | None = None,
-        ) -> dict[str, t.GeneralValueType]:
-            """Run dbt models."""
-            results = []
-            models = models or ["dim_customers", "fact_orders"]
-            for model in models:
-                result = {
-                    "unique_id": f"model.test.{model}",
-                    "status": "success",
-                    "execution_time": 2.5,
-                    "rows_affected": 1000,
-                }
-                results.append(result)
-            return {"results": results, "elapsed_time": 10.5}
-
-        def run_tests(
-            self,
-            models: list[str] | None = None,
-        ) -> dict[str, t.GeneralValueType]:
-            """Run dbt tests."""
-            # models parameter is used for future model-specific testing
-            _ = models  # Mark as used for future implementation
-
-            results = []
-            tests = ["test_unique_customer_id", "test_not_null_order_id"]
-            for test in tests:
-                result = {
-                    "unique_id": f"test.test.{test}",
-                    "status": "pass",
-                    "execution_time": 1.2,
-                    "failures": 0,
-                }
-                results.append(result)
-            return {"results": results, "elapsed_time": 5.0}
-
-        def compile(
-            self,
-            models: list[str] | None = None,
-        ) -> dict[str, t.GeneralValueType]:
-            """Compile dbt models."""
-            compiled = {}
-            models = models or ["dim_customers", "fact_orders"]
-            for model in models:
-                # Mock compiled SQL - not executed, just static template for testing
-                # This is a mock SQL template, not actual SQL execution
-                compiled[model] = f"SELECT * FROM compiled_{model}"
-            return {"compiled": compiled}
-
     return MockDbtRunner
