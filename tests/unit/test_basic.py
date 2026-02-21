@@ -11,9 +11,9 @@ import pytest
 
 from flext_dbt_oracle import (
     FlextDbtOracleClient,
-    FlextDbtOracleModelGenerator,
     FlextDbtOracleModels,
     FlextDbtOracleSettings,
+    m,
 )
 
 
@@ -22,7 +22,7 @@ def test_basic_import() -> None:
     assert FlextDbtOracleClient is not None
     assert FlextDbtOracleSettings is not None
     assert FlextDbtOracleModels is not None
-    assert FlextDbtOracleModelGenerator is not None
+    assert m.DbtOracle.ModelGenerator is not None
 
 
 def test_adapter_type() -> None:

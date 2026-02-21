@@ -5,10 +5,7 @@ from __future__ import annotations
 from flext_dbt_oracle.__version__ import __version__, __version_info__
 from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
 from flext_dbt_oracle.client import FlextDbtOracleClient
-from flext_dbt_oracle.models import (
-    FlextDbtOracleModelGenerator,
-    FlextDbtOracleModels,
-)
+from flext_dbt_oracle.models import FlextDbtOracleModels, m
 from flext_dbt_oracle.protocols import FlextDbtOracleProtocols
 from flext_dbt_oracle.services import (
     FlextDbtOracleMonitoringService,
@@ -22,7 +19,6 @@ from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
 __all__ = [
     "FlextDbtOracle",
     "FlextDbtOracleClient",
-    "FlextDbtOracleModelGenerator",
     "FlextDbtOracleModels",
     "FlextDbtOracleMonitoringService",
     "FlextDbtOracleProtocols",
@@ -34,5 +30,6 @@ __all__ = [
     "OracleTableFactory",
     "__version__",
     "__version_info__",
+    "m",
     "t",
 ]
