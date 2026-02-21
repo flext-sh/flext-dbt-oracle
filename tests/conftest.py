@@ -13,9 +13,7 @@ import typing
 from collections.abc import Generator
 
 import pytest
-
 from flext_dbt_oracle import t
-
 from flext_tests import FlextTestsDocker
 
 
