@@ -4,10 +4,11 @@ from __future__ import annotations
 
 from os import getenv
 
+from pydantic import SecretStr
+
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.services import FlextDbtOracleWorkflowService
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
-from pydantic import SecretStr
 
 type JsonScalar = str | int | float | bool | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]

@@ -4,9 +4,10 @@ from __future__ import annotations
 
 from flext_core import FlextModels
 from flext_db_oracle.models import FlextDbOracleModels
-from flext_dbt_oracle.typings import t
 from flext_meltano.models import FlextMeltanoModels
 from pydantic import Field
+
+from flext_dbt_oracle.typings import t
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):

@@ -9,8 +9,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_dbt_oracle.protocols import FlextDbtOracleProtocols
 from flext_tests.protocols import FlextTestsProtocols
+
+from flext_dbt_oracle.protocols import FlextDbtOracleProtocols
 
 
 class TestsFlextDbtOracleProtocols(FlextTestsProtocols, FlextDbtOracleProtocols):
