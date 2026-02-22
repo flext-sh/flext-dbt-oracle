@@ -19,6 +19,7 @@ class FlextDbtOracle:
 
     def __init__(self, config: FlextDbtOracleSettings | None = None) -> None:
         """Initialize API with provided or default settings."""
+        super().__init__()
         self.config = config or FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="user",

@@ -75,12 +75,12 @@ def set_test_environment() -> Generator[None]:
     os.environ["DBT_TEST_USER_3"] = "dbt_test_user_3"
     yield
     # Cleanup
-    os.environ.pop("FLEXT_ENV", None)
-    os.environ.pop("FLEXT_LOG_LEVEL", None)
-    os.environ.pop("DBT_PROFILES_DIR", None)
-    os.environ.pop("DBT_TEST_USER_1", None)
-    os.environ.pop("DBT_TEST_USER_2", None)
-    os.environ.pop("DBT_TEST_USER_3", None)
+    _ = os.environ.pop("FLEXT_ENV", None)
+    _ = os.environ.pop("FLEXT_LOG_LEVEL", None)
+    _ = os.environ.pop("DBT_PROFILES_DIR", None)
+    _ = os.environ.pop("DBT_TEST_USER_1", None)
+    _ = os.environ.pop("DBT_TEST_USER_2", None)
+    _ = os.environ.pop("DBT_TEST_USER_3", None)
 
 
 # dbt configuration fixtures
@@ -527,6 +527,7 @@ class MockConnectionManager:
 
     def __init__(self) -> None:
         """Initialize connection manager."""
+        super().__init__()
         self.connections: dict[str, dict[str, t.GeneralValueType]] = {}
 
     def open_connection(
@@ -629,6 +630,7 @@ class MockDbtOracleAdapter:
 
     def __init__(self, config: dict[str, t.GeneralValueType]) -> None:
         """Initialize the instance."""
+        super().__init__()
         self.config = config
         self.compiled_models: dict[str, t.GeneralValueType] = {}
         # Dependency injection of strategies
@@ -688,6 +690,7 @@ class MockDbtRunner:
 
     def __init__(self, project_dir: str, profiles_dir: str) -> None:
         """Initialize the instance."""
+        super().__init__()
         self.project_dir = project_dir
         self.profiles_dir = profiles_dir
         self.results: dict[str, t.GeneralValueType] = {}
@@ -697,10 +700,10 @@ class MockDbtRunner:
         models: list[str] | None = None,
     ) -> dict[str, t.GeneralValueType]:
         """Run dbt models."""
-        results = []
+        results: list[dict[str, t.GeneralValueType]] = []
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
-            result = {
+            result: dict[str, t.GeneralValueType] = {
                 "unique_id": f"model.test.{model}",
                 "status": "success",
                 "execution_time": 2.5,
@@ -714,13 +717,11 @@ class MockDbtRunner:
         models: list[str] | None = None,
     ) -> dict[str, t.GeneralValueType]:
         """Run dbt tests."""
-        # models parameter is used for future model-specific testing
         _ = models  # Mark as used for future implementation
-
-        results = []
+        results: list[dict[str, t.GeneralValueType]] = []
         tests = ["test_unique_customer_id", "test_not_null_order_id"]
         for test in tests:
-            result = {
+            result: dict[str, t.GeneralValueType] = {
                 "unique_id": f"test.test.{test}",
                 "status": "pass",
                 "execution_time": 1.2,

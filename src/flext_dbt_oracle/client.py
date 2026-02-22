@@ -22,6 +22,7 @@ class FlextDbtOracleClient:
 
     def __init__(self, config: SettingsProtocol) -> None:
         """Store runtime settings used by client operations."""
+        super().__init__()
         self.config = config
 
     def test_connection(self) -> dict[str, JsonValue]:

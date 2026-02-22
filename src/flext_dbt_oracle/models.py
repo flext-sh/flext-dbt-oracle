@@ -44,6 +44,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                 config: dict[str, t.GeneralValueType] | None = None,
             ) -> None:
                 """Store optional generation-time configuration."""
+                super().__init__()
                 self.config = config or {}
 
             def generate_staging_models(

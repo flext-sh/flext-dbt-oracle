@@ -23,7 +23,7 @@ class TestsFlextDbtOracleProtocols(FlextTestsProtocols, FlextDbtOracleProtocols)
     - tp.DbtOracle.* (from FlextDbtOracleProtocols)
     """
 
-    class Tests:
+    class Tests(FlextTestsProtocols.Tests):
         """Project-specific test protocols.
 
         Extends FlextTestsProtocols.Tests with DbtOracle-specific protocols.

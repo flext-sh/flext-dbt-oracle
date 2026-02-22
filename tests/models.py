@@ -27,7 +27,7 @@ class TestsFlextDbtOracleModels(FlextTestsModels, FlextDbtOracleModels):
     - m.* (production models via alternative alias)
     """
 
-    class Tests:
+    class Tests(FlextTestsModels.Tests):
         """Project-specific test fixtures namespace."""
 
         class DbtOracle:
