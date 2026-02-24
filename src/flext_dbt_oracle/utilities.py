@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 type JsonScalar = str | int | float | bool | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
 
@@ -26,7 +28,7 @@ class FlextDbtOracleUtilities:
         """Payload validation helpers."""
 
         @staticmethod
-        def validate_non_empty_rows(rows: list[dict[str, JsonValue]]) -> bool:
+        def validate_non_empty_rows(rows: list[Mapping[str, JsonValue]]) -> bool:
             """Return true when row list contains values."""
             return bool(rows)
 

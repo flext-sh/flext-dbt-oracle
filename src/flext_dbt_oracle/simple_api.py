@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from os import getenv
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
@@ -37,7 +38,7 @@ class FlextDbtOracle:
     def run_oracle_to_dbt_workflow(
         self,
         tables: list[str] | None = None,
-    ) -> dict[str, JsonValue]:
+    ) -> Mapping[str, JsonValue]:
         """Run extraction flow and return recommendations."""
         result = self.client.run_pipeline(tables=tables)
         table_payload = result.get("tables")

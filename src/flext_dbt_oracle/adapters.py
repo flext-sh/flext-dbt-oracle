@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 
 type JsonScalar = str | int | float | bool | None
@@ -19,7 +20,7 @@ class OracleTableAdapter:
         """Build canonical schema.table relation name."""
         return f"{self.schema_name}.{self.table_name}"
 
-    def to_metadata(self) -> dict[str, JsonValue]:
+    def to_metadata(self) -> Mapping[str, JsonValue]:
         """Convert adapter fields into structured metadata."""
         return {
             "schema": self.schema_name,

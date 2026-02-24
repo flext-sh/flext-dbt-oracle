@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Literal
 
 from pydantic import BaseModel, Field, SecretStr, model_validator
@@ -94,7 +95,7 @@ class FlextDbtOracleSettings(BaseSettings):
             f"{self.oracle_host}:{self.port}{separator}{identifier}"
         )
 
-    def to_connection_config(self) -> dict[str, str | int | None]:
+    def to_connection_config(self) -> Mapping[str, str | int | None]:
         """Serialize connection values into primitive dictionary payload."""
         return {
             "host": self.oracle_host,
@@ -118,7 +119,7 @@ class FlextDbtOracleSettings(BaseSettings):
             protocol=self.protocol,
         )
 
-    def get_performance_settings(self) -> dict[str, int | float]:
+    def get_performance_settings(self) -> Mapping[str, int | float]:
         """Return performance tuning parameters for execution engines."""
         return {
             "pool_min_size": self.pool_min_size,
@@ -131,7 +132,7 @@ class FlextDbtOracleSettings(BaseSettings):
             "retry_delay": self.retry_delay,
         }
 
-    def get_dbt_settings(self) -> dict[str, str]:
+    def get_dbt_settings(self) -> Mapping[str, str]:
         """Return DBT-targeted configuration payload."""
         return {
             "database": self.get_database_identifier(),

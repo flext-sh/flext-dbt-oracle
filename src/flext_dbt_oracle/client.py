@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Protocol
 
 type JsonScalar = str | int | float | bool | None
@@ -25,7 +26,7 @@ class FlextDbtOracleClient:
         super().__init__()
         self.config = config
 
-    def test_connection(self) -> dict[str, JsonValue]:
+    def test_connection(self) -> Mapping[str, JsonValue]:
         """Return a basic health payload for Oracle connectivity."""
         return {
             "status": "connected",
@@ -40,8 +41,8 @@ class FlextDbtOracleClient:
     def extract_table_data(
         self,
         table_name: str,
-        filters: dict[str, JsonValue] | None = None,
-    ) -> list[dict[str, JsonValue]]:
+        filters: Mapping[str, JsonValue] | None = None,
+    ) -> list[Mapping[str, JsonValue]]:
         """Return deterministic sample payload for a table."""
         _ = filters
         return [{"table": table_name, "id": 1, "status": "sample"}]
@@ -49,8 +50,8 @@ class FlextDbtOracleClient:
     def run_pipeline(
         self,
         tables: list[str] | None = None,
-        filters: dict[str, JsonValue] | None = None,
-    ) -> dict[str, JsonValue]:
+        filters: Mapping[str, JsonValue] | None = None,
+    ) -> Mapping[str, JsonValue]:
         """Run discover and extraction pipeline for selected tables."""
         selected_tables = tables or self.discover_tables()
         selected_tables_json: list[JsonValue] = list(selected_tables)

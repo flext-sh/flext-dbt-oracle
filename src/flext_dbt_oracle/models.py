@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 from flext_core import FlextModels
 from flext_db_oracle.models import FlextDbOracleModels
 from flext_dbt_oracle.typings import t
@@ -40,7 +42,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
 
             def __init__(
                 self,
-                config: dict[str, t.GeneralValueType] | None = None,
+                config: Mapping[str, t.GeneralValueType] | None = None,
             ) -> None:
                 """Store optional generation-time configuration."""
                 super().__init__()
@@ -64,7 +66,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
     @classmethod
     def create_generator(
         cls,
-        config: dict[str, t.GeneralValueType] | None = None,
+        config: Mapping[str, t.GeneralValueType] | None = None,
     ) -> FlextDbtOracleModels.DbtOracle.ModelGenerator:
         """Create generator instance with optional custom config."""
         return cls.DbtOracle.ModelGenerator(config=config)
