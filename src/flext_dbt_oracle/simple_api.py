@@ -4,14 +4,15 @@ from __future__ import annotations
 
 from os import getenv
 
-from pydantic import SecretStr
-
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.services import FlextDbtOracleWorkflowService
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
+from pydantic import SecretStr, TypeAdapter, ValidationError
 
 type JsonScalar = str | int | float | bool | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
+
+_TABLE_LIST_ADAPTER = TypeAdapter(list[object])
 
 
 class FlextDbtOracle:
@@ -40,7 +41,10 @@ class FlextDbtOracle:
         """Run extraction flow and return recommendations."""
         result = self.client.run_pipeline(tables=tables)
         table_payload = result.get("tables")
-        table_count = len(table_payload) if isinstance(table_payload, list) else 0
+        try:
+            table_count = len(_TABLE_LIST_ADAPTER.validate_python(table_payload))
+        except ValidationError:
+            table_count = 0
         recommendations = self.workflow_service.generate_recommendations(
             table_count=table_count
         )

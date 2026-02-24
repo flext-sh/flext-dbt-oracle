@@ -9,13 +9,14 @@ from __future__ import annotations
 
 import os
 import tempfile
-import typing
 from collections.abc import Generator
 
 import pytest
-from flext_tests import FlextTestsDocker
-
 from flext_dbt_oracle import t
+from flext_tests import FlextTestsDocker
+from pydantic import TypeAdapter, ValidationError
+
+_GENERAL_DICT_ADAPTER = TypeAdapter(dict[str, t.GeneralValueType])
 
 
 @pytest.fixture(scope="session")
@@ -536,15 +537,12 @@ class MockConnectionManager:
         config: dict[str, t.GeneralValueType],
     ) -> dict[str, t.GeneralValueType]:
         """Open database connection."""
-        connection = typing.cast(
-            "dict[str, t.GeneralValueType]",
-            {
-                "name": name,
-                "state": "open",
-                "handle": f"mock_handle_{name}",
-                "credentials": config,
-            },
-        )
+        connection: dict[str, t.GeneralValueType] = {
+            "name": name,
+            "state": "open",
+            "handle": f"mock_handle_{name}",
+            "credentials": config,
+        }
         self.connections[name] = connection
         return connection
 
@@ -589,9 +587,11 @@ class MockModelCompiler:
     ) -> str:
         """Compile dbt model SQL."""
         compiled = model_sql
-        vars_dict = typing.cast(
-            "dict[str, t.GeneralValueType]", context.get("vars", {})
-        )
+        vars_value = context.get("vars", {})
+        try:
+            vars_dict = _GENERAL_DICT_ADAPTER.validate_python(vars_value)
+        except ValidationError:
+            vars_dict = {}
         for var, value in vars_dict.items():
             compiled = compiled.replace(f"{{{{ var('{var}') }}}}", str(value))
         return compiled

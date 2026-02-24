@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Literal, cast
+from typing import Literal
 
 import pytest
 from flext_dbt_oracle.settings import OracleConnectionConfig
@@ -79,7 +79,7 @@ class TestFlextDbtOracleSettings:
                 oracle_username="testuser",
                 oracle_password=SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
-                materialization=cast(Literal["table"], "invalid_type"),
+                materialization="invalid_type",  # pyright: ignore[reportArgumentType]
             )
 
     def test_config_validation_invalid_protocol(self) -> None:
@@ -90,7 +90,7 @@ class TestFlextDbtOracleSettings:
                 oracle_username="testuser",
                 oracle_password=SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
-                protocol=cast(Literal["tcp"], "invalid_protocol"),
+                protocol="invalid_protocol",  # pyright: ignore[reportArgumentType]
             )
 
     def test_config_validation_pool_sizes(self) -> None:
@@ -312,7 +312,9 @@ class TestConfigEdgeCases:
 
     def test_config_materialization_validation_all_valid_types(self) -> None:
         """Test all valid materialization types."""
-        valid_materializations: list[Literal["table", "view", "incremental", "snapshot"]] = [
+        valid_materializations: list[
+            Literal["table", "view", "incremental", "snapshot"]
+        ] = [
             "table",
             "view",
             "incremental",
