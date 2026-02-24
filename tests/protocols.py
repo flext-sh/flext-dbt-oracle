@@ -17,9 +17,9 @@ class TestsFlextDbtOracleProtocols(FlextTestsProtocols, FlextDbtOracleProtocols)
     """Test protocols combining FlextTestsProtocols and FlextDbtOracleProtocols.
 
     Provides access to:
-    - tp.Tests.Docker.* (from FlextTestsProtocols)
-    - tp.Tests.Factory.* (from FlextTestsProtocols)
-    - tp.DbtOracle.* (from FlextDbtOracleProtocols)
+    - p.Tests.Docker.* (from FlextTestsProtocols)
+    - p.Tests.Factory.* (from FlextTestsProtocols)
+    - p.DbtOracle.* (from FlextDbtOracleProtocols)
     """
 
     class Tests(FlextTestsProtocols.Tests):
@@ -34,6 +34,6 @@ class TestsFlextDbtOracleProtocols(FlextTestsProtocols, FlextDbtOracleProtocols)
 
 # Runtime aliases
 p = TestsFlextDbtOracleProtocols
-tp = TestsFlextDbtOracleProtocols
+p = TestsFlextDbtOracleProtocols
 
-__all__ = ["TestsFlextDbtOracleProtocols", "p", "tp"]
+__all__ = ["TestsFlextDbtOracleProtocols", "p"]
