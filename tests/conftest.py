@@ -41,7 +41,15 @@ def shared_oracle_container(
     # Keep container running after tests
     try:
         docker_control.get_client().containers.get("flext-oracle-db-test").stop()
-    except Exception:
+    except (
+        ValueError,
+        TypeError,
+        KeyError,
+        AttributeError,
+        OSError,
+        RuntimeError,
+        ImportError,
+    ):
         pass
 
 
