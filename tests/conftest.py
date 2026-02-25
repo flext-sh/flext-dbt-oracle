@@ -569,7 +569,7 @@ class MockSqlExecutor:
         sql_strategies: dict[str, tuple[str, list[t.GeneralValueType]]] = {
             "CREATE TABLE": ("CREATE", []),
             "INSERT": ("INSERT", []),
-            "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),  # type: ignore[dict-item]
+            "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
         }
 
         for keyword, result in sql_strategies.items():
@@ -654,7 +654,7 @@ class MockDbtOracleAdapter:
         auto_begin: bool = True,
     ) -> tuple[str, list[t.GeneralValueType]]:
         """Delegate to SQL executor strategy."""
-        return self.sql_executor.execute(sql, auto_begin=auto_begin)  # type: ignore[arg-type]
+        return self.sql_executor.execute(sql, auto_begin=auto_begin)
 
     def compile_model(
         self, model_sql: str, context: dict[str, t.GeneralValueType]
