@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import cast
 from os import getenv
+from typing import cast
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.services import FlextDbtOracleWorkflowService
@@ -51,10 +51,10 @@ class FlextDbtOracle:
             table_count=table_count
         )
         result_dict: dict[str, JsonValue] = {
-            "pipeline": cast(JsonValue, result),
-            "recommendations": cast(JsonValue, recommendations),
+            "pipeline": cast("JsonValue", result),
+            "recommendations": cast("JsonValue", recommendations),
         }
-        return cast(Mapping[str, JsonValue], result_dict)
+        return cast("Mapping[str, JsonValue]", result_dict)
 
 
 __all__ = ["FlextDbtOracle"]
