@@ -3,18 +3,20 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import dataclass
+
+from pydantic import BaseModel, ConfigDict, Field
 
 type JsonScalar = str | int | float | bool | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
 
 
-@dataclass(slots=True)
-class OracleTableAdapter:
+class OracleTableAdapter(BaseModel):
     """Normalized Oracle table descriptor."""
 
-    schema_name: str
-    table_name: str
+    model_config = ConfigDict(extra="forbid")
+
+    schema_name: str = Field(description="Oracle schema name")
+    table_name: str = Field(description="Oracle table name")
 
     def get_relation_name(self) -> str:
         """Build canonical schema.table relation name."""
