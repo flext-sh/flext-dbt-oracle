@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Literal, cast
 
 import pytest
 from flext_dbt_oracle import FlextDbtOracleSettings
@@ -73,23 +73,25 @@ class TestFlextDbtOracleSettings:
     def test_config_validation_invalid_materialization(self) -> None:
         """Test validation fails for invalid materialization."""
         with pytest.raises(ValidationError, match="Input should be"):
+            materialization: str = "invalid_type"
             _ = FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
                 oracle_password=SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
-                materialization="invalid_type",
+                materialization=cast(Literal["incremental", "snapshot", "table", "view"], materialization),
             )
 
     def test_config_validation_invalid_protocol(self) -> None:
         """Test validation fails for invalid protocol."""
         with pytest.raises(ValidationError, match="Input should be"):
+            protocol: str = "invalid_protocol"
             _ = FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
                 oracle_password=SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
-                protocol="invalid_protocol",
+                protocol=cast(Literal["tcp", "tcps"], protocol),
             )
 
     def test_config_validation_pool_sizes(self) -> None:

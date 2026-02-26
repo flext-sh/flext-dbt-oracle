@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from typing import cast
 from os import getenv
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
@@ -49,10 +50,11 @@ class FlextDbtOracle:
         recommendations = self.workflow_service.generate_recommendations(
             table_count=table_count
         )
-        return {
-            "pipeline": result,
-            "recommendations": recommendations,
+        result_dict: dict[str, JsonValue] = {
+            "pipeline": cast(JsonValue, result),
+            "recommendations": cast(JsonValue, recommendations),
         }
+        return cast(Mapping[str, JsonValue], result_dict)
 
 
 __all__ = ["FlextDbtOracle"]

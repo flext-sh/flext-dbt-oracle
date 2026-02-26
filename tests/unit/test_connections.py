@@ -68,7 +68,8 @@ class TestOracleConnectionConfig:
 
     def test_port_validation(self) -> None:
         with pytest.raises(ValidationError, match="greater than or equal to 1"):
-            _ = OracleConnectionConfig(port=0)
+            port: int = 0
+            _ = OracleConnectionConfig(port=port)
 
 
 class TestBuildOracleConnectionConfig:
