@@ -10,10 +10,9 @@ from __future__ import annotations
 from typing import Literal
 
 import pytest
+from flext_dbt_oracle import FlextDbtOracleSettings
 from flext_dbt_oracle.settings import OracleConnectionConfig
 from pydantic import SecretStr, ValidationError
-
-from flext_dbt_oracle import FlextDbtOracleSettings
 
 
 class TestFlextDbtOracleSettings:
@@ -47,7 +46,7 @@ class TestFlextDbtOracleSettings:
     def test_config_validation_missing_host(self) -> None:
         """Test validation fails when host is missing."""
         with pytest.raises(ValidationError, match="Field required"):
-            _ = FlextDbtOracleSettings(  # type: ignore[call-arg]  # pyright: ignore[reportCallIssue]
+            _ = FlextDbtOracleSettings(
                 oracle_username="testuser",
                 oracle_password=SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
@@ -56,7 +55,7 @@ class TestFlextDbtOracleSettings:
     def test_config_validation_missing_username(self) -> None:
         """Test validation fails when username is missing."""
         with pytest.raises(ValidationError, match="Field required"):
-            _ = FlextDbtOracleSettings(  # type: ignore[call-arg]  # pyright: ignore[reportCallIssue]
+            _ = FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_password=SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
@@ -65,7 +64,7 @@ class TestFlextDbtOracleSettings:
     def test_config_validation_missing_password(self) -> None:
         """Test validation fails when password is missing."""
         with pytest.raises(ValidationError, match="Field required"):
-            _ = FlextDbtOracleSettings(  # type: ignore[call-arg]  # pyright: ignore[reportCallIssue]
+            _ = FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
                 oracle_service_name="XEPDB1",
@@ -79,7 +78,7 @@ class TestFlextDbtOracleSettings:
                 oracle_username="testuser",
                 oracle_password=SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
-                materialization="invalid_type",  # pyright: ignore[reportArgumentType]
+                materialization="invalid_type",
             )
 
     def test_config_validation_invalid_protocol(self) -> None:
@@ -90,7 +89,7 @@ class TestFlextDbtOracleSettings:
                 oracle_username="testuser",
                 oracle_password=SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
-                protocol="invalid_protocol",  # pyright: ignore[reportArgumentType]
+                protocol="invalid_protocol",
             )
 
     def test_config_validation_pool_sizes(self) -> None:
@@ -308,7 +307,7 @@ class TestConfigEdgeCases:
         assert config.pool_min_size == 1
         assert config.pool_max_size == 50
         assert config.query_timeout == 600
-        assert config.retry_delay == 0.5
+        assert config.retry_delay == pytest.approx(0.5)
 
     def test_config_materialization_validation_all_valid_types(self) -> None:
         """Test all valid materialization types."""
