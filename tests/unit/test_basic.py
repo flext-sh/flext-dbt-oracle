@@ -8,7 +8,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-
 from flext_dbt_oracle import (
     FlextDbtOracleClient,
     FlextDbtOracleModels,

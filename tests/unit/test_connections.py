@@ -8,12 +8,15 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_dbt_oracle.connections import (
+    OracleConnectionConfig,
+    build_oracle_connection_config,
+)
 from pydantic import ValidationError
-
-from flext_dbt_oracle.connections import OracleConnectionConfig, build_oracle_connection_config
 
 
 class TestOracleConnectionConfig:
+    """Test suite for OracleConnectionConfig class."""
 
     def test_default_values(self) -> None:
         config = OracleConnectionConfig()
@@ -67,12 +70,13 @@ class TestOracleConnectionConfig:
         assert config.get_dsn() == "tcp://testuser:***@localhost:1521:XE"
 
     def test_port_validation(self) -> None:
+        port: int = 0
         with pytest.raises(ValidationError, match="greater than or equal to 1"):
-            port: int = 0
             _ = OracleConnectionConfig(port=port)
 
 
 class TestBuildOracleConnectionConfig:
+    """Test suite for build_oracle_connection_config function."""
 
     def test_basic_build(self) -> None:
         config = build_oracle_connection_config(

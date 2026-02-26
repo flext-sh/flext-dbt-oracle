@@ -11,6 +11,7 @@ from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
 
 
 class TestOracleTableAdapter:
+    """Test OracleTableAdapter."""
 
     def test_get_relation_name(self) -> None:
         adapter = OracleTableAdapter(schema_name="HR", table_name="EMPLOYEES")
@@ -30,6 +31,7 @@ class TestOracleTableAdapter:
 
 
 class TestOracleTableFactory:
+    """Test OracleTableFactory."""
 
     def test_create_basic(self) -> None:
         adapter = OracleTableFactory.create("HR", "EMPLOYEES")
