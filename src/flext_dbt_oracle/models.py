@@ -21,7 +21,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
     class DbtOracle:
         """DbtOracle domain namespace."""
 
-        class Model(FlextModels.ValueObject):
+        class Model(FlextModels.Value):
             """Typed DBT model metadata payload."""
 
             name: str
