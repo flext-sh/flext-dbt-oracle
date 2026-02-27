@@ -33,6 +33,8 @@ dependencies = [
   "agate>=1.7",
   "dbt-common @ git+https://github.com/flext-sh/dbt-common.git@flext/relax-deps",
   "flext-core @ file://../flext-core",
+  "flext-db-oracle @ file://../flext-db-oracle",
+  "flext-meltano @ file://../flext-meltano",
   "pydantic>=2.12.3",
   "pydantic-core>=2.41.4",
 ]
