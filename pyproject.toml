@@ -32,7 +32,7 @@ classifiers = [
 dependencies = [
   "agate>=1.7",
   "dbt-common @ git+https://github.com/flext-sh/dbt-common.git@flext/relax-deps",
-  "flext-core @ ../flext-core",
+  "flext-core @ file://../flext-core",
   "pydantic>=2.12.3",
   "pydantic-core>=2.41.4",
 ]
