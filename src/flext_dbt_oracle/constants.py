@@ -6,7 +6,7 @@ from enum import StrEnum
 from typing import Final
 
 from flext_db_oracle.constants import FlextDbOracleConstants
-from flext_meltano.constants import FlextMeltanoConstants
+from flext_meltano import FlextMeltanoConstants
 
 
 class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):

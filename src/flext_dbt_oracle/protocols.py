@@ -10,7 +10,7 @@ from typing import Protocol, runtime_checkable
 
 from flext_core import t
 from flext_db_oracle.protocols import FlextDbOracleProtocols
-from flext_meltano.protocols import FlextMeltanoProtocols
+from flext_meltano import FlextMeltanoProtocols
 
 type OraclePayload = t.Dict
 type OraclePayloadList = list[t.Dict]
@@ -114,7 +114,9 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 """
                 ...
 
-            def validate_dbt_project(self, project_path: str) -> FlextMeltanoProtocols.Result[bool]:
+            def validate_dbt_project(
+                self, project_path: str
+            ) -> FlextMeltanoProtocols.Result[bool]:
                 """Validate DBT project configuration for Oracle integration.
 
                 Args:
@@ -127,7 +129,9 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 ...
 
         @runtime_checkable
-        class OracleIntegrationProtocol(FlextDbOracleProtocols.Service[object], Protocol):
+        class OracleIntegrationProtocol(
+            FlextDbOracleProtocols.Service[object], Protocol
+        ):
             """Protocol for Oracle database integration operations."""
 
             def extract_oracle_data(

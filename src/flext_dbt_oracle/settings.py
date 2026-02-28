@@ -39,7 +39,9 @@ class FlextDbtOracleSettings(BaseSettings):
     port: int = Field(default=c.Oracle.DEFAULT_PORT, ge=1)
     protocol: Literal["tcp", "tcps"] = c.Oracle.DEFAULT_PROTOCOL
     schema_name: str = c.DbtOracle.DEFAULT_SCHEMA_NAME
-    materialization: Literal["table", "view", "incremental", "snapshot"] = c.Dbt.Materialization.TABLE
+    materialization: Literal["table", "view", "incremental", "snapshot"] = (
+        c.Dbt.Materialization.TABLE
+    )
 
     pool_min_size: int = Field(default=1, ge=1)
     pool_max_size: int = Field(default=10, ge=1)
