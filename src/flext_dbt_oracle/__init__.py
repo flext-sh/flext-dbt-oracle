@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from flext_core import cleanup_submodule_namespace, lazy_getattr
+from flext_core._utilities.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
     from flext_dbt_oracle.__version__ import __version__, __version_info__
@@ -15,7 +15,10 @@ if TYPE_CHECKING:
         FlextDbtOracleConstants as c,
     )
     from flext_dbt_oracle.models import FlextDbtOracleModels, FlextDbtOracleModels as m
-    from flext_dbt_oracle.protocols import FlextDbtOracleProtocols
+    from flext_dbt_oracle.protocols import (
+        FlextDbtOracleProtocols,
+        FlextDbtOracleProtocols as p,
+    )
     from flext_dbt_oracle.settings import FlextDbtOracleSettings
     from flext_dbt_oracle.simple_api import FlextDbtOracle
     from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
@@ -40,6 +43,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "__version_info__": ("flext_dbt_oracle.__version__", "__version_info__"),
     "c": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
     "m": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
+    "p": ("flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"),
     "t": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
     "u": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
 }
@@ -59,6 +63,7 @@ __all__ = [
     "__version_info__",
     "c",
     "m",
+    "p",
     "t",
     "u",
 ]
