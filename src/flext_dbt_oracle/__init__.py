@@ -13,27 +13,19 @@ if TYPE_CHECKING:
     from flext_dbt_oracle.constants import c
     from flext_dbt_oracle.models import FlextDbtOracleModels, FlextDbtOracleModels as m
     from flext_dbt_oracle.protocols import FlextDbtOracleProtocols
-    from flext_dbt_oracle.services import FlextDbtOracleServices
     from flext_dbt_oracle.settings import FlextDbtOracleSettings
     from flext_dbt_oracle.simple_api import FlextDbtOracle
     from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
-    from flext_dbt_oracle.utilities import (
-        FlextDbtOracleUtilities,
-        FlextDbtOracleUtilities as u,
-    )
+    from flext_dbt_oracle.utilities import FlextDbtOracleUtilities as u
 
 # Lazy import mapping: export_name -> (module_path, attr_name)
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextDbtOracle": ("flext_dbt_oracle.simple_api", "FlextDbtOracle"),
     "FlextDbtOracleClient": ("flext_dbt_oracle.client", "FlextDbtOracleClient"),
     "FlextDbtOracleModels": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
-    "FlextDbtOracleProtocols": (
-        "flext_dbt_oracle.protocols",
-        "FlextDbtOracleProtocols",
-    ),
+    "FlextDbtOracleProtocols": ("flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"),
     "FlextDbtOracleSettings": ("flext_dbt_oracle.settings", "FlextDbtOracleSettings"),
     "FlextDbtOracleTypes": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
-    "u": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
     "OracleTableAdapter": ("flext_dbt_oracle.adapters", "OracleTableAdapter"),
     "OracleTableFactory": ("flext_dbt_oracle.adapters", "OracleTableFactory"),
     "__version__": ("flext_dbt_oracle.__version__", "__version__"),
@@ -41,6 +33,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "c": ("flext_dbt_oracle.constants", "c"),
     "m": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
     "t": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
+    "u": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
 }
 
 __all__ = [
