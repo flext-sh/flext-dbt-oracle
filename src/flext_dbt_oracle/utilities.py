@@ -4,11 +4,14 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
+from flext_db_oracle import FlextDbOracleUtilities
+from flext_meltano import FlextMeltanoUtilities
+
 type JsonScalar = str | int | float | bool | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
 
 
-class FlextDbtOracleUtilities:
+class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
     """Namespace for DBT Oracle utility helpers."""
 
     class Sql:
@@ -33,4 +36,7 @@ class FlextDbtOracleUtilities:
             return bool(rows)
 
 
-__all__ = ["FlextDbtOracleUtilities"]
+__all__ = ["FlextDbtOracleUtilities", "u"]
+
+
+u = FlextDbtOracleUtilities

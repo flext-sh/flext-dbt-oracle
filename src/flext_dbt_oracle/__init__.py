@@ -20,7 +20,10 @@ if TYPE_CHECKING:
     from flext_dbt_oracle.settings import FlextDbtOracleSettings
     from flext_dbt_oracle.simple_api import FlextDbtOracle
     from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
-    from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
+    from flext_dbt_oracle.utilities import (
+        FlextDbtOracleUtilities,
+        FlextDbtOracleUtilities as u,
+    )
 
 # Lazy import mapping: export_name -> (module_path, attr_name)
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
@@ -31,7 +34,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextDbtOracleProtocols": ("flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"),
     "FlextDbtOracleSettings": ("flext_dbt_oracle.settings", "FlextDbtOracleSettings"),
     "FlextDbtOracleTypes": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
-    "FlextDbtOracleUtilities": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
+    "u": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
     "FlextDbtOracleWorkflowService": ("flext_dbt_oracle.services", "FlextDbtOracleWorkflowService"),
     "OracleTableAdapter": ("flext_dbt_oracle.adapters", "OracleTableAdapter"),
     "OracleTableFactory": ("flext_dbt_oracle.adapters", "OracleTableFactory"),
@@ -59,6 +62,7 @@ __all__ = [
     "c",
     "m",
     "t",
+    "u",
 ]
 
 
