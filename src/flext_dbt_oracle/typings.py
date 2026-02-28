@@ -17,6 +17,8 @@ from __future__ import annotations
 from typing import Literal
 
 from flext_core import FlextTypes
+from flext_db_oracle import FlextDbOracleTypes
+from flext_meltano import FlextMeltanoTypes
 
 # =============================================================================
 # DBT ORACLE-SPECIFIC TYPE VARIABLES - Domain-specific TypeVars for DBT Oracle operations
@@ -24,7 +26,7 @@ from flext_core import FlextTypes
 
 
 # DBT Oracle domain TypeVars
-class FlextDbtOracleTypes(FlextTypes):
+class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     """DBT Oracle-specific type definitions extending t.
 
     Domain-specific type system for DBT Oracle data transformation operations.
