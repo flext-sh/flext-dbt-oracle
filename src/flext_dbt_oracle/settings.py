@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Literal
 
+from flext_dbt_oracle.constants import c
 from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -33,12 +34,12 @@ class FlextDbtOracleSettings(BaseSettings):
     oracle_host: str
     oracle_username: str
     oracle_password: SecretStr
-    oracle_service_name: str = "XEPDB1"
+    oracle_service_name: str = c.Oracle.DEFAULT_SERVICE_NAME
     sid: str | None = None
-    port: int = Field(default=1521, ge=1)
-    protocol: Literal["tcp", "tcps"] = "tcp"
-    schema_name: str = "public"
-    materialization: Literal["table", "view", "incremental", "snapshot"] = "table"
+    port: int = Field(default=c.Oracle.DEFAULT_PORT, ge=1)
+    protocol: Literal["tcp", "tcps"] = c.Oracle.DEFAULT_PROTOCOL
+    schema_name: str = c.DbtOracle.DEFAULT_SCHEMA_NAME
+    materialization: Literal["table", "view", "incremental", "snapshot"] = c.Dbt.Materialization.TABLE
 
     pool_min_size: int = Field(default=1, ge=1)
     pool_max_size: int = Field(default=10, ge=1)
@@ -50,17 +51,17 @@ class FlextDbtOracleSettings(BaseSettings):
     retry_delay: float = Field(default=1.0, ge=0.0)
 
     ssl_server_dn_match: bool = False
-    nls_lang: str = "AMERICAN_AMERICA.AL32UTF8"
-    nls_date_format: str = "YYYY-MM-DD"
+    nls_lang: str = c.DbtOracle.NLS_LANG
+    nls_date_format: str = c.DbtOracle.NLS_DATE_FORMAT
     search_path: str = ""
     enable_metrics: bool = True
     log_level: str = "INFO"
     enable_sql_logging: bool = False
 
-    dbt_project_dir: str = "."
-    dbt_profiles_dir: str = "."
-    dbt_target: str = "dev"
-    dbt_threads: int = Field(default=4, ge=1)
+    dbt_project_dir: str = c.Dbt.DEFAULT_PROJECT_DIR
+    dbt_profiles_dir: str = c.Dbt.DEFAULT_PROFILES_DIR
+    dbt_target: str = c.Dbt.DEFAULT_TARGET
+    dbt_threads: int = Field(default=c.Dbt.DEFAULT_THREADS, ge=1)
 
     @model_validator(mode="after")
     def validate_pool(self) -> FlextDbtOracleSettings:

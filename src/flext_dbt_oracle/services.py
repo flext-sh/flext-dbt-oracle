@@ -4,9 +4,10 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
+from flext_dbt_oracle.constants import c
+
 type JsonScalar = str | int | float | bool | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
-PERFORMANCE_RECOMMENDATION_THRESHOLD = 20
 
 
 class FlextDbtOracleServices:
@@ -15,7 +16,7 @@ class FlextDbtOracleServices:
     def generate_recommendations(self, table_count: int) -> Mapping[str, JsonValue]:
         """Generate lightweight recommendations from table volume."""
         recommendations: list[JsonValue] = []
-        if table_count > PERFORMANCE_RECOMMENDATION_THRESHOLD:
+        if table_count > c.DbtOracle.PERFORMANCE_RECOMMENDATION_THRESHOLD:
             recommendations.append(
                 "Process tables in batches and increase dbt threads gradually"
             )

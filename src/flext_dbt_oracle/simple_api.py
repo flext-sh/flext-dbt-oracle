@@ -7,6 +7,7 @@ from os import getenv
 from typing import cast
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
+from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.services import FlextDbtOracleWorkflowService
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
 from pydantic import SecretStr, TypeAdapter, ValidationError
@@ -24,7 +25,7 @@ class FlextDbtOracle:
         """Initialize API with provided or default settings."""
         super().__init__()
         self.config = config or FlextDbtOracleSettings(
-            oracle_host="localhost",
+            oracle_host=c.Oracle.DEFAULT_HOST,
             oracle_username="user",
             oracle_password=SecretStr(getenv("FLEXT_DBT_ORACLE_PASSWORD", "")),
         )

@@ -6,6 +6,7 @@ from collections.abc import Mapping
 
 from flext_core import FlextModels
 from flext_db_oracle.models import FlextDbOracleModels
+from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.typings import t
 from flext_meltano.models import FlextMeltanoModels
 from pydantic import Field
@@ -25,13 +26,13 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
             """Typed DBT model metadata payload."""
 
             name: str
-            dbt_model_type: str = "staging"
-            schema_name: str = "public"
+            dbt_model_type: str = c.DbtOracle.DEFAULT_MODEL_TYPE
+            schema_name: str = c.DbtOracle.DEFAULT_SCHEMA_NAME
             table_name: str
-            materialization: str = "view"
+            materialization: str = c.Dbt.DEFAULT_MATERIALIZATION
             sql_content: str
             description: str = ""
-            source_name: str = "oracle"
+            source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
             columns: list[dict[str, t.GeneralValueType]] = Field(
                 default_factory=list,
             )

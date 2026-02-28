@@ -34,6 +34,7 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
         DEFAULT_THREADS: Final[int] = 4
         DEFAULT_PROJECT_DIR: Final[str] = "."
         DEFAULT_PROFILES_DIR: Final[str] = "."
+        DEFAULT_MATERIALIZATION: Final[str] = "view"
 
         class Materialization(StrEnum):
             """Valid DBT materialization values."""
@@ -42,6 +43,16 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
             VIEW = "view"
             INCREMENTAL = "incremental"
             SNAPSHOT = "snapshot"
+
+    class DbtOracle:
+        """DBT Oracle domain-specific defaults."""
+
+        DEFAULT_MODEL_TYPE: Final[str] = "staging"
+        DEFAULT_SOURCE_NAME: Final[str] = "oracle"
+        DEFAULT_SCHEMA_NAME: Final[str] = "public"
+        PERFORMANCE_RECOMMENDATION_THRESHOLD: Final[int] = 20
+        NLS_LANG: Final[str] = "AMERICAN_AMERICA.AL32UTF8"
+        NLS_DATE_FORMAT: Final[str] = "YYYY-MM-DD"
 
 
 c = FlextDbtOracleConstants

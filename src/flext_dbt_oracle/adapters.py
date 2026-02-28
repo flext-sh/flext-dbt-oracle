@@ -6,6 +6,8 @@ from collections.abc import Mapping
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from .constants import c
+
 type JsonScalar = str | int | float | bool | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
 
@@ -38,7 +40,7 @@ class OracleTableFactory:
     def create(schema_name: str, table_name: str) -> OracleTableAdapter:
         """Create adapter with trimmed, normalized names."""
         return OracleTableAdapter(
-            schema_name=schema_name.strip() or "public",
+            schema_name=schema_name.strip() or c.DbtOracle.DEFAULT_SCHEMA_NAME,
             table_name=table_name.strip(),
         )
 

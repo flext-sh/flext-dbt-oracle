@@ -2,19 +2,20 @@
 
 from __future__ import annotations
 
+from flext_dbt_oracle.constants import c
 from pydantic import BaseModel, Field
 
 
 class OracleConnectionConfig(BaseModel):
     """Structured Oracle connection parameters."""
 
-    host: str = "localhost"
-    port: int = Field(default=1521, ge=1)
-    service_name: str = "XEPDB1"
+    host: str = c.Oracle.DEFAULT_HOST
+    port: int = Field(default=c.Oracle.DEFAULT_PORT, ge=1)
+    service_name: str = c.Oracle.DEFAULT_SERVICE_NAME
     sid: str | None = None
     username: str = ""
     password: str = ""
-    protocol: str = "tcp"
+    protocol: str = c.Oracle.DEFAULT_PROTOCOL
 
     def get_database_identifier(self) -> str:
         """Return SID when present, otherwise service name."""
@@ -31,11 +32,11 @@ def build_oracle_connection_config(
     host: str,
     username: str,
     password: str,
-    service_name: str = "XEPDB1",
+    service_name: str = c.Oracle.DEFAULT_SERVICE_NAME,
     *,
     sid: str | None = None,
-    port: int = 1521,
-    protocol: str = "tcp",
+    port: int = c.Oracle.DEFAULT_PORT,
+    protocol: str = c.Oracle.DEFAULT_PROTOCOL,
 ) -> OracleConnectionConfig:
     """Create validated Oracle connection config object."""
     return OracleConnectionConfig(
