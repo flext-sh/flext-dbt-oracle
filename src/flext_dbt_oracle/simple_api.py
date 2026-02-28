@@ -8,7 +8,7 @@ from os import getenv
 from flext_core import t
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.services import FlextDbtOracleWorkflowService
+from flext_dbt_oracle.services import FlextDbtOracleServices
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
 from pydantic import SecretStr, TypeAdapter, ValidationError
 
@@ -30,7 +30,7 @@ class FlextDbtOracle:
             oracle_password=SecretStr(getenv("FLEXT_DBT_ORACLE_PASSWORD", "")),
         )
         self.client = FlextDbtOracleClient(self.config)
-        self.workflow_service = FlextDbtOracleWorkflowService()
+        self.workflow_service = FlextDbtOracleServices()
 
     @classmethod
     def create(cls) -> FlextDbtOracle:

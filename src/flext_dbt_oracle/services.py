@@ -33,11 +33,6 @@ class FlextDbtOracleServices:
         }
 
 
-FlextDbtOracleWorkflowService = FlextDbtOracleServices
-FlextDbtOracleMonitoringService = FlextDbtOracleServices
-
 __all__ = [
-    "FlextDbtOracleMonitoringService",
     "FlextDbtOracleServices",
-    "FlextDbtOracleWorkflowService",
 ]

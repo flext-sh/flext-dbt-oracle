@@ -13,10 +13,7 @@ if TYPE_CHECKING:
     from flext_dbt_oracle.constants import c
     from flext_dbt_oracle.models import FlextDbtOracleModels, FlextDbtOracleModels as m
     from flext_dbt_oracle.protocols import FlextDbtOracleProtocols
-    from flext_dbt_oracle.services import (
-        FlextDbtOracleMonitoringService,
-        FlextDbtOracleWorkflowService,
-    )
+    from flext_dbt_oracle.services import FlextDbtOracleServices
     from flext_dbt_oracle.settings import FlextDbtOracleSettings
     from flext_dbt_oracle.simple_api import FlextDbtOracle
     from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
@@ -30,10 +27,6 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextDbtOracle": ("flext_dbt_oracle.simple_api", "FlextDbtOracle"),
     "FlextDbtOracleClient": ("flext_dbt_oracle.client", "FlextDbtOracleClient"),
     "FlextDbtOracleModels": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
-    "FlextDbtOracleMonitoringService": (
-        "flext_dbt_oracle.services",
-        "FlextDbtOracleMonitoringService",
-    ),
     "FlextDbtOracleProtocols": (
         "flext_dbt_oracle.protocols",
         "FlextDbtOracleProtocols",
@@ -41,10 +34,6 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextDbtOracleSettings": ("flext_dbt_oracle.settings", "FlextDbtOracleSettings"),
     "FlextDbtOracleTypes": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
     "u": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
-    "FlextDbtOracleWorkflowService": (
-        "flext_dbt_oracle.services",
-        "FlextDbtOracleWorkflowService",
-    ),
     "OracleTableAdapter": ("flext_dbt_oracle.adapters", "OracleTableAdapter"),
     "OracleTableFactory": ("flext_dbt_oracle.adapters", "OracleTableFactory"),
     "__version__": ("flext_dbt_oracle.__version__", "__version__"),
@@ -58,12 +47,11 @@ __all__ = [
     "FlextDbtOracle",
     "FlextDbtOracleClient",
     "FlextDbtOracleModels",
-    "FlextDbtOracleMonitoringService",
     "FlextDbtOracleProtocols",
+    "FlextDbtOracleServices",
     "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
-    "FlextDbtOracleWorkflowService",
     "OracleTableAdapter",
     "OracleTableFactory",
     "__version__",
