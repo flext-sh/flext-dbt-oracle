@@ -591,7 +591,9 @@ class MockModelCompiler:
     """Strategy for model compilation (Single Responsibility Principle)."""
 
     def compile_model(
-        self, model_sql: str, context: dict[str, t.GeneralValueType]
+        self,
+        model_sql: str,
+        context: dict[str, t.GeneralValueType],
     ) -> str:
         """Compile dbt model SQL."""
         compiled = model_sql
@@ -665,7 +667,9 @@ class MockDbtOracleAdapter:
         return self.sql_executor.execute(sql, auto_begin=auto_begin)
 
     def compile_model(
-        self, model_sql: str, context: dict[str, t.GeneralValueType]
+        self,
+        model_sql: str,
+        context: dict[str, t.GeneralValueType],
     ) -> str:
         """Delegate to model compiler strategy."""
         return self.model_compiler.compile_model(model_sql, context)

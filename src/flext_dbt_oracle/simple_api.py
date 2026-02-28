@@ -49,7 +49,7 @@ class FlextDbtOracle:
         except ValidationError:
             table_count = 0
         recommendations = self.workflow_service.generate_recommendations(
-            table_count=table_count
+            table_count=table_count,
         )
         result_dict: dict[str, JsonValue] = {
             "pipeline": result,

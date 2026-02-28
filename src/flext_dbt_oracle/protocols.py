@@ -115,7 +115,8 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 ...
 
             def validate_dbt_project(
-                self, project_path: str
+                self,
+                project_path: str,
             ) -> FlextMeltanoProtocols.Result[bool]:
                 """Validate DBT project configuration for Oracle integration.
 
@@ -130,7 +131,8 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
         @runtime_checkable
         class OracleIntegrationProtocol(
-            FlextDbOracleProtocols.Service[object], Protocol
+            FlextDbOracleProtocols.Service[object],
+            Protocol,
         ):
             """Protocol for Oracle database integration operations."""
 

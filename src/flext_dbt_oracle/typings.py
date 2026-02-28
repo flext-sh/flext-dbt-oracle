@@ -43,13 +43,15 @@ class FlextDbtOracleTypes(FlextTypes):
         """
 
         type ProjectConfiguration = dict[
-            str, FlextTypes.JsonValue | dict[str, FlextTypes.JsonValue]
+            str,
+            FlextTypes.JsonValue | dict[str, FlextTypes.JsonValue],
         ]
         """DBT project configuration type."""
         type ModelConfiguration = dict[str, str | dict[str, FlextTypes.JsonValue]]
         """DBT model configuration type."""
         type SourceConfiguration = dict[
-            str, str | list[dict[str, FlextTypes.JsonValue]]
+            str,
+            str | list[dict[str, FlextTypes.JsonValue]],
         ]
         """DBT source configuration type."""
         type ProfileConfiguration = dict[str, FlextTypes.JsonValue]
@@ -70,21 +72,25 @@ class FlextDbtOracleTypes(FlextTypes):
         """
 
         type ConnectionConfig = dict[
-            str, str | int | bool | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | int | bool | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle connection configuration type."""
         type DatabaseConnection = dict[str, str | dict[str, FlextTypes.JsonValue]]
         """Oracle database connection type."""
         type PoolingConfig = dict[
-            str, int | bool | dict[str, FlextTypes.GeneralValueType]
+            str,
+            int | bool | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle pooling configuration type."""
         type SecurityConfig = dict[
-            str, bool | str | dict[str, FlextTypes.GeneralValueType]
+            str,
+            bool | str | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle security configuration type."""
         type SessionConfig = dict[
-            str, str | int | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | int | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle session configuration type."""
         type TimeoutConfig = dict[str, int | float]
@@ -105,17 +111,20 @@ class FlextDbtOracleTypes(FlextTypes):
         type OracleSchema = dict[str, str | list[dict[str, FlextTypes.JsonValue]]]
         """Oracle schema type."""
         type OracleColumn = dict[
-            str, str | int | bool | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | int | bool | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle column type."""
         type OracleQuery = dict[
-            str, str | list[str] | int | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | list[str] | int | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle query type."""
         type OracleIndex = dict[str, str | list[str] | dict[str, FlextTypes.JsonValue]]
         """Oracle index type."""
         type OracleConstraint = dict[
-            str, str | bool | list[str] | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | bool | list[str] | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle constraint type."""
 
@@ -130,13 +139,15 @@ class FlextDbtOracleTypes(FlextTypes):
         """
 
         type TransformationConfig = dict[
-            str, FlextTypes.JsonValue | dict[str, FlextTypes.GeneralValueType]
+            str,
+            FlextTypes.JsonValue | dict[str, FlextTypes.GeneralValueType],
         ]
         """DBT transformation configuration type."""
         type SqlTransformation = dict[str, str | dict[str, FlextTypes.JsonValue]]
         """SQL transformation type."""
         type DataValidation = dict[
-            str, bool | str | list[str] | dict[str, FlextTypes.GeneralValueType]
+            str,
+            bool | str | list[str] | dict[str, FlextTypes.GeneralValueType],
         ]
         """Data validation type."""
         type MaterializationConfig = dict[str, str | dict[str, FlextTypes.JsonValue]]
@@ -159,21 +170,25 @@ class FlextDbtOracleTypes(FlextTypes):
         type ModelDefinition = dict[str, str | dict[str, FlextTypes.JsonValue]]
         """DBT model definition type."""
         type ModelExecution = dict[
-            str, str | bool | int | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | bool | int | dict[str, FlextTypes.GeneralValueType],
         ]
         """DBT model execution type."""
         type ModelDependency = dict[
-            str, str | list[str] | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | list[str] | dict[str, FlextTypes.GeneralValueType],
         ]
         """DBT model dependency type."""
         type ModelTest = dict[str, str | bool | dict[str, FlextTypes.JsonValue]]
         """DBT model test type."""
         type ModelDocumentation = dict[
-            str, str | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | dict[str, FlextTypes.GeneralValueType],
         ]
         """DBT model documentation type."""
         type ModelMaterialization = dict[
-            str, str | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | dict[str, FlextTypes.GeneralValueType],
         ]
         """DBT model materialization type."""
 
@@ -190,13 +205,15 @@ class FlextDbtOracleTypes(FlextTypes):
         type SourceDefinition = dict[str, str | dict[str, FlextTypes.JsonValue]]
         """DBT source definition type."""
         type SourceConnection = dict[
-            str, FlextTypes.GeneralValueType | dict[str, FlextTypes.GeneralValueType]
+            str,
+            FlextTypes.GeneralValueType | dict[str, FlextTypes.GeneralValueType],
         ]
         """DBT source connection type."""
         type SourceTable = dict[str, str | list[dict[str, FlextTypes.JsonValue]]]
         """DBT source table type."""
         type SourceFreshness = dict[
-            str, str | int | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | int | dict[str, FlextTypes.GeneralValueType],
         ]
         """DBT source freshness type."""
         type SourceTest = dict[str, str | bool | list[str]]
@@ -215,17 +232,20 @@ class FlextDbtOracleTypes(FlextTypes):
         """
 
         type AdapterConfiguration = dict[
-            str, FlextTypes.GeneralValueType | dict[str, FlextTypes.GeneralValueType]
+            str,
+            FlextTypes.GeneralValueType | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle adapter configuration type."""
         type ConnectionAdapter = dict[
-            str, str | int | bool | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | int | bool | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle connection adapter type."""
         type QueryAdapter = dict[str, str | dict[str, FlextTypes.JsonValue]]
         """Oracle query adapter type."""
         type SchemaAdapter = dict[
-            str, str | list[str] | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | list[str] | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle schema adapter type."""
         type TransactionAdapter = dict[
@@ -234,7 +254,8 @@ class FlextDbtOracleTypes(FlextTypes):
         ]
         """Oracle transaction adapter type."""
         type CursorAdapter = dict[
-            str, str | int | dict[str, FlextTypes.GeneralValueType]
+            str,
+            str | int | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle cursor adapter type."""
 
@@ -282,7 +303,8 @@ class FlextDbtOracleTypes(FlextTypes):
         type OracleTransformConfig = dict[str, str | int | bool | list[str]]
         """Oracle transformation configuration type."""
         type OracleAnalyticsConfig = dict[
-            str, bool | str | dict[str, FlextTypes.GeneralValueType]
+            str,
+            bool | str | dict[str, FlextTypes.GeneralValueType],
         ]
         """Oracle analytics configuration type."""
         type DbtOraclePipelineConfig = dict[str, FlextTypes.GeneralValueType]

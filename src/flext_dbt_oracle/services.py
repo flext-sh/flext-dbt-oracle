@@ -18,7 +18,7 @@ class FlextDbtOracleServices:
         recommendations: list[JsonValue] = []
         if table_count > c.DbtOracle.PERFORMANCE_RECOMMENDATION_THRESHOLD:
             recommendations.append(
-                "Process tables in batches and increase dbt threads gradually"
+                "Process tables in batches and increase dbt threads gradually",
             )
         return {
             "table_count": table_count,
