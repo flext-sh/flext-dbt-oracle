@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from os import getenv
-from typing import cast
 
+from flext_core import t
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.services import FlextDbtOracleWorkflowService
@@ -15,7 +15,7 @@ from pydantic import SecretStr, TypeAdapter, ValidationError
 type JsonScalar = str | int | float | bool | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
 
-_TABLE_LIST_ADAPTER = TypeAdapter(list[object])
+_TABLE_LIST_ADAPTER = TypeAdapter(list[t.GeneralValueType])
 
 
 class FlextDbtOracle:
@@ -52,10 +52,10 @@ class FlextDbtOracle:
             table_count=table_count
         )
         result_dict: dict[str, JsonValue] = {
-            "pipeline": cast("JsonValue", result),
-            "recommendations": cast("JsonValue", recommendations),
+            "pipeline": result,
+            "recommendations": recommendations,
         }
-        return cast("Mapping[str, JsonValue]", result_dict)
+        return result_dict
 
 
 __all__ = ["FlextDbtOracle"]
