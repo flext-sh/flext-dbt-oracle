@@ -31,12 +31,21 @@ if TYPE_CHECKING:
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextDbtOracle": ("flext_dbt_oracle.simple_api", "FlextDbtOracle"),
     "FlextDbtOracleClient": ("flext_dbt_oracle.client", "FlextDbtOracleClient"),
-    "FlextDbtOracleConstants": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
+    "FlextDbtOracleConstants": (
+        "flext_dbt_oracle.constants",
+        "FlextDbtOracleConstants",
+    ),
     "FlextDbtOracleModels": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
-    "FlextDbtOracleProtocols": ("flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"),
+    "FlextDbtOracleProtocols": (
+        "flext_dbt_oracle.protocols",
+        "FlextDbtOracleProtocols",
+    ),
     "FlextDbtOracleSettings": ("flext_dbt_oracle.settings", "FlextDbtOracleSettings"),
     "FlextDbtOracleTypes": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
-    "FlextDbtOracleUtilities": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
+    "FlextDbtOracleUtilities": (
+        "flext_dbt_oracle.utilities",
+        "FlextDbtOracleUtilities",
+    ),
     "OracleTableAdapter": ("flext_dbt_oracle.adapters", "OracleTableAdapter"),
     "OracleTableFactory": ("flext_dbt_oracle.adapters", "OracleTableFactory"),
     "__version__": ("flext_dbt_oracle.__version__", "__version__"),
