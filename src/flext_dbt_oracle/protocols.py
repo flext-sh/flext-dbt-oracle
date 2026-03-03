@@ -12,8 +12,8 @@ from flext_core import t
 from flext_db_oracle.protocols import FlextDbOracleProtocols
 from flext_meltano import FlextMeltanoProtocols
 
-type OraclePayload = t.Dict
-type OraclePayloadList = list[t.Dict]
+type OraclePayload = m.Dict
+type OraclePayloadList = list[m.Dict]
 
 
 class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
@@ -49,12 +49,12 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
         """DBT Oracle domain protocols for Oracle database transformation and analytics."""
 
         @runtime_checkable
-        class DbtProtocol(FlextDbOracleProtocols.Service[t.GeneralValueType], Protocol):
+        class DbtProtocol(FlextDbOracleProtocols.Service[t.ContainerValue], Protocol):
             """Protocol for DBT operations with Oracle data."""
 
             def run_dbt_models(
                 self,
-                models: t.GeneralListValue | None = None,
+                models: list[t.ScalarValue] | None = None,
                 config: OraclePayload | None = None,
             ) -> FlextMeltanoProtocols.Result[OraclePayload]:
                 """Run DBT models with Oracle data sources.
@@ -71,7 +71,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def test_dbt_models(
                 self,
-                models: t.GeneralListValue | None = None,
+                models: list[t.ScalarValue] | None = None,
                 config: OraclePayload | None = None,
             ) -> FlextMeltanoProtocols.Result[OraclePayload]:
                 """Test DBT models with Oracle data validation.
@@ -88,7 +88,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def compile_dbt_models(
                 self,
-                models: t.GeneralListValue | None = None,
+                models: list[t.ScalarValue] | None = None,
                 config: OraclePayload | None = None,
             ) -> FlextMeltanoProtocols.Result[OraclePayload]:
                 """Compile DBT models for Oracle data processing.

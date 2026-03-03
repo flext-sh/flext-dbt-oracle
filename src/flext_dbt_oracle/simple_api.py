@@ -13,10 +13,10 @@ from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.services import FlextDbtOracleServices
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
 
-type JsonScalar = str | int | float | bool | None
+type JsonScalar = t.JsonPrimitive | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
 
-_TABLE_LIST_ADAPTER = TypeAdapter(list[t.GeneralValueType])
+_TABLE_LIST_ADAPTER = TypeAdapter(list[t.ContainerValue])
 
 
 class FlextDbtOracle:

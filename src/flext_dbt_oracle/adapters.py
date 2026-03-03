@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from .constants import c
 
-type JsonScalar = str | int | float | bool | None
+type JsonScalar = t.JsonPrimitive | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
 
 

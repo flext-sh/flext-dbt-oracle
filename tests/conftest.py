@@ -17,7 +17,7 @@ from pydantic import TypeAdapter, ValidationError
 
 from flext_dbt_oracle import t
 
-_GENERAL_DICT_ADAPTER = TypeAdapter(dict[str, t.GeneralValueType])
+_GENERAL_DICT_ADAPTER = TypeAdapter(dict[str, t.ContainerValue])
 
 
 @pytest.fixture(scope="session")
@@ -95,7 +95,7 @@ def set_test_environment() -> Generator[None]:
 
 # dbt configuration fixtures
 @pytest.fixture
-def dbt_oracle_profile() -> dict[str, t.GeneralValueType]:
+def dbt_oracle_profile() -> dict[str, t.ContainerValue]:
     """Dbt Oracle profile configuration for testing."""
     return {
         "config": {
@@ -138,7 +138,7 @@ def dbt_oracle_profile() -> dict[str, t.GeneralValueType]:
 
 
 @pytest.fixture
-def dbt_project_config() -> dict[str, t.GeneralValueType]:
+def dbt_project_config() -> dict[str, t.ContainerValue]:
     """Dbt project configuration for testing."""
     return {
         "name": "flext_dbt_oracle_test",
@@ -173,7 +173,7 @@ def dbt_project_config() -> dict[str, t.GeneralValueType]:
 
 # Oracle adapter fixtures
 @pytest.fixture
-def oracle_adapter_config() -> dict[str, t.GeneralValueType]:
+def oracle_adapter_config() -> dict[str, t.ContainerValue]:
     """Oracle adapter configuration for testing."""
     return {
         "type": "oracle",
@@ -333,7 +333,7 @@ def dbt_test_definitions() -> dict[str, str]:
 
 
 @pytest.fixture
-def dbt_source_definitions() -> dict[str, t.GeneralValueType]:
+def dbt_source_definitions() -> dict[str, t.ContainerValue]:
     """Dbt source definitions for testing."""
     return {
         "version": 2,
@@ -442,7 +442,7 @@ def oracle_sql_queries() -> dict[str, str]:
 
 # dbt execution fixtures
 @pytest.fixture
-def dbt_run_config() -> dict[str, t.GeneralValueType]:
+def dbt_run_config() -> dict[str, t.ContainerValue]:
     """Dbt run configuration for testing."""
     return {
         "threads": 4,
@@ -458,7 +458,7 @@ def dbt_run_config() -> dict[str, t.GeneralValueType]:
 
 
 @pytest.fixture
-def dbt_test_config() -> dict[str, t.GeneralValueType]:
+def dbt_test_config() -> dict[str, t.ContainerValue]:
     """Dbt test configuration for testing."""
     return {
         "threads": 2,
@@ -472,7 +472,7 @@ def dbt_test_config() -> dict[str, t.GeneralValueType]:
 
 # Performance test fixtures
 @pytest.fixture
-def performance_test_config() -> dict[str, t.GeneralValueType]:
+def performance_test_config() -> dict[str, t.ContainerValue]:
     """Performance test configuration."""
     return {
         "large_table_rows": 100000,
@@ -485,7 +485,7 @@ def performance_test_config() -> dict[str, t.GeneralValueType]:
 
 # Error handling fixtures
 @pytest.fixture
-def dbt_error_scenarios() -> list[dict[str, t.GeneralValueType]]:
+def dbt_error_scenarios() -> list[dict[str, t.ContainerValue]]:
     """Dbt error scenarios for testing."""
     return [
         {
@@ -538,15 +538,15 @@ class MockConnectionManager:
     def __init__(self) -> None:
         """Initialize connection manager."""
         super().__init__()
-        self.connections: dict[str, dict[str, t.GeneralValueType]] = {}
+        self.connections: dict[str, dict[str, t.ContainerValue]] = {}
 
     def open_connection(
         self,
         name: str,
-        config: dict[str, t.GeneralValueType],
-    ) -> dict[str, t.GeneralValueType]:
+        config: dict[str, t.ContainerValue],
+    ) -> dict[str, t.ContainerValue]:
         """Open database connection."""
-        connection: dict[str, t.GeneralValueType] = {
+        connection: dict[str, t.ContainerValue] = {
             "name": name,
             "state": "open",
             "handle": f"mock_handle_{name}",
@@ -570,12 +570,12 @@ class MockSqlExecutor:
         sql: str,
         *,
         auto_begin: bool = True,
-    ) -> tuple[str, list[t.GeneralValueType]]:
+    ) -> tuple[str, list[t.ContainerValue]]:
         """Execute SQL statement with reduced branching."""
         # auto_begin parameter is used for future transaction management
         _ = auto_begin  # Mark as used for future implementation
 
-        sql_strategies: dict[str, tuple[str, list[t.GeneralValueType]]] = {
+        sql_strategies: dict[str, tuple[str, list[t.ContainerValue]]] = {
             "CREATE TABLE": ("CREATE", []),
             "INSERT": ("INSERT", []),
             "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
@@ -594,7 +594,7 @@ class MockModelCompiler:
     def compile_model(
         self,
         model_sql: str,
-        context: dict[str, t.GeneralValueType],
+        context: dict[str, t.ContainerValue],
     ) -> str:
         """Compile dbt model SQL."""
         compiled = model_sql
@@ -639,18 +639,18 @@ class MockRelationManager:
 class MockDbtOracleAdapter:
     """Simplified adapter using composition and Strategy Pattern."""
 
-    def __init__(self, config: dict[str, t.GeneralValueType]) -> None:
+    def __init__(self, config: dict[str, t.ContainerValue]) -> None:
         """Initialize the instance."""
         super().__init__()
         self.config = config
-        self.compiled_models: dict[str, t.GeneralValueType] = {}
+        self.compiled_models: dict[str, t.ContainerValue] = {}
         # Dependency injection of strategies
         self.connection_manager = MockConnectionManager()
         self.sql_executor = MockSqlExecutor()
         self.model_compiler = MockModelCompiler()
         self.relation_manager = MockRelationManager()
 
-    def open_connection(self, name: str) -> dict[str, t.GeneralValueType]:
+    def open_connection(self, name: str) -> dict[str, t.ContainerValue]:
         """Delegate to connection manager strategy."""
         return self.connection_manager.open_connection(name, self.config)
 
@@ -663,14 +663,14 @@ class MockDbtOracleAdapter:
         sql: str,
         *,
         auto_begin: bool = True,
-    ) -> tuple[str, list[t.GeneralValueType]]:
+    ) -> tuple[str, list[t.ContainerValue]]:
         """Delegate to SQL executor strategy."""
         return self.sql_executor.execute(sql, auto_begin=auto_begin)
 
     def compile_model(
         self,
         model_sql: str,
-        context: dict[str, t.GeneralValueType],
+        context: dict[str, t.ContainerValue],
     ) -> str:
         """Delegate to model compiler strategy."""
         return self.model_compiler.compile_model(model_sql, context)
@@ -706,17 +706,17 @@ class MockDbtRunner:
         super().__init__()
         self.project_dir = project_dir
         self.profiles_dir = profiles_dir
-        self.results: dict[str, t.GeneralValueType] = {}
+        self.results: dict[str, t.ContainerValue] = {}
 
     def run_models(
         self,
         models: list[str] | None = None,
-    ) -> dict[str, t.GeneralValueType]:
+    ) -> dict[str, t.ContainerValue]:
         """Run dbt models."""
-        results: list[dict[str, t.GeneralValueType]] = []
+        results: list[dict[str, t.ContainerValue]] = []
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
-            result: dict[str, t.GeneralValueType] = {
+            result: dict[str, t.ContainerValue] = {
                 "unique_id": f"model.test.{model}",
                 "status": "success",
                 "execution_time": 2.5,
@@ -728,13 +728,13 @@ class MockDbtRunner:
     def run_tests(
         self,
         models: list[str] | None = None,
-    ) -> dict[str, t.GeneralValueType]:
+    ) -> dict[str, t.ContainerValue]:
         """Run dbt tests."""
         _ = models  # Mark as used for future implementation
-        results: list[dict[str, t.GeneralValueType]] = []
+        results: list[dict[str, t.ContainerValue]] = []
         tests = ["test_unique_customer_id", "test_not_null_order_id"]
         for test in tests:
-            result: dict[str, t.GeneralValueType] = {
+            result: dict[str, t.ContainerValue] = {
                 "unique_id": f"test.test.{test}",
                 "status": "pass",
                 "execution_time": 1.2,
@@ -746,7 +746,7 @@ class MockDbtRunner:
     def compile(
         self,
         models: list[str] | None = None,
-    ) -> dict[str, t.GeneralValueType]:
+    ) -> dict[str, t.ContainerValue]:
         """Compile dbt models."""
         compiled = {}
         models = models or ["dim_customers", "fact_orders"]

@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Protocol
 
-type JsonScalar = str | int | float | bool | None
+type JsonScalar = t.JsonPrimitive | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
 
 

@@ -42,7 +42,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
 
             def __init__(
                 self,
-                config: Mapping[str, t.GeneralValueType] | None = None,
+                config: Mapping[str, t.ContainerValue] | None = None,
             ) -> None:
                 """Store optional generation-time configuration."""
                 super().__init__()
@@ -66,7 +66,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
     @classmethod
     def create_generator(
         cls,
-        config: Mapping[str, t.GeneralValueType] | None = None,
+        config: Mapping[str, t.ContainerValue] | None = None,
     ) -> FlextDbtOracleModels.DbtOracle.ModelGenerator:
         """Create generator instance with optional custom config."""
         return cls.DbtOracle.ModelGenerator(config=config)

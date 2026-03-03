@@ -6,7 +6,7 @@ from collections.abc import Mapping
 
 from flext_dbt_oracle.constants import c
 
-type JsonScalar = str | int | float | bool | None
+type JsonScalar = t.JsonPrimitive | None
 type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
 
 
