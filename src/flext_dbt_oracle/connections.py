@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from flext_dbt_oracle.constants import c
 from pydantic import BaseModel, Field
+
+from flext_dbt_oracle.constants import c
 
 
 class OracleConnectionConfig(BaseModel):

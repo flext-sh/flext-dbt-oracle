@@ -12,9 +12,10 @@ import tempfile
 from collections.abc import Generator
 
 import pytest
-from flext_dbt_oracle import t
 from flext_tests import FlextTestsDocker
 from pydantic import TypeAdapter, ValidationError
+
+from flext_dbt_oracle import t
 
 _GENERAL_DICT_ADAPTER = TypeAdapter(dict[str, t.GeneralValueType])
 

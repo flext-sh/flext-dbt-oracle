@@ -10,9 +10,10 @@ from __future__ import annotations
 from typing import Literal, cast
 
 import pytest
+from pydantic import SecretStr, ValidationError
+
 from flext_dbt_oracle import FlextDbtOracleSettings
 from flext_dbt_oracle.settings import OracleConnectionConfig
-from pydantic import SecretStr, ValidationError
 
 
 class TestFlextDbtOracleSettings:

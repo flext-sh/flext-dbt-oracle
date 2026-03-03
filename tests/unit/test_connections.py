@@ -8,11 +8,12 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from pydantic import ValidationError
+
 from flext_dbt_oracle.connections import (
     OracleConnectionConfig,
     build_oracle_connection_config,
 )
-from pydantic import ValidationError
 
 
 class TestOracleConnectionConfig:

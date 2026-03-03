@@ -5,9 +5,10 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Literal
 
-from flext_dbt_oracle.constants import c
 from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from flext_dbt_oracle.constants import c
 
 
 class OracleConnectionConfig(BaseModel):
