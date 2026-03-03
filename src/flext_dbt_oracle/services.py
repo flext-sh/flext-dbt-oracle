@@ -6,8 +6,8 @@ from collections.abc import Mapping
 
 from flext_dbt_oracle.constants import c
 
-type JsonScalar = t.JsonPrimitive | None
-type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
+
+type JsonValue = t.ScalarValue | dict[str, JsonValue] | list[JsonValue]
 
 
 class FlextDbtOracleServices:

@@ -8,8 +8,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from .constants import c
 
-type JsonScalar = t.JsonPrimitive | None
-type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
+
+type JsonValue = t.ScalarValue | dict[str, JsonValue] | list[JsonValue]
 
 
 class OracleTableAdapter(BaseModel):

@@ -5,8 +5,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Protocol
 
-type JsonScalar = t.JsonPrimitive | None
-type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
+
+type JsonValue = t.ScalarValue | dict[str, JsonValue] | list[JsonValue]
 
 
 class FlextDbtOracleClient:

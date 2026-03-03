@@ -7,8 +7,8 @@ from collections.abc import Mapping
 from flext_db_oracle import FlextDbOracleUtilities
 from flext_meltano import FlextMeltanoUtilities
 
-type JsonScalar = t.JsonPrimitive | None
-type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
+
+type JsonValue = t.ScalarValue | dict[str, JsonValue] | list[JsonValue]
 
 
 class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
