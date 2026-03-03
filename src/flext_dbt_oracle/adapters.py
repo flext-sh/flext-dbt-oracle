@@ -6,7 +6,7 @@ from collections.abc import Mapping
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .constants import c
+from flext_dbt_oracle import c, t
 
 
 class OracleTableAdapter(BaseModel):

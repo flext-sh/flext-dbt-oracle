@@ -5,6 +5,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Protocol
 
+from flext_core import t
+
 
 class FlextDbtOracleClient:
     """Typed facade for Oracle extraction and DBT pipeline execution."""
