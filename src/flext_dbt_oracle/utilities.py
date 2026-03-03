@@ -8,9 +8,6 @@ from flext_db_oracle import FlextDbOracleUtilities
 from flext_meltano import FlextMeltanoUtilities
 
 
-
-
-
 class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
     """Namespace for DBT Oracle utility helpers."""
 

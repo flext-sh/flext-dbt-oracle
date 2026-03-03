@@ -9,9 +9,6 @@ from pydantic import BaseModel, ConfigDict, Field
 from .constants import c
 
 
-
-
-
 class OracleTableAdapter(BaseModel):
     """Normalized Oracle table descriptor."""
 

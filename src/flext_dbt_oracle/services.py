@@ -7,9 +7,6 @@ from collections.abc import Mapping
 from flext_dbt_oracle.constants import c
 
 
-
-
-
 class FlextDbtOracleServices:
     """Utility service namespace for DBT Oracle workflows."""
 

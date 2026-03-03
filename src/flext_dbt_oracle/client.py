@@ -6,9 +6,6 @@ from collections.abc import Mapping
 from typing import Protocol
 
 
-
-
-
 class FlextDbtOracleClient:
     """Typed facade for Oracle extraction and DBT pipeline execution."""
 
