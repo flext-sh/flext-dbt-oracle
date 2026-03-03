@@ -9,7 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from .constants import c
 
 
-type JsonValue = t.ScalarValue | dict[str, JsonValue] | list[JsonValue]
+
 
 
 class OracleTableAdapter(BaseModel):
@@ -24,7 +24,7 @@ class OracleTableAdapter(BaseModel):
         """Build canonical schema.table relation name."""
         return f"{self.schema_name}.{self.table_name}"
 
-    def to_metadata(self) -> Mapping[str, JsonValue]:
+    def to_metadata(self) -> Mapping[str, t.JsonValue]:
         """Convert adapter fields into structured metadata."""
         return {
             "schema": self.schema_name,

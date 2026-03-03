@@ -6,7 +6,7 @@ from collections.abc import Mapping
 from typing import Protocol
 
 
-type JsonValue = t.ScalarValue | dict[str, JsonValue] | list[JsonValue]
+
 
 
 class FlextDbtOracleClient:
@@ -26,7 +26,7 @@ class FlextDbtOracleClient:
         super().__init__()
         self.config = config
 
-    def test_connection(self) -> Mapping[str, JsonValue]:
+    def test_connection(self) -> Mapping[str, t.JsonValue]:
         """Return a basic health payload for Oracle connectivity."""
         return {
             "status": "connected",
@@ -41,8 +41,8 @@ class FlextDbtOracleClient:
     def extract_table_data(
         self,
         table_name: str,
-        filters: Mapping[str, JsonValue] | None = None,
-    ) -> list[Mapping[str, JsonValue]]:
+        filters: Mapping[str, t.JsonValue] | None = None,
+    ) -> list[Mapping[str, t.JsonValue]]:
         """Return deterministic sample payload for a table."""
         _ = filters
         return [{"table": table_name, "id": 1, "status": "sample"}]
@@ -50,11 +50,11 @@ class FlextDbtOracleClient:
     def run_pipeline(
         self,
         tables: list[str] | None = None,
-        filters: Mapping[str, JsonValue] | None = None,
-    ) -> Mapping[str, JsonValue]:
+        filters: Mapping[str, t.JsonValue] | None = None,
+    ) -> Mapping[str, t.JsonValue]:
         """Run discover and extraction pipeline for selected tables."""
         selected_tables = tables or self.discover_tables()
-        selected_tables_json: list[JsonValue] = list(selected_tables)
+        selected_tables_json: list[t.JsonValue] = list(selected_tables)
         extracted = {
             table: self.extract_table_data(table, filters) for table in selected_tables
         }

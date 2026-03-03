@@ -8,7 +8,7 @@ from flext_db_oracle import FlextDbOracleUtilities
 from flext_meltano import FlextMeltanoUtilities
 
 
-type JsonValue = t.ScalarValue | dict[str, JsonValue] | list[JsonValue]
+
 
 
 class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
@@ -31,7 +31,7 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
         """Payload validation helpers."""
 
         @staticmethod
-        def validate_non_empty_rows(rows: list[Mapping[str, JsonValue]]) -> bool:
+        def validate_non_empty_rows(rows: list[Mapping[str, t.JsonValue]]) -> bool:
             """Return true when row list contains values."""
             return bool(rows)
 
