@@ -17,7 +17,7 @@ from pydantic import TypeAdapter, ValidationError
 
 from flext_dbt_oracle import t
 
-_GENERAL_DICT_ADAPTER = TypeAdapter(dict[str, t.ContainerValue])
+_GENERAL_DICT_ADAPTER = TypeAdapter(t.ConfigurationMapping)
 
 
 @pytest.fixture(scope="session")
