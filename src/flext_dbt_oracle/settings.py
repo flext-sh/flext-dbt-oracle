@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Literal
-
+from flext_core import FlextSettings
 from pydantic import BaseModel, Field, SecretStr, model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import SettingsConfigDict
 
 from flext_dbt_oracle.constants import c
 
@@ -23,7 +22,8 @@ class OracleConnectionConfig(BaseModel):
     protocol: str
 
 
-class FlextDbtOracleSettings(BaseSettings):
+@FlextSettings.auto_register("dbt_oracle")
+class FlextDbtOracleSettings(FlextSettings):
     """Validated configuration payload for Oracle and DBT operations."""
 
     model_config = SettingsConfigDict(
@@ -38,11 +38,9 @@ class FlextDbtOracleSettings(BaseSettings):
     oracle_service_name: str = c.Oracle.DEFAULT_SERVICE_NAME
     sid: str | None = None
     port: int = Field(default=c.Oracle.DEFAULT_PORT, ge=1)
-    protocol: Literal["tcp", "tcps"] = c.Oracle.DEFAULT_PROTOCOL
+    protocol: str = c.Oracle.DEFAULT_PROTOCOL
     schema_name: str = c.DbtOracle.DEFAULT_SCHEMA_NAME
-    materialization: Literal["table", "view", "incremental", "snapshot"] = (
-        c.Dbt.Materialization.TABLE
-    )
+    materialization: str = c.Dbt.Materialization.TABLE
 
     pool_min_size: int = Field(default=1, ge=1)
     pool_max_size: int = Field(default=10, ge=1)
@@ -51,14 +49,13 @@ class FlextDbtOracleSettings(BaseSettings):
     fetch_size: int = Field(default=1000, ge=1)
     connect_timeout: int = Field(default=30, ge=1)
     retry_attempts: int = Field(default=3, ge=0)
-    retry_delay: float = Field(default=1.0, ge=0.0)
+    retry_delay_seconds: float = Field(default=1.0, ge=0.0)
 
     ssl_server_dn_match: bool = False
     nls_lang: str = c.DbtOracle.NLS_LANG
     nls_date_format: str = c.DbtOracle.NLS_DATE_FORMAT
     search_path: str = ""
     enable_metrics: bool = True
-    log_level: str = "INFO"
     enable_sql_logging: bool = False
 
     dbt_project_dir: str = c.Dbt.DEFAULT_PROJECT_DIR
@@ -133,7 +130,7 @@ class FlextDbtOracleSettings(BaseSettings):
             "fetch_size": self.fetch_size,
             "connect_timeout": self.connect_timeout,
             "retry_attempts": self.retry_attempts,
-            "retry_delay": self.retry_delay,
+            "retry_delay": self.retry_delay_seconds,
         }
 
     def get_dbt_settings(self) -> Mapping[str, str]:
