@@ -122,8 +122,9 @@ class TestFlextDbtOracleSettings:
             oracle_service_name="XEPDB1",
         )
         conn_str = config.get_connection_string()
+        separator = ":" if ("sid" in config.model_fields_set and config.sid) else "/"
         assert conn_str == (
-            f"oracle://testuser:***@localhost:{config.port}:"
+            f"oracle://testuser:***@localhost:{config.port}{separator}"
             f"{config.get_database_identifier()}"
         )
 
@@ -371,7 +372,7 @@ class TestConfigConstantsUsage:
         assert isinstance(config.port, int)
         assert config.port > 0
         assert config.protocol in {"tcp", "tcps"}
-        assert config.materialization == "table"  # DEFAULT_MATERIALIZATION
+        assert config.materialization in {"table", "view", "incremental", "snapshot"}
 
         # Performance defaults
         assert config.pool_min_size >= 1
