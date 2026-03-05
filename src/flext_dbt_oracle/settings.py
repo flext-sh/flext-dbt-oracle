@@ -96,16 +96,6 @@ class FlextDbtOracleSettings(FlextSettings):
             raise ValueError(msg)
         return data
 
-    def get_database_identifier(self) -> str:
-        """Return SID when configured, otherwise service name."""
-        if "sid" in self.model_fields_set and self.sid:
-            return self.sid
-        return self.oracle_service_name
-
-    def get_effective_schema(self) -> str:
-        """Return effective schema used for DBT models."""
-        return self.schema_name
-
     def get_connection_string(self) -> str:
         """Build masked connection string for logs and diagnostics."""
         identifier = self.get_database_identifier()
@@ -114,6 +104,38 @@ class FlextDbtOracleSettings(FlextSettings):
             f"oracle://{self.oracle_username}:***@"
             f"{self.oracle_host}:{self.port}{separator}{identifier}"
         )
+
+    def get_database_identifier(self) -> str:
+        """Return SID when configured, otherwise service name."""
+        if "sid" in self.model_fields_set and self.sid:
+            return self.sid
+        return self.oracle_service_name
+
+    def get_dbt_settings(self) -> Mapping[str, str]:
+        """Return DBT-targeted configuration payload."""
+        return {
+            "database": self.get_database_identifier(),
+            "schema": self.get_effective_schema(),
+            "materialization": self.materialization,
+            "target": self.dbt_target,
+        }
+
+    def get_effective_schema(self) -> str:
+        """Return effective schema used for DBT models."""
+        return self.schema_name
+
+    def get_performance_settings(self) -> Mapping[str, int | float]:
+        """Return performance tuning parameters for execution engines."""
+        return {
+            "pool_min_size": self.pool_min_size,
+            "pool_max_size": self.pool_max_size,
+            "pool_increment": self.pool_increment,
+            "query_timeout": self.query_timeout,
+            "fetch_size": self.fetch_size,
+            "connect_timeout": self.connect_timeout,
+            "retry_attempts": self.retry_attempts,
+            "retry_delay": self.retry_delay_seconds,
+        }
 
     def to_connection_config(self) -> Mapping[str, str | int | None]:
         """Serialize connection values into primitive dictionary payload."""
@@ -138,28 +160,6 @@ class FlextDbtOracleSettings(FlextSettings):
             password=self.oracle_password.get_secret_value(),
             protocol=self.protocol,
         )
-
-    def get_performance_settings(self) -> Mapping[str, int | float]:
-        """Return performance tuning parameters for execution engines."""
-        return {
-            "pool_min_size": self.pool_min_size,
-            "pool_max_size": self.pool_max_size,
-            "pool_increment": self.pool_increment,
-            "query_timeout": self.query_timeout,
-            "fetch_size": self.fetch_size,
-            "connect_timeout": self.connect_timeout,
-            "retry_attempts": self.retry_attempts,
-            "retry_delay": self.retry_delay_seconds,
-        }
-
-    def get_dbt_settings(self) -> Mapping[str, str]:
-        """Return DBT-targeted configuration payload."""
-        return {
-            "database": self.get_database_identifier(),
-            "schema": self.get_effective_schema(),
-            "materialization": self.materialization,
-            "target": self.dbt_target,
-        }
 
 
 __all__ = ["FlextDbtOracleSettings"]

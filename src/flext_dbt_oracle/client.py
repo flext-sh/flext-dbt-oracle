@@ -25,14 +25,6 @@ class FlextDbtOracleClient:
         super().__init__()
         self.config = config
 
-    def test_connection(self) -> Mapping[str, t.JsonValue]:
-        """Return a basic health payload for Oracle connectivity."""
-        return {
-            "status": "connected",
-            "host": self.config.oracle_host,
-            "database": self.config.get_database_identifier(),
-        }
-
     def discover_tables(self) -> list[str]:
         """Return static table candidates for modeling flow."""
         return ["customers", "orders", "order_items"]
@@ -61,6 +53,14 @@ class FlextDbtOracleClient:
             "status": "completed",
             "tables": selected_tables_json,
             "record_count": sum(len(rows) for rows in extracted.values()),
+        }
+
+    def test_connection(self) -> Mapping[str, t.JsonValue]:
+        """Return a basic health payload for Oracle connectivity."""
+        return {
+            "status": "connected",
+            "host": self.config.oracle_host,
+            "database": self.config.get_database_identifier(),
         }
 
 

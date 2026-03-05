@@ -16,14 +16,14 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
         """SQL text generation helpers."""
 
         @staticmethod
-        def generate_source_query(schema_name: str, table_name: str) -> str:
-            """Generate source selection SQL text."""
-            return f"select * from {schema_name}.{table_name}"  # nosec B608
-
-        @staticmethod
         def generate_incremental_filter(column_name: str, days_back: int) -> str:
             """Generate incremental filter predicate."""
             return f"where {column_name} >= current_date - interval '{days_back}' day"
+
+        @staticmethod
+        def generate_source_query(schema_name: str, table_name: str) -> str:
+            """Generate source selection SQL text."""
+            return f"select * from {schema_name}.{table_name}"  # nosec B608
 
     class Validation:
         """Payload validation helpers."""
