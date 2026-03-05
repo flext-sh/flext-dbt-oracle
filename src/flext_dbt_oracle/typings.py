@@ -265,7 +265,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     # DBT ORACLE PROJECT TYPES - Domain-specific project types extending t
     # =========================================================================
 
-    class Project:
+    class Project(FlextDbOracleTypes.Project):
         """DBT Oracle-specific project types.
 
         Adds DBT Oracle transformation-specific project types.
@@ -274,7 +274,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         """
 
         # DBT Oracle-specific project types - PEP 695 syntax
-        type ProjectType = Literal[
+        type DbtOracleProjectType = Literal[
             # Generic types inherited from t
             "library",
             "application",

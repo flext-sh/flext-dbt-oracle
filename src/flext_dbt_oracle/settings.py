@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from typing import Literal
+
 from flext_core import FlextSettings
 from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
@@ -38,9 +40,9 @@ class FlextDbtOracleSettings(FlextSettings):
     oracle_service_name: str = c.Oracle.DEFAULT_SERVICE_NAME
     sid: str | None = None
     port: int = Field(default=c.Oracle.DEFAULT_PORT, ge=1)
-    protocol: str = c.Oracle.DEFAULT_PROTOCOL
+    protocol: Literal["tcp", "tcps"] = "tcp"
     schema_name: str = c.DbtOracle.DEFAULT_SCHEMA_NAME
-    materialization: str = c.Dbt.Materialization.TABLE
+    materialization: Literal["table", "view", "incremental", "snapshot"] = "table"
 
     pool_min_size: int = Field(default=1, ge=1)
     pool_max_size: int = Field(default=10, ge=1)
@@ -63,25 +65,42 @@ class FlextDbtOracleSettings(FlextSettings):
     dbt_target: str = c.Dbt.DEFAULT_TARGET
     dbt_threads: int = Field(default=c.Dbt.DEFAULT_THREADS, ge=1)
 
-    @model_validator(mode="after")
-    def validate_pool(self) -> FlextDbtOracleSettings:
-        """Ensure pool sizes remain in a valid range."""
-        if self.pool_max_size < self.pool_min_size:
+    @model_validator(mode="before")
+    @classmethod
+    def validate_pool_input(
+        cls,
+        data: dict[str, object],
+    ) -> dict[str, object]:
+        """Validate pool sizes from constructor payload."""
+        min_size_raw = data.get("pool_min_size", 1)
+        max_size_raw = data.get("pool_max_size", 10)
+        if (
+            isinstance(min_size_raw, int)
+            and isinstance(max_size_raw, int)
+            and max_size_raw < min_size_raw
+        ):
             msg = "Pool max size must be greater than or equal to pool min size"
             raise ValueError(msg)
-        return self
+        return data
 
-    @model_validator(mode="after")
-    def validate_network_protocol(self) -> FlextDbtOracleSettings:
-        """Validate supported Oracle network protocols."""
-        if self.protocol not in {"tcp", "tcps"}:
-            msg = "Invalid protocol"
+    @model_validator(mode="before")
+    @classmethod
+    def validate_required_input_fields(
+        cls,
+        data: dict[str, object],
+    ) -> dict[str, object]:
+        """Require required Oracle fields in constructor payload."""
+        required_fields = ("oracle_host", "oracle_username", "oracle_password")
+        if any(field not in data for field in required_fields):
+            msg = "Field required"
             raise ValueError(msg)
-        return self
+        return data
 
     def get_database_identifier(self) -> str:
         """Return SID when configured, otherwise service name."""
-        return self.sid or self.oracle_service_name
+        if "sid" in self.model_fields_set and self.sid:
+            return self.sid
+        return self.oracle_service_name
 
     def get_effective_schema(self) -> str:
         """Return effective schema used for DBT models."""
@@ -90,7 +109,7 @@ class FlextDbtOracleSettings(FlextSettings):
     def get_connection_string(self) -> str:
         """Build masked connection string for logs and diagnostics."""
         identifier = self.get_database_identifier()
-        separator = ":" if self.sid else "/"
+        separator = ":" if ("sid" in self.model_fields_set and self.sid) else "/"
         return (
             f"oracle://{self.oracle_username}:***@"
             f"{self.oracle_host}:{self.port}{separator}{identifier}"
