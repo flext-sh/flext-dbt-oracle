@@ -2,32 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
-
-from pydantic import BaseModel, ConfigDict, Field
-
-from flext_dbt_oracle import c, t
-
-
-class OracleTableAdapter(BaseModel):
-    """Normalized Oracle table descriptor."""
-
-    model_config = ConfigDict(extra="forbid")
-
-    schema_name: str = Field(description="Oracle schema name")
-    table_name: str = Field(description="Oracle table name")
-
-    def get_relation_name(self) -> str:
-        """Build canonical schema.table relation name."""
-        return f"{self.schema_name}.{self.table_name}"
-
-    def to_metadata(self) -> Mapping[str, t.JsonValue]:
-        """Convert adapter fields into structured metadata."""
-        return {
-            "schema": self.schema_name,
-            "table": self.table_name,
-            "relation": self.get_relation_name(),
-        }
+from flext_dbt_oracle import c
 
 
 class OracleTableFactory:

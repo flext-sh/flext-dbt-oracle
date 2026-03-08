@@ -2,31 +2,7 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-
 from flext_dbt_oracle.constants import c
-
-
-class OracleConnectionConfig(BaseModel):
-    """Structured Oracle connection parameters."""
-
-    host: str = c.Oracle.DEFAULT_HOST
-    port: int = Field(default=c.Oracle.DEFAULT_PORT, ge=1)
-    service_name: str = c.Oracle.DEFAULT_SERVICE_NAME
-    sid: str | None = None
-    username: str = ""
-    password: str = ""
-    protocol: str = c.Oracle.DEFAULT_PROTOCOL
-
-    def get_database_identifier(self) -> str:
-        """Return SID when present, otherwise service name."""
-        return self.sid or self.service_name
-
-    def get_dsn(self) -> str:
-        """Build a masked DSN string from runtime fields."""
-        identifier = self.get_database_identifier()
-        separator = ":" if self.sid else "/"
-        return f"{self.protocol}://{self.username}:***@{self.host}:{self.port}{separator}{identifier}"
 
 
 def build_oracle_connection_config(
