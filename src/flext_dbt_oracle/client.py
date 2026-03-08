@@ -30,9 +30,7 @@ class FlextDbtOracleClient:
         return ["customers", "orders", "order_items"]
 
     def extract_table_data(
-        self,
-        table_name: str,
-        filters: Mapping[str, t.JsonValue] | None = None,
+        self, table_name: str, filters: Mapping[str, t.JsonValue] | None = None
     ) -> list[Mapping[str, t.JsonValue]]:
         """Return deterministic sample payload for a table."""
         _ = filters

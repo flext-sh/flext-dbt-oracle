@@ -17,21 +17,13 @@ class FlextDbtOracleServices:
         recommendations: list[t.JsonValue] = []
         if table_count > c.DbtOracle.PERFORMANCE_RECOMMENDATION_THRESHOLD:
             recommendations.append(
-                "Process tables in batches and increase dbt threads gradually",
+                "Process tables in batches and increase dbt threads gradually"
             )
-        return {
-            "table_count": table_count,
-            "recommendations": recommendations,
-        }
+        return {"table_count": table_count, "recommendations": recommendations}
 
     def track_execution(self, workflow_name: str) -> Mapping[str, t.JsonValue]:
         """Build a minimal execution tracking payload."""
-        return {
-            "workflow": workflow_name,
-            "status": "running",
-        }
+        return {"workflow": workflow_name, "status": "running"}
 
 
-__all__ = [
-    "FlextDbtOracleServices",
-]
+__all__ = ["FlextDbtOracleServices"]

@@ -20,12 +20,7 @@ from flext_core import FlextTypes
 from flext_db_oracle import FlextDbOracleTypes
 from flext_meltano import FlextMeltanoTypes
 
-# =============================================================================
-# DBT ORACLE-SPECIFIC TYPE VARIABLES - Domain-specific TypeVars for DBT Oracle operations
-# =============================================================================
 
-
-# DBT Oracle domain TypeVars
 class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     """DBT Oracle-specific type definitions extending t.
 
@@ -34,10 +29,6 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     Uses Python 3.13+ type syntax and patterns.
     """
 
-    # =========================================================================
-    # DBT PROJECT TYPES - DBT project configuration types for Oracle
-    # =========================================================================
-
     class DbtOracle:
         """DBT Oracle project complex types.
 
@@ -45,27 +36,21 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         """
 
         type ProjectConfiguration = dict[
-            str,
-            FlextTypes.JsonValue | dict[str, FlextTypes.JsonValue],
+            str, FlextTypes.JsonValue | dict[str, FlextTypes.JsonValue]
         ]
-        """DBT project configuration type."""
+        "DBT project configuration type."
         type ModelConfiguration = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        """DBT model configuration type."""
+        "DBT model configuration type."
         type SourceConfiguration = dict[
-            str,
-            str | list[dict[str, FlextTypes.JsonValue]],
+            str, str | list[dict[str, FlextTypes.JsonValue]]
         ]
-        """DBT source configuration type."""
+        "DBT source configuration type."
         type ProfileConfiguration = dict[str, FlextTypes.JsonValue]
-        """DBT profile configuration type."""
+        "DBT profile configuration type."
         type MacroConfiguration = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        """DBT macro configuration type."""
+        "DBT macro configuration type."
         type TestConfiguration = dict[str, str | bool | list[str]]
-        """DBT test configuration type."""
-
-    # =========================================================================
-    # ORACLE CONNECTION TYPES - Oracle database connection configuration
-    # =========================================================================
+        "DBT test configuration type."
 
     class OracleConnection:
         """Oracle connection complex types.
@@ -74,33 +59,23 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         """
 
         type ConnectionConfig = dict[
-            str,
-            str | int | bool | dict[str, FlextTypes.ContainerValue],
+            str, str | int | bool | dict[str, FlextTypes.ContainerValue]
         ]
-        """Oracle connection configuration type."""
+        "Oracle connection configuration type."
         type DatabaseConnection = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        """Oracle database connection type."""
+        "Oracle database connection type."
         type PoolingConfig = dict[
-            str,
-            int | bool | dict[str, FlextTypes.ContainerValue],
+            str, int | bool | dict[str, FlextTypes.ContainerValue]
         ]
-        """Oracle pooling configuration type."""
+        "Oracle pooling configuration type."
         type SecurityConfig = dict[
-            str,
-            bool | str | dict[str, FlextTypes.ContainerValue],
+            str, bool | str | dict[str, FlextTypes.ContainerValue]
         ]
-        """Oracle security configuration type."""
-        type SessionConfig = dict[
-            str,
-            str | int | dict[str, FlextTypes.ContainerValue],
-        ]
-        """Oracle session configuration type."""
+        "Oracle security configuration type."
+        type SessionConfig = dict[str, str | int | dict[str, FlextTypes.ContainerValue]]
+        "Oracle session configuration type."
         type TimeoutConfig = dict[str, int | float]
-        """Oracle timeout configuration type."""
-
-    # =========================================================================
-    # ORACLE DATA TYPES - Oracle table and schema types
-    # =========================================================================
+        "Oracle timeout configuration type."
 
     class OracleData:
         """Oracle data complex types.
@@ -109,30 +84,23 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         """
 
         type OracleTable = dict[str, str | list[str] | dict[str, FlextTypes.JsonValue]]
-        """Oracle table type."""
+        "Oracle table type."
         type OracleSchema = dict[str, str | list[dict[str, FlextTypes.JsonValue]]]
-        """Oracle schema type."""
+        "Oracle schema type."
         type OracleColumn = dict[
-            str,
-            str | int | bool | dict[str, FlextTypes.ContainerValue],
+            str, str | int | bool | dict[str, FlextTypes.ContainerValue]
         ]
-        """Oracle column type."""
+        "Oracle column type."
         type OracleQuery = dict[
-            str,
-            str | list[str] | int | dict[str, FlextTypes.ContainerValue],
+            str, str | list[str] | int | dict[str, FlextTypes.ContainerValue]
         ]
-        """Oracle query type."""
+        "Oracle query type."
         type OracleIndex = dict[str, str | list[str] | dict[str, FlextTypes.JsonValue]]
-        """Oracle index type."""
+        "Oracle index type."
         type OracleConstraint = dict[
-            str,
-            str | bool | list[str] | dict[str, FlextTypes.ContainerValue],
+            str, str | bool | list[str] | dict[str, FlextTypes.ContainerValue]
         ]
-        """Oracle constraint type."""
-
-    # =========================================================================
-    # DBT TRANSFORMATION TYPES - Data transformation configuration for Oracle
-    # =========================================================================
+        "Oracle constraint type."
 
     class DbtTransformation:
         """DBT Oracle transformation complex types.
@@ -141,27 +109,21 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         """
 
         type TransformationConfig = dict[
-            str,
-            FlextTypes.JsonValue | dict[str, FlextTypes.ContainerValue],
+            str, FlextTypes.JsonValue | dict[str, FlextTypes.ContainerValue]
         ]
-        """DBT transformation configuration type."""
+        "DBT transformation configuration type."
         type SqlTransformation = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        """SQL transformation type."""
+        "SQL transformation type."
         type DataValidation = dict[
-            str,
-            bool | str | list[str] | dict[str, FlextTypes.ContainerValue],
+            str, bool | str | list[str] | dict[str, FlextTypes.ContainerValue]
         ]
-        """Data validation type."""
+        "Data validation type."
         type MaterializationConfig = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        """Materialization configuration type."""
+        "Materialization configuration type."
         type OutputFormat = dict[str, str | dict[str, FlextTypes.ContainerValue]]
-        """Output format type."""
+        "Output format type."
         type ProcessingStep = dict[str, str | int | dict[str, FlextTypes.JsonValue]]
-        """Processing step type."""
-
-    # =========================================================================
-    # DBT MODEL TYPES - DBT model definition and execution types for Oracle
-    # =========================================================================
+        "Processing step type."
 
     class DbtModel:
         """DBT Oracle model complex types.
@@ -170,33 +132,23 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         """
 
         type ModelDefinition = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        """DBT model definition type."""
+        "DBT model definition type."
         type ModelExecution = dict[
-            str,
-            str | bool | int | dict[str, FlextTypes.ContainerValue],
+            str, str | bool | int | dict[str, FlextTypes.ContainerValue]
         ]
-        """DBT model execution type."""
+        "DBT model execution type."
         type ModelDependency = dict[
-            str,
-            str | list[str] | dict[str, FlextTypes.ContainerValue],
+            str, str | list[str] | dict[str, FlextTypes.ContainerValue]
         ]
-        """DBT model dependency type."""
+        "DBT model dependency type."
         type ModelTest = dict[str, str | bool | dict[str, FlextTypes.JsonValue]]
-        """DBT model test type."""
-        type ModelDocumentation = dict[
-            str,
-            str | dict[str, FlextTypes.ContainerValue],
-        ]
-        """DBT model documentation type."""
+        "DBT model test type."
+        type ModelDocumentation = dict[str, str | dict[str, FlextTypes.ContainerValue]]
+        "DBT model documentation type."
         type ModelMaterialization = dict[
-            str,
-            str | dict[str, FlextTypes.ContainerValue],
+            str, str | dict[str, FlextTypes.ContainerValue]
         ]
-        """DBT model materialization type."""
-
-    # =========================================================================
-    # DBT SOURCE TYPES - DBT source configuration types for Oracle
-    # =========================================================================
+        "DBT model materialization type."
 
     class DbtSource:
         """DBT Oracle source complex types.
@@ -205,27 +157,21 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         """
 
         type SourceDefinition = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        """DBT source definition type."""
+        "DBT source definition type."
         type SourceConnection = dict[
-            str,
-            FlextTypes.ContainerValue | dict[str, FlextTypes.ContainerValue],
+            str, FlextTypes.ContainerValue | dict[str, FlextTypes.ContainerValue]
         ]
-        """DBT source connection type."""
+        "DBT source connection type."
         type SourceTable = dict[str, str | list[dict[str, FlextTypes.JsonValue]]]
-        """DBT source table type."""
+        "DBT source table type."
         type SourceFreshness = dict[
-            str,
-            str | int | dict[str, FlextTypes.ContainerValue],
+            str, str | int | dict[str, FlextTypes.ContainerValue]
         ]
-        """DBT source freshness type."""
+        "DBT source freshness type."
         type SourceTest = dict[str, str | bool | list[str]]
-        """DBT source test type."""
+        "DBT source test type."
         type SourceSchema = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        """DBT source schema type."""
-
-    # =========================================================================
-    # ORACLE ADAPTER TYPES - Oracle-specific adapter configuration
-    # =========================================================================
+        "DBT source schema type."
 
     class OracleAdapter:
         """Oracle adapter complex types.
@@ -234,36 +180,25 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         """
 
         type AdapterConfiguration = dict[
-            str,
-            FlextTypes.ContainerValue | dict[str, FlextTypes.ContainerValue],
+            str, FlextTypes.ContainerValue | dict[str, FlextTypes.ContainerValue]
         ]
-        """Oracle adapter configuration type."""
+        "Oracle adapter configuration type."
         type ConnectionAdapter = dict[
-            str,
-            str | int | bool | dict[str, FlextTypes.ContainerValue],
+            str, str | int | bool | dict[str, FlextTypes.ContainerValue]
         ]
-        """Oracle connection adapter type."""
+        "Oracle connection adapter type."
         type QueryAdapter = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        """Oracle query adapter type."""
+        "Oracle query adapter type."
         type SchemaAdapter = dict[
-            str,
-            str | list[str] | dict[str, FlextTypes.ContainerValue],
+            str, str | list[str] | dict[str, FlextTypes.ContainerValue]
         ]
-        """Oracle schema adapter type."""
+        "Oracle schema adapter type."
         type TransactionAdapter = dict[
-            str,
-            bool | str | dict[str, FlextTypes.JsonValue],
+            str, bool | str | dict[str, FlextTypes.JsonValue]
         ]
-        """Oracle transaction adapter type."""
-        type CursorAdapter = dict[
-            str,
-            str | int | dict[str, FlextTypes.ContainerValue],
-        ]
-        """Oracle cursor adapter type."""
-
-    # =========================================================================
-    # DBT ORACLE PROJECT TYPES - Domain-specific project types extending t
-    # =========================================================================
+        "Oracle transaction adapter type."
+        type CursorAdapter = dict[str, str | int | dict[str, FlextTypes.ContainerValue]]
+        "Oracle cursor adapter type."
 
     class Project(FlextDbOracleTypes.Project):
         """DBT Oracle-specific project types.
@@ -273,13 +208,10 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         DBT Oracle domain owns Oracle data transformation-specific types.
         """
 
-        # DBT Oracle-specific project types - PEP 695 syntax
         type DbtOracleProjectType = Literal[
-            # Generic types inherited from t
             "library",
             "application",
             "service",
-            # DBT Oracle-specific types
             "dbt-oracle",
             "oracle-transform",
             "oracle-analytics",
@@ -297,33 +229,18 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
             "oracle-integration",
             "oracle-bi",
         ]
-        """DBT Oracle project type literal."""
-
-        # DBT Oracle-specific project configurations
+        "DBT Oracle project type literal."
         type DbtOracleProjectConfig = dict[str, FlextTypes.ContainerValue]
-        """DBT Oracle project configuration type."""
+        "DBT Oracle project configuration type."
         type OracleTransformConfig = dict[str, str | int | bool | list[str]]
-        """Oracle transformation configuration type."""
+        "Oracle transformation configuration type."
         type OracleAnalyticsConfig = dict[
-            str,
-            bool | str | dict[str, FlextTypes.ContainerValue],
+            str, bool | str | dict[str, FlextTypes.ContainerValue]
         ]
-        """Oracle analytics configuration type."""
+        "Oracle analytics configuration type."
         type DbtOraclePipelineConfig = dict[str, FlextTypes.ContainerValue]
-        """DBT Oracle pipeline configuration type."""
+        "DBT Oracle pipeline configuration type."
 
 
-# Alias for simplified usage
 t = FlextDbtOracleTypes
-
-# Namespace composition via class inheritance
-# DbtOracle namespace provides access to nested classes through inheritance
-# Access patterns:
-# - t.DbtOracle.* for DBT Oracle-specific types
-# - t.Project.* for project types
-# - t.Core.* for core types (inherited from parent)
-
-__all__ = [
-    "FlextDbtOracleTypes",
-    "t",
-]
+__all__ = ["FlextDbtOracleTypes", "t"]

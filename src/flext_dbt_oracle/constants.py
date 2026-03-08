@@ -56,5 +56,4 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
 
 
 c = FlextDbtOracleConstants
-
 __all__ = ["FlextDbtOracleConstants", "c"]

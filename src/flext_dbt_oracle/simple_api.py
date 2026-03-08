@@ -36,8 +36,7 @@ class FlextDbtOracle:
         return cls()
 
     def run_oracle_to_dbt_workflow(
-        self,
-        tables: list[str] | None = None,
+        self, tables: list[str] | None = None
     ) -> Mapping[str, t.JsonValue]:
         """Run extraction flow and return recommendations."""
         result = self.client.run_pipeline(tables=tables)
@@ -47,7 +46,7 @@ class FlextDbtOracle:
         except ValidationError:
             table_count = 0
         recommendations = self.workflow_service.generate_recommendations(
-            table_count=table_count,
+            table_count=table_count
         )
         result_dict: dict[str, t.JsonValue] = {
             "pipeline": result,

@@ -110,7 +110,7 @@ class TestFlextDbtOracleSettings:
                 oracle_password=SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
                 pool_min_size=10,
-                pool_max_size=5,  # smaller than min
+                pool_max_size=5,
             )
 
     def test_get_connection_string(self) -> None:
@@ -122,10 +122,10 @@ class TestFlextDbtOracleSettings:
             oracle_service_name="XEPDB1",
         )
         conn_str = config.get_connection_string()
-        separator = ":" if ("sid" in config.model_fields_set and config.sid) else "/"
-        assert conn_str == (
-            f"oracle://testuser:***@localhost:{config.port}{separator}"
-            f"{config.get_database_identifier()}"
+        separator = ":" if "sid" in config.model_fields_set and config.sid else "/"
+        assert (
+            conn_str
+            == f"oracle://testuser:***@localhost:{config.port}{separator}{config.get_database_identifier()}"
         )
 
     def test_get_connection_string_with_sid(self) -> None:
@@ -159,7 +159,6 @@ class TestFlextDbtOracleSettings:
             oracle_service_name="XEPDB1",
         )
         assert config.get_database_identifier() in {"XEPDB1", "XE"}
-
         config_with_sid = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
@@ -177,7 +176,6 @@ class TestFlextDbtOracleSettings:
             oracle_service_name="XEPDB1",
         )
         conn_config = config.to_connection_config()
-
         expected_keys = {
             "host",
             "port",
@@ -203,7 +201,6 @@ class TestFlextDbtOracleSettings:
             pool_max_size=10,
         )
         oracle_config = config.to_oracle_config()
-
         assert isinstance(oracle_config, OracleConnectionConfig)
         assert oracle_config.host == "localhost"
         assert oracle_config.username == "testuser"
@@ -221,7 +218,6 @@ class TestFlextDbtOracleSettings:
             query_timeout=300,
         )
         perf_settings = config.get_performance_settings()
-
         expected_keys = {
             "pool_min_size",
             "pool_max_size",
@@ -247,7 +243,6 @@ class TestFlextDbtOracleSettings:
             materialization="table",
         )
         dbt_settings = config.get_dbt_settings()
-
         assert "database" in dbt_settings
         assert "schema" in dbt_settings
         assert "materialization" in dbt_settings
@@ -299,12 +294,10 @@ class TestConfigEdgeCases:
             oracle_username="testuser",
             oracle_password=SecretStr("testpass"),
         )
-        # Should use default service name from constants
         assert config.oracle_service_name is not None
 
     def test_config_field_validation_ranges(self) -> None:
         """Test field validation for numeric ranges."""
-        # Test valid ranges
         config = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
@@ -326,12 +319,7 @@ class TestConfigEdgeCases:
         """Test all valid materialization types."""
         valid_materializations: list[
             Literal["table", "view", "incremental", "snapshot"]
-        ] = [
-            "table",
-            "view",
-            "incremental",
-            "snapshot",
-        ]
+        ] = ["table", "view", "incremental", "snapshot"]
         for materialization in valid_materializations:
             config = FlextDbtOracleSettings(
                 oracle_host="localhost",
@@ -367,14 +355,10 @@ class TestConfigConstantsUsage:
             oracle_password=SecretStr("testpass"),
             oracle_service_name="XEPDB1",
         )
-
-        # Test that defaults come from constants
         assert isinstance(config.port, int)
         assert config.port > 0
         assert config.protocol in {"tcp", "tcps"}
         assert config.materialization in {"table", "view", "incremental", "snapshot"}
-
-        # Performance defaults
         assert config.pool_min_size >= 1
         assert config.pool_max_size >= config.pool_min_size
         assert config.query_timeout > 0

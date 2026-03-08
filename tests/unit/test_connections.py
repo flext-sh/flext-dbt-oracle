@@ -81,9 +81,7 @@ class TestBuildOracleConnectionConfig:
 
     def test_basic_build(self) -> None:
         config = build_oracle_connection_config(
-            host="localhost",
-            username="testuser",
-            password="testpass",
+            host="localhost", username="testuser", password="testpass"
         )
         assert isinstance(config, OracleConnectionConfig)
         assert config.host == "localhost"
@@ -92,19 +90,13 @@ class TestBuildOracleConnectionConfig:
 
     def test_build_with_sid(self) -> None:
         config = build_oracle_connection_config(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            sid="XE",
+            host="localhost", username="testuser", password="testpass", sid="XE"
         )
         assert config.sid == "XE"
         assert config.get_database_identifier() == "XE"
 
     def test_build_with_custom_port(self) -> None:
         config = build_oracle_connection_config(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            port=1522,
+            host="localhost", username="testuser", password="testpass", port=1522
         )
         assert config.port == 1522
