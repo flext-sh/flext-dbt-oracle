@@ -410,10 +410,11 @@ class MockModelCompiler:
         """Compile dbt model SQL."""
         compiled = model_sql
         vars_value = context.get("vars", {})
+        vars_dict: t.ConfigurationMapping
         try:
             vars_dict = _GENERAL_DICT_ADAPTER.validate_python(vars_value)
         except ValidationError:
-            vars_dict: t.ConfigurationMapping = {}
+            vars_dict = {}
         for var, value in vars_dict.items():
             compiled = compiled.replace(f"{{{{ var('{var}') }}}}", str(value))
         return compiled
