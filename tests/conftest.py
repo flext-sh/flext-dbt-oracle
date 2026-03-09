@@ -499,7 +499,7 @@ class MockDbtRunner:
         super().__init__()
         self.project_dir = project_dir
         self.profiles_dir = profiles_dir
-        _ = self.results: dict[str, t.ContainerValue] = {}
+        self.results: dict[str, t.ContainerValue] = {}
 
     def run_models(
         self, models: list[str] | None = None
