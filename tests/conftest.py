@@ -413,7 +413,7 @@ class MockModelCompiler:
         try:
             vars_dict = _GENERAL_DICT_ADAPTER.validate_python(vars_value)
         except ValidationError:
-            vars_dict = {}
+            vars_dict: t.ConfigurationMapping = {}
         for var, value in vars_dict.items():
             compiled = compiled.replace(f"{{{{ var('{var}') }}}}", str(value))
         return compiled
