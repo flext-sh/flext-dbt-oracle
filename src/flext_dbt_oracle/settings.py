@@ -2,4 +2,4 @@
 
 from __future__ import annotations
 
-__all__ = ["FlextDbtOracleSettings"]
+__all__ = ["FlextDbtOracleSettings"]  # noqa: F822

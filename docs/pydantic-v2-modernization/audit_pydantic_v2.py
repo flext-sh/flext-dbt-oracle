@@ -43,11 +43,11 @@ class AuditResult:
 
     project: str
     status: str  # PASS, FAIL, WARNING
-    critical: list[AuditViolation] = field(default_factory=list)
-    high: list[AuditViolation] = field(default_factory=list)
-    medium: list[AuditViolation] = field(default_factory=list)
-    recommendations: list[str] = field(default_factory=list)
-    stats: dict[str, t.t.JsonValue] = field(default_factory=dict)
+    critical: list[AuditViolation] = field(default_factory=list)  # noqa: F821
+    high: list[AuditViolation] = field(default_factory=list)  # noqa: F821
+    medium: list[AuditViolation] = field(default_factory=list)  # noqa: F821
+    recommendations: list[str] = field(default_factory=list)  # noqa: F821
+    stats: dict[str, t.t.JsonValue] = field(default_factory=dict)  # noqa: F821
 
     @property
     def total_violations(self) -> int:

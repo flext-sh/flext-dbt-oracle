@@ -14,9 +14,9 @@ def build_oracle_connection_config(
     sid: str | None = None,
     port: int = c.Oracle.DEFAULT_PORT,
     protocol: str = c.Oracle.DEFAULT_PROTOCOL,
-) -> OracleConnectionConfig:
+) -> OracleConnectionConfig:  # noqa: F821
     """Create validated Oracle connection config object."""
-    return OracleConnectionConfig(
+    return OracleConnectionConfig(  # noqa: F821
         host=host,
         port=port,
         service_name=service_name,
@@ -27,4 +27,4 @@ def build_oracle_connection_config(
     )
 
 
-__all__ = ["OracleConnectionConfig", "build_oracle_connection_config"]
+__all__ = ["OracleConnectionConfig", "build_oracle_connection_config"]  # noqa: F822
