@@ -1,0 +1,27 @@
+src/flext_dbt_oracle/adapters.py
+  3cb488a5ecba4323 5-6,10-14,21,23,29
+src/flext_dbt_oracle/settings.py
+  3cb488a5ecba4323 5-23
+src/flext_dbt_oracle/connections.py
+  3cb488a5ecba4323 5-6,10-19,39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.10",
+  "base_commit_sha": "2d7a4cb2e909d7ac99a96d45d0b6b449ff936179",
+  "prompts": {
+    "3cb488a5ecba4323": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_327384379ffeu3hhA34Ch64Dzc",
+        "model": "anthropic/claude-haiku-4-5"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>",
+      "messages": [],
+      "total_additions": 53,
+      "total_deletions": 11,
+      "accepted_lines": 46,
+      "overriden_lines": 0
+    }
+  }
+}
