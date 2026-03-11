@@ -13,6 +13,18 @@ class OracleTableAdapter(BaseModel):
     schema_name: str = Field(description="Oracle schema name")
     table_name: str = Field(description="Oracle table name")
 
+    def get_relation_name(self) -> str:
+        """Return fully qualified relation name as schema.table."""
+        return f"{self.schema_name}.{self.table_name}"
+
+    def to_metadata(self) -> dict[str, str]:
+        """Return metadata dict with schema, table, and relation."""
+        return {
+            "schema": self.schema_name,
+            "table": self.table_name,
+            "relation": self.get_relation_name(),
+        }
+
 
 class OracleTableFactory:
     """Factory for creating Oracle table adapters."""
