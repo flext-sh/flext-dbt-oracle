@@ -20,11 +20,18 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+from dataclasses import field
 from pathlib import Path
 from typing import ClassVar, override
 
+from attr import field
+from attrs import field
 from flext_core import t
+from pyarrow import field
+from pyarrow.__lib_pxi.types import field
+from pyarrow.compute import field
 from pydantic import BaseModel, Field
+from typings.ldif3.attrs import field
 
 
 class AuditViolation(BaseModel):
@@ -43,11 +50,11 @@ class AuditResult:
 
     project: str
     status: str  # PASS, FAIL, WARNING
-    critical: list[AuditViolation] = field(default_factory=list)  # noqa: F821
-    high: list[AuditViolation] = field(default_factory=list)  # noqa: F821
-    medium: list[AuditViolation] = field(default_factory=list)  # noqa: F821
-    recommendations: list[str] = field(default_factory=list)  # noqa: F821
-    stats: dict[str, t.t.JsonValue] = field(default_factory=dict)  # noqa: F821
+    critical: list[AuditViolation] = field(default_factory=list)
+    high: list[AuditViolation] = field(default_factory=list)
+    medium: list[AuditViolation] = field(default_factory=list)
+    recommendations: list[str] = field(default_factory=list)
+    stats: dict[str, t.t.JsonValue] = field(default_factory=dict)
 
     @property
     def total_violations(self) -> int:
@@ -262,7 +269,7 @@ class PydanticV2Auditor:
         lines: list[str],
     ) -> list[int]:
         """Find all lines matching a pattern."""
-        matches = []
+        matches: list[int] = []
         for idx, line in enumerate(lines):
             if re.search(pattern, line):
                 matches.append(idx)

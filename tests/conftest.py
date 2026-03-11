@@ -535,7 +535,7 @@ class MockDbtRunner:
 
     def compile(self, models: list[str] | None = None) -> dict[str, t.ContainerValue]:
         """Compile dbt models."""
-        compiled = {}
+        compiled: dict[str, str] = {}
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
             compiled[model] = f"SELECT * FROM compiled_{model}"
