@@ -24,14 +24,8 @@ from dataclasses import field
 from pathlib import Path
 from typing import ClassVar, override
 
-from attr import field
-from attrs import field
 from flext_core import t
-from pyarrow import field
-from pyarrow.__lib_pxi.types import field
-from pyarrow.compute import field
 from pydantic import BaseModel, Field
-from typings.ldif3.attrs import field
 
 
 class AuditViolation(BaseModel):
@@ -54,7 +48,7 @@ class AuditResult:
     high: list[AuditViolation] = field(default_factory=list)
     medium: list[AuditViolation] = field(default_factory=list)
     recommendations: list[str] = field(default_factory=list)
-    stats: dict[str, t.t.JsonValue] = field(default_factory=dict)
+    stats: dict[str, t.JsonValue] = field(default_factory=dict)
 
     @property
     def total_violations(self) -> int:
