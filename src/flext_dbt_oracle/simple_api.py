@@ -13,7 +13,7 @@ from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.services import FlextDbtOracleServices
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
 
-_TABLE_LIST_ADAPTER = TypeAdapter(list[t.ContainerValue])
+_TABLE_LIST_ADAPTER = TypeAdapter(list[object])
 
 
 class FlextDbtOracle:

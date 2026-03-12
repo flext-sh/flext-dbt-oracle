@@ -10,7 +10,6 @@ from flext_meltano import FlextMeltanoModels
 from pydantic import Field
 
 from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.typings import t
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
@@ -42,7 +41,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
 
             def __init__(
                 self,
-                config: Mapping[str, t.ContainerValue] | None = None,
+                config: Mapping[str, object] | None = None,
             ) -> None:
                 """Store optional generation-time configuration."""
                 super().__init__()
@@ -66,7 +65,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
     @classmethod
     def create_generator(
         cls,
-        config: Mapping[str, t.ContainerValue] | None = None,
+        config: Mapping[str, object] | None = None,
     ) -> FlextDbtOracleModels.DbtOracle.ModelGenerator:
         """Create generator instance with optional custom config."""
         return cls.DbtOracle.ModelGenerator(config=config)

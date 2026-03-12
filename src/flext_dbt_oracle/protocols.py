@@ -49,7 +49,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
         """DBT Oracle domain protocols for Oracle database transformation and analytics."""
 
         @runtime_checkable
-        class DbtProtocol(FlextDbOracleProtocols.Service[t.ContainerValue], Protocol):
+        class DbtProtocol(FlextDbOracleProtocols.Service[object], Protocol):
             """Protocol for DBT operations with Oracle data."""
 
             def compile_dbt_models(
