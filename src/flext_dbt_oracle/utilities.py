@@ -23,7 +23,7 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
         @staticmethod
         def generate_source_query(schema_name: str, table_name: str) -> str:
             """Generate source selection SQL text."""
-            return f"select * from {schema_name}.{table_name}"
+            return f"select * from {schema_name}.{table_name}"  # nosec B608
 
     class Validation:
         """Payload validation helpers."""

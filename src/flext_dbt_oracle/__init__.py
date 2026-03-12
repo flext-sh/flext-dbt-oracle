@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+from importlib import import_module
 from typing import TYPE_CHECKING, Any
 
-from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
+from flext_core.lazy import cleanup_submodule_namespace
 
 if TYPE_CHECKING:
     from flext_dbt_oracle.__version__ import __version__, __version_info__
@@ -19,7 +20,11 @@ if TYPE_CHECKING:
         FlextDbtOracleProtocols,
         FlextDbtOracleProtocols as p,
     )
-    from flext_dbt_oracle.settings import FlextDbtOracleSettings
+    from flext_dbt_oracle.settings import (
+        FlextDbtOracleSettings,
+        OracleConnectionConfig,
+        build_oracle_connection_config,
+    )
     from flext_dbt_oracle.simple_api import FlextDbtOracle
     from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
     from flext_dbt_oracle.utilities import (
@@ -41,6 +46,11 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "FlextDbtOracleProtocols",
     ),
     "FlextDbtOracleSettings": ("flext_dbt_oracle.settings", "FlextDbtOracleSettings"),
+    "OracleConnectionConfig": ("flext_dbt_oracle.settings", "OracleConnectionConfig"),
+    "build_oracle_connection_config": (
+        "flext_dbt_oracle.settings",
+        "build_oracle_connection_config",
+    ),
     "FlextDbtOracleTypes": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
     "FlextDbtOracleUtilities": (
         "flext_dbt_oracle.utilities",
@@ -66,10 +76,12 @@ __all__ = [
     "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
+    "OracleConnectionConfig",
     "OracleTableAdapter",
     "OracleTableFactory",
     "__version__",
     "__version_info__",
+    "build_oracle_connection_config",
     "c",
     "m",
     "p",
@@ -82,7 +94,14 @@ def __getattr__(
     name: str,
 ) -> Any:  # JUSTIFIED: Ruff (any-type) with PEP 562 dynamic module exports — https://docs.astral.sh/ruff/rules/any-type/
     """Lazy-load module attributes on first access (PEP 562)."""
-    return lazy_getattr(name, _LAZY_IMPORTS, globals(), __name__)
+    if name not in _LAZY_IMPORTS:
+        msg = f"module '{__name__}' has no attribute '{name}'"
+        raise AttributeError(msg)
+    module_path, attr_name = _LAZY_IMPORTS[name]
+    module = import_module(module_path)
+    value: Any = module.__dict__[attr_name]
+    globals()[name] = value
+    return value
 
 
 def __dir__() -> list[str]:

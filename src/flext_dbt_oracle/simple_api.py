@@ -6,7 +6,7 @@ from collections.abc import Mapping
 from os import getenv
 
 from flext_core import t
-from pydantic import TypeAdapter, ValidationError
+from pydantic import SecretStr, TypeAdapter, ValidationError
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.constants import c
@@ -25,7 +25,7 @@ class FlextDbtOracle:
         self.config = config or FlextDbtOracleSettings(
             oracle_host=c.Oracle.DEFAULT_HOST,
             oracle_username="user",
-            oracle_password=getenv("FLEXT_DBT_ORACLE_PASSWORD", ""),
+            oracle_password=SecretStr(getenv("FLEXT_DBT_ORACLE_PASSWORD", "")),
         )
         self.client = FlextDbtOracleClient(self.config)
         self.workflow_service = FlextDbtOracleServices()

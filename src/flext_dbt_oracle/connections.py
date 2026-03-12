@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, SecretStr
+from pydantic import BaseModel, Field, SecretStr, field_validator
 
 from flext_dbt_oracle.constants import c
 
@@ -10,13 +10,46 @@ from flext_dbt_oracle.constants import c
 class OracleConnectionConfig(BaseModel):
     """Configuration for Oracle database connections."""
 
-    host: str = Field(description="Oracle database host")
-    port: int = Field(description="Oracle database port")
-    username: str = Field(description="Oracle database username")
-    password: SecretStr = Field(description="Oracle database password")
-    service_name: str = Field(description="Oracle service name")
+    host: str = Field(default=c.Oracle.DEFAULT_HOST, description="Oracle database host")
+    port: int = Field(
+        default=c.Oracle.DEFAULT_PORT, ge=1, description="Oracle database port"
+    )
+    username: str = Field(default="", description="Oracle database username")
+    password: str | SecretStr = Field(
+        default=SecretStr(""), description="Oracle database password"
+    )
+    service_name: str = Field(
+        default=c.Oracle.DEFAULT_SERVICE_NAME, description="Oracle service name"
+    )
     sid: str | None = Field(default=None, description="Oracle SID (optional)")
-    protocol: str = Field(description="Oracle connection protocol")
+    protocol: str = Field(
+        default=c.Oracle.DEFAULT_PROTOCOL, description="Oracle connection protocol"
+    )
+
+    @field_validator("password", mode="before")
+    @classmethod
+    def validate_password(cls, v: str | SecretStr) -> SecretStr:
+        """Convert string passwords to SecretStr."""
+        if isinstance(v, str):
+            return SecretStr(v)
+        return v
+
+    def get_database_identifier(self) -> str:
+        """Return the database identifier (SID if set, otherwise service_name)."""
+        if self.sid:
+            return self.sid
+        return self.service_name
+
+    def get_dsn(self) -> str:
+        """Return the connection string in DSN format.
+
+        Format:
+        - With service_name: "tcp://username:***@host:port/service_name"
+        - With sid: "tcp://username:***@host:port:sid"
+        """
+        if self.sid:
+            return f"{self.protocol}://{self.username}:***@{self.host}:{self.port}:{self.sid}"
+        return f"{self.protocol}://{self.username}:***@{self.host}:{self.port}/{self.service_name}"
 
 
 def build_oracle_connection_config(
