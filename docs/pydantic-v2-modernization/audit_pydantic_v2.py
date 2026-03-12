@@ -20,7 +20,6 @@ from __future__ import annotations
 import argparse
 import re
 import sys
-from dataclasses import field
 from pathlib import Path
 from typing import ClassVar, override
 
@@ -39,16 +38,26 @@ class AuditViolation(BaseModel):
     detail: str = Field(description="Detailed explanation")
 
 
-class AuditResult:
+class AuditResult(BaseModel):
     """Results of auditing a project."""
 
-    project: str
-    status: str  # PASS, FAIL, WARNING
-    critical: list[AuditViolation] = field(default_factory=list)
-    high: list[AuditViolation] = field(default_factory=list)
-    medium: list[AuditViolation] = field(default_factory=list)
-    recommendations: list[str] = field(default_factory=list)
-    stats: dict[str, t.Container] = field(default_factory=dict)
+    project: str = Field(description="Project name being audited")
+    status: str = Field(description="Audit status: PASS, FAIL, WARNING")
+    critical: list[AuditViolation] = Field(
+        default_factory=list, description="Critical violations"
+    )
+    high: list[AuditViolation] = Field(
+        default_factory=list, description="High severity violations"
+    )
+    medium: list[AuditViolation] = Field(
+        default_factory=list, description="Medium severity violations"
+    )
+    recommendations: list[str] = Field(
+        default_factory=list, description="Improvement recommendations"
+    )
+    stats: dict[str, t.Container] = Field(
+        default_factory=dict, description="Audit statistics"
+    )
 
     @property
     def total_violations(self) -> int:
