@@ -17,7 +17,7 @@ from pydantic import TypeAdapter, ValidationError
 
 from flext_dbt_oracle import t
 
-_GENERAL_DICT_ADAPTER = TypeAdapter(t.ConfigurationMapping)
+_GENERAL_DICT_ADAPTER = TypeAdapter(object)
 
 
 @pytest.fixture(scope="session")
@@ -406,7 +406,7 @@ class MockModelCompiler:
         """Compile dbt model SQL."""
         compiled = model_sql
         vars_value = context.get("vars", {})
-        vars_dict: t.ConfigurationMapping
+        vars_dict: object
         try:
             vars_dict = _GENERAL_DICT_ADAPTER.validate_python(vars_value)
         except ValidationError:

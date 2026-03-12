@@ -29,7 +29,7 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
         """Payload validation helpers."""
 
         @staticmethod
-        def validate_non_empty_rows(rows: list[Mapping[str, t.JsonValue]]) -> bool:
+        def validate_non_empty_rows(rows: list[Mapping[str, object> bool:
             """Return true when row list contains values."""
             return bool(rows)
 

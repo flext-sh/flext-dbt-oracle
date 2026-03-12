@@ -30,8 +30,8 @@ class FlextDbtOracleClient:
         return ["customers", "orders", "order_items"]
 
     def extract_table_data(
-        self, table_name: str, filters: Mapping[str, t.JsonValue] | None = None
-    ) -> list[Mapping[str, t.JsonValue]]:
+        self, table_name: str, filters: Mapping[str, objectone = None
+    ) -> list[Mapping[str, object
         """Return deterministic sample payload for a table."""
         _ = filters
         return [{"table": table_name, "id": 1, "status": "sample"}]
@@ -39,11 +39,11 @@ class FlextDbtOracleClient:
     def run_pipeline(
         self,
         tables: list[str] | None = None,
-        filters: Mapping[str, t.JsonValue] | None = None,
-    ) -> Mapping[str, t.JsonValue]:
+        filters: Mapping[str, objectone = None,
+    ) -> Mapping[str, object
         """Run discover and extraction pipeline for selected tables."""
         selected_tables = tables or self.discover_tables()
-        selected_tables_json: list[t.JsonValue] = list(selected_tables)
+        selected_tables_json: list[objectist(selected_tables)
         extracted = {
             table: self.extract_table_data(table, filters) for table in selected_tables
         }
@@ -53,7 +53,7 @@ class FlextDbtOracleClient:
             "record_count": sum(len(rows) for rows in extracted.values()),
         }
 
-    def test_connection(self) -> Mapping[str, t.JsonValue]:
+    def test_connection(self) -> Mapping[str, object
         """Return a basic health payload for Oracle connectivity."""
         return {
             "status": "connected",
