@@ -11,7 +11,7 @@ from flext_core import t
 class FlextDbtOracleClient:
     """Typed facade for Oracle extraction and DBT pipeline execution."""
 
-    class SettingsProtocol(Protocol):
+    class Settings(Protocol):
         """Protocol describing the client configuration contract."""
 
         oracle_host: str
@@ -20,7 +20,7 @@ class FlextDbtOracleClient:
             """Return service name or SID identifier."""
             ...
 
-    def __init__(self, config: SettingsProtocol) -> None:
+    def __init__(self, config: Settings) -> None:
         """Store runtime settings used by client operations."""
         super().__init__()
         self.config = config

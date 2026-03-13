@@ -36,20 +36,20 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
     service: p.Service[str]
 
     # Oracle protocols (inherited)
-    connection: p.Database.ConnectionProtocol
+    connection: p.Database.Connection
 
     # Meltano protocols (inherited)
-    dbt: p.Meltano.DbtProtocol
+    dbt: p.Meltano.Dbt
 
     # DBT Oracle-specific protocols
-    dbt_protocol: p.DbtOracle.DbtProtocol
+    dbt_protocol: p.DbtOracle.Dbt
     """
 
     class DbtOracle:
         """DBT Oracle domain protocols for Oracle database transformation and analytics."""
 
         @runtime_checkable
-        class DbtProtocol(FlextDbOracleProtocols.Service[object], Protocol):
+        class Dbt(FlextDbOracleProtocols.Service[object], Protocol):
             """Protocol for DBT operations with Oracle data."""
 
             def compile_dbt_models(
@@ -127,9 +127,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 ...
 
         @runtime_checkable
-        class OracleIntegrationProtocol(
-            FlextDbOracleProtocols.Service[object], Protocol
-        ):
+        class OracleIntegration(FlextDbOracleProtocols.Service[object], Protocol):
             """Protocol for Oracle database integration operations."""
 
             def extract_oracle_data(
@@ -195,7 +193,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 ...
 
         @runtime_checkable
-        class ModelingProtocol(FlextDbOracleProtocols.Service[object], Protocol):
+        class Modeling(FlextDbOracleProtocols.Service[object], Protocol):
             """Protocol for Oracle data modeling operations."""
 
             def create_performance_models(
@@ -261,7 +259,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 ...
 
         @runtime_checkable
-        class TransformationProtocol(FlextDbOracleProtocols.Service[object], Protocol):
+        class Transformation(FlextDbOracleProtocols.Service[object], Protocol):
             """Protocol for Oracle data transformation operations."""
 
             def apply_business_rules(
@@ -327,7 +325,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 ...
 
         @runtime_checkable
-        class MacroProtocol(FlextDbOracleProtocols.Service[object], Protocol):
+        class Macro(FlextDbOracleProtocols.Service[object], Protocol):
             """Protocol for DBT macro operations with Oracle data."""
 
             def create_oracle_snapshot_macro(
@@ -387,7 +385,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 ...
 
         @runtime_checkable
-        class QualityProtocol(FlextDbOracleProtocols.Service[object], Protocol):
+        class Quality(FlextDbOracleProtocols.Service[object], Protocol):
             """Protocol for Oracle data quality operations."""
 
             def check_data_completeness(
@@ -451,7 +449,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 ...
 
         @runtime_checkable
-        class PerformanceProtocol(FlextDbOracleProtocols.Service[object], Protocol):
+        class Performance(FlextDbOracleProtocols.Service[object], Protocol):
             """Protocol for DBT Oracle performance optimization operations."""
 
             def monitor_dbt_performance(
@@ -513,7 +511,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 ...
 
         @runtime_checkable
-        class MonitoringProtocol(FlextDbOracleProtocols.Service[object], Protocol):
+        class Monitoring(FlextDbOracleProtocols.Service[object], Protocol):
             """Protocol for DBT Oracle monitoring operations."""
 
             def create_monitoring_dashboard(
