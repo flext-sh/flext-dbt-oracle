@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import (
     BaseModel,
@@ -26,89 +26,141 @@ class FlextDbtOracleSettings(BaseModel):
 
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
-    oracle_host: str = Field(
-        default=c.Oracle.DEFAULT_HOST,
-        description="Oracle database host",
-    )
-    oracle_username: str = Field(
-        default="oracle",
-        description="Oracle database username",
-    )
-    oracle_password: SecretStr = Field(
-        default=SecretStr(""),
-        description="Oracle database password",
-    )
-    oracle_port: int = Field(
-        default=c.Oracle.DEFAULT_PORT,
-        alias="port",
-        ge=1,
-        description="Oracle database port",
-    )
-    oracle_service_name: str = Field(
-        default=c.Oracle.DEFAULT_SERVICE_NAME,
-        description="Oracle service name",
-    )
+    oracle_host: Annotated[
+        str,
+        Field(
+            default=c.Oracle.DEFAULT_HOST,
+            description="Oracle database host",
+        ),
+    ]
+    oracle_username: Annotated[
+        str,
+        Field(
+            default="oracle",
+            description="Oracle database username",
+        ),
+    ]
+    oracle_password: Annotated[
+        SecretStr,
+        Field(
+            default=SecretStr(""),
+            description="Oracle database password",
+        ),
+    ]
+    oracle_port: Annotated[
+        int,
+        Field(
+            default=c.Oracle.DEFAULT_PORT,
+            alias="port",
+            ge=1,
+            description="Oracle database port",
+        ),
+    ]
+    oracle_service_name: Annotated[
+        str,
+        Field(
+            default=c.Oracle.DEFAULT_SERVICE_NAME,
+            description="Oracle service name",
+        ),
+    ]
 
-    sid: str | None = Field(default=None, description="Oracle SID (optional)")
-    protocol: Literal["tcp", "tcps"] = Field(
-        default="tcp",
-        description="Connection protocol",
-    )
-    materialization: Literal["incremental", "snapshot", "table", "view"] = Field(
-        default="table",
-        description="DBT materialization strategy",
-    )
-    schema_name: str = Field(default="", description="Target schema name")
-    ssl_server_dn_match: bool = Field(
-        default=False,
-        description="Enable SSL server DN validation",
-    )
-    nls_lang: str = Field(
-        default=c.DbtOracle.NLS_LANG,
-        description="Oracle NLS language setting",
-    )
-    nls_date_format: str = Field(
-        default=c.DbtOracle.NLS_DATE_FORMAT,
-        description="Oracle NLS date format",
-    )
-    search_path: str = Field(
-        default="", description="Comma-separated schema search path"
-    )
-    enable_metrics: bool = Field(
-        default=False,
-        description="Enable metrics collection",
-    )
-    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = Field(
-        default="INFO",
-        description="Runtime log verbosity",
-    )
-    enable_sql_logging: bool = Field(
-        default=False,
-        description="Enable SQL query logging",
-    )
+    sid: Annotated[str | None, Field(default=None, description="Oracle SID (optional)")]
+    protocol: Annotated[
+        Literal["tcp", "tcps"],
+        Field(
+            default="tcp",
+            description="Connection protocol",
+        ),
+    ]
+    materialization: Annotated[
+        Literal["incremental", "snapshot", "table", "view"],
+        Field(
+            default="table",
+            description="DBT materialization strategy",
+        ),
+    ]
+    schema_name: Annotated[str, Field(default="", description="Target schema name")]
+    ssl_server_dn_match: Annotated[
+        bool,
+        Field(
+            default=False,
+            description="Enable SSL server DN validation",
+        ),
+    ]
+    nls_lang: Annotated[
+        str,
+        Field(
+            default=c.DbtOracle.NLS_LANG,
+            description="Oracle NLS language setting",
+        ),
+    ]
+    nls_date_format: Annotated[
+        str,
+        Field(
+            default=c.DbtOracle.NLS_DATE_FORMAT,
+            description="Oracle NLS date format",
+        ),
+    ]
+    search_path: Annotated[
+        str, Field(default="", description="Comma-separated schema search path")
+    ]
+    enable_metrics: Annotated[
+        bool,
+        Field(
+            default=False,
+            description="Enable metrics collection",
+        ),
+    ]
+    log_level: Annotated[
+        Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        Field(
+            default="INFO",
+            description="Runtime log verbosity",
+        ),
+    ]
+    enable_sql_logging: Annotated[
+        bool,
+        Field(
+            default=False,
+            description="Enable SQL query logging",
+        ),
+    ]
 
     # Connection pool settings
-    pool_min_size: int = Field(default=1, ge=1, description="Minimum pool size")
-    pool_max_size: int = Field(default=10, ge=1, description="Maximum pool size")
-    pool_increment: int = Field(default=1, ge=1, description="Pool increment size")
+    pool_min_size: Annotated[
+        int, Field(default=1, ge=1, description="Minimum pool size")
+    ]
+    pool_max_size: Annotated[
+        int, Field(default=10, ge=1, description="Maximum pool size")
+    ]
+    pool_increment: Annotated[
+        int, Field(default=1, ge=1, description="Pool increment size")
+    ]
 
     # Performance settings
-    query_timeout: int = Field(
-        default=300, ge=1, description="Query timeout in seconds"
-    )
-    fetch_size: int = Field(default=1000, ge=1, description="Fetch batch size")
-    connect_timeout: int = Field(
-        default=30, ge=1, description="Connection timeout in seconds"
-    )
-    retry_attempts: int = Field(default=3, ge=0, description="Number of retry attempts")
-    retry_delay: int = Field(
-        default=1, ge=0, description="Delay between retries in seconds"
-    )
-    retry_delay_seconds: float = Field(
-        default=1.0,
-        ge=0,
-        description="Delay between retries in seconds",
-    )
+    query_timeout: Annotated[
+        int, Field(default=300, ge=1, description="Query timeout in seconds")
+    ]
+    fetch_size: Annotated[
+        int, Field(default=1000, ge=1, description="Fetch batch size")
+    ]
+    connect_timeout: Annotated[
+        int, Field(default=30, ge=1, description="Connection timeout in seconds")
+    ]
+    retry_attempts: Annotated[
+        int, Field(default=3, ge=0, description="Number of retry attempts")
+    ]
+    retry_delay: Annotated[
+        int, Field(default=1, ge=0, description="Delay between retries in seconds")
+    ]
+    retry_delay_seconds: Annotated[
+        float,
+        Field(
+            default=1.0,
+            ge=0,
+            description="Delay between retries in seconds",
+        ),
+    ]
 
     @model_validator(mode="after")
     def validate_pool_sizes(self) -> FlextDbtOracleSettings:

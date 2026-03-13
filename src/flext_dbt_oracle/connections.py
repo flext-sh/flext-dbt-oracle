@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Annotated
+
 from pydantic import BaseModel, Field, SecretStr, field_validator
 
 from flext_dbt_oracle.constants import c
@@ -10,21 +12,29 @@ from flext_dbt_oracle.constants import c
 class OracleConnectionConfig(BaseModel):
     """Configuration for Oracle database connections."""
 
-    host: str = Field(default=c.Oracle.DEFAULT_HOST, description="Oracle database host")
-    port: int = Field(
-        default=c.Oracle.DEFAULT_PORT, ge=1, description="Oracle database port"
-    )
-    username: str = Field(default="", description="Oracle database username")
-    password: str | SecretStr = Field(
-        default=SecretStr(""), description="Oracle database password"
-    )
-    service_name: str = Field(
-        default=c.Oracle.DEFAULT_SERVICE_NAME, description="Oracle service name"
-    )
-    sid: str | None = Field(default=None, description="Oracle SID (optional)")
-    protocol: str = Field(
-        default=c.Oracle.DEFAULT_PROTOCOL, description="Oracle connection protocol"
-    )
+    host: Annotated[
+        str, Field(default=c.Oracle.DEFAULT_HOST, description="Oracle database host")
+    ]
+    port: Annotated[
+        int,
+        Field(default=c.Oracle.DEFAULT_PORT, ge=1, description="Oracle database port"),
+    ]
+    username: Annotated[str, Field(default="", description="Oracle database username")]
+    password: Annotated[
+        str | SecretStr,
+        Field(default=SecretStr(""), description="Oracle database password"),
+    ]
+    service_name: Annotated[
+        str,
+        Field(default=c.Oracle.DEFAULT_SERVICE_NAME, description="Oracle service name"),
+    ]
+    sid: Annotated[str | None, Field(default=None, description="Oracle SID (optional)")]
+    protocol: Annotated[
+        str,
+        Field(
+            default=c.Oracle.DEFAULT_PROTOCOL, description="Oracle connection protocol"
+        ),
+    ]
 
     @field_validator("password", mode="before")
     @classmethod

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Annotated
+
 from pydantic import BaseModel, Field
 
 from flext_dbt_oracle import c
@@ -10,8 +12,8 @@ from flext_dbt_oracle import c
 class OracleTableAdapter(BaseModel):
     """Adapter for Oracle table metadata normalization."""
 
-    schema_name: str = Field(description="Oracle schema name")
-    table_name: str = Field(description="Oracle table name")
+    schema_name: Annotated[str, Field(description="Oracle schema name")]
+    table_name: Annotated[str, Field(description="Oracle table name")]
 
     def get_relation_name(self) -> str:
         """Return fully qualified relation name as schema.table."""

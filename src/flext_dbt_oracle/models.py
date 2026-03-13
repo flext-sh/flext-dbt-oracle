@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from typing import Annotated
 
 from flext_core import FlextModels
 from flext_db_oracle.models import FlextDbOracleModels
@@ -33,8 +34,8 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
             sql_content: str
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: list[dict[str, object]] = Field(default=[])
-            dependencies: list[str] = Field(default_factory=list)
+            columns: Annotated[list[dict[str, object]], Field(default_factory=list)]
+            dependencies: Annotated[list[str], Field(default_factory=list)]
 
         class ModelGenerator:
             """Helper for generating deterministic staging model metadata."""
