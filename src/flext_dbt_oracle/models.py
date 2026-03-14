@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Annotated
 
 from flext_core import FlextModels
 from flext_db_oracle.models import FlextDbOracleModels
@@ -11,6 +10,8 @@ from flext_meltano import FlextMeltanoModels
 from pydantic import Field
 
 from flext_dbt_oracle.constants import c
+
+type ColumnSpec = dict[str, str]
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
@@ -34,15 +35,15 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
             sql_content: str
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: Annotated[list[dict[str, object]], Field(default_factory=list)]
-            dependencies: Annotated[list[str], Field(default_factory=list)]
+            columns: list[ColumnSpec] = []
+            dependencies: list[str] = Field(default_factory=list)
 
         class ModelGenerator:
             """Helper for generating deterministic staging model metadata."""
 
             def __init__(
                 self,
-                config: Mapping[str, object] | None = None,
+                config: Mapping[str, str] | None = None,
             ) -> None:
                 """Store optional generation-time configuration."""
                 super().__init__()
@@ -66,7 +67,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
     @classmethod
     def create_generator(
         cls,
-        config: Mapping[str, object] | None = None,
+        config: Mapping[str, str] | None = None,
     ) -> FlextDbtOracleModels.DbtOracle.ModelGenerator:
         """Create generator instance with optional custom config."""
         return cls.DbtOracle.ModelGenerator(config=config)
