@@ -77,7 +77,6 @@ if TYPE_CHECKING:
         TestsFlextDbtOracleUtilities as u,
     )
 
-# Lazy import mapping: export_name -> (module_path, attr_name)
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "MockConnectionManager": ("tests.conftest", "MockConnectionManager"),
     "MockDbtOracleAdapter": ("tests.conftest", "MockDbtOracleAdapter"),

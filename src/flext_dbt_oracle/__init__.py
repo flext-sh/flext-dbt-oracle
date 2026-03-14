@@ -38,7 +38,6 @@ if TYPE_CHECKING:
     from flext_dbt_oracle.typings import FlextDbtOracleTypes, t
     from flext_dbt_oracle.utilities import FlextDbtOracleUtilities, u
 
-# Lazy import mapping: export_name -> (module_path, attr_name)
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextDbtOracle": ("flext_dbt_oracle.simple_api", "FlextDbtOracle"),
     "FlextDbtOracleClient": ("flext_dbt_oracle.client", "FlextDbtOracleClient"),
