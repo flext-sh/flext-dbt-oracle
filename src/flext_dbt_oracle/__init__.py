@@ -1,36 +1,40 @@
+# AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
+# Regenerate with: make codegen
+#
 """FLEXT Enterprise - dbt-oracle adapter component."""
 
 from __future__ import annotations
 
-from importlib import import_module
 from typing import TYPE_CHECKING
 
-from flext_core.lazy import cleanup_submodule_namespace
+from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
-    from flext_dbt_oracle.__version__ import __version__, __version_info__
+    from flext_dbt_oracle.__version__ import (
+        __all__,
+        __author__,
+        __author_email__,
+        __description__,
+        __license__,
+        __title__,
+        __url__,
+        __version__,
+        __version_info__,
+    )
     from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
     from flext_dbt_oracle.client import FlextDbtOracleClient
-    from flext_dbt_oracle.constants import (
-        FlextDbtOracleConstants,
-        FlextDbtOracleConstants as c,
-    )
-    from flext_dbt_oracle.models import FlextDbtOracleModels, FlextDbtOracleModels as m
-    from flext_dbt_oracle.protocols import (
-        FlextDbtOracleProtocols,
-        FlextDbtOracleProtocols as p,
-    )
+    from flext_dbt_oracle.constants import FlextDbtOracleConstants, c
+    from flext_dbt_oracle.models import FlextDbtOracleModels, m
+    from flext_dbt_oracle.protocols import FlextDbtOracleProtocols, p
+    from flext_dbt_oracle.services import FlextDbtOracleServices
     from flext_dbt_oracle.settings import (
         FlextDbtOracleSettings,
         OracleConnectionConfig,
         build_oracle_connection_config,
     )
     from flext_dbt_oracle.simple_api import FlextDbtOracle
-    from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
-    from flext_dbt_oracle.utilities import (
-        FlextDbtOracleUtilities,
-        FlextDbtOracleUtilities as u,
-    )
+    from flext_dbt_oracle.typings import FlextDbtOracleTypes, t
+    from flext_dbt_oracle.utilities import FlextDbtOracleUtilities, u
 
 # Lazy import mapping: export_name -> (module_path, attr_name)
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
@@ -45,26 +49,34 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "flext_dbt_oracle.protocols",
         "FlextDbtOracleProtocols",
     ),
+    "FlextDbtOracleServices": ("flext_dbt_oracle.services", "FlextDbtOracleServices"),
     "FlextDbtOracleSettings": ("flext_dbt_oracle.settings", "FlextDbtOracleSettings"),
-    "OracleConnectionConfig": ("flext_dbt_oracle.settings", "OracleConnectionConfig"),
-    "build_oracle_connection_config": (
-        "flext_dbt_oracle.settings",
-        "build_oracle_connection_config",
-    ),
     "FlextDbtOracleTypes": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
     "FlextDbtOracleUtilities": (
         "flext_dbt_oracle.utilities",
         "FlextDbtOracleUtilities",
     ),
+    "OracleConnectionConfig": ("flext_dbt_oracle.settings", "OracleConnectionConfig"),
     "OracleTableAdapter": ("flext_dbt_oracle.adapters", "OracleTableAdapter"),
     "OracleTableFactory": ("flext_dbt_oracle.adapters", "OracleTableFactory"),
+    "__all__": ("flext_dbt_oracle.__version__", "__all__"),
+    "__author__": ("flext_dbt_oracle.__version__", "__author__"),
+    "__author_email__": ("flext_dbt_oracle.__version__", "__author_email__"),
+    "__description__": ("flext_dbt_oracle.__version__", "__description__"),
+    "__license__": ("flext_dbt_oracle.__version__", "__license__"),
+    "__title__": ("flext_dbt_oracle.__version__", "__title__"),
+    "__url__": ("flext_dbt_oracle.__version__", "__url__"),
     "__version__": ("flext_dbt_oracle.__version__", "__version__"),
     "__version_info__": ("flext_dbt_oracle.__version__", "__version_info__"),
-    "c": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
-    "m": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
-    "p": ("flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"),
-    "t": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
-    "u": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
+    "build_oracle_connection_config": (
+        "flext_dbt_oracle.settings",
+        "build_oracle_connection_config",
+    ),
+    "c": ("flext_dbt_oracle.constants", "c"),
+    "m": ("flext_dbt_oracle.models", "m"),
+    "p": ("flext_dbt_oracle.protocols", "p"),
+    "t": ("flext_dbt_oracle.typings", "t"),
+    "u": ("flext_dbt_oracle.utilities", "u"),
 }
 
 __all__ = [
@@ -73,12 +85,20 @@ __all__ = [
     "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",
+    "FlextDbtOracleServices",
     "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
     "OracleConnectionConfig",
     "OracleTableAdapter",
     "OracleTableFactory",
+    "__all__",
+    "__author__",
+    "__author_email__",
+    "__description__",
+    "__license__",
+    "__title__",
+    "__url__",
     "__version__",
     "__version_info__",
     "build_oracle_connection_config",
@@ -90,18 +110,9 @@ __all__ = [
 ]
 
 
-def __getattr__(
-    name: str,
-):  # JUSTIFIED: Ruff (any-type) with PEP 562 dynamic module exports — https://docs.astral.sh/ruff/rules/any-type/
+def __getattr__(name: str) -> t.ModuleExport:
     """Lazy-load module attributes on first access (PEP 562)."""
-    if name not in _LAZY_IMPORTS:
-        msg = f"module '{__name__}' has no attribute '{name}'"
-        raise AttributeError(msg)
-    module_path, attr_name = _LAZY_IMPORTS[name]
-    module = import_module(module_path)
-    value = module.__dict__[attr_name]
-    globals()[name] = value
-    return value
+    return lazy_getattr(name, _LAZY_IMPORTS, globals(), __name__)
 
 
 def __dir__() -> list[str]:
