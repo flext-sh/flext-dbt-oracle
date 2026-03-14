@@ -9,8 +9,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from flext_tests import FlextTestsModels
+
 from flext_dbt_oracle.models import FlextDbtOracleModels
-from flext_tests.models import FlextTestsModels
 
 
 class TestsFlextDbtOracleModels(FlextTestsModels, FlextDbtOracleModels):
@@ -26,7 +27,7 @@ class TestsFlextDbtOracleModels(FlextTestsModels, FlextDbtOracleModels):
     - m.* (production models via alternative alias)
     """
 
-    class Tests:
+    class Tests(FlextTestsModels.Tests):
         """Project-specific test fixtures namespace."""
 
         class DbtOracle:

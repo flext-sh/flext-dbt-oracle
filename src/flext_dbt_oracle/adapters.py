@@ -2,25 +2,25 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from typing import Annotated
 
-type JsonScalar = str | int | float | bool | None
-type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
+from pydantic import BaseModel, Field
+
+from flext_dbt_oracle import c
 
 
-@dataclass(slots=True)
-class OracleTableAdapter:
-    """Normalized Oracle table descriptor."""
+class OracleTableAdapter(BaseModel):
+    """Adapter for Oracle table metadata normalization."""
 
-    schema_name: str
-    table_name: str
+    schema_name: Annotated[str, Field(description="Oracle schema name")]
+    table_name: Annotated[str, Field(description="Oracle table name")]
 
     def get_relation_name(self) -> str:
-        """Build canonical schema.table relation name."""
+        """Return fully qualified relation name as schema.table."""
         return f"{self.schema_name}.{self.table_name}"
 
-    def to_metadata(self) -> dict[str, JsonValue]:
-        """Convert adapter fields into structured metadata."""
+    def to_metadata(self) -> dict[str, str]:
+        """Return metadata dict with schema, table, and relation."""
         return {
             "schema": self.schema_name,
             "table": self.table_name,
@@ -35,7 +35,7 @@ class OracleTableFactory:
     def create(schema_name: str, table_name: str) -> OracleTableAdapter:
         """Create adapter with trimmed, normalized names."""
         return OracleTableAdapter(
-            schema_name=schema_name.strip() or "public",
+            schema_name=schema_name.strip() or c.DbtOracle.DEFAULT_SCHEMA_NAME,
             table_name=table_name.strip(),
         )
 

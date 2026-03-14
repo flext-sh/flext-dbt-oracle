@@ -2,39 +2,30 @@
 
 from __future__ import annotations
 
-type JsonScalar = str | int | float | bool | None
-type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
-PERFORMANCE_RECOMMENDATION_THRESHOLD = 20
+from collections.abc import Mapping
+
+from flext_core import t
+
+from flext_dbt_oracle.constants import c
 
 
 class FlextDbtOracleServices:
     """Utility service namespace for DBT Oracle workflows."""
 
-    def generate_recommendations(self, table_count: int) -> dict[str, JsonValue]:
+    def generate_recommendations(
+        self, table_count: int
+    ) -> Mapping[str, t.MetadataValue]:
         """Generate lightweight recommendations from table volume."""
-        recommendations: list[JsonValue] = []
-        if table_count > PERFORMANCE_RECOMMENDATION_THRESHOLD:
+        recommendations: list[t.Scalar] = []
+        if table_count > c.DbtOracle.PERFORMANCE_RECOMMENDATION_THRESHOLD:
             recommendations.append(
                 "Process tables in batches and increase dbt threads gradually"
             )
-        return {
-            "table_count": table_count,
-            "recommendations": recommendations,
-        }
+        return {"table_count": table_count, "recommendations": recommendations}
 
-    def track_execution(self, workflow_name: str) -> dict[str, JsonValue]:
+    def track_execution(self, workflow_name: str) -> Mapping[str, t.Scalar]:
         """Build a minimal execution tracking payload."""
-        return {
-            "workflow": workflow_name,
-            "status": "running",
-        }
+        return {"workflow": workflow_name, "status": "running"}
 
 
-FlextDbtOracleWorkflowService = FlextDbtOracleServices
-FlextDbtOracleMonitoringService = FlextDbtOracleServices
-
-__all__ = [
-    "FlextDbtOracleMonitoringService",
-    "FlextDbtOracleServices",
-    "FlextDbtOracleWorkflowService",
-]
+__all__ = ["FlextDbtOracleServices"]

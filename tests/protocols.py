@@ -9,20 +9,21 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from flext_tests import FlextTestsProtocols
+
 from flext_dbt_oracle.protocols import FlextDbtOracleProtocols
-from flext_tests.protocols import FlextTestsProtocols
 
 
 class TestsFlextDbtOracleProtocols(FlextTestsProtocols, FlextDbtOracleProtocols):
     """Test protocols combining FlextTestsProtocols and FlextDbtOracleProtocols.
 
     Provides access to:
-    - tp.Tests.Docker.* (from FlextTestsProtocols)
-    - tp.Tests.Factory.* (from FlextTestsProtocols)
-    - tp.DbtOracle.* (from FlextDbtOracleProtocols)
+    - p.Tests.Docker.* (from FlextTestsProtocols)
+    - p.Tests.Factory.* (from FlextTestsProtocols)
+    - p.DbtOracle.* (from FlextDbtOracleProtocols)
     """
 
-    class Tests:
+    class Tests(FlextTestsProtocols.Tests):
         """Project-specific test protocols.
 
         Extends FlextTestsProtocols.Tests with DbtOracle-specific protocols.
@@ -32,8 +33,6 @@ class TestsFlextDbtOracleProtocols(FlextTestsProtocols, FlextDbtOracleProtocols)
             """DbtOracle-specific test protocols."""
 
 
-# Runtime aliases
 p = TestsFlextDbtOracleProtocols
-tp = TestsFlextDbtOracleProtocols
-
-__all__ = ["TestsFlextDbtOracleProtocols", "p", "tp"]
+p = TestsFlextDbtOracleProtocols
+__all__ = ["TestsFlextDbtOracleProtocols", "p"]

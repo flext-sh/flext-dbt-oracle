@@ -2,67 +2,80 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from collections.abc import Mapping
 
-type JsonScalar = str | int | float | bool | None
-type JsonValue = JsonScalar | dict[str, JsonValue] | list[JsonValue]
+from flext_core import FlextModels
+from flext_db_oracle.models import FlextDbOracleModels
+from flext_meltano import FlextMeltanoModels
+from pydantic import Field
 
+from flext_dbt_oracle.constants import c
 
-class FlextDbtOracleModel(BaseModel):
-    """Typed DBT model metadata payload."""
-
-    name: str
-    dbt_model_type: str = "staging"
-    schema_name: str = "public"
-    table_name: str
-    materialization: str = "view"
-    sql_content: str
-    description: str = ""
-    source_name: str = "oracle"
-    columns: list[dict[str, JsonValue]] = Field(default_factory=list)
-    dependencies: list[str] = Field(default_factory=list)
+type ColumnSpec = dict[str, str]
 
 
-class FlextDbtOracleModelGenerator:
-    """Helper for generating deterministic staging model metadata."""
+class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
+    """Namespace wrapper for DBT Oracle domain models.
 
-    def __init__(self, config: dict[str, JsonValue] | None = None) -> None:
-        """Store optional generation-time configuration."""
-        self.config = config or {}
+    Inherits from FlextMeltanoModels (Singer/Meltano) and FlextDbOracleModels
+    (Oracle DB) to compose the full DBT Oracle domain namespace.
+    """
 
-    def generate_staging_models(
-        self,
-        source_tables: list[str],
-    ) -> list[FlextDbtOracleModel]:
-        """Create one staging model definition per source table."""
-        return [
-            FlextDbtOracleModel(
-                name=f"stg_oracle_{table}",
-                table_name=f"stg_{table}",
-                sql_content=f"select * from {{{{ source('oracle', '{table}') }}}}",
-                description=f"Staging model for {table}",
-            )
-            for table in source_tables
-        ]
+    class DbtOracle:
+        """DbtOracle domain namespace."""
 
+        class Model(FlextModels.Value):
+            """Typed DBT model metadata payload."""
 
-class FlextDbtOracleModels:
-    """Namespace wrapper for model class aliases and constructors."""
+            name: str
+            dbt_model_type: str = c.DbtOracle.DEFAULT_MODEL_TYPE
+            schema_name: str = c.DbtOracle.DEFAULT_SCHEMA_NAME
+            table_name: str
+            materialization: str = c.Dbt.DEFAULT_MATERIALIZATION
+            sql_content: str
+            description: str = ""
+            source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
+            columns: list[ColumnSpec] = []
+            dependencies: list[str] = Field(default_factory=list)
 
-    DbtModel = FlextDbtOracleModel
-    ModelGenerator = FlextDbtOracleModelGenerator
+        class ModelGenerator:
+            """Helper for generating deterministic staging model metadata."""
+
+            def __init__(
+                self,
+                config: Mapping[str, str] | None = None,
+            ) -> None:
+                """Store optional generation-time configuration."""
+                super().__init__()
+                self.config = config or {}
+
+            def generate_staging_models(
+                self,
+                source_tables: list[str],
+            ) -> list[FlextDbtOracleModels.DbtOracle.Model]:
+                """Create one staging model definition per source table."""
+                return [
+                    FlextDbtOracleModels.DbtOracle.Model(
+                        name=f"stg_oracle_{table}",
+                        table_name=f"stg_{table}",
+                        sql_content=f"select * from {{{{ source('oracle', '{table}') }}}}",  # nosec B608
+                        description=f"Staging model for {table}",
+                    )
+                    for table in source_tables
+                ]
 
     @classmethod
     def create_generator(
         cls,
-        config: dict[str, JsonValue] | None = None,
-    ) -> FlextDbtOracleModelGenerator:
+        config: Mapping[str, str] | None = None,
+    ) -> FlextDbtOracleModels.DbtOracle.ModelGenerator:
         """Create generator instance with optional custom config."""
-        return cls.ModelGenerator(config=config)
+        return cls.DbtOracle.ModelGenerator(config=config)
 
+
+m = FlextDbtOracleModels
 
 __all__ = [
-    "FlextDbtOracleModel",
-    "FlextDbtOracleModelGenerator",
     "FlextDbtOracleModels",
+    "m",
 ]
