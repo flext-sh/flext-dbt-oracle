@@ -35,7 +35,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
             sql_content: str
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: list[ColumnSpec] = []
+            columns: list[ColumnSpec] = Field(default_factory=list)
             dependencies: list[str] = Field(default_factory=list)
 
         class ModelGenerator:
