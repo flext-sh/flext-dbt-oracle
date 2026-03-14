@@ -203,3 +203,6 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
 
 t = FlextDbtOracleTypes
 __all__ = ["FlextDbtOracleTypes", "t"]
+
+
+type ColumnSpec = dict[str, str]

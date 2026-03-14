@@ -10,8 +10,7 @@ from flext_meltano import FlextMeltanoModels
 from pydantic import Field
 
 from flext_dbt_oracle.constants import c
-
-type ColumnSpec = dict[str, str]
+from flext_dbt_oracle.typings import ColumnSpec
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
