@@ -92,14 +92,14 @@ __all__ = [
 
 def __getattr__(
     name: str,
-) -> Any:  # JUSTIFIED: Ruff (any-type) with PEP 562 dynamic module exports — https://docs.astral.sh/ruff/rules/any-type/
+):  # JUSTIFIED: Ruff (any-type) with PEP 562 dynamic module exports — https://docs.astral.sh/ruff/rules/any-type/
     """Lazy-load module attributes on first access (PEP 562)."""
     if name not in _LAZY_IMPORTS:
         msg = f"module '{__name__}' has no attribute '{name}'"
         raise AttributeError(msg)
     module_path, attr_name = _LAZY_IMPORTS[name]
     module = import_module(module_path)
-    value: Any = module.__dict__[attr_name]
+    value = module.__dict__[attr_name]
     globals()[name] = value
     return value
 
