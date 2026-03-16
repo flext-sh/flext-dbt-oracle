@@ -13,3 +13,5 @@ from flext_tests import FlextTestsUtilities
 
 class TestsFlextDbtOracleUtilities(FlextTestsUtilities):
     """Test utilities for flextdbtoracle."""
+
+u = TestsFlextDbtOracleUtilities

@@ -36,10 +36,11 @@ class TestsFlextDbtOracleModels(FlextTestsModels, FlextDbtOracleModels):
 
 # Short aliases per FLEXT convention
 tm = TestsFlextDbtOracleModels
-m = TestsFlextDbtOracleModels
 
 __all__ = [
     "TestsFlextDbtOracleModels",
     "m",
     "tm",
 ]
+
+m = TestsFlextDbtOracleModels

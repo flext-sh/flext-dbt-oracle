@@ -55,5 +55,6 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
         NLS_DATE_FORMAT: Final[str] = "YYYY-MM-DD"
 
 
-c = FlextDbtOracleConstants
 __all__ = ["FlextDbtOracleConstants", "c"]
+
+c = FlextDbtOracleConstants

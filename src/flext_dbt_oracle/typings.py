@@ -206,3 +206,7 @@ __all__ = ["FlextDbtOracleTypes", "t"]
 
 
 type ColumnSpec = dict[str, str]
+
+type OraclePayload = t.Dict
+
+type OraclePayloadList = list[t.Dict]

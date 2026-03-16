@@ -13,3 +13,5 @@ from flext_tests import FlextTestsConstants
 
 class TestsFlextDbtOracleConstants(FlextTestsConstants):
     """Test constants for flextdbtoracle."""
+
+c = TestsFlextDbtOracleConstants
