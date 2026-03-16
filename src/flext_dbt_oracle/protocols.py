@@ -12,6 +12,7 @@ from flext_core import t
 from flext_db_oracle.protocols import FlextDbOracleProtocols
 from flext_meltano import FlextMeltanoProtocols
 
+
 class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
     """DBT Oracle protocols extending Oracle and Meltano protocols.
 
@@ -561,6 +562,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
                 """
                 ...
+
 
 __all__ = ["FlextDbtOracleProtocols", "p"]
 

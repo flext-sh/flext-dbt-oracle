@@ -72,7 +72,6 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
         return cls.DbtOracle.ModelGenerator(config=config)
 
 
-
 __all__ = [
     "FlextDbtOracleModels",
     "m",
