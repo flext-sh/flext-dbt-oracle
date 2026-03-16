@@ -8,12 +8,12 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from flext_core import m, t
+from flext_core import t
 from flext_db_oracle.protocols import FlextDbOracleProtocols
 from flext_meltano import FlextMeltanoProtocols
 
-type OraclePayload = m.Dict
-type OraclePayloadList = list[m.Dict]
+type OraclePayload = t.Dict
+type OraclePayloadList = list[t.Dict]
 
 
 class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
