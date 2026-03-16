@@ -383,10 +383,12 @@ class MockConnectionManager:
 class MockSqlExecutor:
     """Strategy for SQL execution (Strategy Pattern)."""
 
-    def execute(self, sql: str, *, auto_begin: bool = True) -> tuple[str, list]:
+    def execute(
+        self, sql: str, *, auto_begin: bool = True
+    ) -> tuple[str, list[dict[str, str]]]:
         """Execute SQL statement with reduced branching."""
         _ = auto_begin
-        sql_strategies: dict[str, tuple[str, list]] = {
+        sql_strategies: dict[str, tuple[str, list[dict[str, str]]]] = {
             "CREATE TABLE": ("CREATE", []),
             "INSERT": ("INSERT", []),
             "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
@@ -457,7 +459,9 @@ class MockDbtOracleAdapter:
         """Delegate to connection manager strategy."""
         self.connection_manager.close_connection(name)
 
-    def execute(self, sql: str, *, auto_begin: bool = True) -> tuple[str, list]:
+    def execute(
+        self, sql: str, *, auto_begin: bool = True
+    ) -> tuple[str, list[dict[str, str]]]:
         """Delegate to SQL executor strategy."""
         return self.sql_executor.execute(sql, auto_begin=auto_begin)
 
