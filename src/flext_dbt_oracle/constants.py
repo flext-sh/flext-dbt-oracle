@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from enum import StrEnum
+from enum import StrEnum, unique, unique
 from typing import Final
 
 from flext_db_oracle.constants import FlextDbOracleConstants
@@ -36,9 +36,10 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
         DEFAULT_PROFILES_DIR: Final[str] = "."
         DEFAULT_MATERIALIZATION: Final[str] = "view"
 
+        @unique
         class Materialization(StrEnum):
             """Valid DBT materialization values."""
-
+        
             TABLE = "table"
             VIEW = "view"
             INCREMENTAL = "incremental"
@@ -56,5 +57,28 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
 
 
 __all__ = ["FlextDbtOracleConstants", "c"]
+
+
+    @unique
+    class DbtOracleProjectType(StrEnum):
+        LIBRARY = "library"
+        APPLICATION = "application"
+        SERVICE = "service"
+        DBT_ORACLE = "dbt-oracle"
+        ORACLE_TRANSFORM = "oracle-transform"
+        ORACLE_ANALYTICS = "oracle-analytics"
+        ORACLE_DBT_MODELS = "oracle-dbt-models"
+        DBT_ORACLE_PROJECT = "dbt-oracle-project"
+        ORACLE_DIMENSIONAL = "oracle-dimensional"
+        ORACLE_WAREHOUSE = "oracle-warehouse"
+        ORACLE_ETL = "oracle-etl"
+        DBT_ORACLE_PIPELINE = "dbt-oracle-pipeline"
+        ORACLE_REPORTING = "oracle-reporting"
+        ORACLE_DBT = "oracle-dbt"
+        ORACLE_DATA_WAREHOUSE = "oracle-data-warehouse"
+        ORACLE_ADAPTER = "oracle-adapter"
+        ORACLE_CONNECTOR = "oracle-connector"
+        ORACLE_INTEGRATION = "oracle-integration"
+        ORACLE_BI = "oracle-bi"
 
 c = FlextDbtOracleConstants

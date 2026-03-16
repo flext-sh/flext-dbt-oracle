@@ -14,10 +14,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Literal
-
 from flext_db_oracle import FlextDbOracleTypes
 from flext_meltano import FlextMeltanoTypes
+
+from flext_dbt_oracle import c
 
 
 class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
@@ -169,27 +169,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         DBT Oracle domain owns Oracle data transformation-specific types.
         """
 
-        type DbtOracleProjectType = Literal[
-            "library",
-            "application",
-            "service",
-            "dbt-oracle",
-            "oracle-transform",
-            "oracle-analytics",
-            "oracle-dbt-models",
-            "dbt-oracle-project",
-            "oracle-dimensional",
-            "oracle-warehouse",
-            "oracle-etl",
-            "dbt-oracle-pipeline",
-            "oracle-reporting",
-            "oracle-dbt",
-            "oracle-data-warehouse",
-            "oracle-adapter",
-            "oracle-connector",
-            "oracle-integration",
-            "oracle-bi",
-        ]
+        type DbtOracleProjectType = c.DbtOracleProjectType
         "DBT Oracle project type literal."
         type DbtOracleProjectConfig = dict[str, object]
         "DBT Oracle project configuration type."
