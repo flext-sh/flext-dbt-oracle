@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from enum import StrEnum, unique, unique
+from enum import StrEnum, unique
 from typing import Final
 
 from flext_db_oracle.constants import FlextDbOracleConstants
@@ -39,7 +39,7 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
         @unique
         class Materialization(StrEnum):
             """Valid DBT materialization values."""
-        
+
             TABLE = "table"
             VIEW = "view"
             INCREMENTAL = "incremental"
@@ -54,10 +54,6 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
         PERFORMANCE_RECOMMENDATION_THRESHOLD: Final[int] = 20
         NLS_LANG: Final[str] = "AMERICAN_AMERICA.AL32UTF8"
         NLS_DATE_FORMAT: Final[str] = "YYYY-MM-DD"
-
-
-__all__ = ["FlextDbtOracleConstants", "c"]
-
 
     @unique
     class DbtOracleProjectType(StrEnum):
@@ -81,4 +77,7 @@ __all__ = ["FlextDbtOracleConstants", "c"]
         ORACLE_INTEGRATION = "oracle-integration"
         ORACLE_BI = "oracle-bi"
 
+
 c = FlextDbtOracleConstants
+
+__all__ = ["FlextDbtOracleConstants", "c"]

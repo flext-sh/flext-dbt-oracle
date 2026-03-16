@@ -25,6 +25,7 @@ if TYPE_CHECKING:
     )
     from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
     from flext_dbt_oracle.client import FlextDbtOracleClient
+    from flext_dbt_oracle.constants import FlextDbtOracleConstants, c
     from flext_dbt_oracle.models import FlextDbtOracleModels, m
     from flext_dbt_oracle.protocols import FlextDbtOracleProtocols, p
     from flext_dbt_oracle.services import FlextDbtOracleServices
@@ -40,6 +41,10 @@ if TYPE_CHECKING:
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextDbtOracle": ("flext_dbt_oracle.simple_api", "FlextDbtOracle"),
     "FlextDbtOracleClient": ("flext_dbt_oracle.client", "FlextDbtOracleClient"),
+    "FlextDbtOracleConstants": (
+        "flext_dbt_oracle.constants",
+        "FlextDbtOracleConstants",
+    ),
     "FlextDbtOracleModels": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
     "FlextDbtOracleProtocols": (
         "flext_dbt_oracle.protocols",
@@ -68,6 +73,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "flext_dbt_oracle.settings",
         "build_oracle_connection_config",
     ),
+    "c": ("flext_dbt_oracle.constants", "c"),
     "m": ("flext_dbt_oracle.models", "m"),
     "p": ("flext_dbt_oracle.protocols", "p"),
     "t": ("flext_dbt_oracle.typings", "t"),
@@ -77,6 +83,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
 __all__ = [
     "FlextDbtOracle",
     "FlextDbtOracleClient",
+    "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",
     "FlextDbtOracleServices",
@@ -96,6 +103,7 @@ __all__ = [
     "__version__",
     "__version_info__",
     "build_oracle_connection_config",
+    "c",
     "m",
     "p",
     "t",
