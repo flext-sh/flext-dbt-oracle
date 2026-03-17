@@ -11,8 +11,9 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
-    from tests import unit
-    from tests.conftest import (
+
+    from . import unit as unit
+    from .conftest import (
         MockConnectionManager,
         MockDbtOracleAdapter,
         MockDbtRunner,
@@ -39,31 +40,31 @@ if TYPE_CHECKING:
         set_test_environment,
         shared_oracle_container,
     )
-    from tests.constants import TestsFlextDbtOracleConstants, c
-    from tests.models import TestsFlextDbtOracleModels, m, tm
-    from tests.protocols import TestsFlextDbtOracleProtocols, p
-    from tests.typings import TestsFlextDbtOracleTypes, TestsFlextDbtOracleTypes as t
-    from tests.unit.test_basic import (
+    from .constants import TestsFlextDbtOracleConstants, c
+    from .models import TestsFlextDbtOracleModels, m, tm
+    from .protocols import TestsFlextDbtOracleProtocols, p
+    from .typings import TestsFlextDbtOracleTypes, TestsFlextDbtOracleTypes as t
+    from .unit.test_basic import (
         test_adapter_initialization,
         test_adapter_type,
         test_basic_import,
         test_credentials_class,
     )
-    from tests.unit.test_config import (
+    from .unit.test_config import (
         TestConfigConstantsUsage,
         TestConfigEdgeCases,
         TestFlextDbtOracleSettings,
     )
-    from tests.unit.test_connections import (
+    from .unit.test_connections import (
         TestBuildOracleConnectionConfig,
         TestOracleConnectionConfig,
     )
-    from tests.unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
-    from tests.unit.test_imports import (
+    from .unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
+    from .unit.test_imports import (
         test_basic_functionality,
         test_flext_dbt_oracle_imports,
     )
-    from tests.utilities import TestsFlextDbtOracleUtilities, u
+    from .utilities import TestsFlextDbtOracleUtilities, u
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "MockConnectionManager": ("tests.conftest", "MockConnectionManager"),

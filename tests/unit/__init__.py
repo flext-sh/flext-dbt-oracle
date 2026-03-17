@@ -11,26 +11,24 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
-    from tests.unit.test_basic import (
+
+    from .test_basic import (
         test_adapter_initialization,
         test_adapter_type,
         test_basic_import,
         test_credentials_class,
     )
-    from tests.unit.test_config import (
+    from .test_config import (
         TestConfigConstantsUsage,
         TestConfigEdgeCases,
         TestFlextDbtOracleSettings,
     )
-    from tests.unit.test_connections import (
+    from .test_connections import (
         TestBuildOracleConnectionConfig,
         TestOracleConnectionConfig,
     )
-    from tests.unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
-    from tests.unit.test_imports import (
-        test_basic_functionality,
-        test_flext_dbt_oracle_imports,
-    )
+    from .test_impl import TestOracleTableAdapter, TestOracleTableFactory
+    from .test_imports import test_basic_functionality, test_flext_dbt_oracle_imports
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "TestBuildOracleConnectionConfig": (
