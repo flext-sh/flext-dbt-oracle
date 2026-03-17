@@ -57,6 +57,8 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
 
     @unique
     class DbtOracleProjectType(StrEnum):
+        """Project-type identifiers for dbt Oracle packages."""
+
         LIBRARY = "library"
         APPLICATION = "application"
         SERVICE = "service"

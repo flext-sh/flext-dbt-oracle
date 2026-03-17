@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pydantic import RootModel
+from pydantic import RootModel, TypeAdapter
 
 
 class FlextAutoConstants:
@@ -32,5 +32,5 @@ u = FlextAutoUtilities
 m = FlextAutoModels
 
 
-class _GENERAL_DICT_ADAPTER(RootModel[TypeAdapter(dict[str, t.Primitives])]):
+class _GeneralDictAdapter(RootModel[TypeAdapter(dict[str, t.Primitives])]):
     pass
