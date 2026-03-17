@@ -15,7 +15,7 @@ import pytest
 from flext_tests import FlextTestsDocker
 from pydantic import TypeAdapter, ValidationError
 
-_GENERAL_DICT_ADAPTER = TypeAdapter(dict[str, str | int | float | bool])
+_GENERAL_DICT_ADAPTER = TypeAdapter(dict[str, t.Primitives])
 
 
 @pytest.fixture(scope="session")
@@ -406,7 +406,7 @@ class MockModelCompiler:
         """Compile dbt model SQL."""
         compiled = model_sql
         vars_value = context.get("vars", {})
-        vars_dict: dict[str, str | int | float | bool]
+        vars_dict: dict[str, t.Primitives]
         try:
             vars_dict = _GENERAL_DICT_ADAPTER.validate_python(vars_value)
         except ValidationError:
