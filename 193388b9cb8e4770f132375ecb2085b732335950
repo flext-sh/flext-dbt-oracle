@@ -1,0 +1,23 @@
+src/flext_dbt_oracle/typings.py
+  94129b03712af7a6 22-24,190-194
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.15",
+  "base_commit_sha": "193388b9cb8e4770f132375ecb2085b732335950",
+  "prompts": {
+    "94129b03712af7a6": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_2fe0a7de2ffeolmRBqYY1IOvu6",
+        "model": "anthropic/claude-haiku-4-5"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>",
+      "messages": [],
+      "total_additions": 25,
+      "total_deletions": 15,
+      "accepted_lines": 10,
+      "overriden_lines": 0
+    }
+  }
+}
