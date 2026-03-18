@@ -19,12 +19,12 @@ _GENERAL_DICT_ADAPTER = TypeAdapter(dict[str, t.Primitives])
 
 
 @pytest.fixture(scope="session")
-def docker_control() -> FlextTestsDocker:
-    """Provide FlextTestsDocker instance for container management."""
-    return FlextTestsDocker()
+def docker_control() -> tk:
+    """Provide tk instance for container management."""
+    return tk()
 
 
-def shared_oracle_container(docker_control: FlextTestsDocker) -> Generator[str]:
+def shared_oracle_container(docker_control: tk) -> Generator[str]:
     """Start and maintain flext-oracle-db-test container.
 
     Container auto-starts if not running and remains running after tests.
