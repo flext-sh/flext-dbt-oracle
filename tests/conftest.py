@@ -13,7 +13,6 @@ from collections.abc import Generator
 
 import pytest
 from flext_core import t
-from flext_tests import FlextTestsDocker
 from pydantic import TypeAdapter, ValidationError
 
 _GENERAL_DICT_ADAPTER = TypeAdapter(dict[str, t.Primitives])
