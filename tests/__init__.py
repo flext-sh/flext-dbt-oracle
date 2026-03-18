@@ -43,7 +43,7 @@ if TYPE_CHECKING:
     from .constants import TestsFlextDbtOracleConstants, c
     from .models import TestsFlextDbtOracleModels, m, tm
     from .protocols import TestsFlextDbtOracleProtocols, p
-    from .typings import TestsFlextDbtOracleTypes, TestsFlextDbtOracleTypes as t
+    from .typings import TestsFlextDbtOracleTypes, t
     from .unit.test_basic import (
         test_adapter_initialization,
         test_adapter_type,
@@ -119,7 +119,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "pytest_configure": ("tests.conftest", "pytest_configure"),
     "set_test_environment": ("tests.conftest", "set_test_environment"),
     "shared_oracle_container": ("tests.conftest", "shared_oracle_container"),
-    "t": ("tests.typings", "TestsFlextDbtOracleTypes"),
+    "t": ("tests.typings", "t"),
     "test_adapter_initialization": (
         "tests.unit.test_basic",
         "test_adapter_initialization",
