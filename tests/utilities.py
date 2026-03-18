@@ -16,3 +16,4 @@ class TestsFlextDbtOracleUtilities(FlextTestsUtilities):
 
 
 u = TestsFlextDbtOracleUtilities
+__all__ = ["TestsFlextDbtOracleUtilities", "u"]

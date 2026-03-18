@@ -16,3 +16,4 @@ class TestsFlextDbtOracleConstants(FlextTestsConstants):
 
 
 c = TestsFlextDbtOracleConstants
+__all__ = ["TestsFlextDbtOracleConstants", "c"]

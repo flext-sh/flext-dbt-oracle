@@ -13,3 +13,7 @@ from flext_tests import FlextTestsTypes
 
 class TestsFlextDbtOracleTypes(FlextTestsTypes):
     """Test type aliases for flextdbtoracle."""
+
+
+t = TestsFlextDbtOracleTypes
+__all__ = ["TestsFlextDbtOracleTypes", "t"]
