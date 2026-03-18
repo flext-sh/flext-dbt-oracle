@@ -19,6 +19,10 @@ from flext_meltano import FlextMeltanoTypes
 
 from flext_dbt_oracle import c
 
+type ColumnSpec = dict[str, str]
+type OraclePayload = dict[str, object]
+type OraclePayloadList = list[dict[str, object]]
+
 
 class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     """DBT Oracle-specific type definitions extending t.
@@ -161,7 +165,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         type CursorAdapter = dict[str, str | int | t.ContainerValue]
         "Oracle cursor adapter type."
 
-    class Project(FlextDbOracleTypes.Project):
+    class Project:
         """DBT Oracle-specific project types.
 
         Adds DBT Oracle transformation-specific project types.
@@ -182,4 +186,10 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
 
 
 t = FlextDbtOracleTypes
-__all__ = ["FlextDbtOracleTypes", "t"]
+__all__ = [
+    "ColumnSpec",
+    "FlextDbtOracleTypes",
+    "OraclePayload",
+    "OraclePayloadList",
+    "t",
+]
