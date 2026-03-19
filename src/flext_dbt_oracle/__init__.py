@@ -26,15 +26,15 @@ if TYPE_CHECKING:
     )
     from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
     from flext_dbt_oracle.client import FlextDbtOracleClient
+    from flext_dbt_oracle.connections import (
+        OracleConnectionConfig,
+        build_oracle_connection_config,
+    )
     from flext_dbt_oracle.constants import FlextDbtOracleConstants, c
     from flext_dbt_oracle.models import FlextDbtOracleModels, m
     from flext_dbt_oracle.protocols import FlextDbtOracleProtocols, p
     from flext_dbt_oracle.services import FlextDbtOracleServices
-    from flext_dbt_oracle.settings import (
-        FlextDbtOracleSettings,
-        OracleConnectionConfig,
-        build_oracle_connection_config,
-    )
+    from flext_dbt_oracle.settings import FlextDbtOracleSettings
     from flext_dbt_oracle.simple_api import FlextDbtOracle
     from flext_dbt_oracle.typings import (
         ColumnSpec,
@@ -65,7 +65,10 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "flext_dbt_oracle.utilities",
         "FlextDbtOracleUtilities",
     ),
-    "OracleConnectionConfig": ("flext_dbt_oracle.settings", "OracleConnectionConfig"),
+    "OracleConnectionConfig": (
+        "flext_dbt_oracle.connections",
+        "OracleConnectionConfig",
+    ),
     "OraclePayload": ("flext_dbt_oracle.typings", "OraclePayload"),
     "OraclePayloadList": ("flext_dbt_oracle.typings", "OraclePayloadList"),
     "OracleTableAdapter": ("flext_dbt_oracle.adapters", "OracleTableAdapter"),
@@ -80,7 +83,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "__version__": ("flext_dbt_oracle.__version__", "__version__"),
     "__version_info__": ("flext_dbt_oracle.__version__", "__version_info__"),
     "build_oracle_connection_config": (
-        "flext_dbt_oracle.settings",
+        "flext_dbt_oracle.connections",
         "build_oracle_connection_config",
     ),
     "c": ("flext_dbt_oracle.constants", "c"),
