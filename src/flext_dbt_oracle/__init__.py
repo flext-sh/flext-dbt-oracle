@@ -11,12 +11,7 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
-    from flext_db_oracle.decorators import d
-    from flext_db_oracle.exceptions import e
-    from flext_db_oracle.handlers import h
-    from flext_db_oracle.mixins import x
-    from flext_db_oracle.result import r
-    from flext_db_oracle.service import s
+    from flext_db_oracle import d, e, h, r, s, x
 
     from flext_dbt_oracle.__version__ import (
         __all__,
@@ -89,16 +84,16 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "build_oracle_connection_config",
     ),
     "c": ("flext_dbt_oracle.constants", "c"),
-    "d": ("flext_db_oracle.decorators", "d"),
-    "e": ("flext_db_oracle.exceptions", "e"),
-    "h": ("flext_db_oracle.handlers", "h"),
+    "d": ("flext_db_oracle", "d"),
+    "e": ("flext_db_oracle", "e"),
+    "h": ("flext_db_oracle", "h"),
     "m": ("flext_dbt_oracle.models", "m"),
     "p": ("flext_dbt_oracle.protocols", "p"),
-    "r": ("flext_db_oracle.result", "r"),
-    "s": ("flext_db_oracle.service", "s"),
+    "r": ("flext_db_oracle", "r"),
+    "s": ("flext_db_oracle", "s"),
     "t": ("flext_dbt_oracle.typings", "t"),
     "u": ("flext_dbt_oracle.utilities", "u"),
-    "x": ("flext_db_oracle.mixins", "x"),
+    "x": ("flext_db_oracle", "x"),
 }
 
 __all__ = [
