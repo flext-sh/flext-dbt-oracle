@@ -20,8 +20,8 @@ from flext_meltano import FlextMeltanoTypes
 from flext_dbt_oracle import c
 
 type ColumnSpec = dict[str, str]
-type OraclePayload = dict[str, object]
-type OraclePayloadList = list[dict[str, object]]
+type OraclePayload = dict[str, t.ContainerValue]
+type OraclePayloadList = list[dict[str, t.ContainerValue]]
 
 
 class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):

@@ -6,7 +6,7 @@ from typing import Annotated
 
 from pydantic import BaseModel, Field, SecretStr, field_validator
 
-from flext_dbt_oracle.constants import c
+from flext_dbt_oracle import c
 
 
 class OracleConnectionConfig(BaseModel):

@@ -5,13 +5,15 @@ from __future__ import annotations
 from collections.abc import Mapping
 from os import getenv
 
-from flext_core import t
 from pydantic import SecretStr, TypeAdapter, ValidationError
 
-from flext_dbt_oracle.client import FlextDbtOracleClient
-from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.services import FlextDbtOracleServices
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
+from flext_dbt_oracle import (
+    FlextDbtOracleClient,
+    FlextDbtOracleServices,
+    FlextDbtOracleSettings,
+    c,
+    t,
+)
 
 _TABLE_LIST_ADAPTER = TypeAdapter(list[t.Scalar])
 

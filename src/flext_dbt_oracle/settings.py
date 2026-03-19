@@ -14,11 +14,11 @@ from pydantic import (
 )
 
 # Re-export from connections.py to avoid duplication
-from flext_dbt_oracle.connections import (
+from flext_dbt_oracle import (
     OracleConnectionConfig,
     build_oracle_connection_config,
+    c,
 )
-from flext_dbt_oracle.constants import c
 
 
 class FlextDbtOracleSettings(BaseModel):

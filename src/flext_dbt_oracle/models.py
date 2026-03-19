@@ -4,13 +4,11 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from flext_core import FlextModels
-from flext_db_oracle.models import FlextDbOracleModels
+from flext_db_oracle import FlextDbOracleModels
 from flext_meltano import FlextMeltanoModels
 from pydantic import Field
 
-from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.typings import ColumnSpec
+from flext_dbt_oracle import ColumnSpec, c
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
@@ -23,7 +21,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
     class DbtOracle:
         """DbtOracle domain namespace."""
 
-        class Model(FlextModels.Value):
+        class Model(FlextDbOracleModels.Value):
             """Typed DBT model metadata payload."""
 
             name: str
