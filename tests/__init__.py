@@ -40,10 +40,16 @@ if TYPE_CHECKING:
         set_test_environment,
         shared_oracle_container,
     )
-    from .constants import TestsFlextDbtOracleConstants, c
-    from .models import TestsFlextDbtOracleModels, m, tm
-    from .protocols import TestsFlextDbtOracleProtocols, p
-    from .typings import TestsFlextDbtOracleTypes, t
+    from .constants import (
+        TestsFlextDbtOracleConstants,
+        TestsFlextDbtOracleConstants as c,
+    )
+    from .models import TestsFlextDbtOracleModels, TestsFlextDbtOracleModels as m, tm
+    from .protocols import (
+        TestsFlextDbtOracleProtocols,
+        TestsFlextDbtOracleProtocols as p,
+    )
+    from .typings import TestsFlextDbtOracleTypes, TestsFlextDbtOracleTypes as t
     from .unit.test_basic import (
         test_adapter_initialization,
         test_adapter_type,
@@ -64,7 +70,10 @@ if TYPE_CHECKING:
         test_basic_functionality,
         test_flext_dbt_oracle_imports,
     )
-    from .utilities import TestsFlextDbtOracleUtilities, u
+    from .utilities import (
+        TestsFlextDbtOracleUtilities,
+        TestsFlextDbtOracleUtilities as u,
+    )
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "MockConnectionManager": ("tests.conftest", "MockConnectionManager"),
@@ -94,7 +103,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "TestsFlextDbtOracleProtocols": ("tests.protocols", "TestsFlextDbtOracleProtocols"),
     "TestsFlextDbtOracleTypes": ("tests.typings", "TestsFlextDbtOracleTypes"),
     "TestsFlextDbtOracleUtilities": ("tests.utilities", "TestsFlextDbtOracleUtilities"),
-    "c": ("tests.constants", "c"),
+    "c": ("tests.constants", "TestsFlextDbtOracleConstants"),
     "dbt_error_scenarios": ("tests.conftest", "dbt_error_scenarios"),
     "dbt_macro_definitions": ("tests.conftest", "dbt_macro_definitions"),
     "dbt_model_definitions": ("tests.conftest", "dbt_model_definitions"),
@@ -105,7 +114,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "dbt_test_config": ("tests.conftest", "dbt_test_config"),
     "dbt_test_definitions": ("tests.conftest", "dbt_test_definitions"),
     "docker_control": ("tests.conftest", "docker_control"),
-    "m": ("tests.models", "m"),
+    "m": ("tests.models", "TestsFlextDbtOracleModels"),
     "mock_dbt_oracle_adapter": ("tests.conftest", "mock_dbt_oracle_adapter"),
     "mock_dbt_runner": ("tests.conftest", "mock_dbt_runner"),
     "oracle_adapter_config": ("tests.conftest", "oracle_adapter_config"),
@@ -114,12 +123,12 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "oracle_shared_container_environment",
     ),
     "oracle_sql_queries": ("tests.conftest", "oracle_sql_queries"),
-    "p": ("tests.protocols", "p"),
+    "p": ("tests.protocols", "TestsFlextDbtOracleProtocols"),
     "performance_test_config": ("tests.conftest", "performance_test_config"),
     "pytest_configure": ("tests.conftest", "pytest_configure"),
     "set_test_environment": ("tests.conftest", "set_test_environment"),
     "shared_oracle_container": ("tests.conftest", "shared_oracle_container"),
-    "t": ("tests.typings", "t"),
+    "t": ("tests.typings", "TestsFlextDbtOracleTypes"),
     "test_adapter_initialization": (
         "tests.unit.test_basic",
         "test_adapter_initialization",
@@ -133,7 +142,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "test_flext_dbt_oracle_imports",
     ),
     "tm": ("tests.models", "tm"),
-    "u": ("tests.utilities", "u"),
+    "u": ("tests.utilities", "TestsFlextDbtOracleUtilities"),
     "unit": ("tests.unit", ""),
 }
 
