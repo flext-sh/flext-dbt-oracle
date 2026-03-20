@@ -30,20 +30,29 @@ if TYPE_CHECKING:
         OracleConnectionConfig,
         build_oracle_connection_config,
     )
-    from flext_dbt_oracle.constants import FlextDbtOracleConstants, c
-    from flext_dbt_oracle.models import FlextDbtOracleModels, m
-    from flext_dbt_oracle.protocols import FlextDbtOracleProtocols, p
+    from flext_dbt_oracle.constants import (
+        FlextDbtOracleConstants,
+        FlextDbtOracleConstants as c,
+    )
+    from flext_dbt_oracle.models import FlextDbtOracleModels, FlextDbtOracleModels as m
+    from flext_dbt_oracle.protocols import (
+        FlextDbtOracleProtocols,
+        FlextDbtOracleProtocols as p,
+    )
     from flext_dbt_oracle.services import FlextDbtOracleServices
     from flext_dbt_oracle.settings import FlextDbtOracleSettings
     from flext_dbt_oracle.simple_api import FlextDbtOracle
     from flext_dbt_oracle.typings import (
         ColumnSpec,
         FlextDbtOracleTypes,
+        FlextDbtOracleTypes as t,
         OraclePayload,
         OraclePayloadList,
-        t,
     )
-    from flext_dbt_oracle.utilities import FlextDbtOracleUtilities, u
+    from flext_dbt_oracle.utilities import (
+        FlextDbtOracleUtilities,
+        FlextDbtOracleUtilities as u,
+    )
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "ColumnSpec": ("flext_dbt_oracle.typings", "ColumnSpec"),
@@ -86,16 +95,16 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "flext_dbt_oracle.connections",
         "build_oracle_connection_config",
     ),
-    "c": ("flext_dbt_oracle.constants", "c"),
+    "c": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
     "d": ("flext_db_oracle", "d"),
     "e": ("flext_db_oracle", "e"),
     "h": ("flext_db_oracle", "h"),
-    "m": ("flext_dbt_oracle.models", "m"),
-    "p": ("flext_dbt_oracle.protocols", "p"),
+    "m": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
+    "p": ("flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"),
     "r": ("flext_db_oracle", "r"),
     "s": ("flext_db_oracle", "s"),
-    "t": ("flext_dbt_oracle.typings", "t"),
-    "u": ("flext_dbt_oracle.utilities", "u"),
+    "t": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
+    "u": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
     "x": ("flext_db_oracle", "x"),
 }
 
