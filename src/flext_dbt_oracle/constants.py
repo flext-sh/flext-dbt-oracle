@@ -21,7 +21,7 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
     class Oracle:
         """Oracle connection defaults."""
 
-        DEFAULT_HOST: Final[str] = FlextDbOracleConstants.Network.LOCALHOST
+        DEFAULT_HOST: Final[str] = FlextDbOracleConstants.LOCALHOST
         DEFAULT_PORT: Final[int] = 1521
         DEFAULT_SERVICE_NAME: Final[str] = "XEPDB1"
         DEFAULT_PROTOCOL: Final[str] = "tcp"
