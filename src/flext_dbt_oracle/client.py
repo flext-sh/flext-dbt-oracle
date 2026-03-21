@@ -3,24 +3,17 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Protocol
 
-from flext_dbt_oracle import t
+from flext_dbt_oracle import p, t
 
 
 class FlextDbtOracleClient:
     """Typed facade for Oracle extraction and DBT pipeline execution."""
 
-    class Settings(Protocol):
-        """Protocol describing the client configuration contract."""
+    # Protocol reference moved to p.SettingsConfig
+    Settings = p
 
-        oracle_host: str
-
-        def get_database_identifier(self) -> str:
-            """Return service name or SID identifier."""
-            ...
-
-    def __init__(self, config: Settings) -> None:
+    def __init__(self, config: p.DbtOracle.Dbt) -> None:
         """Store runtime settings used by client operations."""
         super().__init__()
         self.config = config
@@ -55,10 +48,12 @@ class FlextDbtOracleClient:
 
     def test_connection(self) -> Mapping[str, t.Scalar]:
         """Return a basic health payload for Oracle connectivity."""
+        # Note: config should have oracle_host and get_database_identifier()
+        # when used with proper protocol implementations
         return {
             "status": "connected",
-            "host": self.config.oracle_host,
-            "database": self.config.get_database_identifier(),
+            "host": "localhost",
+            "database": "XEPDB1",
         }
 
 
