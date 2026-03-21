@@ -14,13 +14,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Annotated
+from typing import Annotated
 
 from annotated_types import Ge, Gt
 from flext_meltano import FlextMeltanoTypes
-
-if TYPE_CHECKING:
-    from flext_dbt_oracle import c
 
 type ColumnSpec = dict[str, str]
 type OraclePayload = dict[str, str | int | float | bool | None]
