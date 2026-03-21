@@ -50,24 +50,19 @@ if TYPE_CHECKING:
         TestsFlextDbtOracleProtocols as p,
     )
     from .typings import TestsFlextDbtOracleTypes, TestsFlextDbtOracleTypes as t
-    from .unit.test_basic import (
-        test_adapter_initialization,
-        test_adapter_type,
-        test_basic_import,
-        test_credentials_class,
-    )
-    from .unit.test_config import (
+    from .unit import (
+        TestBuildOracleConnectionConfig,
         TestConfigConstantsUsage,
         TestConfigEdgeCases,
         TestFlextDbtOracleSettings,
-    )
-    from .unit.test_connections import (
-        TestBuildOracleConnectionConfig,
         TestOracleConnectionConfig,
-    )
-    from .unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
-    from .unit.test_imports import (
+        TestOracleTableAdapter,
+        TestOracleTableFactory,
+        test_adapter_initialization,
+        test_adapter_type,
         test_basic_functionality,
+        test_basic_import,
+        test_credentials_class,
         test_flext_dbt_oracle_imports,
     )
     from .utilities import (
@@ -83,21 +78,15 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "MockRelationManager": ("tests.conftest", "MockRelationManager"),
     "MockSqlExecutor": ("tests.conftest", "MockSqlExecutor"),
     "TestBuildOracleConnectionConfig": (
-        "tests.unit.test_connections",
+        "tests.unit",
         "TestBuildOracleConnectionConfig",
     ),
-    "TestConfigConstantsUsage": ("tests.unit.test_config", "TestConfigConstantsUsage"),
-    "TestConfigEdgeCases": ("tests.unit.test_config", "TestConfigEdgeCases"),
-    "TestFlextDbtOracleSettings": (
-        "tests.unit.test_config",
-        "TestFlextDbtOracleSettings",
-    ),
-    "TestOracleConnectionConfig": (
-        "tests.unit.test_connections",
-        "TestOracleConnectionConfig",
-    ),
-    "TestOracleTableAdapter": ("tests.unit.test_impl", "TestOracleTableAdapter"),
-    "TestOracleTableFactory": ("tests.unit.test_impl", "TestOracleTableFactory"),
+    "TestConfigConstantsUsage": ("tests.unit", "TestConfigConstantsUsage"),
+    "TestConfigEdgeCases": ("tests.unit", "TestConfigEdgeCases"),
+    "TestFlextDbtOracleSettings": ("tests.unit", "TestFlextDbtOracleSettings"),
+    "TestOracleConnectionConfig": ("tests.unit", "TestOracleConnectionConfig"),
+    "TestOracleTableAdapter": ("tests.unit", "TestOracleTableAdapter"),
+    "TestOracleTableFactory": ("tests.unit", "TestOracleTableFactory"),
     "TestsFlextDbtOracleConstants": ("tests.constants", "TestsFlextDbtOracleConstants"),
     "TestsFlextDbtOracleModels": ("tests.models", "TestsFlextDbtOracleModels"),
     "TestsFlextDbtOracleProtocols": ("tests.protocols", "TestsFlextDbtOracleProtocols"),
@@ -129,18 +118,12 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "set_test_environment": ("tests.conftest", "set_test_environment"),
     "shared_oracle_container": ("tests.conftest", "shared_oracle_container"),
     "t": ("tests.typings", "TestsFlextDbtOracleTypes"),
-    "test_adapter_initialization": (
-        "tests.unit.test_basic",
-        "test_adapter_initialization",
-    ),
-    "test_adapter_type": ("tests.unit.test_basic", "test_adapter_type"),
-    "test_basic_functionality": ("tests.unit.test_imports", "test_basic_functionality"),
-    "test_basic_import": ("tests.unit.test_basic", "test_basic_import"),
-    "test_credentials_class": ("tests.unit.test_basic", "test_credentials_class"),
-    "test_flext_dbt_oracle_imports": (
-        "tests.unit.test_imports",
-        "test_flext_dbt_oracle_imports",
-    ),
+    "test_adapter_initialization": ("tests.unit", "test_adapter_initialization"),
+    "test_adapter_type": ("tests.unit", "test_adapter_type"),
+    "test_basic_functionality": ("tests.unit", "test_basic_functionality"),
+    "test_basic_import": ("tests.unit", "test_basic_import"),
+    "test_credentials_class": ("tests.unit", "test_credentials_class"),
+    "test_flext_dbt_oracle_imports": ("tests.unit", "test_flext_dbt_oracle_imports"),
     "tm": ("tests.models", "tm"),
     "u": ("tests.utilities", "TestsFlextDbtOracleUtilities"),
     "unit": ("tests.unit", ""),
