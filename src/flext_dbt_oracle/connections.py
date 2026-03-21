@@ -4,38 +4,32 @@ from __future__ import annotations
 
 from typing import Annotated
 
+from annotated_types import Ge
 from pydantic import BaseModel, Field, SecretStr, field_validator
 
 from flext_dbt_oracle.constants import FlextDbtOracleConstants as c
-from flext_dbt_oracle.typings import FlextDbtOracleTypes as t
+
+_PortNumber = Annotated[int, Ge(1)]
 
 
 class OracleConnectionConfig(BaseModel):
     """Configuration for Oracle database connections."""
 
-    host: Annotated[
-        str, Field(default=c.Oracle.DEFAULT_HOST, description="Oracle database host")
-    ]
-    port: Annotated[
-        t.PortNumber,
-        Field(default=c.Oracle.DEFAULT_PORT, description="Oracle database port"),
-    ]
-    username: Annotated[str, Field(default="", description="Oracle database username")]
-    password: Annotated[
-        str | SecretStr,
-        Field(default=SecretStr(""), description="Oracle database password"),
-    ]
-    service_name: Annotated[
-        str,
-        Field(default=c.Oracle.DEFAULT_SERVICE_NAME, description="Oracle service name"),
-    ]
-    sid: Annotated[str | None, Field(default=None, description="Oracle SID (optional)")]
-    protocol: Annotated[
-        str,
-        Field(
-            default=c.Oracle.DEFAULT_PROTOCOL, description="Oracle connection protocol"
-        ),
-    ]
+    host: str = Field(default=c.Oracle.DEFAULT_HOST, description="Oracle database host")
+    port: _PortNumber = Field(
+        default=c.Oracle.DEFAULT_PORT, description="Oracle database port"
+    )
+    username: str = Field(default="", description="Oracle database username")
+    password: str | SecretStr = Field(
+        default=SecretStr(""), description="Oracle database password"
+    )
+    service_name: str = Field(
+        default=c.Oracle.DEFAULT_SERVICE_NAME, description="Oracle service name"
+    )
+    sid: str | None = Field(default=None, description="Oracle SID (optional)")
+    protocol: str = Field(
+        default=c.Oracle.DEFAULT_PROTOCOL, description="Oracle connection protocol"
+    )
 
     @field_validator("password", mode="before")
     @classmethod

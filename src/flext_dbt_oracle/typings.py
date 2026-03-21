@@ -14,9 +14,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Annotated
-
-from annotated_types import Ge, Gt
 from flext_meltano import FlextMeltanoTypes
 
 type ColumnSpec = dict[str, str]
@@ -31,18 +28,6 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
     Contains ONLY complex DBT Oracle-specific types, no simple aliases.
     Uses Python 3.13+ type syntax and patterns.
     """
-
-    # -- validation constraints -----------------------------------------------
-    type PositiveInt = Annotated[int, Gt(0)]
-    "Positive integer (> 0)."
-    type NonNegativeInt = Annotated[int, Ge(0)]
-    "Non-negative integer (>= 0)."
-    type PositiveFloat = Annotated[float, Gt(0.0)]
-    "Positive float (> 0.0)."
-    type NonNegativeFloat = Annotated[float, Ge(0.0)]
-    "Non-negative float (>= 0.0)."
-    type PortNumber = Annotated[int, Ge(1)]
-    "Port number (>= 1)."
 
     class DbtOracle:
         """DBT Oracle project complex types.

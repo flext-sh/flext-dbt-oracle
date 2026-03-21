@@ -6,7 +6,8 @@ from collections.abc import Mapping
 
 from pydantic import BaseModel, Field
 
-from flext_dbt_oracle import ColumnSpec, c
+from flext_dbt_oracle.constants import FlextDbtOracleConstants as c
+from flext_dbt_oracle.typings import ColumnSpec
 
 
 class FlextDbtOracleModels(BaseModel):
@@ -30,8 +31,8 @@ class FlextDbtOracleModels(BaseModel):
             sql_content: str
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: list[ColumnSpec] = Field(default_factory=list)
-            dependencies: list[str] = Field(default_factory=list)
+            columns: list[ColumnSpec] = Field(default=[])
+            dependencies: list[str] = Field(default=[])
 
         class ModelGenerator:
             """Helper for generating deterministic staging model metadata."""

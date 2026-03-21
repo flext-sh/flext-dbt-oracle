@@ -313,7 +313,7 @@ class TestConfigEdgeCases:
         assert config.pool_min_size == 1
         assert config.pool_max_size == 50
         assert config.query_timeout == 600
-        assert config.retry_delay_seconds == pytest.approx(0.5)
+        assert abs(config.retry_delay_seconds - 0.5) < 1e-9
 
     def test_config_materialization_validation_all_valid_types(self) -> None:
         """Test all valid materialization types."""
