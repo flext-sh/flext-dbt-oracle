@@ -14,23 +14,38 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_db_oracle import FlextDbOracleTypes
+from typing import TYPE_CHECKING, Annotated
+
+from annotated_types import Ge, Gt
 from flext_meltano import FlextMeltanoTypes
 
-from flext_dbt_oracle import c
+if TYPE_CHECKING:
+    from flext_dbt_oracle import c
 
 type ColumnSpec = dict[str, str]
-type OraclePayload = dict[str, t.ContainerValue]
-type OraclePayloadList = list[dict[str, t.ContainerValue]]
+type OraclePayload = dict[str, str | int | float | bool | None]
+type OraclePayloadList = list[OraclePayload]
 
 
-class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
+class FlextDbtOracleTypes(FlextMeltanoTypes):
     """DBT Oracle-specific type definitions extending t.
 
     Domain-specific type system for DBT Oracle data transformation operations.
     Contains ONLY complex DBT Oracle-specific types, no simple aliases.
     Uses Python 3.13+ type syntax and patterns.
     """
+
+    # -- validation constraints -----------------------------------------------
+    type PositiveInt = Annotated[int, Gt(0)]
+    "Positive integer (> 0)."
+    type NonNegativeInt = Annotated[int, Ge(0)]
+    "Non-negative integer (>= 0)."
+    type PositiveFloat = Annotated[float, Gt(0.0)]
+    "Positive float (> 0.0)."
+    type NonNegativeFloat = Annotated[float, Ge(0.0)]
+    "Non-negative float (>= 0.0)."
+    type PortNumber = Annotated[int, Ge(1)]
+    "Port number (>= 1)."
 
     class DbtOracle:
         """DBT Oracle project complex types.
@@ -173,7 +188,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         DBT Oracle domain owns Oracle data transformation-specific types.
         """
 
-        type DbtOracleProjectType = c.DbtOracleProjectType
+        type DbtOracleProjectType = object  # type: ignore[assignment]
         "DBT Oracle project type literal."
         type DbtOracleProjectConfig = dict[str, t.ContainerValue]
         "DBT Oracle project configuration type."

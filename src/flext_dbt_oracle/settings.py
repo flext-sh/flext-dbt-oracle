@@ -14,11 +14,12 @@ from pydantic import (
 )
 
 # Re-export from connections.py to avoid duplication
-from flext_dbt_oracle import (
+from flext_dbt_oracle.connections import (
     OracleConnectionConfig,
     build_oracle_connection_config,
-    c,
 )
+from flext_dbt_oracle.constants import FlextDbtOracleConstants as c
+from flext_dbt_oracle.typings import FlextDbtOracleTypes as t
 
 
 class FlextDbtOracleSettings(BaseModel):
@@ -48,11 +49,10 @@ class FlextDbtOracleSettings(BaseModel):
         ),
     ]
     oracle_port: Annotated[
-        int,
+        t.PortNumber,
         Field(
             default=c.Oracle.DEFAULT_PORT,
             alias="port",
-            ge=1,
             description="Oracle database port",
         ),
     ]
@@ -128,36 +128,36 @@ class FlextDbtOracleSettings(BaseModel):
 
     # Connection pool settings
     pool_min_size: Annotated[
-        int, Field(default=1, ge=1, description="Minimum pool size")
+        t.PositiveInt, Field(default=1, description="Minimum pool size")
     ]
     pool_max_size: Annotated[
-        int, Field(default=10, ge=1, description="Maximum pool size")
+        t.PositiveInt, Field(default=10, description="Maximum pool size")
     ]
     pool_increment: Annotated[
-        int, Field(default=1, ge=1, description="Pool increment size")
+        t.PositiveInt, Field(default=1, description="Pool increment size")
     ]
 
     # Performance settings
     query_timeout: Annotated[
-        int, Field(default=300, ge=1, description="Query timeout in seconds")
+        t.PositiveInt, Field(default=300, description="Query timeout in seconds")
     ]
     fetch_size: Annotated[
-        int, Field(default=1000, ge=1, description="Fetch batch size")
+        t.PositiveInt, Field(default=1000, description="Fetch batch size")
     ]
     connect_timeout: Annotated[
-        int, Field(default=30, ge=1, description="Connection timeout in seconds")
+        t.PositiveInt, Field(default=30, description="Connection timeout in seconds")
     ]
     retry_attempts: Annotated[
-        int, Field(default=3, ge=0, description="Number of retry attempts")
+        t.NonNegativeInt, Field(default=3, description="Number of retry attempts")
     ]
     retry_delay: Annotated[
-        int, Field(default=1, ge=0, description="Delay between retries in seconds")
+        t.NonNegativeInt,
+        Field(default=1, description="Delay between retries in seconds"),
     ]
     retry_delay_seconds: Annotated[
-        float,
+        t.NonNegativeFloat,
         Field(
             default=1.0,
-            ge=0,
             description="Delay between retries in seconds",
         ),
     ]

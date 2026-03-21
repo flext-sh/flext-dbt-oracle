@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Annotated
+from typing import Annotated, TYPE_CHECKING
 
 from pydantic import BaseModel, Field, SecretStr, field_validator
 
-from flext_dbt_oracle import c
+from flext_dbt_oracle.constants import FlextDbtOracleConstants as c
+from flext_dbt_oracle.typings import FlextDbtOracleTypes as t
 
 
 class OracleConnectionConfig(BaseModel):
@@ -16,8 +17,8 @@ class OracleConnectionConfig(BaseModel):
         str, Field(default=c.Oracle.DEFAULT_HOST, description="Oracle database host")
     ]
     port: Annotated[
-        int,
-        Field(default=c.Oracle.DEFAULT_PORT, ge=1, description="Oracle database port"),
+        t.PortNumber,
+        Field(default=c.Oracle.DEFAULT_PORT, description="Oracle database port"),
     ]
     username: Annotated[str, Field(default="", description="Oracle database username")]
     password: Annotated[
