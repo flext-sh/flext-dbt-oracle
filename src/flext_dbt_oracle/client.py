@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from flext_dbt_oracle import p, t
+from flext_dbt_oracle.models import FlextDbtOracleModels
 
 
 class FlextDbtOracleClient:
@@ -13,7 +14,7 @@ class FlextDbtOracleClient:
     # Protocol reference moved to p.SettingsConfig
     Settings = p
 
-    def __init__(self, config: p.DbtOracle.Dbt) -> None:
+    def __init__(self, config: FlextDbtOracleModels.FlextDbtOracleSettings) -> None:
         """Store runtime settings used by client operations."""
         super().__init__()
         self.config = config
