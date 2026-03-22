@@ -81,7 +81,7 @@ def set_test_environment() -> Generator[None]:
 
 
 @pytest.fixture
-def dbt_oracle_profile() -> dict[str, object]:
+def dbt_oracle_profile() -> dict[str, t.NormalizedValue]:
     """Dbt Oracle profile configuration for testing."""
     return {
         "config": {
@@ -124,7 +124,7 @@ def dbt_oracle_profile() -> dict[str, object]:
 
 
 @pytest.fixture
-def dbt_project_config() -> dict[str, object]:
+def dbt_project_config() -> dict[str, t.NormalizedValue]:
     """Dbt project configuration for testing."""
     return {
         "name": "flext_dbt_oracle_test",
@@ -154,7 +154,7 @@ def dbt_project_config() -> dict[str, object]:
 
 
 @pytest.fixture
-def oracle_adapter_config() -> dict[str, object]:
+def oracle_adapter_config() -> dict[str, t.NormalizedValue]:
     """Oracle adapter configuration for testing."""
     return {
         "type": "oracle",
@@ -208,7 +208,7 @@ def dbt_test_definitions() -> dict[str, str]:
 
 
 @pytest.fixture
-def dbt_source_definitions() -> dict[str, object]:
+def dbt_source_definitions() -> dict[str, t.NormalizedValue]:
     """Dbt source definitions for testing."""
     return {
         "version": 2,
@@ -272,7 +272,7 @@ def oracle_sql_queries() -> dict[str, str]:
 
 
 @pytest.fixture
-def dbt_run_config() -> dict[str, object]:
+def dbt_run_config() -> dict[str, t.NormalizedValue]:
     """Dbt run configuration for testing."""
     return {
         "threads": 4,
@@ -285,7 +285,7 @@ def dbt_run_config() -> dict[str, object]:
 
 
 @pytest.fixture
-def dbt_test_config() -> dict[str, object]:
+def dbt_test_config() -> dict[str, t.NormalizedValue]:
     """Dbt test configuration for testing."""
     return {
         "threads": 2,
@@ -298,7 +298,7 @@ def dbt_test_config() -> dict[str, object]:
 
 
 @pytest.fixture
-def performance_test_config() -> dict[str, object]:
+def performance_test_config() -> dict[str, t.NormalizedValue]:
     """Performance test configuration."""
     return {
         "large_table_rows": 100000,
@@ -310,7 +310,7 @@ def performance_test_config() -> dict[str, object]:
 
 
 @pytest.fixture
-def dbt_error_scenarios() -> list[dict[str, object]]:
+def dbt_error_scenarios() -> list[dict[str, t.NormalizedValue]]:
     """Dbt error scenarios for testing."""
     return [
         {
@@ -359,13 +359,13 @@ class MockConnectionManager:
     def __init__(self) -> None:
         """Initialize connection manager."""
         super().__init__()
-        self.connections: dict[str, dict[str, object]] = {}
+        self.connections: dict[str, dict[str, t.NormalizedValue]] = {}
 
     def open_connection(
-        self, name: str, config: dict[str, object]
-    ) -> dict[str, object]:
+        self, name: str, config: dict[str, t.NormalizedValue]
+    ) -> dict[str, t.NormalizedValue]:
         """Open database connection."""
-        connection: dict[str, object] = {
+        connection: dict[str, t.NormalizedValue] = {
             "name": name,
             "state": "open",
             "handle": f"mock_handle_{name}",
@@ -403,7 +403,9 @@ class MockSqlExecutor:
 class MockModelCompiler:
     """Strategy for model compilation (Single Responsibility Principle)."""
 
-    def compile_model(self, model_sql: str, context: dict[str, object]) -> str:
+    def compile_model(
+        self, model_sql: str, context: dict[str, t.NormalizedValue]
+    ) -> str:
         """Compile dbt model SQL."""
         compiled = model_sql
         vars_value = context.get("vars", {})
@@ -442,17 +444,17 @@ class MockRelationManager:
 class MockDbtOracleAdapter:
     """Simplified adapter using composition and Strategy Pattern."""
 
-    def __init__(self, config: dict[str, object]) -> None:
+    def __init__(self, config: dict[str, t.NormalizedValue]) -> None:
         """Initialize the instance."""
         super().__init__()
         self.config = config
-        self.compiled_models: dict[str, object] = {}
+        self.compiled_models: dict[str, t.NormalizedValue] = {}
         self.connection_manager = MockConnectionManager()
         self.sql_executor = MockSqlExecutor()
         self.model_compiler = MockModelCompiler()
         self.relation_manager = MockRelationManager()
 
-    def open_connection(self, name: str) -> dict[str, object]:
+    def open_connection(self, name: str) -> dict[str, t.NormalizedValue]:
         """Delegate to connection manager strategy."""
         return self.connection_manager.open_connection(name, self.config)
 
@@ -466,7 +468,9 @@ class MockDbtOracleAdapter:
         """Delegate to SQL executor strategy."""
         return self.sql_executor.execute(sql, auto_begin=auto_begin)
 
-    def compile_model(self, model_sql: str, context: dict[str, object]) -> str:
+    def compile_model(
+        self, model_sql: str, context: dict[str, t.NormalizedValue]
+    ) -> str:
         """Delegate to model compiler strategy."""
         return self.model_compiler.compile_model(model_sql, context)
 
@@ -495,14 +499,16 @@ class MockDbtRunner:
         super().__init__()
         self.project_dir = project_dir
         self.profiles_dir = profiles_dir
-        self.results: dict[str, object] = {}
+        self.results: dict[str, t.NormalizedValue] = {}
 
-    def run_models(self, models: list[str] | None = None) -> dict[str, object]:
+    def run_models(
+        self, models: list[str] | None = None
+    ) -> dict[str, t.NormalizedValue]:
         """Run dbt models."""
-        results: list[dict[str, object]] = []
+        results: list[dict[str, t.NormalizedValue]] = []
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
-            result: dict[str, object] = {
+            result: dict[str, t.NormalizedValue] = {
                 "unique_id": f"model.test.{model}",
                 "status": "success",
                 "execution_time": 2.5,
@@ -511,13 +517,15 @@ class MockDbtRunner:
             results.append(result)
         return {"results": results, "elapsed_time": 10.5}
 
-    def run_tests(self, models: list[str] | None = None) -> dict[str, object]:
+    def run_tests(
+        self, models: list[str] | None = None
+    ) -> dict[str, t.NormalizedValue]:
         """Run dbt tests."""
         _ = models
-        results: list[dict[str, object]] = []
+        results: list[dict[str, t.NormalizedValue]] = []
         tests = ["test_unique_customer_id", "test_not_null_order_id"]
         for test in tests:
-            result: dict[str, object] = {
+            result: dict[str, t.NormalizedValue] = {
                 "unique_id": f"test.test.{test}",
                 "status": "pass",
                 "execution_time": 1.2,
@@ -526,7 +534,7 @@ class MockDbtRunner:
             results.append(result)
         return {"results": results, "elapsed_time": 5.0}
 
-    def compile(self, models: list[str] | None = None) -> dict[str, object]:
+    def compile(self, models: list[str] | None = None) -> dict[str, t.NormalizedValue]:
         """Compile dbt models."""
         compiled: dict[str, str] = {}
         models = models or ["dim_customers", "fact_orders"]

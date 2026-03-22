@@ -21,7 +21,7 @@ def build_oracle_connection_config(
     port: int = c.Oracle.DEFAULT_PORT,
     protocol: str = c.Oracle.DEFAULT_PROTOCOL,
 ) -> OracleConnectionConfig:
-    """Create validated Oracle connection config object."""
+    """Create validated Oracle connection config t.NormalizedValue."""
     return OracleConnectionConfig(
         host=host,
         port=port,

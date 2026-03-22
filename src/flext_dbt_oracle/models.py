@@ -153,7 +153,7 @@ class FlextDbtOracleModels(BaseModel):
     class FlextDbtOracleSettings(BaseModel):
         """Configuration for DBT Oracle operations."""
 
-        model_config = ConfigDict(extra="ignore", populate_by_name=True)
+        model_config: ClassVar[ConfigDict] = ConfigDict(extra="ignore", populate_by_name=True)
 
         oracle_host: str = Field(
             default=c.Oracle.DEFAULT_HOST,
@@ -285,7 +285,7 @@ class FlextDbtOracleModels(BaseModel):
             }
 
         def to_oracle_config(self) -> FlextDbtOracleModels.OracleConnectionConfig:
-            """Convert to OracleConnectionConfig object."""
+            """Convert to OracleConnectionConfig t.NormalizedValue."""
             return FlextDbtOracleModels.OracleConnectionConfig(
                 host=self.oracle_host,
                 port=self.port,
