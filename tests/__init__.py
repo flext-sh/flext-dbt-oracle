@@ -11,6 +11,7 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
+    from flext_tests import d, e, h, r, s, x
 
     from . import unit as unit
     from .conftest import (
@@ -40,16 +41,10 @@ if TYPE_CHECKING:
         set_test_environment,
         shared_oracle_container,
     )
-    from .constants import (
-        TestsFlextDbtOracleConstants,
-        TestsFlextDbtOracleConstants as c,
-    )
-    from .models import TestsFlextDbtOracleModels, TestsFlextDbtOracleModels as m, tm
-    from .protocols import (
-        TestsFlextDbtOracleProtocols,
-        TestsFlextDbtOracleProtocols as p,
-    )
-    from .typings import TestsFlextDbtOracleTypes, TestsFlextDbtOracleTypes as t
+    from .constants import FlextDbtOracleTestConstants, FlextDbtOracleTestConstants as c
+    from .models import FlextDbtOracleTestModels, FlextDbtOracleTestModels as m
+    from .protocols import FlextDbtOracleTestProtocols, FlextDbtOracleTestProtocols as p
+    from .typings import FlextDbtOracleTestTypes, FlextDbtOracleTestTypes as t
     from .unit.test_basic import (
         test_adapter_initialization,
         test_adapter_type,
@@ -70,12 +65,14 @@ if TYPE_CHECKING:
         test_basic_functionality,
         test_flext_dbt_oracle_imports,
     )
-    from .utilities import (
-        TestsFlextDbtOracleUtilities,
-        TestsFlextDbtOracleUtilities as u,
-    )
+    from .utilities import FlextDbtOracleTestUtilities, FlextDbtOracleTestUtilities as u
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
+    "FlextDbtOracleTestConstants": ("tests.constants", "FlextDbtOracleTestConstants"),
+    "FlextDbtOracleTestModels": ("tests.models", "FlextDbtOracleTestModels"),
+    "FlextDbtOracleTestProtocols": ("tests.protocols", "FlextDbtOracleTestProtocols"),
+    "FlextDbtOracleTestTypes": ("tests.typings", "FlextDbtOracleTestTypes"),
+    "FlextDbtOracleTestUtilities": ("tests.utilities", "FlextDbtOracleTestUtilities"),
     "MockConnectionManager": ("tests.conftest", "MockConnectionManager"),
     "MockDbtOracleAdapter": ("tests.conftest", "MockDbtOracleAdapter"),
     "MockDbtRunner": ("tests.conftest", "MockDbtRunner"),
@@ -98,12 +95,8 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     ),
     "TestOracleTableAdapter": ("tests.unit.test_impl", "TestOracleTableAdapter"),
     "TestOracleTableFactory": ("tests.unit.test_impl", "TestOracleTableFactory"),
-    "TestsFlextDbtOracleConstants": ("tests.constants", "TestsFlextDbtOracleConstants"),
-    "TestsFlextDbtOracleModels": ("tests.models", "TestsFlextDbtOracleModels"),
-    "TestsFlextDbtOracleProtocols": ("tests.protocols", "TestsFlextDbtOracleProtocols"),
-    "TestsFlextDbtOracleTypes": ("tests.typings", "TestsFlextDbtOracleTypes"),
-    "TestsFlextDbtOracleUtilities": ("tests.utilities", "TestsFlextDbtOracleUtilities"),
-    "c": ("tests.constants", "TestsFlextDbtOracleConstants"),
+    "c": ("tests.constants", "FlextDbtOracleTestConstants"),
+    "d": ("flext_tests", "d"),
     "dbt_error_scenarios": ("tests.conftest", "dbt_error_scenarios"),
     "dbt_macro_definitions": ("tests.conftest", "dbt_macro_definitions"),
     "dbt_model_definitions": ("tests.conftest", "dbt_model_definitions"),
@@ -114,7 +107,9 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "dbt_test_config": ("tests.conftest", "dbt_test_config"),
     "dbt_test_definitions": ("tests.conftest", "dbt_test_definitions"),
     "docker_control": ("tests.conftest", "docker_control"),
-    "m": ("tests.models", "TestsFlextDbtOracleModels"),
+    "e": ("flext_tests", "e"),
+    "h": ("flext_tests", "h"),
+    "m": ("tests.models", "FlextDbtOracleTestModels"),
     "mock_dbt_oracle_adapter": ("tests.conftest", "mock_dbt_oracle_adapter"),
     "mock_dbt_runner": ("tests.conftest", "mock_dbt_runner"),
     "oracle_adapter_config": ("tests.conftest", "oracle_adapter_config"),
@@ -123,12 +118,14 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "oracle_shared_container_environment",
     ),
     "oracle_sql_queries": ("tests.conftest", "oracle_sql_queries"),
-    "p": ("tests.protocols", "TestsFlextDbtOracleProtocols"),
+    "p": ("tests.protocols", "FlextDbtOracleTestProtocols"),
     "performance_test_config": ("tests.conftest", "performance_test_config"),
     "pytest_configure": ("tests.conftest", "pytest_configure"),
+    "r": ("flext_tests", "r"),
+    "s": ("flext_tests", "s"),
     "set_test_environment": ("tests.conftest", "set_test_environment"),
     "shared_oracle_container": ("tests.conftest", "shared_oracle_container"),
-    "t": ("tests.typings", "TestsFlextDbtOracleTypes"),
+    "t": ("tests.typings", "FlextDbtOracleTestTypes"),
     "test_adapter_initialization": (
         "tests.unit.test_basic",
         "test_adapter_initialization",
@@ -141,12 +138,17 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "tests.unit.test_imports",
         "test_flext_dbt_oracle_imports",
     ),
-    "tm": ("tests.models", "tm"),
-    "u": ("tests.utilities", "TestsFlextDbtOracleUtilities"),
+    "u": ("tests.utilities", "FlextDbtOracleTestUtilities"),
     "unit": ("tests.unit", ""),
+    "x": ("flext_tests", "x"),
 }
 
 __all__ = [
+    "FlextDbtOracleTestConstants",
+    "FlextDbtOracleTestModels",
+    "FlextDbtOracleTestProtocols",
+    "FlextDbtOracleTestTypes",
+    "FlextDbtOracleTestUtilities",
     "MockConnectionManager",
     "MockDbtOracleAdapter",
     "MockDbtRunner",
@@ -160,12 +162,8 @@ __all__ = [
     "TestOracleConnectionConfig",
     "TestOracleTableAdapter",
     "TestOracleTableFactory",
-    "TestsFlextDbtOracleConstants",
-    "TestsFlextDbtOracleModels",
-    "TestsFlextDbtOracleProtocols",
-    "TestsFlextDbtOracleTypes",
-    "TestsFlextDbtOracleUtilities",
     "c",
+    "d",
     "dbt_error_scenarios",
     "dbt_macro_definitions",
     "dbt_model_definitions",
@@ -176,6 +174,8 @@ __all__ = [
     "dbt_test_config",
     "dbt_test_definitions",
     "docker_control",
+    "e",
+    "h",
     "m",
     "mock_dbt_oracle_adapter",
     "mock_dbt_runner",
@@ -185,6 +185,8 @@ __all__ = [
     "p",
     "performance_test_config",
     "pytest_configure",
+    "r",
+    "s",
     "set_test_environment",
     "shared_oracle_container",
     "t",
@@ -194,9 +196,9 @@ __all__ = [
     "test_basic_import",
     "test_credentials_class",
     "test_flext_dbt_oracle_imports",
-    "tm",
     "u",
     "unit",
+    "x",
 ]
 
 

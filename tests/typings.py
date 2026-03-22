@@ -1,6 +1,7 @@
-"""Module skeleton for TestsFlextDbtOracleTypes.
+"""Test type definitions for flext-dbt-oracle.
 
-Test type aliases for flextdbtoracle.
+Provides FlextDbtOracleTestTypes, combining FlextTestsTypes with
+FlextDbtOracleTypes for test-specific type definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -8,12 +9,14 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import t
+from flext_tests import FlextTestsTypes
+
+from flext_dbt_oracle import FlextDbtOracleTypes
 
 
-class TestsFlextDbtOracleTypes(t):
-    """Test type aliases for flextdbtoracle."""
+class FlextDbtOracleTestTypes(FlextTestsTypes, FlextDbtOracleTypes):
+    """Test types combining FlextTestsTypes with flext-dbt-oracle types."""
 
 
-t = TestsFlextDbtOracleTypes
-__all__ = ["TestsFlextDbtOracleTypes", "t"]
+t = FlextDbtOracleTestTypes
+__all__ = ["FlextDbtOracleTestTypes", "t"]

@@ -1,7 +1,7 @@
-"""Test models for flext-dbt-oracle tests.
+"""Test models for flext-dbt-oracle.
 
-Provides TestsFlextDbtOracleModels, extending m with flext-dbt-oracle-specific
-models using COMPOSITION INHERITANCE.
+Provides FlextDbtOracleTestModels, combining FlextTestsModels with
+FlextDbtOracleModels for test-specific model definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -9,38 +9,24 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import m
+from flext_tests import FlextTestsModels
 
 from flext_dbt_oracle.models import FlextDbtOracleModels
 
 
-class TestsFlextDbtOracleModels(m, FlextDbtOracleModels):
-    """Models for flext-dbt-oracle tests using COMPOSITION INHERITANCE.
+class FlextDbtOracleTestModels(FlextTestsModels, FlextDbtOracleModels):
+    """Test models combining FlextTestsModels with flext-dbt-oracle models."""
 
-    MANDATORY: Inherits from BOTH:
-    1. m - for test infrastructure (.Tests.*)
-    2. FlextDbtOracleModels - for domain models
-
-    Access patterns:
-    - tm.Tests.* (generic test models from m)
-    - tm.* (DBT Oracle domain models)
-    - m.* (production models via alternative alias)
-    """
-
-    class Tests(m.Tests):
+    class Tests(FlextTestsModels.Tests):
         """Project-specific test fixtures namespace."""
 
         class DbtOracle:
             """DBT Oracle-specific test fixtures."""
 
 
-# Short aliases per FLEXT convention
-tm = TestsFlextDbtOracleModels
+m = FlextDbtOracleTestModels
 
 __all__ = [
-    "TestsFlextDbtOracleModels",
+    "FlextDbtOracleTestModels",
     "m",
-    "tm",
 ]
-
-m = TestsFlextDbtOracleModels

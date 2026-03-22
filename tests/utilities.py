@@ -1,6 +1,7 @@
-"""Module skeleton for TestsFlextDbtOracleUtilities.
+"""Test utilities for flext-dbt-oracle.
 
-Test utilities for flextdbtoracle.
+Provides FlextDbtOracleTestUtilities, combining FlextTestsUtilities with
+FlextDbtOracleUtilities for test-specific utility definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -8,12 +9,14 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import u
+from flext_tests import FlextTestsUtilities
+
+from flext_dbt_oracle import FlextDbtOracleUtilities
 
 
-class TestsFlextDbtOracleUtilities(u):
-    """Test utilities for flextdbtoracle."""
+class FlextDbtOracleTestUtilities(FlextTestsUtilities, FlextDbtOracleUtilities):
+    """Test utilities combining FlextTestsUtilities with flext-dbt-oracle utilities."""
 
 
-u = TestsFlextDbtOracleUtilities
-__all__ = ["TestsFlextDbtOracleUtilities", "u"]
+u = FlextDbtOracleTestUtilities
+__all__ = ["FlextDbtOracleTestUtilities", "u"]
