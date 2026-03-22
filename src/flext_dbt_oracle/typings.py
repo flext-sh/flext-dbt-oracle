@@ -170,7 +170,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         DBT Oracle domain owns Oracle data transformation-specific types.
         """
 
-        type DbtOracleProjectType = object  # type: ignore[assignment]
+        type DbtOracleProjectType = object
         "DBT Oracle project type literal."
         type DbtOracleProjectConfig = dict[str, t.ContainerValue]
         "DBT Oracle project configuration type."
