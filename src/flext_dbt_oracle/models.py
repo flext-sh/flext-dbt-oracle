@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Annotated, Literal
+from typing import Annotated, ClassVar, Literal
 
 from annotated_types import Ge, Gt
 from pydantic import (
@@ -153,7 +153,9 @@ class FlextDbtOracleModels(BaseModel):
     class FlextDbtOracleSettings(BaseModel):
         """Configuration for DBT Oracle operations."""
 
-        model_config: ClassVar[ConfigDict] = ConfigDict(extra="ignore", populate_by_name=True)
+        model_config: ClassVar[ConfigDict] = ConfigDict(
+            extra="ignore", populate_by_name=True
+        )
 
         oracle_host: str = Field(
             default=c.Oracle.DEFAULT_HOST,
