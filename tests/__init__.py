@@ -13,8 +13,8 @@ if TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_tests import d, e, h, r, s, x
 
-    from . import unit as unit
-    from .conftest import (
+    from tests import unit
+    from tests.conftest import (
         MockConnectionManager,
         MockDbtOracleAdapter,
         MockDbtRunner,
@@ -41,31 +41,40 @@ if TYPE_CHECKING:
         set_test_environment,
         shared_oracle_container,
     )
-    from .constants import FlextDbtOracleTestConstants, FlextDbtOracleTestConstants as c
-    from .models import FlextDbtOracleTestModels, FlextDbtOracleTestModels as m
-    from .protocols import FlextDbtOracleTestProtocols, FlextDbtOracleTestProtocols as p
-    from .typings import FlextDbtOracleTestTypes, FlextDbtOracleTestTypes as t
-    from .unit.test_basic import (
+    from tests.constants import (
+        FlextDbtOracleTestConstants,
+        FlextDbtOracleTestConstants as c,
+    )
+    from tests.models import FlextDbtOracleTestModels, FlextDbtOracleTestModels as m
+    from tests.protocols import (
+        FlextDbtOracleTestProtocols,
+        FlextDbtOracleTestProtocols as p,
+    )
+    from tests.typings import FlextDbtOracleTestTypes, FlextDbtOracleTestTypes as t
+    from tests.unit.test_basic import (
         test_adapter_initialization,
         test_adapter_type,
         test_basic_import,
         test_credentials_class,
     )
-    from .unit.test_config import (
+    from tests.unit.test_config import (
         TestConfigConstantsUsage,
         TestConfigEdgeCases,
         TestFlextDbtOracleSettings,
     )
-    from .unit.test_connections import (
+    from tests.unit.test_connections import (
         TestBuildOracleConnectionConfig,
         TestOracleConnectionConfig,
     )
-    from .unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
-    from .unit.test_imports import (
+    from tests.unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
+    from tests.unit.test_imports import (
         test_basic_functionality,
         test_flext_dbt_oracle_imports,
     )
-    from .utilities import FlextDbtOracleTestUtilities, FlextDbtOracleTestUtilities as u
+    from tests.utilities import (
+        FlextDbtOracleTestUtilities,
+        FlextDbtOracleTestUtilities as u,
+    )
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextDbtOracleTestConstants": ("tests.constants", "FlextDbtOracleTestConstants"),
