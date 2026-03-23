@@ -9,14 +9,14 @@ from __future__ import annotations
 
 import os
 import tempfile
-from collections.abc import Generator
+from collections.abc import Generator, Mapping, Sequence
 
 import pytest
 from flext_core import t
 from flext_tests import tk
 from pydantic import TypeAdapter, ValidationError
 
-_GENERAL_DICT_ADAPTER = TypeAdapter(dict[str, t.Primitives])
+_GENERAL_DICT_ADAPTER = TypeAdapter(Mapping[str, t.Primitives])
 
 
 @pytest.fixture(scope="session")
@@ -81,7 +81,7 @@ def set_test_environment() -> Generator[None]:
 
 
 @pytest.fixture
-def dbt_oracle_profile() -> dict[str, t.NormalizedValue]:
+def dbt_oracle_profile() -> Mapping[str, t.NormalizedValue]:
     """Dbt Oracle profile configuration for testing."""
     return {
         "config": {
@@ -124,7 +124,7 @@ def dbt_oracle_profile() -> dict[str, t.NormalizedValue]:
 
 
 @pytest.fixture
-def dbt_project_config() -> dict[str, t.NormalizedValue]:
+def dbt_project_config() -> Mapping[str, t.NormalizedValue]:
     """Dbt project configuration for testing."""
     return {
         "name": "flext_dbt_oracle_test",
@@ -154,7 +154,7 @@ def dbt_project_config() -> dict[str, t.NormalizedValue]:
 
 
 @pytest.fixture
-def oracle_adapter_config() -> dict[str, t.NormalizedValue]:
+def oracle_adapter_config() -> Mapping[str, t.NormalizedValue]:
     """Oracle adapter configuration for testing."""
     return {
         "type": "oracle",
@@ -179,7 +179,7 @@ def oracle_adapter_config() -> dict[str, t.NormalizedValue]:
 
 
 @pytest.fixture
-def dbt_model_definitions() -> dict[str, str]:
+def dbt_model_definitions() -> Mapping[str, str]:
     """Dbt model SQL definitions for testing."""
     return {
         "staging_customers": "\n\n          {{ config(materialized='view') }}\n          SELECT\n              customer_id,\n              customer_name,\n              customer_email,\n              created_at,\n              updated_at\n          FROM {{ source('raw', 'customers') }}\n          WHERE customer_id IS NOT NULL\n      ",
@@ -189,7 +189,7 @@ def dbt_model_definitions() -> dict[str, str]:
 
 
 @pytest.fixture
-def dbt_macro_definitions() -> dict[str, str]:
+def dbt_macro_definitions() -> Mapping[str, str]:
     """Dbt macro definitions for testing."""
     return {
         "oracle_create_table_as": "\n\n          {% macro oracle_create_table_as(temporary, relation, sql) -%}\n              {% if temporary %}\n                  CREATE GLOBAL TEMPORARY TABLE {{ relation }}\n                  ON COMMIT PRESERVE ROWS\n                  AS (\n                      {{ sql }}\n                  )\n              {% else %}\n                  CREATE TABLE {{ relation }}\n                  {% if config.get('oracle', {}).get('tablespace') %}\n                      TABLESPACE {{ config.get('oracle', {}).get('tablespace') }}\n                  {% endif %}\n                  {% if config.get('oracle', {}).get('parallel') %}\n                      PARALLEL {{ config.get('oracle', {}).get('parallel') }}\n                  {% endif %}\n                  AS (\n                      {{ sql }}\n                  )\n              {% endif %}\n          {%- endmacro %}\n      ",
@@ -198,7 +198,7 @@ def dbt_macro_definitions() -> dict[str, str]:
 
 
 @pytest.fixture
-def dbt_test_definitions() -> dict[str, str]:
+def dbt_test_definitions() -> Mapping[str, str]:
     """Dbt test definitions for testing."""
     return {
         "test_unique_customer_id": "\n\n          SELECT customer_id, COUNT(*)\n          FROM {{ ref('dim_customers') }}\n          GROUP BY customer_id\n          HAVING COUNT(*) > 1\n      ",
@@ -208,7 +208,7 @@ def dbt_test_definitions() -> dict[str, str]:
 
 
 @pytest.fixture
-def dbt_source_definitions() -> dict[str, t.NormalizedValue]:
+def dbt_source_definitions() -> Mapping[str, t.NormalizedValue]:
     """Dbt source definitions for testing."""
     return {
         "version": 2,
@@ -260,7 +260,7 @@ def dbt_source_definitions() -> dict[str, t.NormalizedValue]:
 
 
 @pytest.fixture
-def oracle_sql_queries() -> dict[str, str]:
+def oracle_sql_queries() -> Mapping[str, str]:
     """Oracle SQL queries for testing."""
     return {
         "create_test_schema": "\n\n          CREATE USER DBT_TEST IDENTIFIED BY dbt_test_pass\n          DEFAULT TABLESPACE USERS\n          TEMPORARY TABLESPACE TEMP\n          QUOTA UNLIMITED ON USERS\n      ",
@@ -272,7 +272,7 @@ def oracle_sql_queries() -> dict[str, str]:
 
 
 @pytest.fixture
-def dbt_run_config() -> dict[str, t.NormalizedValue]:
+def dbt_run_config() -> Mapping[str, t.NormalizedValue]:
     """Dbt run configuration for testing."""
     return {
         "threads": 4,
@@ -285,7 +285,7 @@ def dbt_run_config() -> dict[str, t.NormalizedValue]:
 
 
 @pytest.fixture
-def dbt_test_config() -> dict[str, t.NormalizedValue]:
+def dbt_test_config() -> Mapping[str, t.NormalizedValue]:
     """Dbt test configuration for testing."""
     return {
         "threads": 2,
@@ -298,7 +298,7 @@ def dbt_test_config() -> dict[str, t.NormalizedValue]:
 
 
 @pytest.fixture
-def performance_test_config() -> dict[str, t.NormalizedValue]:
+def performance_test_config() -> Mapping[str, t.NormalizedValue]:
     """Performance test configuration."""
     return {
         "large_table_rows": 100000,
@@ -310,7 +310,7 @@ def performance_test_config() -> dict[str, t.NormalizedValue]:
 
 
 @pytest.fixture
-def dbt_error_scenarios() -> list[dict[str, t.NormalizedValue]]:
+def dbt_error_scenarios() -> Sequence[Mapping[str, t.NormalizedValue]]:
     """Dbt error scenarios for testing."""
     return [
         {
@@ -359,13 +359,13 @@ class MockConnectionManager:
     def __init__(self) -> None:
         """Initialize connection manager."""
         super().__init__()
-        self.connections: dict[str, dict[str, t.NormalizedValue]] = {}
+        self.connections: Mapping[str, Mapping[str, t.NormalizedValue]] = {}
 
     def open_connection(
-        self, name: str, config: dict[str, t.NormalizedValue]
-    ) -> dict[str, t.NormalizedValue]:
+        self, name: str, config: Mapping[str, t.NormalizedValue]
+    ) -> Mapping[str, t.NormalizedValue]:
         """Open database connection."""
-        connection: dict[str, t.NormalizedValue] = {
+        connection: Mapping[str, t.NormalizedValue] = {
             "name": name,
             "state": "open",
             "handle": f"mock_handle_{name}",
@@ -386,10 +386,10 @@ class MockSqlExecutor:
 
     def execute(
         self, sql: str, *, auto_begin: bool = True
-    ) -> tuple[str, list[dict[str, str]]]:
+    ) -> tuple[str, Sequence[Mapping[str, str]]]:
         """Execute SQL statement with reduced branching."""
         _ = auto_begin
-        sql_strategies: dict[str, tuple[str, list[dict[str, str]]]] = {
+        sql_strategies: Mapping[str, tuple[str, Sequence[Mapping[str, str]]]] = {
             "CREATE TABLE": ("CREATE", []),
             "INSERT": ("INSERT", []),
             "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
@@ -404,12 +404,12 @@ class MockModelCompiler:
     """Strategy for model compilation (Single Responsibility Principle)."""
 
     def compile_model(
-        self, model_sql: str, context: dict[str, t.NormalizedValue]
+        self, model_sql: str, context: Mapping[str, t.NormalizedValue]
     ) -> str:
         """Compile dbt model SQL."""
         compiled = model_sql
         vars_value = context.get("vars", {})
-        vars_dict: dict[str, t.Primitives]
+        vars_dict: Mapping[str, t.Primitives]
         try:
             vars_dict = _GENERAL_DICT_ADAPTER.validate_python(vars_value)
         except ValidationError:
@@ -424,7 +424,7 @@ class MockRelationManager:
 
     def get_relation(
         self, database: str, schema: str, identifier: str
-    ) -> dict[str, str]:
+    ) -> Mapping[str, str]:
         """Get relation information."""
         return {
             "database": database,
@@ -433,7 +433,9 @@ class MockRelationManager:
             "type": "table",
         }
 
-    def list_relations_without_caching(self, schema: str) -> list[dict[str, str]]:
+    def list_relations_without_caching(
+        self, schema: str
+    ) -> Sequence[Mapping[str, str]]:
         """List relations in schema."""
         return [
             {"schema": schema, "identifier": "customers", "type": "table"},
@@ -444,17 +446,17 @@ class MockRelationManager:
 class MockDbtOracleAdapter:
     """Simplified adapter using composition and Strategy Pattern."""
 
-    def __init__(self, config: dict[str, t.NormalizedValue]) -> None:
+    def __init__(self, config: Mapping[str, t.NormalizedValue]) -> None:
         """Initialize the instance."""
         super().__init__()
         self.config = config
-        self.compiled_models: dict[str, t.NormalizedValue] = {}
+        self.compiled_models: Mapping[str, t.NormalizedValue] = {}
         self.connection_manager = MockConnectionManager()
         self.sql_executor = MockSqlExecutor()
         self.model_compiler = MockModelCompiler()
         self.relation_manager = MockRelationManager()
 
-    def open_connection(self, name: str) -> dict[str, t.NormalizedValue]:
+    def open_connection(self, name: str) -> Mapping[str, t.NormalizedValue]:
         """Delegate to connection manager strategy."""
         return self.connection_manager.open_connection(name, self.config)
 
@@ -464,23 +466,25 @@ class MockDbtOracleAdapter:
 
     def execute(
         self, sql: str, *, auto_begin: bool = True
-    ) -> tuple[str, list[dict[str, str]]]:
+    ) -> tuple[str, Sequence[Mapping[str, str]]]:
         """Delegate to SQL executor strategy."""
         return self.sql_executor.execute(sql, auto_begin=auto_begin)
 
     def compile_model(
-        self, model_sql: str, context: dict[str, t.NormalizedValue]
+        self, model_sql: str, context: Mapping[str, t.NormalizedValue]
     ) -> str:
         """Delegate to model compiler strategy."""
         return self.model_compiler.compile_model(model_sql, context)
 
     def get_relation(
         self, database: str, schema: str, identifier: str
-    ) -> dict[str, str]:
+    ) -> Mapping[str, str]:
         """Delegate to relation manager strategy."""
         return self.relation_manager.get_relation(database, schema, identifier)
 
-    def list_relations_without_caching(self, schema: str) -> list[dict[str, str]]:
+    def list_relations_without_caching(
+        self, schema: str
+    ) -> Sequence[Mapping[str, str]]:
         """Delegate to relation manager strategy."""
         return self.relation_manager.list_relations_without_caching(schema)
 
@@ -499,16 +503,16 @@ class MockDbtRunner:
         super().__init__()
         self.project_dir = project_dir
         self.profiles_dir = profiles_dir
-        self.results: dict[str, t.NormalizedValue] = {}
+        self.results: Mapping[str, t.NormalizedValue] = {}
 
     def run_models(
-        self, models: list[str] | None = None
-    ) -> dict[str, t.NormalizedValue]:
+        self, models: Sequence[str] | None = None
+    ) -> Mapping[str, t.NormalizedValue]:
         """Run dbt models."""
-        results: list[dict[str, t.NormalizedValue]] = []
+        results: Sequence[Mapping[str, t.NormalizedValue]] = []
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
-            result: dict[str, t.NormalizedValue] = {
+            result: Mapping[str, t.NormalizedValue] = {
                 "unique_id": f"model.test.{model}",
                 "status": "success",
                 "execution_time": 2.5,
@@ -518,14 +522,14 @@ class MockDbtRunner:
         return {"results": results, "elapsed_time": 10.5}
 
     def run_tests(
-        self, models: list[str] | None = None
-    ) -> dict[str, t.NormalizedValue]:
+        self, models: Sequence[str] | None = None
+    ) -> Mapping[str, t.NormalizedValue]:
         """Run dbt tests."""
         _ = models
-        results: list[dict[str, t.NormalizedValue]] = []
+        results: Sequence[Mapping[str, t.NormalizedValue]] = []
         tests = ["test_unique_customer_id", "test_not_null_order_id"]
         for test in tests:
-            result: dict[str, t.NormalizedValue] = {
+            result: Mapping[str, t.NormalizedValue] = {
                 "unique_id": f"test.test.{test}",
                 "status": "pass",
                 "execution_time": 1.2,
@@ -534,9 +538,11 @@ class MockDbtRunner:
             results.append(result)
         return {"results": results, "elapsed_time": 5.0}
 
-    def compile(self, models: list[str] | None = None) -> dict[str, t.NormalizedValue]:
+    def compile(
+        self, models: Sequence[str] | None = None
+    ) -> Mapping[str, t.NormalizedValue]:
         """Compile dbt models."""
-        compiled: dict[str, str] = {}
+        compiled: Mapping[str, str] = {}
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
             compiled[model] = f"SELECT * FROM compiled_{model}"

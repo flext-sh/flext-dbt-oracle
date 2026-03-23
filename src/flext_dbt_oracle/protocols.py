@@ -6,6 +6,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from typing import Protocol, runtime_checkable
 
 from flext_db_oracle.protocols import FlextDbOracleProtocols
@@ -53,7 +54,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def compile_dbt_models(
                 self,
-                models: list[t.Scalar] | None = None,
+                models: Sequence[t.Scalar] | None = None,
                 config: OraclePayload | None = None,
             ) -> FlextMeltanoProtocols.Result[OraclePayload]:
                 """Compile DBT models for Oracle data processing.
@@ -79,7 +80,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def run_dbt_models(
                 self,
-                models: list[t.Scalar] | None = None,
+                models: Sequence[t.Scalar] | None = None,
                 config: OraclePayload | None = None,
             ) -> FlextMeltanoProtocols.Result[OraclePayload]:
                 """Run DBT models with Oracle data sources.
@@ -96,7 +97,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def test_dbt_models(
                 self,
-                models: list[t.Scalar] | None = None,
+                models: Sequence[t.Scalar] | None = None,
                 config: OraclePayload | None = None,
             ) -> FlextMeltanoProtocols.Result[OraclePayload]:
                 """Test DBT models with Oracle data validation.

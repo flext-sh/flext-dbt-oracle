@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from typing import Annotated, ClassVar, Literal
 
 from annotated_types import Ge, Gt
@@ -45,8 +45,8 @@ class FlextDbtOracleModels(BaseModel):
             sql_content: str
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: list[ColumnSpec] = Field(default=[])
-            dependencies: list[str] = Field(default=[])
+            columns: Sequence[ColumnSpec] = Field(default=[])
+            dependencies: Sequence[str] = Field(default=[])
 
         class ModelGenerator:
             """Helper for generating deterministic staging model metadata."""
@@ -61,8 +61,8 @@ class FlextDbtOracleModels(BaseModel):
 
             def generate_staging_models(
                 self,
-                source_tables: list[str],
-            ) -> list[FlextDbtOracleModels.DbtOracle.Model]:
+                source_tables: Sequence[str],
+            ) -> Sequence[FlextDbtOracleModels.DbtOracle.Model]:
                 """Create one staging model definition per source table."""
                 return [
                     FlextDbtOracleModels.DbtOracle.Model(
@@ -129,7 +129,7 @@ class FlextDbtOracleModels(BaseModel):
             """Return fully qualified relation name as schema.table."""
             return f"{self.schema_name}.{self.table_name}"
 
-        def to_metadata(self) -> dict[str, str]:
+        def to_metadata(self) -> Mapping[str, str]:
             """Return metadata dict with schema, table, and relation."""
             return {
                 "schema": self.schema_name,
@@ -274,7 +274,7 @@ class FlextDbtOracleModels(BaseModel):
                 f"{self.oracle_host}:{self.port}{separator}{identifier}"
             )
 
-        def to_connection_config(self) -> dict[str, str | int | None]:
+        def to_connection_config(self) -> Mapping[str, str | int | None]:
             """Convert to connection configuration dictionary."""
             return {
                 "host": self.oracle_host,
@@ -298,7 +298,7 @@ class FlextDbtOracleModels(BaseModel):
                 protocol=self.protocol,
             )
 
-        def get_performance_settings(self) -> dict[str, int]:
+        def get_performance_settings(self) -> Mapping[str, int]:
             """Return performance-related settings."""
             return {
                 "pool_min_size": self.pool_min_size,
@@ -311,7 +311,7 @@ class FlextDbtOracleModels(BaseModel):
                 "retry_delay": self.retry_delay,
             }
 
-        def get_dbt_settings(self) -> dict[str, str]:
+        def get_dbt_settings(self) -> Mapping[str, str]:
             """Return DBT-specific settings."""
             return {
                 "database": self.oracle_service_name,

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 
 from flext_dbt_oracle import c, t
 
@@ -14,7 +14,7 @@ class FlextDbtOracleServices:
         self, table_count: int
     ) -> Mapping[str, t.MetadataValue]:
         """Generate lightweight recommendations from table volume."""
-        recommendations: list[t.Scalar] = []
+        recommendations: Sequence[t.Scalar] = []
         if table_count > c.DbtOracle.PERFORMANCE_RECOMMENDATION_THRESHOLD:
             recommendations.append(
                 "Process tables in batches and increase dbt threads gradually"

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 
 from flext_db_oracle import FlextDbOracleUtilities
 from flext_meltano import FlextMeltanoUtilities
@@ -35,7 +35,7 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
             """Payload validation helpers."""
 
             @staticmethod
-            def validate_non_empty_rows(rows: list[Mapping[str, t.Scalar]]) -> bool:
+            def validate_non_empty_rows(rows: Sequence[Mapping[str, t.Scalar]]) -> bool:
                 """Return true when row list contains values."""
                 return bool(rows)
 

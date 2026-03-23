@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 
 from flext_dbt_oracle import p, t
 from flext_dbt_oracle.models import FlextDbtOracleModels
@@ -19,25 +19,25 @@ class FlextDbtOracleClient:
         super().__init__()
         self.config = config
 
-    def discover_tables(self) -> list[str]:
+    def discover_tables(self) -> Sequence[str]:
         """Return static table candidates for modeling flow."""
         return ["customers", "orders", "order_items"]
 
     def extract_table_data(
         self, table_name: str, filters: Mapping[str, t.Scalar] | None = None
-    ) -> list[Mapping[str, t.Scalar]]:
+    ) -> Sequence[Mapping[str, t.Scalar]]:
         """Return deterministic sample payload for a table."""
         _ = filters
         return [{"table": table_name, "id": 1, "status": "sample"}]
 
     def run_pipeline(
         self,
-        tables: list[str] | None = None,
+        tables: Sequence[str] | None = None,
         filters: Mapping[str, t.Scalar] | None = None,
     ) -> Mapping[str, t.MetadataValue]:
         """Run discover and extraction pipeline for selected tables."""
         selected_tables = tables or self.discover_tables()
-        selected_tables_json: list[t.Scalar] = list(selected_tables)
+        selected_tables_json: Sequence[t.Scalar] = list(selected_tables)
         extracted = {
             table: self.extract_table_data(table, filters) for table in selected_tables
         }
