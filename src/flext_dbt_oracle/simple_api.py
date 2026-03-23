@@ -8,10 +8,10 @@ from os import getenv
 from pydantic import SecretStr, TypeAdapter, ValidationError
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
-from flext_dbt_oracle.constants import FlextDbtOracleConstants as c
+from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.services import FlextDbtOracleServices
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
-from flext_dbt_oracle.typings import FlextDbtOracleTypes as t
+from flext_dbt_oracle.typings import t
 
 _TABLE_LIST_ADAPTER = TypeAdapter(list[t.Scalar])
 

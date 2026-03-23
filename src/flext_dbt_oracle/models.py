@@ -15,7 +15,7 @@ from pydantic import (
     model_validator,
 )
 
-from flext_dbt_oracle.constants import FlextDbtOracleConstants as c
+from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.typings import ColumnSpec
 
 _PositiveInt = Annotated[int, Gt(0)]

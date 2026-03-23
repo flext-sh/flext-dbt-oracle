@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pydantic import SecretStr
 
-from flext_dbt_oracle.constants import FlextDbtOracleConstants as c
+from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.models import FlextDbtOracleModels
 
 # Re-export from models facade
