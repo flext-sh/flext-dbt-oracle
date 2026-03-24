@@ -46,19 +46,34 @@ _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
     "OracleConnectionConfig": ("tests.unit.test_connections", "OracleConnectionConfig"),
     "OracleTableAdapter": ("tests.unit.test_impl", "OracleTableAdapter"),
     "OracleTableFactory": ("tests.unit.test_impl", "OracleTableFactory"),
-    "TestBuildOracleConnectionConfig": ("tests.unit.test_connections", "TestBuildOracleConnectionConfig"),
+    "TestBuildOracleConnectionConfig": (
+        "tests.unit.test_connections",
+        "TestBuildOracleConnectionConfig",
+    ),
     "TestConfigConstantsUsage": ("tests.unit.test_config", "TestConfigConstantsUsage"),
     "TestConfigEdgeCases": ("tests.unit.test_config", "TestConfigEdgeCases"),
-    "TestFlextDbtOracleSettings": ("tests.unit.test_config", "TestFlextDbtOracleSettings"),
-    "TestOracleConnectionConfig": ("tests.unit.test_connections", "TestOracleConnectionConfig"),
+    "TestFlextDbtOracleSettings": (
+        "tests.unit.test_config",
+        "TestFlextDbtOracleSettings",
+    ),
+    "TestOracleConnectionConfig": (
+        "tests.unit.test_connections",
+        "TestOracleConnectionConfig",
+    ),
     "TestOracleTableAdapter": ("tests.unit.test_impl", "TestOracleTableAdapter"),
     "TestOracleTableFactory": ("tests.unit.test_impl", "TestOracleTableFactory"),
-    "test_adapter_initialization": ("tests.unit.test_basic", "test_adapter_initialization"),
+    "test_adapter_initialization": (
+        "tests.unit.test_basic",
+        "test_adapter_initialization",
+    ),
     "test_adapter_type": ("tests.unit.test_basic", "test_adapter_type"),
     "test_basic_functionality": ("tests.unit.test_imports", "test_basic_functionality"),
     "test_basic_import": ("tests.unit.test_basic", "test_basic_import"),
     "test_credentials_class": ("tests.unit.test_basic", "test_credentials_class"),
-    "test_flext_dbt_oracle_imports": ("tests.unit.test_imports", "test_flext_dbt_oracle_imports"),
+    "test_flext_dbt_oracle_imports": (
+        "tests.unit.test_imports",
+        "test_flext_dbt_oracle_imports",
+    ),
 }
 
 __all__ = [

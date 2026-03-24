@@ -17,7 +17,10 @@ from flext_dbt_oracle.models import FlextDbtOracleModels
 
 
 class FlextDbtOracleTestModels(
-    FlextTestsModels, FlextDbtOracleModels, FlextDbOracleModels, FlextMeltanoModels,
+    FlextTestsModels,
+    FlextDbtOracleModels,
+    FlextDbOracleModels,
+    FlextMeltanoModels,
 ):
     """Test models combining FlextTestsModels with flext-dbt-oracle models."""
 

@@ -105,7 +105,8 @@ class FlextDbtOracleModels(FlextDbOracleModels, FlextMeltanoModels):
             ),
         ]
         sid: Annotated[
-            str | None, Field(default=None, description="Oracle SID (optional)"),
+            str | None,
+            Field(default=None, description="Oracle SID (optional)"),
         ]
         protocol: Annotated[
             str,
@@ -218,7 +219,8 @@ class FlextDbtOracleModels(FlextDbOracleModels, FlextMeltanoModels):
         ]
 
         sid: Annotated[
-            str | None, Field(default=None, description="Oracle SID (optional)"),
+            str | None,
+            Field(default=None, description="Oracle SID (optional)"),
         ]
         protocol: Annotated[
             Literal["tcp", "tcps"],
