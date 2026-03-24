@@ -40,14 +40,14 @@ class FlextDbtOracleModels(FlextModels):
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
             columns: Sequence[ColumnSpec] = Field(default=[])
-            dependencies: t.StrSequence = Field(default=[])
+            dependencies: Sequence[str] = Field(default=[])
 
         class ModelGenerator:
             """Helper for generating deterministic staging model metadata."""
 
             def __init__(
                 self,
-                config: t.StrMapping | None = None,
+                config: Mapping[str, str] | None = None,
             ) -> None:
                 """Store optional generation-time configuration."""
                 super().__init__()
@@ -55,7 +55,7 @@ class FlextDbtOracleModels(FlextModels):
 
             def generate_staging_models(
                 self,
-                source_tables: t.StrSequence,
+                source_tables: Sequence[str],
             ) -> Sequence[FlextDbtOracleModels.DbtOracle.Model]:
                 """Create one staging model definition per source table."""
                 return [
@@ -123,7 +123,7 @@ class FlextDbtOracleModels(FlextModels):
             """Return fully qualified relation name as schema.table."""
             return f"{self.schema_name}.{self.table_name}"
 
-        def to_metadata(self) -> t.StrMapping:
+        def to_metadata(self) -> Mapping[str, str]:
             """Return metadata dict with schema, table, and relation."""
             return {
                 "schema": self.schema_name,
@@ -307,7 +307,7 @@ class FlextDbtOracleModels(FlextModels):
                 "retry_delay": self.retry_delay,
             }
 
-        def get_dbt_settings(self) -> t.StrMapping:
+        def get_dbt_settings(self) -> Mapping[str, str]:
             """Return DBT-specific settings."""
             return {
                 "database": self.oracle_service_name,
@@ -318,7 +318,7 @@ class FlextDbtOracleModels(FlextModels):
     @classmethod
     def create_generator(
         cls,
-        config: t.StrMapping | None = None,
+        config: Mapping[str, str] | None = None,
     ) -> FlextDbtOracleModels.DbtOracle.ModelGenerator:
         """Create generator instance with optional custom config."""
         return cls.DbtOracle.ModelGenerator(config=config)

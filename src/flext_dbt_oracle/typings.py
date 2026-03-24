@@ -20,7 +20,7 @@ from flext_meltano import FlextMeltanoTypes
 
 t = FlextMeltanoTypes
 type ColumnSpec = t.StrMapping
-type OraclePayload = Mapping[str, str | int | float | bool | None]
+type OraclePayload = Mapping[str, t.Primitives | None]
 type OraclePayloadList = Sequence[OraclePayload]
 
 
@@ -48,7 +48,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         "DBT profile configuration type."
         type MacroConfiguration = Mapping[str, str | t.ContainerValue]
         "DBT macro configuration type."
-        type TestConfiguration = Mapping[str, str | bool | t.StrSequence]
+        type TestConfiguration = Mapping[str, str | bool | Sequence[str]]
         "DBT test configuration type."
 
     class OracleConnection:
@@ -76,18 +76,18 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         Python 3.13+ best practice: Use TypeAlias for better type checking.
         """
 
-        type OracleTable = Mapping[str, str | t.StrSequence | t.ContainerValue]
+        type OracleTable = Mapping[str, str | Sequence[str] | t.ContainerValue]
         "Oracle table type."
         type OracleSchema = Mapping[str, str | Sequence[t.ContainerValueMapping]]
         "Oracle schema type."
         type OracleColumn = Mapping[str, t.Scalar | t.ContainerValue]
         "Oracle column type."
-        type OracleQuery = Mapping[str, str | t.StrSequence | int | t.ContainerValue]
+        type OracleQuery = Mapping[str, str | Sequence[str] | int | t.ContainerValue]
         "Oracle query type."
-        type OracleIndex = Mapping[str, str | t.StrSequence | t.ContainerValue]
+        type OracleIndex = Mapping[str, str | Sequence[str] | t.ContainerValue]
         "Oracle index type."
         type OracleConstraint = Mapping[
-            str, str | bool | t.StrSequence | t.ContainerValue
+            str, str | bool | Sequence[str] | t.ContainerValue
         ]
         "Oracle constraint type."
 
@@ -102,7 +102,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         type SqlTransformation = Mapping[str, str | t.ContainerValue]
         "SQL transformation type."
         type DataValidation = Mapping[
-            str, bool | str | t.StrSequence | t.ContainerValue
+            str, bool | str | Sequence[str] | t.ContainerValue
         ]
         "Data validation type."
         type MaterializationConfig = Mapping[str, str | t.ContainerValue]
@@ -122,7 +122,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         "DBT model definition type."
         type ModelExecution = Mapping[str, str | bool | int | t.ContainerValue]
         "DBT model execution type."
-        type ModelDependency = Mapping[str, str | t.StrSequence | t.ContainerValue]
+        type ModelDependency = Mapping[str, str | Sequence[str] | t.ContainerValue]
         "DBT model dependency type."
         type ModelTest = Mapping[str, str | bool | t.ContainerValue]
         "DBT model test type."
@@ -145,7 +145,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         "DBT source table type."
         type SourceFreshness = Mapping[str, str | int | t.ContainerValue]
         "DBT source freshness type."
-        type SourceTest = Mapping[str, str | bool | t.StrSequence]
+        type SourceTest = Mapping[str, str | bool | Sequence[str]]
         "DBT source test type."
         type SourceSchema = Mapping[str, str | t.ContainerValue]
         "DBT source schema type."
@@ -162,7 +162,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         "Oracle connection adapter type."
         type QueryAdapter = Mapping[str, str | t.ContainerValue]
         "Oracle query adapter type."
-        type SchemaAdapter = Mapping[str, str | t.StrSequence | t.ContainerValue]
+        type SchemaAdapter = Mapping[str, str | Sequence[str] | t.ContainerValue]
         "Oracle schema adapter type."
         type TransactionAdapter = Mapping[str, bool | str | t.ContainerValue]
         "Oracle transaction adapter type."
@@ -181,7 +181,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         "DBT Oracle project type literal."
         type DbtOracleProjectConfig = Mapping[str, t.ContainerValue]
         "DBT Oracle project configuration type."
-        type OracleTransformConfig = Mapping[str, t.Scalar | t.StrSequence]
+        type OracleTransformConfig = Mapping[str, t.Scalar | Sequence[str]]
         "Oracle transformation configuration type."
         type OracleAnalyticsConfig = Mapping[str, bool | str | t.ContainerValue]
         "Oracle analytics configuration type."

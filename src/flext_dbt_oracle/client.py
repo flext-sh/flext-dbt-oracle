@@ -19,7 +19,7 @@ class FlextDbtOracleClient:
         super().__init__()
         self.config = config
 
-    def discover_tables(self) -> t.StrSequence:
+    def discover_tables(self) -> Sequence[str]:
         """Return static table candidates for modeling flow."""
         return ["customers", "orders", "order_items"]
 
@@ -32,7 +32,7 @@ class FlextDbtOracleClient:
 
     def run_pipeline(
         self,
-        tables: t.StrSequence | None = None,
+        tables: Sequence[str] | None = None,
         filters: t.ConfigurationMapping | None = None,
     ) -> Mapping[str, t.MetadataValue]:
         """Run discover and extraction pipeline for selected tables."""
