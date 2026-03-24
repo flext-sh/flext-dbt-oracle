@@ -12,9 +12,10 @@ import tempfile
 from collections.abc import Generator, Mapping, Sequence
 
 import pytest
-from tests import t
 from flext_tests import tk
 from pydantic import TypeAdapter, ValidationError
+
+from tests import t
 
 _GENERAL_DICT_ADAPTER = TypeAdapter(Mapping[str, t.Primitives])
 
