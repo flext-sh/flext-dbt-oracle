@@ -41,9 +41,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         "DBT project configuration type."
         type ModelConfiguration = Mapping[str, str | t.ContainerValue]
         "DBT model configuration type."
-        type SourceConfiguration = Mapping[
-            str, str | Sequence[Mapping[str, t.ContainerValue]]
-        ]
+        type SourceConfiguration = Mapping[str, str | Sequence[t.ContainerValueMapping]]
         "DBT source configuration type."
         type ProfileConfiguration = Mapping[str, t.ContainerValue]
         "DBT profile configuration type."
@@ -79,7 +77,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
 
         type OracleTable = Mapping[str, str | Sequence[str] | t.ContainerValue]
         "Oracle table type."
-        type OracleSchema = Mapping[str, str | Sequence[Mapping[str, t.ContainerValue]]]
+        type OracleSchema = Mapping[str, str | Sequence[t.ContainerValueMapping]]
         "Oracle schema type."
         type OracleColumn = Mapping[str, t.Scalar | t.ContainerValue]
         "Oracle column type."
@@ -142,7 +140,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         "DBT source definition type."
         type SourceConnection = Mapping[str, t.ContainerValue]
         "DBT source connection type."
-        type SourceTable = Mapping[str, str | Sequence[Mapping[str, t.ContainerValue]]]
+        type SourceTable = Mapping[str, str | Sequence[t.ContainerValueMapping]]
         "DBT source table type."
         type SourceFreshness = Mapping[str, str | int | t.ContainerValue]
         "DBT source freshness type."
