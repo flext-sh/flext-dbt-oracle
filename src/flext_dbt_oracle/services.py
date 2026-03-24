@@ -21,7 +21,7 @@ class FlextDbtOracleServices:
             )
         return {"table_count": table_count, "recommendations": recommendations}
 
-    def track_execution(self, workflow_name: str) -> Mapping[str, t.Scalar]:
+    def track_execution(self, workflow_name: str) -> t.ConfigurationMapping:
         """Build a minimal execution tracking payload."""
         return {"workflow": workflow_name, "status": "running"}
 

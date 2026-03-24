@@ -179,7 +179,7 @@ def oracle_adapter_config() -> t.ContainerMapping:
 
 
 @pytest.fixture
-def dbt_model_definitions() -> Mapping[str, str]:
+def dbt_model_definitions() -> t.StrMapping:
     """Dbt model SQL definitions for testing."""
     return {
         "staging_customers": "\n\n          {{ config(materialized='view') }}\n          SELECT\n              customer_id,\n              customer_name,\n              customer_email,\n              created_at,\n              updated_at\n          FROM {{ source('raw', 'customers') }}\n          WHERE customer_id IS NOT NULL\n      ",
@@ -189,7 +189,7 @@ def dbt_model_definitions() -> Mapping[str, str]:
 
 
 @pytest.fixture
-def dbt_macro_definitions() -> Mapping[str, str]:
+def dbt_macro_definitions() -> t.StrMapping:
     """Dbt macro definitions for testing."""
     return {
         "oracle_create_table_as": "\n\n          {% macro oracle_create_table_as(temporary, relation, sql) -%}\n              {% if temporary %}\n                  CREATE GLOBAL TEMPORARY TABLE {{ relation }}\n                  ON COMMIT PRESERVE ROWS\n                  AS (\n                      {{ sql }}\n                  )\n              {% else %}\n                  CREATE TABLE {{ relation }}\n                  {% if config.get('oracle', {}).get('tablespace') %}\n                      TABLESPACE {{ config.get('oracle', {}).get('tablespace') }}\n                  {% endif %}\n                  {% if config.get('oracle', {}).get('parallel') %}\n                      PARALLEL {{ config.get('oracle', {}).get('parallel') }}\n                  {% endif %}\n                  AS (\n                      {{ sql }}\n                  )\n              {% endif %}\n          {%- endmacro %}\n      ",
@@ -198,7 +198,7 @@ def dbt_macro_definitions() -> Mapping[str, str]:
 
 
 @pytest.fixture
-def dbt_test_definitions() -> Mapping[str, str]:
+def dbt_test_definitions() -> t.StrMapping:
     """Dbt test definitions for testing."""
     return {
         "test_unique_customer_id": "\n\n          SELECT customer_id, COUNT(*)\n          FROM {{ ref('dim_customers') }}\n          GROUP BY customer_id\n          HAVING COUNT(*) > 1\n      ",
@@ -260,7 +260,7 @@ def dbt_source_definitions() -> t.ContainerMapping:
 
 
 @pytest.fixture
-def oracle_sql_queries() -> Mapping[str, str]:
+def oracle_sql_queries() -> t.StrMapping:
     """Oracle SQL queries for testing."""
     return {
         "create_test_schema": "\n\n          CREATE USER DBT_TEST IDENTIFIED BY dbt_test_pass\n          DEFAULT TABLESPACE USERS\n          TEMPORARY TABLESPACE TEMP\n          QUOTA UNLIMITED ON USERS\n      ",
@@ -386,10 +386,10 @@ class MockSqlExecutor:
 
     def execute(
         self, sql: str, *, auto_begin: bool = True
-    ) -> tuple[str, Sequence[Mapping[str, str]]]:
+    ) -> tuple[str, Sequence[t.StrMapping]]:
         """Execute SQL statement with reduced branching."""
         _ = auto_begin
-        sql_strategies: Mapping[str, tuple[str, Sequence[Mapping[str, str]]]] = {
+        sql_strategies: Mapping[str, tuple[str, Sequence[t.StrMapping]]] = {
             "CREATE TABLE": ("CREATE", []),
             "INSERT": ("INSERT", []),
             "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
@@ -420,9 +420,7 @@ class MockModelCompiler:
 class MockRelationManager:
     """Strategy for relation management (Single Responsibility Principle)."""
 
-    def get_relation(
-        self, database: str, schema: str, identifier: str
-    ) -> Mapping[str, str]:
+    def get_relation(self, database: str, schema: str, identifier: str) -> t.StrMapping:
         """Get relation information."""
         return {
             "database": database,
@@ -431,9 +429,7 @@ class MockRelationManager:
             "type": "table",
         }
 
-    def list_relations_without_caching(
-        self, schema: str
-    ) -> Sequence[Mapping[str, str]]:
+    def list_relations_without_caching(self, schema: str) -> Sequence[t.StrMapping]:
         """List relations in schema."""
         return [
             {"schema": schema, "identifier": "customers", "type": "table"},
@@ -464,7 +460,7 @@ class MockDbtOracleAdapter:
 
     def execute(
         self, sql: str, *, auto_begin: bool = True
-    ) -> tuple[str, Sequence[Mapping[str, str]]]:
+    ) -> tuple[str, Sequence[t.StrMapping]]:
         """Delegate to SQL executor strategy."""
         return self.sql_executor.execute(sql, auto_begin=auto_begin)
 
@@ -472,15 +468,11 @@ class MockDbtOracleAdapter:
         """Delegate to model compiler strategy."""
         return self.model_compiler.compile_model(model_sql, context)
 
-    def get_relation(
-        self, database: str, schema: str, identifier: str
-    ) -> Mapping[str, str]:
+    def get_relation(self, database: str, schema: str, identifier: str) -> t.StrMapping:
         """Delegate to relation manager strategy."""
         return self.relation_manager.get_relation(database, schema, identifier)
 
-    def list_relations_without_caching(
-        self, schema: str
-    ) -> Sequence[Mapping[str, str]]:
+    def list_relations_without_caching(self, schema: str) -> Sequence[t.StrMapping]:
         """Delegate to relation manager strategy."""
         return self.relation_manager.list_relations_without_caching(schema)
 
@@ -501,7 +493,7 @@ class MockDbtRunner:
         self.profiles_dir = profiles_dir
         self.results: t.ContainerMapping = {}
 
-    def run_models(self, models: Sequence[str] | None = None) -> t.ContainerMapping:
+    def run_models(self, models: t.StrSequence | None = None) -> t.ContainerMapping:
         """Run dbt models."""
         results: Sequence[t.ContainerMapping] = []
         models = models or ["dim_customers", "fact_orders"]
@@ -515,7 +507,7 @@ class MockDbtRunner:
             results.append(result)
         return {"results": results, "elapsed_time": 10.5}
 
-    def run_tests(self, models: Sequence[str] | None = None) -> t.ContainerMapping:
+    def run_tests(self, models: t.StrSequence | None = None) -> t.ContainerMapping:
         """Run dbt tests."""
         _ = models
         results: Sequence[t.ContainerMapping] = []
@@ -530,9 +522,9 @@ class MockDbtRunner:
             results.append(result)
         return {"results": results, "elapsed_time": 5.0}
 
-    def compile(self, models: Sequence[str] | None = None) -> t.ContainerMapping:
+    def compile(self, models: t.StrSequence | None = None) -> t.ContainerMapping:
         """Compile dbt models."""
-        compiled: Mapping[str, str] = {}
+        compiled: t.StrMapping = {}
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
             compiled[model] = f"SELECT * FROM compiled_{model}"

@@ -5,9 +5,8 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import Annotated, ClassVar, Literal
 
-from annotated_types import Ge, Gt
+from flext_core import FlextModels, t
 from pydantic import (
-    BaseModel,
     ConfigDict,
     Field,
     SecretStr,
@@ -18,13 +17,8 @@ from pydantic import (
 from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.typings import ColumnSpec
 
-_PositiveInt = Annotated[int, Gt(0)]
-_NonNegativeInt = Annotated[int, Ge(0)]
-_NonNegativeFloat = Annotated[float, Ge(0.0)]
-_PortNumber = Annotated[int, Ge(1)]
 
-
-class FlextDbtOracleModels(BaseModel):
+class FlextDbtOracleModels(FlextModels):
     """Namespace wrapper for DBT Oracle domain models.
 
     Inherits from FlextMeltanoModels (Singer/Meltano) and FlextDbOracleModels
@@ -34,7 +28,7 @@ class FlextDbtOracleModels(BaseModel):
     class DbtOracle:
         """DbtOracle domain namespace."""
 
-        class Model(BaseModel):
+        class Model(FlextModels.Value):
             """Typed DBT model metadata payload."""
 
             name: str
@@ -46,14 +40,14 @@ class FlextDbtOracleModels(BaseModel):
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
             columns: Sequence[ColumnSpec] = Field(default=[])
-            dependencies: Sequence[str] = Field(default=[])
+            dependencies: t.StrSequence = Field(default=[])
 
         class ModelGenerator:
             """Helper for generating deterministic staging model metadata."""
 
             def __init__(
                 self,
-                config: Mapping[str, str] | None = None,
+                config: t.StrMapping | None = None,
             ) -> None:
                 """Store optional generation-time configuration."""
                 super().__init__()
@@ -61,7 +55,7 @@ class FlextDbtOracleModels(BaseModel):
 
             def generate_staging_models(
                 self,
-                source_tables: Sequence[str],
+                source_tables: t.StrSequence,
             ) -> Sequence[FlextDbtOracleModels.DbtOracle.Model]:
                 """Create one staging model definition per source table."""
                 return [
@@ -74,13 +68,13 @@ class FlextDbtOracleModels(BaseModel):
                     for table in source_tables
                 ]
 
-    class OracleConnectionConfig(BaseModel):
+    class OracleConnectionConfig(FlextModels.Value):
         """Configuration for Oracle database connections."""
 
         host: str = Field(
             default=c.Oracle.DEFAULT_HOST, description="Oracle database host"
         )
-        port: _PortNumber = Field(
+        port: t.PortNumber = Field(
             default=c.Oracle.DEFAULT_PORT, description="Oracle database port"
         )
         username: str = Field(default="", description="Oracle database username")
@@ -119,7 +113,7 @@ class FlextDbtOracleModels(BaseModel):
                 return f"{self.protocol}://{self.username}:***@{self.host}:{self.port}:{self.sid}"
             return f"{self.protocol}://{self.username}:***@{self.host}:{self.port}/{self.service_name}"
 
-    class OracleTableAdapter(BaseModel):
+    class OracleTableAdapter(FlextModels.Value):
         """Adapter for Oracle table metadata normalization."""
 
         schema_name: Annotated[str, Field(description="Oracle schema name")]
@@ -129,7 +123,7 @@ class FlextDbtOracleModels(BaseModel):
             """Return fully qualified relation name as schema.table."""
             return f"{self.schema_name}.{self.table_name}"
 
-        def to_metadata(self) -> Mapping[str, str]:
+        def to_metadata(self) -> t.StrMapping:
             """Return metadata dict with schema, table, and relation."""
             return {
                 "schema": self.schema_name,
@@ -150,11 +144,11 @@ class FlextDbtOracleModels(BaseModel):
                 table_name=table_name.strip(),
             )
 
-    class FlextDbtOracleSettings(BaseModel):
+    class FlextDbtOracleSettings(FlextModels.Value):
         """Configuration for DBT Oracle operations."""
 
         model_config: ClassVar[ConfigDict] = ConfigDict(
-            extra="ignore", populate_by_name=True
+            extra="ignore", populate_by_name=True, frozen=False
         )
 
         oracle_host: str = Field(
@@ -169,7 +163,7 @@ class FlextDbtOracleModels(BaseModel):
             default=SecretStr(""),
             description="Oracle database password",
         )
-        oracle_port: _PortNumber = Field(
+        oracle_port: t.PortNumber = Field(
             default=c.Oracle.DEFAULT_PORT,
             alias="port",
             description="Oracle database port",
@@ -218,27 +212,29 @@ class FlextDbtOracleModels(BaseModel):
         )
 
         # Connection pool settings
-        pool_min_size: _PositiveInt = Field(default=1, description="Minimum pool size")
-        pool_max_size: _PositiveInt = Field(default=10, description="Maximum pool size")
-        pool_increment: _PositiveInt = Field(
+        pool_min_size: t.PositiveInt = Field(default=1, description="Minimum pool size")
+        pool_max_size: t.PositiveInt = Field(
+            default=10, description="Maximum pool size"
+        )
+        pool_increment: t.PositiveInt = Field(
             default=1, description="Pool increment size"
         )
 
         # Performance settings
-        query_timeout: _PositiveInt = Field(
+        query_timeout: t.PositiveInt = Field(
             default=300, description="Query timeout in seconds"
         )
-        fetch_size: _PositiveInt = Field(default=1000, description="Fetch batch size")
-        connect_timeout: _PositiveInt = Field(
+        fetch_size: t.PositiveInt = Field(default=1000, description="Fetch batch size")
+        connect_timeout: t.PositiveInt = Field(
             default=30, description="Connection timeout in seconds"
         )
-        retry_attempts: _NonNegativeInt = Field(
+        retry_attempts: t.NonNegativeInt = Field(
             default=3, description="Number of retry attempts"
         )
-        retry_delay: _NonNegativeInt = Field(
+        retry_delay: t.NonNegativeInt = Field(
             default=1, description="Delay between retries in seconds"
         )
-        retry_delay_seconds: _NonNegativeFloat = Field(
+        retry_delay_seconds: t.NonNegativeFloat = Field(
             default=1.0,
             description="Delay between retries in seconds",
         )
@@ -311,7 +307,7 @@ class FlextDbtOracleModels(BaseModel):
                 "retry_delay": self.retry_delay,
             }
 
-        def get_dbt_settings(self) -> Mapping[str, str]:
+        def get_dbt_settings(self) -> t.StrMapping:
             """Return DBT-specific settings."""
             return {
                 "database": self.oracle_service_name,
@@ -322,21 +318,15 @@ class FlextDbtOracleModels(BaseModel):
     @classmethod
     def create_generator(
         cls,
-        config: Mapping[str, str] | None = None,
+        config: t.StrMapping | None = None,
     ) -> FlextDbtOracleModels.DbtOracle.ModelGenerator:
         """Create generator instance with optional custom config."""
         return cls.DbtOracle.ModelGenerator(config=config)
 
 
+m = FlextDbtOracleModels
+
 __all__ = [
     "FlextDbtOracleModels",
     "m",
 ]
-
-m = FlextDbtOracleModels
-
-# Re-export facade models for backward compatibility
-OracleConnectionConfig = FlextDbtOracleModels.OracleConnectionConfig
-OracleTableAdapter = FlextDbtOracleModels.OracleTableAdapter
-OracleTableFactory = FlextDbtOracleModels.OracleTableFactory
-FlextDbtOracleSettings = FlextDbtOracleModels.FlextDbtOracleSettings
