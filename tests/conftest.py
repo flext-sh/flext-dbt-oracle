@@ -397,7 +397,7 @@ class MockSqlExecutor:
     ) -> tuple[str, Sequence[t.StrMapping]]:
         """Execute SQL statement with reduced branching."""
         _ = auto_begin
-        sql_strategies: dict[str, tuple[str, Sequence[t.StrMapping]]] = {
+        sql_strategies: MutableMapping[str, tuple[str, Sequence[t.StrMapping]]] = {
             "CREATE TABLE": ("CREATE", []),
             "INSERT": ("INSERT", []),
             "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
