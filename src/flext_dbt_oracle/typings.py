@@ -58,7 +58,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         Python 3.13+ best practice: Use TypeAlias for better type checking.
         """
 
-        type ConnectionConfig = Mapping[str, str | int | bool | t.ContainerValue]
+        type ConnectionConfig = Mapping[str, t.Scalar | t.ContainerValue]
         "Oracle connection configuration type."
         type DatabaseConnection = Mapping[str, str | t.ContainerValue]
         "Oracle database connection type."
@@ -81,7 +81,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         "Oracle table type."
         type OracleSchema = Mapping[str, str | Sequence[Mapping[str, t.ContainerValue]]]
         "Oracle schema type."
-        type OracleColumn = Mapping[str, str | int | bool | t.ContainerValue]
+        type OracleColumn = Mapping[str, t.Scalar | t.ContainerValue]
         "Oracle column type."
         type OracleQuery = Mapping[str, str | Sequence[str] | int | t.ContainerValue]
         "Oracle query type."
@@ -159,7 +159,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
 
         type AdapterConfiguration = Mapping[str, t.ContainerValue]
         "Oracle adapter configuration type."
-        type ConnectionAdapter = Mapping[str, str | int | bool | t.ContainerValue]
+        type ConnectionAdapter = Mapping[str, t.Scalar | t.ContainerValue]
         "Oracle connection adapter type."
         type QueryAdapter = Mapping[str, str | t.ContainerValue]
         "Oracle query adapter type."
@@ -182,7 +182,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
         "DBT Oracle project type literal."
         type DbtOracleProjectConfig = Mapping[str, t.ContainerValue]
         "DBT Oracle project configuration type."
-        type OracleTransformConfig = Mapping[str, str | int | bool | Sequence[str]]
+        type OracleTransformConfig = Mapping[str, t.Scalar | Sequence[str]]
         "Oracle transformation configuration type."
         type OracleAnalyticsConfig = Mapping[str, bool | str | t.ContainerValue]
         "Oracle analytics configuration type."
