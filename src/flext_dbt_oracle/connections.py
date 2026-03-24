@@ -30,4 +30,6 @@ def build_oracle_connection_config(
     )
 
 
-__all__ = ["build_oracle_connection_config"]
+OracleConnectionConfig = FlextDbtOracleModels.OracleConnectionConfig
+
+__all__ = ["OracleConnectionConfig", "build_oracle_connection_config"]
