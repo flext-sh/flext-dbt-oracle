@@ -12,7 +12,7 @@ import tempfile
 from collections.abc import Generator, Mapping, Sequence
 
 import pytest
-from flext_core import t
+from tests import t
 from flext_tests import tk
 from pydantic import TypeAdapter, ValidationError
 
