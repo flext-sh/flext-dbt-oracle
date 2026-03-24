@@ -28,6 +28,7 @@ if TYPE_CHECKING:
     from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
     from flext_dbt_oracle.client import FlextDbtOracleClient
     from flext_dbt_oracle.connections import (
+        FlextDbtOracleConnections,
         OracleConnectionConfig,
         build_oracle_connection_config,
     )
@@ -52,6 +53,10 @@ if TYPE_CHECKING:
 _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
     "FlextDbtOracle": ("flext_dbt_oracle.simple_api", "FlextDbtOracle"),
     "FlextDbtOracleClient": ("flext_dbt_oracle.client", "FlextDbtOracleClient"),
+    "FlextDbtOracleConnections": (
+        "flext_dbt_oracle.connections",
+        "FlextDbtOracleConnections",
+    ),
     "FlextDbtOracleConstants": (
         "flext_dbt_oracle.constants",
         "FlextDbtOracleConstants",
@@ -103,6 +108,7 @@ _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
 __all__ = [
     "FlextDbtOracle",
     "FlextDbtOracleClient",
+    "FlextDbtOracleConnections",
     "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",

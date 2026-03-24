@@ -8,6 +8,32 @@ from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.models import FlextDbtOracleModels
 
 
+class FlextDbtOracleConnections:
+    """Facade for Oracle connection config construction."""
+
+    @staticmethod
+    def build_oracle_connection_config(
+        host: str,
+        username: str,
+        password: str,
+        service_name: str = c.Oracle.DEFAULT_SERVICE_NAME,
+        *,
+        sid: str | None = None,
+        port: int = c.Oracle.DEFAULT_PORT,
+        protocol: str = c.Oracle.DEFAULT_PROTOCOL,
+    ) -> FlextDbtOracleModels.OracleConnectionConfig:
+        """Create validated Oracle connection config t.NormalizedValue."""
+        return FlextDbtOracleModels.OracleConnectionConfig(
+            host=host,
+            port=port,
+            service_name=service_name,
+            sid=sid,
+            username=username,
+            password=SecretStr(password),
+            protocol=protocol,
+        )
+
+
 def build_oracle_connection_config(
     host: str,
     username: str,
@@ -18,18 +44,22 @@ def build_oracle_connection_config(
     port: int = c.Oracle.DEFAULT_PORT,
     protocol: str = c.Oracle.DEFAULT_PROTOCOL,
 ) -> FlextDbtOracleModels.OracleConnectionConfig:
-    """Create validated Oracle connection config t.NormalizedValue."""
-    return FlextDbtOracleModels.OracleConnectionConfig(
+    """Module-level shim — delegates to FlextDbtOracleConnections.build_oracle_connection_config."""
+    return FlextDbtOracleConnections.build_oracle_connection_config(
         host=host,
-        port=port,
+        username=username,
+        password=password,
         service_name=service_name,
         sid=sid,
-        username=username,
-        password=SecretStr(password),
+        port=port,
         protocol=protocol,
     )
 
 
 OracleConnectionConfig = FlextDbtOracleModels.OracleConnectionConfig
 
-__all__ = ["OracleConnectionConfig", "build_oracle_connection_config"]
+__all__ = [
+    "FlextDbtOracleConnections",
+    "OracleConnectionConfig",
+    "build_oracle_connection_config",
+]

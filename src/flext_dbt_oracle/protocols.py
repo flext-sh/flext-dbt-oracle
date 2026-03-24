@@ -138,9 +138,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 self,
                 oracle_config: t.DbtOracle.OraclePayload,
                 extraction_config: t.DbtOracle.OraclePayload,
-            ) -> FlextMeltanoProtocols.Result[
-                t.DbtOracle.t.DbtOracle.OraclePayloadList
-            ]:
+            ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayloadList]:
                 """Extract data from Oracle database for DBT processing.
 
                 Args:
@@ -148,14 +146,14 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 extraction_config: Data extraction parameters
 
                 Returns:
-                r[t.DbtOracle.t.DbtOracle.OraclePayloadList]: Extracted Oracle data or error
+                r[t.DbtOracle.OraclePayloadList]: Extracted Oracle data or error
 
                 """
                 ...
 
             def sync_oracle_to_warehouse(
                 self,
-                oracle_data: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                oracle_data: t.DbtOracle.OraclePayloadList,
                 warehouse_config: t.DbtOracle.OraclePayload,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
                 """Sync Oracle data to data warehouse for DBT processing.
@@ -172,11 +170,9 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def transform_oracle_to_dbt_format(
                 self,
-                oracle_data: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                oracle_data: t.DbtOracle.OraclePayloadList,
                 transformation_config: t.DbtOracle.OraclePayload,
-            ) -> FlextMeltanoProtocols.Result[
-                t.DbtOracle.t.DbtOracle.OraclePayloadList
-            ]:
+            ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayloadList]:
                 """Transform Oracle data to DBT-compatible format.
 
                 Args:
@@ -184,14 +180,14 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 transformation_config: Transformation parameters
 
                 Returns:
-                r[t.DbtOracle.t.DbtOracle.OraclePayloadList]: Transformed data or error
+                r[t.DbtOracle.OraclePayloadList]: Transformed data or error
 
                 """
                 ...
 
             def validate_oracle_data_quality(
                 self,
-                data: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                data: t.DbtOracle.OraclePayloadList,
                 quality_rules: t.DbtOracle.OraclePayload,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
                 """Validate Oracle data quality for DBT processing.
@@ -214,7 +210,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def create_performance_models(
                 self,
-                oracle_performance_data: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                oracle_performance_data: t.DbtOracle.OraclePayloadList,
                 modeling_config: t.DbtOracle.OraclePayload,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
                 """Create performance models from Oracle performance data.
@@ -231,7 +227,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def create_schema_dimension(
                 self,
-                oracle_schemas: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                oracle_schemas: t.DbtOracle.OraclePayloadList,
                 dimension_config: t.DbtOracle.OraclePayload,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
                 """Create schema dimension model from Oracle schema data.
@@ -248,7 +244,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def create_table_dimension(
                 self,
-                oracle_tables: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                oracle_tables: t.DbtOracle.OraclePayloadList,
                 dimension_config: t.DbtOracle.OraclePayload,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
                 """Create table dimension model from Oracle table data.
@@ -265,11 +261,9 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def generate_fact_tables(
                 self,
-                dimensions: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                dimensions: t.DbtOracle.OraclePayloadList,
                 fact_config: t.DbtOracle.OraclePayload,
-            ) -> FlextMeltanoProtocols.Result[
-                t.DbtOracle.t.DbtOracle.OraclePayloadList
-            ]:
+            ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayloadList]:
                 """Generate fact tables from Oracle dimensions.
 
                 Args:
@@ -277,7 +271,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 fact_config: Fact table configuration
 
                 Returns:
-                r[t.DbtOracle.t.DbtOracle.OraclePayloadList]: Generated fact tables or error
+                r[t.DbtOracle.OraclePayloadList]: Generated fact tables or error
 
                 """
                 ...
@@ -290,11 +284,9 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def apply_business_rules(
                 self,
-                data: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                data: t.DbtOracle.OraclePayloadList,
                 business_rules: t.DbtOracle.OraclePayload,
-            ) -> FlextMeltanoProtocols.Result[
-                t.DbtOracle.t.DbtOracle.OraclePayloadList
-            ]:
+            ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayloadList]:
                 """Apply business rules to Oracle data transformations.
 
                 Args:
@@ -302,18 +294,16 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 business_rules: Business transformation rules
 
                 Returns:
-                r[t.DbtOracle.t.DbtOracle.OraclePayloadList]: Transformed data or error
+                r[t.DbtOracle.OraclePayloadList]: Transformed data or error
 
                 """
                 ...
 
             def apply_oracle_specific_transformations(
                 self,
-                oracle_data: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                oracle_data: t.DbtOracle.OraclePayloadList,
                 transformation_config: t.DbtOracle.OraclePayload,
-            ) -> FlextMeltanoProtocols.Result[
-                t.DbtOracle.t.DbtOracle.OraclePayloadList
-            ]:
+            ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayloadList]:
                 """Apply Oracle-specific data transformations.
 
                 Args:
@@ -321,18 +311,16 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 transformation_config: Oracle transformation configuration
 
                 Returns:
-                r[t.DbtOracle.t.DbtOracle.OraclePayloadList]: Transformed data or error
+                r[t.DbtOracle.OraclePayloadList]: Transformed data or error
 
                 """
                 ...
 
             def normalize_oracle_data_types(
                 self,
-                oracle_data: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                oracle_data: t.DbtOracle.OraclePayloadList,
                 normalization_rules: t.DbtOracle.OraclePayload,
-            ) -> FlextMeltanoProtocols.Result[
-                t.DbtOracle.t.DbtOracle.OraclePayloadList
-            ]:
+            ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayloadList]:
                 """Normalize Oracle data types for consistent DBT processing.
 
                 Args:
@@ -340,7 +328,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 normalization_rules: Data type normalization rules
 
                 Returns:
-                r[t.DbtOracle.t.DbtOracle.OraclePayloadList]: Normalized Oracle data or error
+                r[t.DbtOracle.OraclePayloadList]: Normalized Oracle data or error
 
                 """
                 ...
@@ -436,7 +424,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def check_data_completeness(
                 self,
-                data: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                data: t.DbtOracle.OraclePayloadList,
                 completeness_config: t.DbtOracle.OraclePayload,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
                 """Check Oracle data completeness for DBT processing.
@@ -453,11 +441,9 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def detect_data_anomalies(
                 self,
-                data: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                data: t.DbtOracle.OraclePayloadList,
                 anomaly_config: t.DbtOracle.OraclePayload,
-            ) -> FlextMeltanoProtocols.Result[
-                t.DbtOracle.t.DbtOracle.OraclePayloadList
-            ]:
+            ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayloadList]:
                 """Detect anomalies in Oracle data for quality assurance.
 
                 Args:
@@ -465,14 +451,14 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 anomaly_config: Anomaly detection configuration
 
                 Returns:
-                r[t.DbtOracle.t.DbtOracle.OraclePayloadList]: Detected anomalies or error
+                r[t.DbtOracle.OraclePayloadList]: Detected anomalies or error
 
                 """
                 ...
 
             def generate_quality_report(
                 self,
-                quality_results: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                quality_results: t.DbtOracle.OraclePayloadList,
                 report_config: t.DbtOracle.OraclePayload,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
                 """Generate data quality report for Oracle DBT processing.
@@ -489,7 +475,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
             def validate_oracle_schema_compliance(
                 self,
-                oracle_data: t.DbtOracle.t.DbtOracle.OraclePayloadList,
+                oracle_data: t.DbtOracle.OraclePayloadList,
                 schema_rules: t.DbtOracle.OraclePayload,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
                 """Validate Oracle data against schema compliance rules.
