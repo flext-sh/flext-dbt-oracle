@@ -52,7 +52,7 @@ class FlextDbtOracle:
         protocol: str = c.Oracle.DEFAULT_PROTOCOL,
     ) -> FlextDbtOracleModels.OracleConnectionConfig:
         """Create validated Oracle connection config."""
-        from flext_dbt_oracle.connections import (  # noqa: PLC0415
+        from flext_dbt_oracle.connections import (
             FlextDbtOracleConnections,
         )
 
