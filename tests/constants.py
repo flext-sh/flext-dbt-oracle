@@ -15,7 +15,7 @@ from flext_tests import FlextTestsConstants
 
 
 class FlextDbtOracleTestConstants(
-    FlextTestsConstants, FlextDbOracleConstants, FlextMeltanoConstants
+    FlextTestsConstants, FlextDbOracleConstants, FlextMeltanoConstants,
 ):
     """Test constants for flext-dbt-oracle."""
 

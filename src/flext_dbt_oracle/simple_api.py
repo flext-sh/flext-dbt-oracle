@@ -22,7 +22,7 @@ class FlextDbtOracle:
     """Facade combining client and service helpers."""
 
     def __init__(
-        self, config: FlextDbtOracleModels.FlextDbtOracleSettings | None = None
+        self, config: FlextDbtOracleModels.FlextDbtOracleSettings | None = None,
     ) -> None:
         """Initialize API with provided or default settings."""
         super().__init__()

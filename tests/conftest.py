@@ -18,7 +18,7 @@ from pydantic import TypeAdapter, ValidationError
 from tests import t
 
 _GENERAL_DICT_ADAPTER: TypeAdapter[Mapping[str, t.Primitives]] = TypeAdapter(
-    Mapping[str, t.Primitives]
+    Mapping[str, t.Primitives],
 )
 
 

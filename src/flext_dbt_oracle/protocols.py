@@ -204,7 +204,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
         @runtime_checkable
         class Modeling(
-            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol
+            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol,
         ):
             """Protocol for Oracle data modeling operations."""
 
@@ -278,7 +278,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
         @runtime_checkable
         class Transformation(
-            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol
+            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol,
         ):
             """Protocol for Oracle data transformation operations."""
 
@@ -352,7 +352,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
         @runtime_checkable
         class Macro(
-            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol
+            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol,
         ):
             """Protocol for DBT macro operations with Oracle data."""
 
@@ -418,7 +418,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
         @runtime_checkable
         class Quality(
-            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol
+            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol,
         ):
             """Protocol for Oracle data quality operations."""
 
@@ -492,7 +492,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
         @runtime_checkable
         class Performance(
-            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol
+            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol,
         ):
             """Protocol for DBT Oracle performance optimization operations."""
 
@@ -562,7 +562,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
         @runtime_checkable
         class Monitoring(
-            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol
+            FlextDbOracleProtocols.Service[t.DbtOracle.OraclePayload], Protocol,
         ):
             """Protocol for DBT Oracle monitoring operations."""
 
