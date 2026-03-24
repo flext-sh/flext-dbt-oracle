@@ -52,10 +52,10 @@ class FlextDbtOracle:
     ) -> FlextDbtOracleModels.OracleConnectionConfig:
         """Create validated Oracle connection config."""
         from flext_dbt_oracle.connections import (  # noqa: PLC0415
-            build_oracle_connection_config,
+            FlextDbtOracleConnections,
         )
 
-        return build_oracle_connection_config(
+        return FlextDbtOracleConnections.build_oracle_connection_config(
             host=host,
             username=username,
             password=password,
