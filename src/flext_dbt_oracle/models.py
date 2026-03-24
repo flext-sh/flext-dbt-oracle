@@ -6,6 +6,8 @@ from collections.abc import Mapping, Sequence
 from typing import Annotated, ClassVar, Literal
 
 from flext_core import FlextModels, t
+from flext_db_oracle import FlextDbOracleModels
+from flext_meltano import FlextMeltanoModels
 from pydantic import (
     ConfigDict,
     Field,
@@ -17,7 +19,7 @@ from pydantic import (
 from flext_dbt_oracle.constants import c
 
 
-class FlextDbtOracleModels(FlextModels):
+class FlextDbtOracleModels(FlextDbOracleModels, FlextMeltanoModels):
     """Namespace wrapper for DBT Oracle domain models.
 
     Inherits from FlextMeltanoModels (Singer/Meltano) and FlextDbOracleModels

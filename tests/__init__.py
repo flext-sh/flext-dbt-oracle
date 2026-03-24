@@ -12,7 +12,7 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
     from flext_core import FlextTypes
-    from flext_tests import d, e, h, r, s, x
+    from flext_db_oracle import d, e, h, r, s, x
 
     from tests import unit
     from tests.conftest import (
@@ -117,7 +117,7 @@ _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
     "TestOracleTableAdapter": ("tests.unit.test_impl", "TestOracleTableAdapter"),
     "TestOracleTableFactory": ("tests.unit.test_impl", "TestOracleTableFactory"),
     "c": ("tests.constants", "FlextDbtOracleTestConstants"),
-    "d": ("flext_tests", "d"),
+    "d": ("flext_db_oracle", "d"),
     "dbt_error_scenarios": ("tests.conftest", "dbt_error_scenarios"),
     "dbt_macro_definitions": ("tests.conftest", "dbt_macro_definitions"),
     "dbt_model_definitions": ("tests.conftest", "dbt_model_definitions"),
@@ -128,8 +128,8 @@ _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
     "dbt_test_config": ("tests.conftest", "dbt_test_config"),
     "dbt_test_definitions": ("tests.conftest", "dbt_test_definitions"),
     "docker_control": ("tests.conftest", "docker_control"),
-    "e": ("flext_tests", "e"),
-    "h": ("flext_tests", "h"),
+    "e": ("flext_db_oracle", "e"),
+    "h": ("flext_db_oracle", "h"),
     "m": ("tests.models", "FlextDbtOracleTestModels"),
     "mock_dbt_oracle_adapter": ("tests.conftest", "mock_dbt_oracle_adapter"),
     "mock_dbt_runner": ("tests.conftest", "mock_dbt_runner"),
@@ -142,8 +142,8 @@ _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
     "p": ("tests.protocols", "FlextDbtOracleTestProtocols"),
     "performance_test_config": ("tests.conftest", "performance_test_config"),
     "pytest_configure": ("tests.conftest", "pytest_configure"),
-    "r": ("flext_tests", "r"),
-    "s": ("flext_tests", "s"),
+    "r": ("flext_db_oracle", "r"),
+    "s": ("flext_db_oracle", "s"),
     "set_test_environment": ("tests.conftest", "set_test_environment"),
     "shared_oracle_container": ("tests.conftest", "shared_oracle_container"),
     "t": ("tests.typings", "FlextDbtOracleTestTypes"),
@@ -161,7 +161,7 @@ _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
     ),
     "u": ("tests.utilities", "FlextDbtOracleTestUtilities"),
     "unit": ("tests.unit", ""),
-    "x": ("flext_tests", "x"),
+    "x": ("flext_db_oracle", "x"),
 }
 
 __all__ = [
