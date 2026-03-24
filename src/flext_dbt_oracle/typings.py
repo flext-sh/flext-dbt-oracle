@@ -36,22 +36,24 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         Python 3.13+ best practice: Use TypeAlias for better type checking.
         """
 
-        type ColumnSpec = t.StrMapping
+        type ColumnSpec = FlextMeltanoTypes.StrMapping
         "Column specification type."
-        type OraclePayload = Mapping[str, t.Primitives | None]
+        type OraclePayload = Mapping[str, FlextMeltanoTypes.Primitives | None]
         "Oracle payload type."
         type OraclePayloadList = Sequence[OraclePayload]
         "List of Oracle payloads."
 
-        type ProjectConfiguration = Mapping[str, t.ContainerValue]
+        type ProjectConfiguration = Mapping[str, FlextMeltanoTypes.ContainerValue]
         "DBT project configuration type."
-        type ModelConfiguration = Mapping[str, str | t.ContainerValue]
+        type ModelConfiguration = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "DBT model configuration type."
-        type SourceConfiguration = Mapping[str, str | Sequence[t.ContainerValueMapping]]
+        type SourceConfiguration = Mapping[
+            str, str | Sequence[FlextMeltanoTypes.ContainerValueMapping]
+        ]
         "DBT source configuration type."
-        type ProfileConfiguration = Mapping[str, t.ContainerValue]
+        type ProfileConfiguration = Mapping[str, FlextMeltanoTypes.ContainerValue]
         "DBT profile configuration type."
-        type MacroConfiguration = Mapping[str, str | t.ContainerValue]
+        type MacroConfiguration = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "DBT macro configuration type."
         type TestConfiguration = Mapping[str, str | bool | Sequence[str]]
         "DBT test configuration type."
@@ -62,15 +64,19 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         Python 3.13+ best practice: Use TypeAlias for better type checking.
         """
 
-        type ConnectionConfig = Mapping[str, t.Scalar | t.ContainerValue]
+        type ConnectionConfig = Mapping[
+            str, FlextMeltanoTypes.Scalar | FlextMeltanoTypes.ContainerValue
+        ]
         "Oracle connection configuration type."
-        type DatabaseConnection = Mapping[str, str | t.ContainerValue]
+        type DatabaseConnection = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "Oracle database connection type."
-        type PoolingConfig = Mapping[str, int | bool | t.ContainerValue]
+        type PoolingConfig = Mapping[str, int | bool | FlextMeltanoTypes.ContainerValue]
         "Oracle pooling configuration type."
-        type SecurityConfig = Mapping[str, bool | str | t.ContainerValue]
+        type SecurityConfig = Mapping[
+            str, bool | str | FlextMeltanoTypes.ContainerValue
+        ]
         "Oracle security configuration type."
-        type SessionConfig = Mapping[str, str | int | t.ContainerValue]
+        type SessionConfig = Mapping[str, str | int | FlextMeltanoTypes.ContainerValue]
         "Oracle session configuration type."
         type TimeoutConfig = Mapping[str, int | float]
         "Oracle timeout configuration type."
@@ -81,18 +87,28 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         Python 3.13+ best practice: Use TypeAlias for better type checking.
         """
 
-        type OracleTable = Mapping[str, str | Sequence[str] | t.ContainerValue]
+        type OracleTable = Mapping[
+            str, str | Sequence[str] | FlextMeltanoTypes.ContainerValue
+        ]
         "Oracle table type."
-        type OracleSchema = Mapping[str, str | Sequence[t.ContainerValueMapping]]
+        type OracleSchema = Mapping[
+            str, str | Sequence[FlextMeltanoTypes.ContainerValueMapping]
+        ]
         "Oracle schema type."
-        type OracleColumn = Mapping[str, t.Scalar | t.ContainerValue]
+        type OracleColumn = Mapping[
+            str, FlextMeltanoTypes.Scalar | FlextMeltanoTypes.ContainerValue
+        ]
         "Oracle column type."
-        type OracleQuery = Mapping[str, str | Sequence[str] | int | t.ContainerValue]
+        type OracleQuery = Mapping[
+            str, str | Sequence[str] | int | FlextMeltanoTypes.ContainerValue
+        ]
         "Oracle query type."
-        type OracleIndex = Mapping[str, str | Sequence[str] | t.ContainerValue]
+        type OracleIndex = Mapping[
+            str, str | Sequence[str] | FlextMeltanoTypes.ContainerValue
+        ]
         "Oracle index type."
         type OracleConstraint = Mapping[
-            str, str | bool | Sequence[str] | t.ContainerValue
+            str, str | bool | Sequence[str] | FlextMeltanoTypes.ContainerValue
         ]
         "Oracle constraint type."
 
@@ -102,19 +118,21 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         Python 3.13+ best practice: Use TypeAlias for better type checking.
         """
 
-        type TransformationConfig = Mapping[str, t.ContainerValue]
+        type TransformationConfig = Mapping[str, FlextMeltanoTypes.ContainerValue]
         "DBT transformation configuration type."
-        type SqlTransformation = Mapping[str, str | t.ContainerValue]
+        type SqlTransformation = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "SQL transformation type."
         type DataValidation = Mapping[
-            str, bool | str | Sequence[str] | t.ContainerValue
+            str, bool | str | Sequence[str] | FlextMeltanoTypes.ContainerValue
         ]
         "Data validation type."
-        type MaterializationConfig = Mapping[str, str | t.ContainerValue]
+        type MaterializationConfig = Mapping[
+            str, str | FlextMeltanoTypes.ContainerValue
+        ]
         "Materialization configuration type."
-        type OutputFormat = Mapping[str, str | t.ContainerValue]
+        type OutputFormat = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "Output format type."
-        type ProcessingStep = Mapping[str, str | int | t.ContainerValue]
+        type ProcessingStep = Mapping[str, str | int | FlextMeltanoTypes.ContainerValue]
         "Processing step type."
 
     class DbtModel:
@@ -123,17 +141,21 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         Python 3.13+ best practice: Use TypeAlias for better type checking.
         """
 
-        type ModelDefinition = Mapping[str, str | t.ContainerValue]
+        type ModelDefinition = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "DBT model definition type."
-        type ModelExecution = Mapping[str, str | bool | int | t.ContainerValue]
+        type ModelExecution = Mapping[
+            str, str | bool | int | FlextMeltanoTypes.ContainerValue
+        ]
         "DBT model execution type."
-        type ModelDependency = Mapping[str, str | Sequence[str] | t.ContainerValue]
+        type ModelDependency = Mapping[
+            str, str | Sequence[str] | FlextMeltanoTypes.ContainerValue
+        ]
         "DBT model dependency type."
-        type ModelTest = Mapping[str, str | bool | t.ContainerValue]
+        type ModelTest = Mapping[str, str | bool | FlextMeltanoTypes.ContainerValue]
         "DBT model test type."
-        type ModelDocumentation = Mapping[str, str | t.ContainerValue]
+        type ModelDocumentation = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "DBT model documentation type."
-        type ModelMaterialization = Mapping[str, str | t.ContainerValue]
+        type ModelMaterialization = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "DBT model materialization type."
 
     class DbtSource:
@@ -142,17 +164,21 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         Python 3.13+ best practice: Use TypeAlias for better type checking.
         """
 
-        type SourceDefinition = Mapping[str, str | t.ContainerValue]
+        type SourceDefinition = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "DBT source definition type."
-        type SourceConnection = Mapping[str, t.ContainerValue]
+        type SourceConnection = Mapping[str, FlextMeltanoTypes.ContainerValue]
         "DBT source connection type."
-        type SourceTable = Mapping[str, str | Sequence[t.ContainerValueMapping]]
+        type SourceTable = Mapping[
+            str, str | Sequence[FlextMeltanoTypes.ContainerValueMapping]
+        ]
         "DBT source table type."
-        type SourceFreshness = Mapping[str, str | int | t.ContainerValue]
+        type SourceFreshness = Mapping[
+            str, str | int | FlextMeltanoTypes.ContainerValue
+        ]
         "DBT source freshness type."
         type SourceTest = Mapping[str, str | bool | Sequence[str]]
         "DBT source test type."
-        type SourceSchema = Mapping[str, str | t.ContainerValue]
+        type SourceSchema = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "DBT source schema type."
 
     class OracleAdapter:
@@ -161,17 +187,23 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         Python 3.13+ best practice: Use TypeAlias for better type checking.
         """
 
-        type AdapterConfiguration = Mapping[str, t.ContainerValue]
+        type AdapterConfiguration = Mapping[str, FlextMeltanoTypes.ContainerValue]
         "Oracle adapter configuration type."
-        type ConnectionAdapter = Mapping[str, t.Scalar | t.ContainerValue]
+        type ConnectionAdapter = Mapping[
+            str, FlextMeltanoTypes.Scalar | FlextMeltanoTypes.ContainerValue
+        ]
         "Oracle connection adapter type."
-        type QueryAdapter = Mapping[str, str | t.ContainerValue]
+        type QueryAdapter = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "Oracle query adapter type."
-        type SchemaAdapter = Mapping[str, str | Sequence[str] | t.ContainerValue]
+        type SchemaAdapter = Mapping[
+            str, str | Sequence[str] | FlextMeltanoTypes.ContainerValue
+        ]
         "Oracle schema adapter type."
-        type TransactionAdapter = Mapping[str, bool | str | t.ContainerValue]
+        type TransactionAdapter = Mapping[
+            str, bool | str | FlextMeltanoTypes.ContainerValue
+        ]
         "Oracle transaction adapter type."
-        type CursorAdapter = Mapping[str, str | int | t.ContainerValue]
+        type CursorAdapter = Mapping[str, str | int | FlextMeltanoTypes.ContainerValue]
         "Oracle cursor adapter type."
 
     class Project:
@@ -182,15 +214,19 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         DBT Oracle domain owns Oracle data transformation-specific types.
         """
 
-        type DbtOracleProjectType = t.NormalizedValue
+        type DbtOracleProjectType = FlextMeltanoTypes.NormalizedValue
         "DBT Oracle project type literal."
-        type DbtOracleProjectConfig = Mapping[str, t.ContainerValue]
+        type DbtOracleProjectConfig = Mapping[str, FlextMeltanoTypes.ContainerValue]
         "DBT Oracle project configuration type."
-        type OracleTransformConfig = Mapping[str, t.Scalar | Sequence[str]]
+        type OracleTransformConfig = Mapping[
+            str, FlextMeltanoTypes.Scalar | Sequence[str]
+        ]
         "Oracle transformation configuration type."
-        type OracleAnalyticsConfig = Mapping[str, bool | str | t.ContainerValue]
+        type OracleAnalyticsConfig = Mapping[
+            str, bool | str | FlextMeltanoTypes.ContainerValue
+        ]
         "Oracle analytics configuration type."
-        type DbtOraclePipelineConfig = Mapping[str, t.ContainerValue]
+        type DbtOraclePipelineConfig = Mapping[str, FlextMeltanoTypes.ContainerValue]
         "DBT Oracle pipeline configuration type."
 
 
