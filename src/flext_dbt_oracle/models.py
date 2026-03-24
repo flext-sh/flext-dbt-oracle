@@ -15,7 +15,6 @@ from pydantic import (
 )
 
 from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.typings import t as dbt_t
 
 
 class FlextDbtOracleModels(FlextModels):
@@ -39,7 +38,7 @@ class FlextDbtOracleModels(FlextModels):
             sql_content: str
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: Sequence[dbt_t.DbtOracle.ColumnSpec] = Field(default=[])
+            columns: Sequence[t.StrMapping] = Field(default=[])
             dependencies: t.StrSequence = Field(default=[])
 
         class ModelGenerator:

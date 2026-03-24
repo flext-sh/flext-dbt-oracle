@@ -2,18 +2,21 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from os import getenv
 
+from flext_core import FlextTypes
 from pydantic import SecretStr, TypeAdapter, ValidationError
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
+from flext_dbt_oracle.connections import OracleConnectionConfig
 from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.services import FlextDbtOracleServices
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
-from flext_dbt_oracle.typings import t
 
-_TABLE_LIST_ADAPTER = TypeAdapter(t.ScalarList)
+_TABLE_LIST_ADAPTER: TypeAdapter[Sequence[FlextTypes.Scalar]] = TypeAdapter(
+    Sequence[FlextTypes.Scalar]
+)
 
 
 class FlextDbtOracle:
@@ -35,9 +38,33 @@ class FlextDbtOracle:
         """Create default API instance."""
         return cls()
 
+    @staticmethod
+    def build_oracle_connection_config(
+        host: str,
+        username: str,
+        password: str,
+        service_name: str = c.Oracle.DEFAULT_SERVICE_NAME,
+        *,
+        sid: str | None = None,
+        port: int = c.Oracle.DEFAULT_PORT,
+        protocol: str = c.Oracle.DEFAULT_PROTOCOL,
+    ) -> OracleConnectionConfig:
+        """Create validated Oracle connection config."""
+        from flext_dbt_oracle.connections import build_oracle_connection_config  # noqa: PLC0415
+
+        return build_oracle_connection_config(
+            host=host,
+            username=username,
+            password=password,
+            service_name=service_name,
+            sid=sid,
+            port=port,
+            protocol=protocol,
+        )
+
     def run_oracle_to_dbt_workflow(
-        self, tables: t.StrSequence | None = None
-    ) -> Mapping[str, Mapping[str, t.MetadataValue]]:
+        self, tables: Sequence[str] | None = None
+    ) -> Mapping[str, Mapping[str, FlextTypes.MetadataValue]]:
         """Run extraction flow and return recommendations."""
         result = self.client.run_pipeline(tables=tables)
         table_payload = result.get("tables")
@@ -48,7 +75,7 @@ class FlextDbtOracle:
         recommendations = self.workflow_service.generate_recommendations(
             table_count=table_count
         )
-        result_dict: Mapping[str, Mapping[str, t.MetadataValue]] = {
+        result_dict: Mapping[str, Mapping[str, FlextTypes.MetadataValue]] = {
             "pipeline": result,
             "recommendations": recommendations,
         }
