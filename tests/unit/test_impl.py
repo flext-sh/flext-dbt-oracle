@@ -7,7 +7,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
+from flext_dbt_oracle import m
+
+OracleTableAdapter = m.OracleTableAdapter
+OracleTableFactory = m.OracleTableFactory
 
 
 class TestOracleTableAdapter:

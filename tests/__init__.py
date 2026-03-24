@@ -59,15 +59,22 @@ if TYPE_CHECKING:
         test_credentials_class,
     )
     from tests.unit.test_config import (
+        FlextDbtOracleSettings,
         TestConfigConstantsUsage,
         TestConfigEdgeCases,
         TestFlextDbtOracleSettings,
     )
     from tests.unit.test_connections import (
+        OracleConnectionConfig,
         TestBuildOracleConnectionConfig,
         TestOracleConnectionConfig,
     )
-    from tests.unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
+    from tests.unit.test_impl import (
+        OracleTableAdapter,
+        OracleTableFactory,
+        TestOracleTableAdapter,
+        TestOracleTableFactory,
+    )
     from tests.unit.test_imports import (
         test_basic_functionality,
         test_flext_dbt_oracle_imports,
@@ -78,6 +85,7 @@ if TYPE_CHECKING:
     )
 
 _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
+    "FlextDbtOracleSettings": ("tests.unit.test_config", "FlextDbtOracleSettings"),
     "FlextDbtOracleTestConstants": ("tests.constants", "FlextDbtOracleTestConstants"),
     "FlextDbtOracleTestModels": ("tests.models", "FlextDbtOracleTestModels"),
     "FlextDbtOracleTestProtocols": ("tests.protocols", "FlextDbtOracleTestProtocols"),
@@ -89,6 +97,9 @@ _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
     "MockModelCompiler": ("tests.conftest", "MockModelCompiler"),
     "MockRelationManager": ("tests.conftest", "MockRelationManager"),
     "MockSqlExecutor": ("tests.conftest", "MockSqlExecutor"),
+    "OracleConnectionConfig": ("tests.unit.test_connections", "OracleConnectionConfig"),
+    "OracleTableAdapter": ("tests.unit.test_impl", "OracleTableAdapter"),
+    "OracleTableFactory": ("tests.unit.test_impl", "OracleTableFactory"),
     "TestBuildOracleConnectionConfig": (
         "tests.unit.test_connections",
         "TestBuildOracleConnectionConfig",
@@ -154,6 +165,7 @@ _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
 }
 
 __all__ = [
+    "FlextDbtOracleSettings",
     "FlextDbtOracleTestConstants",
     "FlextDbtOracleTestModels",
     "FlextDbtOracleTestProtocols",
@@ -165,6 +177,9 @@ __all__ = [
     "MockModelCompiler",
     "MockRelationManager",
     "MockSqlExecutor",
+    "OracleConnectionConfig",
+    "OracleTableAdapter",
+    "OracleTableFactory",
     "TestBuildOracleConnectionConfig",
     "TestConfigConstantsUsage",
     "TestConfigEdgeCases",

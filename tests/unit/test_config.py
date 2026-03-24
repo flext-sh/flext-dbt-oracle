@@ -13,8 +13,10 @@ from typing import Literal, cast
 import pytest
 from pydantic import SecretStr, ValidationError
 
-from flext_dbt_oracle import FlextDbtOracleSettings
-from flext_dbt_oracle.settings import OracleConnectionConfig
+from flext_dbt_oracle import m
+
+FlextDbtOracleSettings = m.FlextDbtOracleSettings
+OracleConnectionConfig = m.OracleConnectionConfig
 
 
 class TestFlextDbtOracleSettings:

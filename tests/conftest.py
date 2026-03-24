@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import os
 import tempfile
-from collections.abc import Generator, Mapping, Sequence
+from collections.abc import Generator, Mapping, MutableMapping, Sequence
 
 import pytest
 from flext_tests import tk
@@ -17,7 +17,9 @@ from pydantic import TypeAdapter, ValidationError
 
 from tests import t
 
-_GENERAL_DICT_ADAPTER = TypeAdapter(Mapping[str, t.Primitives])
+_GENERAL_DICT_ADAPTER: TypeAdapter[Mapping[str, t.Primitives]] = TypeAdapter(
+    Mapping[str, t.Primitives]
+)
 
 
 @pytest.fixture(scope="session")
@@ -360,15 +362,15 @@ class MockConnectionManager:
     def __init__(self) -> None:
         """Initialize connection manager."""
         super().__init__()
-        self.connections: Mapping[str, t.ContainerMapping] = {}
+        self.connections: MutableMapping[str, t.MutableContainerMapping] = {}
 
     def open_connection(
         self,
         name: str,
         config: t.ContainerMapping,
-    ) -> t.ContainerMapping:
+    ) -> t.MutableContainerMapping:
         """Open database connection."""
-        connection: t.ContainerMapping = {
+        connection: t.MutableContainerMapping = {
             "name": name,
             "state": "open",
             "handle": f"mock_handle_{name}",
@@ -395,7 +397,7 @@ class MockSqlExecutor:
     ) -> tuple[str, Sequence[t.StrMapping]]:
         """Execute SQL statement with reduced branching."""
         _ = auto_begin
-        sql_strategies: Mapping[str, tuple[str, Sequence[t.StrMapping]]] = {
+        sql_strategies: dict[str, tuple[str, Sequence[t.StrMapping]]] = {
             "CREATE TABLE": ("CREATE", []),
             "INSERT": ("INSERT", []),
             "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),

@@ -10,10 +10,9 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from flext_dbt_oracle.connections import (
-    OracleConnectionConfig,
-    build_oracle_connection_config,
-)
+from flext_dbt_oracle import build_oracle_connection_config, m
+
+OracleConnectionConfig = m.OracleConnectionConfig
 
 
 class TestOracleConnectionConfig:
