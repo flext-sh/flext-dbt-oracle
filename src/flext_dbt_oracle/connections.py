@@ -56,10 +56,7 @@ def build_oracle_connection_config(
     )
 
 
-OracleConnectionConfig = FlextDbtOracleModels.OracleConnectionConfig
-
 __all__ = [
     "FlextDbtOracleConnections",
-    "OracleConnectionConfig",
     "build_oracle_connection_config",
 ]

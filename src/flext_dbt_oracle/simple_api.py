@@ -9,10 +9,9 @@ from flext_core import FlextTypes
 from pydantic import SecretStr, TypeAdapter, ValidationError
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
-from flext_dbt_oracle.connections import OracleConnectionConfig
 from flext_dbt_oracle.constants import c
+from flext_dbt_oracle.models import FlextDbtOracleModels
 from flext_dbt_oracle.services import FlextDbtOracleServices
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
 
 _TABLE_LIST_ADAPTER: TypeAdapter[Sequence[FlextTypes.Scalar]] = TypeAdapter(
     Sequence[FlextTypes.Scalar],
@@ -22,10 +21,12 @@ _TABLE_LIST_ADAPTER: TypeAdapter[Sequence[FlextTypes.Scalar]] = TypeAdapter(
 class FlextDbtOracle:
     """Facade combining client and service helpers."""
 
-    def __init__(self, config: FlextDbtOracleSettings | None = None) -> None:
+    def __init__(
+        self, config: FlextDbtOracleModels.FlextDbtOracleSettings | None = None
+    ) -> None:
         """Initialize API with provided or default settings."""
         super().__init__()
-        self.config = config or FlextDbtOracleSettings(
+        self.config = config or FlextDbtOracleModels.FlextDbtOracleSettings(
             oracle_host=c.Oracle.DEFAULT_HOST,
             oracle_username="user",
             oracle_password=SecretStr(getenv("FLEXT_DBT_ORACLE_PASSWORD", "")),
@@ -48,7 +49,7 @@ class FlextDbtOracle:
         sid: str | None = None,
         port: int = c.Oracle.DEFAULT_PORT,
         protocol: str = c.Oracle.DEFAULT_PROTOCOL,
-    ) -> OracleConnectionConfig:
+    ) -> FlextDbtOracleModels.OracleConnectionConfig:
         """Create validated Oracle connection config."""
         from flext_dbt_oracle.connections import (  # noqa: PLC0415
             build_oracle_connection_config,

@@ -25,11 +25,9 @@ if TYPE_CHECKING:
         __version__,
         __version_info__,
     )
-    from flext_dbt_oracle.adapters import OracleTableAdapter, OracleTableFactory
     from flext_dbt_oracle.client import FlextDbtOracleClient
     from flext_dbt_oracle.connections import (
         FlextDbtOracleConnections,
-        OracleConnectionConfig,
         build_oracle_connection_config,
     )
     from flext_dbt_oracle.constants import (
@@ -42,7 +40,6 @@ if TYPE_CHECKING:
         FlextDbtOracleProtocols as p,
     )
     from flext_dbt_oracle.services import FlextDbtOracleServices
-    from flext_dbt_oracle.settings import FlextDbtOracleSettings
     from flext_dbt_oracle.simple_api import FlextDbtOracle
     from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
     from flext_dbt_oracle.utilities import (
@@ -53,17 +50,25 @@ if TYPE_CHECKING:
 _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
     "FlextDbtOracle": ("flext_dbt_oracle.simple_api", "FlextDbtOracle"),
     "FlextDbtOracleClient": ("flext_dbt_oracle.client", "FlextDbtOracleClient"),
-    "FlextDbtOracleConnections": ("flext_dbt_oracle.connections", "FlextDbtOracleConnections"),
-    "FlextDbtOracleConstants": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
+    "FlextDbtOracleConnections": (
+        "flext_dbt_oracle.connections",
+        "FlextDbtOracleConnections",
+    ),
+    "FlextDbtOracleConstants": (
+        "flext_dbt_oracle.constants",
+        "FlextDbtOracleConstants",
+    ),
     "FlextDbtOracleModels": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
-    "FlextDbtOracleProtocols": ("flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"),
+    "FlextDbtOracleProtocols": (
+        "flext_dbt_oracle.protocols",
+        "FlextDbtOracleProtocols",
+    ),
     "FlextDbtOracleServices": ("flext_dbt_oracle.services", "FlextDbtOracleServices"),
-    "FlextDbtOracleSettings": ("flext_dbt_oracle.settings", "FlextDbtOracleSettings"),
     "FlextDbtOracleTypes": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
-    "FlextDbtOracleUtilities": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
-    "OracleConnectionConfig": ("flext_dbt_oracle.connections", "OracleConnectionConfig"),
-    "OracleTableAdapter": ("flext_dbt_oracle.adapters", "OracleTableAdapter"),
-    "OracleTableFactory": ("flext_dbt_oracle.adapters", "OracleTableFactory"),
+    "FlextDbtOracleUtilities": (
+        "flext_dbt_oracle.utilities",
+        "FlextDbtOracleUtilities",
+    ),
     "__all__": ("flext_dbt_oracle.__version__", "__all__"),
     "__author__": ("flext_dbt_oracle.__version__", "__author__"),
     "__author_email__": ("flext_dbt_oracle.__version__", "__author_email__"),
@@ -73,7 +78,10 @@ _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
     "__url__": ("flext_dbt_oracle.__version__", "__url__"),
     "__version__": ("flext_dbt_oracle.__version__", "__version__"),
     "__version_info__": ("flext_dbt_oracle.__version__", "__version_info__"),
-    "build_oracle_connection_config": ("flext_dbt_oracle.connections", "build_oracle_connection_config"),
+    "build_oracle_connection_config": (
+        "flext_dbt_oracle.connections",
+        "build_oracle_connection_config",
+    ),
     "c": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
     "d": ("flext_db_oracle", "d"),
     "e": ("flext_db_oracle", "e"),
@@ -95,12 +103,8 @@ __all__ = [
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",
     "FlextDbtOracleServices",
-    "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
-    "OracleConnectionConfig",
-    "OracleTableAdapter",
-    "OracleTableFactory",
     "__all__",
     "__author__",
     "__author_email__",
