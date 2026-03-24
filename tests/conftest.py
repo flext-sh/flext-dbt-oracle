@@ -420,9 +420,7 @@ class MockModelCompiler:
 class MockRelationManager:
     """Strategy for relation management (Single Responsibility Principle)."""
 
-    def get_relation(
-        self, database: str, schema: str, identifier: str
-    ) -> t.StrMapping:
+    def get_relation(self, database: str, schema: str, identifier: str) -> t.StrMapping:
         """Get relation information."""
         return {
             "database": database,
@@ -431,9 +429,7 @@ class MockRelationManager:
             "type": "table",
         }
 
-    def list_relations_without_caching(
-        self, schema: str
-    ) -> Sequence[t.StrMapping]:
+    def list_relations_without_caching(self, schema: str) -> Sequence[t.StrMapping]:
         """List relations in schema."""
         return [
             {"schema": schema, "identifier": "customers", "type": "table"},
@@ -472,15 +468,11 @@ class MockDbtOracleAdapter:
         """Delegate to model compiler strategy."""
         return self.model_compiler.compile_model(model_sql, context)
 
-    def get_relation(
-        self, database: str, schema: str, identifier: str
-    ) -> t.StrMapping:
+    def get_relation(self, database: str, schema: str, identifier: str) -> t.StrMapping:
         """Delegate to relation manager strategy."""
         return self.relation_manager.get_relation(database, schema, identifier)
 
-    def list_relations_without_caching(
-        self, schema: str
-    ) -> Sequence[t.StrMapping]:
+    def list_relations_without_caching(self, schema: str) -> Sequence[t.StrMapping]:
         """Delegate to relation manager strategy."""
         return self.relation_manager.list_relations_without_caching(schema)
 

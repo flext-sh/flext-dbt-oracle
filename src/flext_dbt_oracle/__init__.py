@@ -43,10 +43,7 @@ if TYPE_CHECKING:
     from flext_dbt_oracle.services import FlextDbtOracleServices
     from flext_dbt_oracle.settings import FlextDbtOracleSettings
     from flext_dbt_oracle.simple_api import FlextDbtOracle
-    from flext_dbt_oracle.typings import (
-        FlextDbtOracleTypes,
-        FlextDbtOracleTypes as t,
-    )
+    from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
     from flext_dbt_oracle.utilities import (
         FlextDbtOracleUtilities,
         FlextDbtOracleUtilities as u,
