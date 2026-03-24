@@ -7,9 +7,6 @@ from pydantic import SecretStr
 from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.models import FlextDbtOracleModels
 
-# Re-export from models facade
-OracleConnectionConfig = FlextDbtOracleModels.OracleConnectionConfig
-
 
 def build_oracle_connection_config(
     host: str,
@@ -20,9 +17,9 @@ def build_oracle_connection_config(
     sid: str | None = None,
     port: int = c.Oracle.DEFAULT_PORT,
     protocol: str = c.Oracle.DEFAULT_PROTOCOL,
-) -> OracleConnectionConfig:
+) -> FlextDbtOracleModels.OracleConnectionConfig:
     """Create validated Oracle connection config t.NormalizedValue."""
-    return OracleConnectionConfig(
+    return FlextDbtOracleModels.OracleConnectionConfig(
         host=host,
         port=port,
         service_name=service_name,
@@ -33,4 +30,4 @@ def build_oracle_connection_config(
     )
 
 
-__all__ = ["OracleConnectionConfig", "build_oracle_connection_config"]
+__all__ = ["build_oracle_connection_config"]

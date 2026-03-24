@@ -254,7 +254,7 @@ def dbt_source_definitions() -> t.ContainerMapping:
                         ],
                     },
                 ],
-            }
+            },
         ],
     }
 
@@ -362,7 +362,9 @@ class MockConnectionManager:
         self.connections: Mapping[str, t.ContainerMapping] = {}
 
     def open_connection(
-        self, name: str, config: t.ContainerMapping
+        self,
+        name: str,
+        config: t.ContainerMapping,
     ) -> t.ContainerMapping:
         """Open database connection."""
         connection: t.ContainerMapping = {
@@ -385,7 +387,10 @@ class MockSqlExecutor:
     """Strategy for SQL execution (Strategy Pattern)."""
 
     def execute(
-        self, sql: str, *, auto_begin: bool = True
+        self,
+        sql: str,
+        *,
+        auto_begin: bool = True,
     ) -> tuple[str, Sequence[t.StrMapping]]:
         """Execute SQL statement with reduced branching."""
         _ = auto_begin
@@ -459,7 +464,10 @@ class MockDbtOracleAdapter:
         self.connection_manager.close_connection(name)
 
     def execute(
-        self, sql: str, *, auto_begin: bool = True
+        self,
+        sql: str,
+        *,
+        auto_begin: bool = True,
     ) -> tuple[str, Sequence[t.StrMapping]]:
         """Delegate to SQL executor strategy."""
         return self.sql_executor.execute(sql, auto_begin=auto_begin)

@@ -15,7 +15,7 @@ from flext_dbt_oracle.services import FlextDbtOracleServices
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
 
 _TABLE_LIST_ADAPTER: TypeAdapter[Sequence[FlextTypes.Scalar]] = TypeAdapter(
-    Sequence[FlextTypes.Scalar]
+    Sequence[FlextTypes.Scalar],
 )
 
 
@@ -50,7 +50,7 @@ class FlextDbtOracle:
         protocol: str = c.Oracle.DEFAULT_PROTOCOL,
     ) -> OracleConnectionConfig:
         """Create validated Oracle connection config."""
-        from flext_dbt_oracle.connections import (
+        from flext_dbt_oracle.connections import (  # noqa: PLC0415
             build_oracle_connection_config,
         )
 
@@ -65,7 +65,8 @@ class FlextDbtOracle:
         )
 
     def run_oracle_to_dbt_workflow(
-        self, tables: Sequence[str] | None = None
+        self,
+        tables: Sequence[str] | None = None,
     ) -> Mapping[str, Mapping[str, FlextTypes.MetadataValue]]:
         """Run extraction flow and return recommendations."""
         result = self.client.run_pipeline(tables=tables)
@@ -75,7 +76,7 @@ class FlextDbtOracle:
         except ValidationError:
             table_count = 0
         recommendations = self.workflow_service.generate_recommendations(
-            table_count=table_count
+            table_count=table_count,
         )
         result_dict: Mapping[str, Mapping[str, FlextTypes.MetadataValue]] = {
             "pipeline": result,

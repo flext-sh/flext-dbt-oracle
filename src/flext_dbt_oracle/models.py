@@ -71,21 +71,26 @@ class FlextDbtOracleModels(FlextModels):
         """Configuration for Oracle database connections."""
 
         host: str = Field(
-            default=c.Oracle.DEFAULT_HOST, description="Oracle database host"
+            default=c.Oracle.DEFAULT_HOST,
+            description="Oracle database host",
         )
         port: t.PortNumber = Field(
-            default=c.Oracle.DEFAULT_PORT, description="Oracle database port"
+            default=c.Oracle.DEFAULT_PORT,
+            description="Oracle database port",
         )
         username: str = Field(default="", description="Oracle database username")
         password: str | SecretStr = Field(
-            default=SecretStr(""), description="Oracle database password"
+            default=SecretStr(""),
+            description="Oracle database password",
         )
         service_name: str = Field(
-            default=c.Oracle.DEFAULT_SERVICE_NAME, description="Oracle service name"
+            default=c.Oracle.DEFAULT_SERVICE_NAME,
+            description="Oracle service name",
         )
         sid: str | None = Field(default=None, description="Oracle SID (optional)")
         protocol: str = Field(
-            default=c.Oracle.DEFAULT_PROTOCOL, description="Oracle connection protocol"
+            default=c.Oracle.DEFAULT_PROTOCOL,
+            description="Oracle connection protocol",
         )
 
         @classmethod
@@ -135,7 +140,8 @@ class FlextDbtOracleModels(FlextModels):
 
         @staticmethod
         def create(
-            schema_name: str, table_name: str
+            schema_name: str,
+            table_name: str,
         ) -> FlextDbtOracleModels.OracleTableAdapter:
             """Create adapter with trimmed, normalized names."""
             return FlextDbtOracleModels.OracleTableAdapter(
@@ -147,7 +153,9 @@ class FlextDbtOracleModels(FlextModels):
         """Configuration for DBT Oracle operations."""
 
         model_config: ClassVar[ConfigDict] = ConfigDict(
-            extra="ignore", populate_by_name=True, frozen=False
+            extra="ignore",
+            populate_by_name=True,
+            frozen=False,
         )
 
         oracle_host: str = Field(
@@ -195,7 +203,8 @@ class FlextDbtOracleModels(FlextModels):
             description="Oracle NLS date format",
         )
         search_path: str = Field(
-            default="", description="Comma-separated schema search path"
+            default="",
+            description="Comma-separated schema search path",
         )
         enable_metrics: bool = Field(
             default=False,
@@ -213,25 +222,31 @@ class FlextDbtOracleModels(FlextModels):
         # Connection pool settings
         pool_min_size: t.PositiveInt = Field(default=1, description="Minimum pool size")
         pool_max_size: t.PositiveInt = Field(
-            default=10, description="Maximum pool size"
+            default=10,
+            description="Maximum pool size",
         )
         pool_increment: t.PositiveInt = Field(
-            default=1, description="Pool increment size"
+            default=1,
+            description="Pool increment size",
         )
 
         # Performance settings
         query_timeout: t.PositiveInt = Field(
-            default=300, description="Query timeout in seconds"
+            default=300,
+            description="Query timeout in seconds",
         )
         fetch_size: t.PositiveInt = Field(default=1000, description="Fetch batch size")
         connect_timeout: t.PositiveInt = Field(
-            default=30, description="Connection timeout in seconds"
+            default=30,
+            description="Connection timeout in seconds",
         )
         retry_attempts: t.NonNegativeInt = Field(
-            default=3, description="Number of retry attempts"
+            default=3,
+            description="Number of retry attempts",
         )
         retry_delay: t.NonNegativeInt = Field(
-            default=1, description="Delay between retries in seconds"
+            default=1,
+            description="Delay between retries in seconds",
         )
         retry_delay_seconds: t.NonNegativeFloat = Field(
             default=1.0,

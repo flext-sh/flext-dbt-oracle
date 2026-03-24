@@ -48,7 +48,8 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         type ModelConfiguration = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "DBT model configuration type."
         type SourceConfiguration = Mapping[
-            str, str | Sequence[FlextMeltanoTypes.ContainerValueMapping]
+            str,
+            str | Sequence[FlextMeltanoTypes.ContainerValueMapping],
         ]
         "DBT source configuration type."
         type ProfileConfiguration = Mapping[str, FlextMeltanoTypes.ContainerValue]
@@ -65,7 +66,8 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         """
 
         type ConnectionConfig = Mapping[
-            str, FlextMeltanoTypes.Scalar | FlextMeltanoTypes.ContainerValue
+            str,
+            FlextMeltanoTypes.Scalar | FlextMeltanoTypes.ContainerValue,
         ]
         "Oracle connection configuration type."
         type DatabaseConnection = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
@@ -73,7 +75,8 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         type PoolingConfig = Mapping[str, int | bool | FlextMeltanoTypes.ContainerValue]
         "Oracle pooling configuration type."
         type SecurityConfig = Mapping[
-            str, bool | str | FlextMeltanoTypes.ContainerValue
+            str,
+            bool | str | FlextMeltanoTypes.ContainerValue,
         ]
         "Oracle security configuration type."
         type SessionConfig = Mapping[str, str | int | FlextMeltanoTypes.ContainerValue]
@@ -88,27 +91,33 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         """
 
         type OracleTable = Mapping[
-            str, str | Sequence[str] | FlextMeltanoTypes.ContainerValue
+            str,
+            str | Sequence[str] | FlextMeltanoTypes.ContainerValue,
         ]
         "Oracle table type."
         type OracleSchema = Mapping[
-            str, str | Sequence[FlextMeltanoTypes.ContainerValueMapping]
+            str,
+            str | Sequence[FlextMeltanoTypes.ContainerValueMapping],
         ]
         "Oracle schema type."
         type OracleColumn = Mapping[
-            str, FlextMeltanoTypes.Scalar | FlextMeltanoTypes.ContainerValue
+            str,
+            FlextMeltanoTypes.Scalar | FlextMeltanoTypes.ContainerValue,
         ]
         "Oracle column type."
         type OracleQuery = Mapping[
-            str, str | Sequence[str] | int | FlextMeltanoTypes.ContainerValue
+            str,
+            str | Sequence[str] | int | FlextMeltanoTypes.ContainerValue,
         ]
         "Oracle query type."
         type OracleIndex = Mapping[
-            str, str | Sequence[str] | FlextMeltanoTypes.ContainerValue
+            str,
+            str | Sequence[str] | FlextMeltanoTypes.ContainerValue,
         ]
         "Oracle index type."
         type OracleConstraint = Mapping[
-            str, str | bool | Sequence[str] | FlextMeltanoTypes.ContainerValue
+            str,
+            str | bool | Sequence[str] | FlextMeltanoTypes.ContainerValue,
         ]
         "Oracle constraint type."
 
@@ -123,11 +132,13 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         type SqlTransformation = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "SQL transformation type."
         type DataValidation = Mapping[
-            str, bool | str | Sequence[str] | FlextMeltanoTypes.ContainerValue
+            str,
+            bool | str | Sequence[str] | FlextMeltanoTypes.ContainerValue,
         ]
         "Data validation type."
         type MaterializationConfig = Mapping[
-            str, str | FlextMeltanoTypes.ContainerValue
+            str,
+            str | FlextMeltanoTypes.ContainerValue,
         ]
         "Materialization configuration type."
         type OutputFormat = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
@@ -144,11 +155,13 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         type ModelDefinition = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "DBT model definition type."
         type ModelExecution = Mapping[
-            str, str | bool | int | FlextMeltanoTypes.ContainerValue
+            str,
+            str | bool | int | FlextMeltanoTypes.ContainerValue,
         ]
         "DBT model execution type."
         type ModelDependency = Mapping[
-            str, str | Sequence[str] | FlextMeltanoTypes.ContainerValue
+            str,
+            str | Sequence[str] | FlextMeltanoTypes.ContainerValue,
         ]
         "DBT model dependency type."
         type ModelTest = Mapping[str, str | bool | FlextMeltanoTypes.ContainerValue]
@@ -169,11 +182,13 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         type SourceConnection = Mapping[str, FlextMeltanoTypes.ContainerValue]
         "DBT source connection type."
         type SourceTable = Mapping[
-            str, str | Sequence[FlextMeltanoTypes.ContainerValueMapping]
+            str,
+            str | Sequence[FlextMeltanoTypes.ContainerValueMapping],
         ]
         "DBT source table type."
         type SourceFreshness = Mapping[
-            str, str | int | FlextMeltanoTypes.ContainerValue
+            str,
+            str | int | FlextMeltanoTypes.ContainerValue,
         ]
         "DBT source freshness type."
         type SourceTest = Mapping[str, str | bool | Sequence[str]]
@@ -190,17 +205,20 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         type AdapterConfiguration = Mapping[str, FlextMeltanoTypes.ContainerValue]
         "Oracle adapter configuration type."
         type ConnectionAdapter = Mapping[
-            str, FlextMeltanoTypes.Scalar | FlextMeltanoTypes.ContainerValue
+            str,
+            FlextMeltanoTypes.Scalar | FlextMeltanoTypes.ContainerValue,
         ]
         "Oracle connection adapter type."
         type QueryAdapter = Mapping[str, str | FlextMeltanoTypes.ContainerValue]
         "Oracle query adapter type."
         type SchemaAdapter = Mapping[
-            str, str | Sequence[str] | FlextMeltanoTypes.ContainerValue
+            str,
+            str | Sequence[str] | FlextMeltanoTypes.ContainerValue,
         ]
         "Oracle schema adapter type."
         type TransactionAdapter = Mapping[
-            str, bool | str | FlextMeltanoTypes.ContainerValue
+            str,
+            bool | str | FlextMeltanoTypes.ContainerValue,
         ]
         "Oracle transaction adapter type."
         type CursorAdapter = Mapping[str, str | int | FlextMeltanoTypes.ContainerValue]
@@ -219,11 +237,13 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         type DbtOracleProjectConfig = Mapping[str, FlextMeltanoTypes.ContainerValue]
         "DBT Oracle project configuration type."
         type OracleTransformConfig = Mapping[
-            str, FlextMeltanoTypes.Scalar | Sequence[str]
+            str,
+            FlextMeltanoTypes.Scalar | Sequence[str],
         ]
         "Oracle transformation configuration type."
         type OracleAnalyticsConfig = Mapping[
-            str, bool | str | FlextMeltanoTypes.ContainerValue
+            str,
+            bool | str | FlextMeltanoTypes.ContainerValue,
         ]
         "Oracle analytics configuration type."
         type DbtOraclePipelineConfig = Mapping[str, FlextMeltanoTypes.ContainerValue]

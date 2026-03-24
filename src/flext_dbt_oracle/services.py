@@ -11,13 +11,14 @@ class FlextDbtOracleServices:
     """Utility service namespace for DBT Oracle workflows."""
 
     def generate_recommendations(
-        self, table_count: int
+        self,
+        table_count: int,
     ) -> Mapping[str, t.MetadataValue]:
         """Generate lightweight recommendations from table volume."""
         recommendations: MutableSequence[t.Scalar] = []
         if table_count > c.DbtOracle.PERFORMANCE_RECOMMENDATION_THRESHOLD:
             recommendations.append(
-                "Process tables in batches and increase dbt threads gradually"
+                "Process tables in batches and increase dbt threads gradually",
             )
         return {"table_count": table_count, "recommendations": recommendations}
 

@@ -24,7 +24,9 @@ class FlextDbtOracleClient:
         return ["customers", "orders", "order_items"]
 
     def extract_table_data(
-        self, table_name: str, filters: t.ConfigurationMapping | None = None
+        self,
+        table_name: str,
+        filters: t.ConfigurationMapping | None = None,
     ) -> Sequence[t.ConfigurationMapping]:
         """Return deterministic sample payload for a table."""
         _ = filters
