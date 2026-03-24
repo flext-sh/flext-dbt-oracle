@@ -15,7 +15,7 @@ from pydantic import (
 )
 
 from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.typings import ColumnSpec
+from flext_dbt_oracle.typings import t as dbt_t
 
 
 class FlextDbtOracleModels(FlextModels):
@@ -39,15 +39,15 @@ class FlextDbtOracleModels(FlextModels):
             sql_content: str
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: Sequence[ColumnSpec] = Field(default=[])
-            dependencies: Sequence[str] = Field(default=[])
+            columns: Sequence[dbt_t.DbtOracle.ColumnSpec] = Field(default=[])
+            dependencies: t.StrSequence = Field(default=[])
 
         class ModelGenerator:
             """Helper for generating deterministic staging model metadata."""
 
             def __init__(
                 self,
-                config: Mapping[str, str] | None = None,
+                config: t.StrMapping | None = None,
             ) -> None:
                 """Store optional generation-time configuration."""
                 super().__init__()
@@ -55,7 +55,7 @@ class FlextDbtOracleModels(FlextModels):
 
             def generate_staging_models(
                 self,
-                source_tables: Sequence[str],
+                source_tables: t.StrSequence,
             ) -> Sequence[FlextDbtOracleModels.DbtOracle.Model]:
                 """Create one staging model definition per source table."""
                 return [
@@ -123,7 +123,7 @@ class FlextDbtOracleModels(FlextModels):
             """Return fully qualified relation name as schema.table."""
             return f"{self.schema_name}.{self.table_name}"
 
-        def to_metadata(self) -> Mapping[str, str]:
+        def to_metadata(self) -> t.StrMapping:
             """Return metadata dict with schema, table, and relation."""
             return {
                 "schema": self.schema_name,
@@ -307,7 +307,7 @@ class FlextDbtOracleModels(FlextModels):
                 "retry_delay": self.retry_delay,
             }
 
-        def get_dbt_settings(self) -> Mapping[str, str]:
+        def get_dbt_settings(self) -> t.StrMapping:
             """Return DBT-specific settings."""
             return {
                 "database": self.oracle_service_name,
@@ -318,7 +318,7 @@ class FlextDbtOracleModels(FlextModels):
     @classmethod
     def create_generator(
         cls,
-        config: Mapping[str, str] | None = None,
+        config: t.StrMapping | None = None,
     ) -> FlextDbtOracleModels.DbtOracle.ModelGenerator:
         """Create generator instance with optional custom config."""
         return cls.DbtOracle.ModelGenerator(config=config)

@@ -16,15 +16,13 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 
+from flext_db_oracle import FlextDbOracleTypes
 from flext_meltano import FlextMeltanoTypes
 
 t = FlextMeltanoTypes
-type ColumnSpec = t.StrMapping
-type OraclePayload = Mapping[str, t.Primitives | None]
-type OraclePayloadList = Sequence[OraclePayload]
 
 
-class FlextDbtOracleTypes(FlextMeltanoTypes):
+class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     """DBT Oracle-specific type definitions extending t.
 
     Domain-specific type system for DBT Oracle data transformation operations.
@@ -37,6 +35,13 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
 
         Python 3.13+ best practice: Use TypeAlias for better type checking.
         """
+
+        type ColumnSpec = t.StrMapping
+        "Column specification type."
+        type OraclePayload = Mapping[str, t.Primitives | None]
+        "Oracle payload type."
+        type OraclePayloadList = Sequence[OraclePayload]
+        "List of Oracle payloads."
 
         type ProjectConfiguration = Mapping[str, t.ContainerValue]
         "DBT project configuration type."
@@ -191,9 +196,6 @@ class FlextDbtOracleTypes(FlextMeltanoTypes):
 
 t = FlextDbtOracleTypes
 __all__ = [
-    "ColumnSpec",
     "FlextDbtOracleTypes",
-    "OraclePayload",
-    "OraclePayloadList",
     "t",
 ]

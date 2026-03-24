@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from os import getenv
 
 from pydantic import SecretStr, TypeAdapter, ValidationError
@@ -36,7 +36,7 @@ class FlextDbtOracle:
         return cls()
 
     def run_oracle_to_dbt_workflow(
-        self, tables: Sequence[str] | None = None
+        self, tables: t.StrSequence | None = None
     ) -> Mapping[str, Mapping[str, t.MetadataValue]]:
         """Run extraction flow and return recommendations."""
         result = self.client.run_pipeline(tables=tables)

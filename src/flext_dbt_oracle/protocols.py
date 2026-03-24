@@ -12,7 +12,10 @@ from flext_db_oracle.protocols import FlextDbOracleProtocols
 from flext_meltano import FlextMeltanoProtocols
 
 from flext_dbt_oracle import t
-from flext_dbt_oracle.typings import OraclePayload, OraclePayloadList
+
+# MRO aliases for readability
+type OraclePayload = t.DbtOracle.OraclePayload
+type OraclePayloadList = t.DbtOracle.OraclePayloadList
 
 
 class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
