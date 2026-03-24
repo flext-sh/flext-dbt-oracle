@@ -38,8 +38,8 @@ class FlextDbtOracleModels(FlextModels):
             sql_content: str
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: Sequence[t.StrMapping] = Field(default=[])
-            dependencies: t.StrSequence = Field(default=[])
+            columns: Annotated[Sequence[t.StrMapping], Field(default_factory=list)]
+            dependencies: Annotated[t.StrSequence, Field(default_factory=list)]
 
         class ModelGenerator:
             """Helper for generating deterministic staging model metadata."""
@@ -70,28 +70,48 @@ class FlextDbtOracleModels(FlextModels):
     class OracleConnectionConfig(FlextModels.Value):
         """Configuration for Oracle database connections."""
 
-        host: str = Field(
-            default=c.Oracle.DEFAULT_HOST,
-            description="Oracle database host",
-        )
-        port: t.PortNumber = Field(
-            default=c.Oracle.DEFAULT_PORT,
-            description="Oracle database port",
-        )
-        username: str = Field(default="", description="Oracle database username")
-        password: str | SecretStr = Field(
-            default=SecretStr(""),
-            description="Oracle database password",
-        )
-        service_name: str = Field(
-            default=c.Oracle.DEFAULT_SERVICE_NAME,
-            description="Oracle service name",
-        )
-        sid: str | None = Field(default=None, description="Oracle SID (optional)")
-        protocol: str = Field(
-            default=c.Oracle.DEFAULT_PROTOCOL,
-            description="Oracle connection protocol",
-        )
+        host: Annotated[
+            str,
+            Field(
+                default=c.Oracle.DEFAULT_HOST,
+                description="Oracle database host",
+            ),
+        ]
+        port: Annotated[
+            t.PortNumber,
+            Field(
+                default=c.Oracle.DEFAULT_PORT,
+                description="Oracle database port",
+            ),
+        ]
+        username: Annotated[
+            str,
+            Field(default="", description="Oracle database username"),
+        ]
+        password: Annotated[
+            str | SecretStr,
+            Field(
+                default=SecretStr(""),
+                description="Oracle database password",
+            ),
+        ]
+        service_name: Annotated[
+            str,
+            Field(
+                default=c.Oracle.DEFAULT_SERVICE_NAME,
+                description="Oracle service name",
+            ),
+        ]
+        sid: Annotated[
+            str | None, Field(default=None, description="Oracle SID (optional)")
+        ]
+        protocol: Annotated[
+            str,
+            Field(
+                default=c.Oracle.DEFAULT_PROTOCOL,
+                description="Oracle connection protocol",
+            ),
+        ]
 
         @classmethod
         def validate_password(cls, v: str | SecretStr) -> SecretStr:
@@ -158,100 +178,171 @@ class FlextDbtOracleModels(FlextModels):
             frozen=False,
         )
 
-        oracle_host: str = Field(
-            default=c.Oracle.DEFAULT_HOST,
-            description="Oracle database host",
-        )
-        oracle_username: str = Field(
-            default="oracle",
-            description="Oracle database username",
-        )
-        oracle_password: SecretStr = Field(
-            default=SecretStr(""),
-            description="Oracle database password",
-        )
-        oracle_port: t.PortNumber = Field(
-            default=c.Oracle.DEFAULT_PORT,
-            alias="port",
-            description="Oracle database port",
-        )
-        oracle_service_name: str = Field(
-            default=c.Oracle.DEFAULT_SERVICE_NAME,
-            description="Oracle service name",
-        )
+        oracle_host: Annotated[
+            str,
+            Field(
+                default=c.Oracle.DEFAULT_HOST,
+                description="Oracle database host",
+            ),
+        ]
+        oracle_username: Annotated[
+            str,
+            Field(
+                default="oracle",
+                description="Oracle database username",
+            ),
+        ]
+        oracle_password: Annotated[
+            SecretStr,
+            Field(
+                default=SecretStr(""),
+                description="Oracle database password",
+            ),
+        ]
+        oracle_port: Annotated[
+            t.PortNumber,
+            Field(
+                default=c.Oracle.DEFAULT_PORT,
+                alias="port",
+                description="Oracle database port",
+            ),
+        ]
+        oracle_service_name: Annotated[
+            str,
+            Field(
+                default=c.Oracle.DEFAULT_SERVICE_NAME,
+                description="Oracle service name",
+            ),
+        ]
 
-        sid: str | None = Field(default=None, description="Oracle SID (optional)")
-        protocol: Literal["tcp", "tcps"] = Field(
-            default="tcp",
-            description="Connection protocol",
-        )
-        materialization: Literal["incremental", "snapshot", "table", "view"] = Field(
-            default="table",
-            description="DBT materialization strategy",
-        )
-        schema_name: str = Field(default="", description="Target schema name")
-        ssl_server_dn_match: bool = Field(
-            default=False,
-            description="Enable SSL server DN validation",
-        )
-        nls_lang: str = Field(
-            default=c.DbtOracle.NLS_LANG,
-            description="Oracle NLS language setting",
-        )
-        nls_date_format: str = Field(
-            default=c.DbtOracle.NLS_DATE_FORMAT,
-            description="Oracle NLS date format",
-        )
-        search_path: str = Field(
-            default="",
-            description="Comma-separated schema search path",
-        )
-        enable_metrics: bool = Field(
-            default=False,
-            description="Enable metrics collection",
-        )
-        log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = Field(
-            default="INFO",
-            description="Runtime log verbosity",
-        )
-        enable_sql_logging: bool = Field(
-            default=False,
-            description="Enable SQL query logging",
-        )
+        sid: Annotated[
+            str | None, Field(default=None, description="Oracle SID (optional)")
+        ]
+        protocol: Annotated[
+            Literal["tcp", "tcps"],
+            Field(
+                default="tcp",
+                description="Connection protocol",
+            ),
+        ]
+        materialization: Annotated[
+            Literal["incremental", "snapshot", "table", "view"],
+            Field(
+                default="table",
+                description="DBT materialization strategy",
+            ),
+        ]
+        schema_name: Annotated[str, Field(default="", description="Target schema name")]
+        ssl_server_dn_match: Annotated[
+            bool,
+            Field(
+                default=False,
+                description="Enable SSL server DN validation",
+            ),
+        ]
+        nls_lang: Annotated[
+            str,
+            Field(
+                default=c.DbtOracle.NLS_LANG,
+                description="Oracle NLS language setting",
+            ),
+        ]
+        nls_date_format: Annotated[
+            str,
+            Field(
+                default=c.DbtOracle.NLS_DATE_FORMAT,
+                description="Oracle NLS date format",
+            ),
+        ]
+        search_path: Annotated[
+            str,
+            Field(
+                default="",
+                description="Comma-separated schema search path",
+            ),
+        ]
+        enable_metrics: Annotated[
+            bool,
+            Field(
+                default=False,
+                description="Enable metrics collection",
+            ),
+        ]
+        log_level: Annotated[
+            Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+            Field(
+                default="INFO",
+                description="Runtime log verbosity",
+            ),
+        ]
+        enable_sql_logging: Annotated[
+            bool,
+            Field(
+                default=False,
+                description="Enable SQL query logging",
+            ),
+        ]
 
         # Connection pool settings
-        pool_min_size: t.PositiveInt = Field(default=1, description="Minimum pool size")
-        pool_max_size: t.PositiveInt = Field(
-            default=10,
-            description="Maximum pool size",
-        )
-        pool_increment: t.PositiveInt = Field(
-            default=1,
-            description="Pool increment size",
-        )
+        pool_min_size: Annotated[
+            t.PositiveInt,
+            Field(default=1, description="Minimum pool size"),
+        ]
+        pool_max_size: Annotated[
+            t.PositiveInt,
+            Field(
+                default=10,
+                description="Maximum pool size",
+            ),
+        ]
+        pool_increment: Annotated[
+            t.PositiveInt,
+            Field(
+                default=1,
+                description="Pool increment size",
+            ),
+        ]
 
         # Performance settings
-        query_timeout: t.PositiveInt = Field(
-            default=300,
-            description="Query timeout in seconds",
-        )
-        fetch_size: t.PositiveInt = Field(default=1000, description="Fetch batch size")
-        connect_timeout: t.PositiveInt = Field(
-            default=30,
-            description="Connection timeout in seconds",
-        )
-        retry_attempts: t.NonNegativeInt = Field(
-            default=3,
-            description="Number of retry attempts",
-        )
-        retry_delay: t.NonNegativeInt = Field(
-            default=1,
-            description="Delay between retries in seconds",
-        )
-        retry_delay_seconds: t.NonNegativeFloat = Field(
-            default=1.0,
-            description="Delay between retries in seconds",
-        )
+        query_timeout: Annotated[
+            t.PositiveInt,
+            Field(
+                default=300,
+                description="Query timeout in seconds",
+            ),
+        ]
+        fetch_size: Annotated[
+            t.PositiveInt,
+            Field(default=1000, description="Fetch batch size"),
+        ]
+        connect_timeout: Annotated[
+            t.PositiveInt,
+            Field(
+                default=30,
+                description="Connection timeout in seconds",
+            ),
+        ]
+        retry_attempts: Annotated[
+            t.NonNegativeInt,
+            Field(
+                default=3,
+                description="Number of retry attempts",
+            ),
+        ]
+        retry_delay: Annotated[
+            t.NonNegativeInt,
+            Field(
+                default=1,
+                description="Delay between retries in seconds",
+            ),
+        ]
+        retry_delay_seconds: Annotated[
+            t.NonNegativeFloat,
+            Field(
+                default=1.0,
+                description="Delay between retries in seconds",
+            ),
+        ]
 
         @model_validator(mode="after")
         def validate_pool_sizes(self) -> FlextDbtOracleModels.FlextDbtOracleSettings:
