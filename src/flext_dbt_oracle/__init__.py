@@ -47,52 +47,52 @@ if TYPE_CHECKING:
         FlextDbtOracleUtilities as u,
     )
 
-_LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "FlextDbtOracle": ("flext_dbt_oracle.simple_api", "FlextDbtOracle"),
-    "FlextDbtOracleClient": ("flext_dbt_oracle.client", "FlextDbtOracleClient"),
-    "FlextDbtOracleConnections": (
+_LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
+    "FlextDbtOracle": ["flext_dbt_oracle.simple_api", "FlextDbtOracle"],
+    "FlextDbtOracleClient": ["flext_dbt_oracle.client", "FlextDbtOracleClient"],
+    "FlextDbtOracleConnections": [
         "flext_dbt_oracle.connections",
         "FlextDbtOracleConnections",
-    ),
-    "FlextDbtOracleConstants": (
+    ],
+    "FlextDbtOracleConstants": [
         "flext_dbt_oracle.constants",
         "FlextDbtOracleConstants",
-    ),
-    "FlextDbtOracleModels": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
-    "FlextDbtOracleProtocols": (
+    ],
+    "FlextDbtOracleModels": ["flext_dbt_oracle.models", "FlextDbtOracleModels"],
+    "FlextDbtOracleProtocols": [
         "flext_dbt_oracle.protocols",
         "FlextDbtOracleProtocols",
-    ),
-    "FlextDbtOracleServices": ("flext_dbt_oracle.services", "FlextDbtOracleServices"),
-    "FlextDbtOracleTypes": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
-    "FlextDbtOracleUtilities": (
+    ],
+    "FlextDbtOracleServices": ["flext_dbt_oracle.services", "FlextDbtOracleServices"],
+    "FlextDbtOracleTypes": ["flext_dbt_oracle.typings", "FlextDbtOracleTypes"],
+    "FlextDbtOracleUtilities": [
         "flext_dbt_oracle.utilities",
         "FlextDbtOracleUtilities",
-    ),
-    "__all__": ("flext_dbt_oracle.__version__", "__all__"),
-    "__author__": ("flext_dbt_oracle.__version__", "__author__"),
-    "__author_email__": ("flext_dbt_oracle.__version__", "__author_email__"),
-    "__description__": ("flext_dbt_oracle.__version__", "__description__"),
-    "__license__": ("flext_dbt_oracle.__version__", "__license__"),
-    "__title__": ("flext_dbt_oracle.__version__", "__title__"),
-    "__url__": ("flext_dbt_oracle.__version__", "__url__"),
-    "__version__": ("flext_dbt_oracle.__version__", "__version__"),
-    "__version_info__": ("flext_dbt_oracle.__version__", "__version_info__"),
-    "build_oracle_connection_config": (
+    ],
+    "__all__": ["flext_dbt_oracle.__version__", "__all__"],
+    "__author__": ["flext_dbt_oracle.__version__", "__author__"],
+    "__author_email__": ["flext_dbt_oracle.__version__", "__author_email__"],
+    "__description__": ["flext_dbt_oracle.__version__", "__description__"],
+    "__license__": ["flext_dbt_oracle.__version__", "__license__"],
+    "__title__": ["flext_dbt_oracle.__version__", "__title__"],
+    "__url__": ["flext_dbt_oracle.__version__", "__url__"],
+    "__version__": ["flext_dbt_oracle.__version__", "__version__"],
+    "__version_info__": ["flext_dbt_oracle.__version__", "__version_info__"],
+    "build_oracle_connection_config": [
         "flext_dbt_oracle.connections",
         "build_oracle_connection_config",
-    ),
-    "c": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
-    "d": ("flext_db_oracle", "d"),
-    "e": ("flext_db_oracle", "e"),
-    "h": ("flext_db_oracle", "h"),
-    "m": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
-    "p": ("flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"),
-    "r": ("flext_db_oracle", "r"),
-    "s": ("flext_db_oracle", "s"),
-    "t": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
-    "u": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
-    "x": ("flext_db_oracle", "x"),
+    ],
+    "c": ["flext_dbt_oracle.constants", "FlextDbtOracleConstants"],
+    "d": ["flext_db_oracle", "d"],
+    "e": ["flext_db_oracle", "e"],
+    "h": ["flext_db_oracle", "h"],
+    "m": ["flext_dbt_oracle.models", "FlextDbtOracleModels"],
+    "p": ["flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"],
+    "r": ["flext_db_oracle", "r"],
+    "s": ["flext_db_oracle", "s"],
+    "t": ["flext_dbt_oracle.typings", "FlextDbtOracleTypes"],
+    "u": ["flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"],
+    "x": ["flext_db_oracle", "x"],
 }
 
 __all__ = [

@@ -28,9 +28,9 @@ classifiers = [
 dependencies = [
   "agate>=1.7",
   "dbt-common @ git+https://github.com/flext-sh/dbt-common.git@flext/relax-deps",
-  "flext-core",
-  "flext-db-oracle",
-  "flext-meltano",
+  "flext-core @ file:../flext-core",
+  "flext-db-oracle @ file:../flext-db-oracle",
+  "flext-meltano @ file:../flext-meltano",
   "pydantic-core>=2.41.4",
   "pydantic>=2.12.3",
 ]
