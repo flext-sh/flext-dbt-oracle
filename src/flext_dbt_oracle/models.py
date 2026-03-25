@@ -40,8 +40,8 @@ class FlextDbtOracleModels(FlextDbOracleModels, FlextMeltanoModels):
             sql_content: str
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: Annotated[Sequence[t.StrMapping], Field(default_factory=list)]
-            dependencies: Annotated[t.StrSequence, Field(default_factory=list)]
+            columns: Sequence[t.StrMapping] = Field(default_factory=list)
+            dependencies: t.StrSequence = Field(default_factory=list)
 
         class ModelGenerator:
             """Helper for generating deterministic staging model metadata."""
