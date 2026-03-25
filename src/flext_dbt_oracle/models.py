@@ -19,7 +19,7 @@ from pydantic import (
 from flext_dbt_oracle import c, t
 
 
-class FlextDbtOracleModels(FlextDbOracleModels, FlextMeltanoModels):
+class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
     """Namespace wrapper for DBT Oracle domain models.
 
     Inherits from FlextMeltanoModels (Singer/Meltano) and FlextDbOracleModels

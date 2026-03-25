@@ -19,8 +19,6 @@ from collections.abc import Mapping, Sequence
 from flext_db_oracle import FlextDbOracleTypes
 from flext_meltano import FlextMeltanoTypes
 
-t = FlextMeltanoTypes
-
 
 class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     """DBT Oracle-specific type definitions extending t.
