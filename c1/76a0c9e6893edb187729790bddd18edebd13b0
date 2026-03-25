@@ -1,0 +1,25 @@
+tests/unit/test_impl.py
+  e722c052f29389d9 12-13
+tests/conftest.py
+  e722c052f29389d9 401-402,509,524,538
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.19",
+  "base_commit_sha": "c176a0c9e6893edb187729790bddd18edebd13b0",
+  "prompts": {
+    "e722c052f29389d9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "41d20397-78d2-4352-9e45-0f73cc1d2267",
+        "model": "claude-haiku-4-5-20251001"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>",
+      "messages": [],
+      "total_additions": 1104,
+      "total_deletions": 20,
+      "accepted_lines": 550,
+      "overriden_lines": 0
+    }
+  }
+}
