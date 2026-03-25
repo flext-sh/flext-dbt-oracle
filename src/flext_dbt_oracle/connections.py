@@ -16,14 +16,14 @@ class FlextDbtOracleConnections:
         host: str,
         username: str,
         password: str,
-        service_name: str = c.Oracle.DEFAULT_SERVICE_NAME,
+        service_name: str = c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME,
         *,
         sid: str | None = None,
-        port: int = c.Oracle.DEFAULT_PORT,
-        protocol: str = c.Oracle.DEFAULT_PROTOCOL,
-    ) -> FlextDbtOracleModels.OracleConnectionConfig:
+        port: int = c.DbtOracle.Oracle.DEFAULT_PORT,
+        protocol: str = c.DbtOracle.Oracle.DEFAULT_PROTOCOL,
+    ) -> FlextDbtOracleModels.DbtOracle.OracleConnectionConfig:
         """Create validated Oracle connection config t.NormalizedValue."""
-        return FlextDbtOracleModels.OracleConnectionConfig(
+        return FlextDbtOracleModels.DbtOracle.OracleConnectionConfig(
             host=host,
             port=port,
             service_name=service_name,
@@ -38,12 +38,12 @@ def build_oracle_connection_config(
     host: str,
     username: str,
     password: str,
-    service_name: str = c.Oracle.DEFAULT_SERVICE_NAME,
+    service_name: str = c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME,
     *,
     sid: str | None = None,
-    port: int = c.Oracle.DEFAULT_PORT,
-    protocol: str = c.Oracle.DEFAULT_PROTOCOL,
-) -> FlextDbtOracleModels.OracleConnectionConfig:
+    port: int = c.DbtOracle.Oracle.DEFAULT_PORT,
+    protocol: str = c.DbtOracle.Oracle.DEFAULT_PROTOCOL,
+) -> FlextDbtOracleModels.DbtOracle.OracleConnectionConfig:
     """Module-level shim — delegates to FlextDbtOracleConnections.build_oracle_connection_config."""
     return FlextDbtOracleConnections.build_oracle_connection_config(
         host=host,

@@ -9,6 +9,7 @@ from flext_core import FlextTypes
 from pydantic import SecretStr, TypeAdapter, ValidationError
 
 from flext_dbt_oracle.client import FlextDbtOracleClient
+from flext_dbt_oracle.connections import FlextDbtOracleConnections
 from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.models import FlextDbtOracleModels
 from flext_dbt_oracle.services import FlextDbtOracleServices
@@ -23,12 +24,12 @@ class FlextDbtOracle:
 
     def __init__(
         self,
-        config: FlextDbtOracleModels.FlextDbtOracleSettings | None = None,
+        config: FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings | None = None,
     ) -> None:
         """Initialize API with provided or default settings."""
         super().__init__()
-        self.config = config or FlextDbtOracleModels.FlextDbtOracleSettings(
-            oracle_host=c.Oracle.DEFAULT_HOST,
+        self.config = config or FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings(
+            oracle_host=c.DbtOracle.Oracle.DEFAULT_HOST,
             oracle_username="user",
             oracle_password=SecretStr(getenv("FLEXT_DBT_ORACLE_PASSWORD", "")),
         )
@@ -45,17 +46,13 @@ class FlextDbtOracle:
         host: str,
         username: str,
         password: str,
-        service_name: str = c.Oracle.DEFAULT_SERVICE_NAME,
+        service_name: str = c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME,
         *,
         sid: str | None = None,
-        port: int = c.Oracle.DEFAULT_PORT,
-        protocol: str = c.Oracle.DEFAULT_PROTOCOL,
-    ) -> FlextDbtOracleModels.OracleConnectionConfig:
+        port: int = c.DbtOracle.Oracle.DEFAULT_PORT,
+        protocol: str = c.DbtOracle.Oracle.DEFAULT_PROTOCOL,
+    ) -> FlextDbtOracleModels.DbtOracle.OracleConnectionConfig:
         """Create validated Oracle connection config."""
-        from flext_dbt_oracle.connections import (
-            FlextDbtOracleConnections,
-        )
-
         return FlextDbtOracleConnections.build_oracle_connection_config(
             host=host,
             username=username,
