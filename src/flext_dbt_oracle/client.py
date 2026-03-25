@@ -14,7 +14,9 @@ class FlextDbtOracleClient:
     # Protocol reference moved to p.SettingsConfig
     Settings = p
 
-    def __init__(self, config: FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings) -> None:
+    def __init__(
+        self, config: FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings
+    ) -> None:
         """Store runtime settings used by client operations."""
         super().__init__()
         self.config = config
