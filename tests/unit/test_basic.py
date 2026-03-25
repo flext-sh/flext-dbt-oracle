@@ -12,9 +12,10 @@ import pytest
 from flext_dbt_oracle import (
     FlextDbtOracleClient,
     FlextDbtOracleModels,
-    FlextDbtOracleSettings,
     m,
 )
+
+FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings  # noqa: N806
 
 
 def test_basic_import() -> None:

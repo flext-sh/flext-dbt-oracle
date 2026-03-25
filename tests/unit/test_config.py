@@ -15,8 +15,8 @@ from pydantic import SecretStr, ValidationError
 
 from flext_dbt_oracle import m
 
-FlextDbtOracleSettings = m.FlextDbtOracleSettings
-OracleConnectionConfig = m.OracleConnectionConfig
+FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings
+OracleConnectionConfig = m.DbtOracle.OracleConnectionConfig
 
 
 class TestFlextDbtOracleSettings:

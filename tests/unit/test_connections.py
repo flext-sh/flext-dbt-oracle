@@ -12,7 +12,7 @@ from pydantic import ValidationError
 
 from flext_dbt_oracle import build_oracle_connection_config, m
 
-OracleConnectionConfig = m.OracleConnectionConfig
+OracleConnectionConfig = m.DbtOracle.OracleConnectionConfig
 
 
 class TestOracleConnectionConfig:
