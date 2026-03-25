@@ -9,8 +9,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_db_oracle import FlextDbOracleModels
-from flext_meltano import FlextMeltanoModels
 from flext_tests import FlextTestsModels
 
 from flext_dbt_oracle.models import FlextDbtOracleModels
@@ -19,8 +17,6 @@ from flext_dbt_oracle.models import FlextDbtOracleModels
 class FlextDbtOracleTestModels(
     FlextTestsModels,
     FlextDbtOracleModels,
-    FlextDbOracleModels,
-    FlextMeltanoModels,
 ):
     """Test models combining FlextTestsModels with flext-dbt-oracle models."""
 

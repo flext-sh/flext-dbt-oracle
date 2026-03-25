@@ -9,8 +9,8 @@ from __future__ import annotations
 
 from flext_dbt_oracle import m
 
-OracleTableAdapter = m.OracleTableAdapter
-OracleTableFactory = m.OracleTableFactory
+OracleTableAdapter = m.DbtOracle.OracleTableAdapter
+OracleTableFactory = m.DbtOracle.OracleTableFactory
 
 
 class TestOracleTableAdapter:

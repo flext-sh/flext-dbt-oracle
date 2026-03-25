@@ -398,8 +398,8 @@ class MockSqlExecutor:
         """Execute SQL statement with reduced branching."""
         _ = auto_begin
         sql_strategies: MutableMapping[str, tuple[str, Sequence[t.StrMapping]]] = {
-            "CREATE TABLE": ("CREATE", []),
-            "INSERT": ("INSERT", []),
+            "CREATE TABLE": ("CREATE", list[t.StrMapping]()),
+            "INSERT": ("INSERT", list[t.StrMapping]()),
             "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
         }
         for keyword, result in sql_strategies.items():
@@ -506,7 +506,7 @@ class MockDbtRunner:
 
     def run_models(self, models: t.StrSequence | None = None) -> t.ContainerMapping:
         """Run dbt models."""
-        results: Sequence[t.ContainerMapping] = []
+        results: list[t.ContainerMapping] = []
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
             result: t.ContainerMapping = {
@@ -521,7 +521,7 @@ class MockDbtRunner:
     def run_tests(self, models: t.StrSequence | None = None) -> t.ContainerMapping:
         """Run dbt tests."""
         _ = models
-        results: Sequence[t.ContainerMapping] = []
+        results: list[t.ContainerMapping] = []
         tests = ["test_unique_customer_id", "test_not_null_order_id"]
         for test in tests:
             result: t.ContainerMapping = {
@@ -535,7 +535,7 @@ class MockDbtRunner:
 
     def compile(self, models: t.StrSequence | None = None) -> t.ContainerMapping:
         """Compile dbt models."""
-        compiled: t.StrMapping = {}
+        compiled: dict[str, str] = {}
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
             compiled[model] = f"SELECT * FROM compiled_{model}"
