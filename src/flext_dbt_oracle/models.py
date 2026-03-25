@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import Annotated, ClassVar, Literal
 
-from flext_core import FlextModels, t
+from flext_core import FlextModels
 from flext_db_oracle import FlextDbOracleModels
 from flext_meltano import FlextMeltanoModels
 from pydantic import (
@@ -16,7 +16,7 @@ from pydantic import (
     model_validator,
 )
 
-from flext_dbt_oracle.constants import c
+from flext_dbt_oracle import c, t
 
 
 class FlextDbtOracleModels(FlextDbOracleModels, FlextMeltanoModels):
