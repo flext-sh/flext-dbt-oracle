@@ -15,7 +15,7 @@ from flext_dbt_oracle import (
     m,
 )
 
-FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings  # noqa: N806
+FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings
 
 
 def test_basic_import() -> None:

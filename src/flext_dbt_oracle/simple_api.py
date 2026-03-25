@@ -28,11 +28,14 @@ class FlextDbtOracle:
     ) -> None:
         """Initialize API with provided or default settings."""
         super().__init__()
-        self.config = config or FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings.model_validate({
-            "oracle_host": c.DbtOracle.Oracle.DEFAULT_HOST,
-            "oracle_username": "user",
-            "oracle_password": getenv("FLEXT_DBT_ORACLE_PASSWORD", ""),
-        })
+        self.config = (
+            config
+            or FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings.model_validate({
+                "oracle_host": c.DbtOracle.Oracle.DEFAULT_HOST,
+                "oracle_username": "user",
+                "oracle_password": getenv("FLEXT_DBT_ORACLE_PASSWORD", ""),
+            })
+        )
         self.client = FlextDbtOracleClient(self.config)
         self.workflow_service = FlextDbtOracleServices()
 
