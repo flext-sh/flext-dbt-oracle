@@ -40,7 +40,9 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
             sql_content: str
             description: str = ""
             source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: Sequence[t.StrMapping] = Field(default_factory=list)
+            columns: Sequence[t.StrMapping] = Field(
+                default_factory=lambda: list[t.StrMapping](),
+            )
             dependencies: t.StrSequence = Field(default_factory=list)
 
         class ModelGenerator:
@@ -74,47 +76,32 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
 
             host: Annotated[
                 str,
-                Field(
-                    default=c.DbtOracle.Oracle.DEFAULT_HOST,
-                    description="Oracle database host",
-                ),
-            ]
+                Field(description="Oracle database host"),
+            ] = c.DbtOracle.Oracle.DEFAULT_HOST
             port: Annotated[
                 t.PortNumber,
-                Field(
-                    default=c.DbtOracle.Oracle.DEFAULT_PORT,
-                    description="Oracle database port",
-                ),
-            ]
+                Field(description="Oracle database port"),
+            ] = c.DbtOracle.Oracle.DEFAULT_PORT
             username: Annotated[
                 str,
-                Field(default="", description="Oracle database username"),
-            ]
+                Field(description="Oracle database username"),
+            ] = ""
             password: Annotated[
                 str | SecretStr,
-                Field(
-                    default=SecretStr(""),
-                    description="Oracle database password",
-                ),
-            ]
+                Field(description="Oracle database password"),
+            ] = SecretStr("")
             service_name: Annotated[
                 str,
-                Field(
-                    default=c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME,
-                    description="Oracle service name",
-                ),
-            ]
+                Field(description="Oracle service name"),
+            ] = c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
             sid: Annotated[
                 str | None,
-                Field(default=None, description="Oracle SID (optional)"),
-            ]
+                Field(description="Oracle SID (optional)"),
+            ] = None
             protocol: Annotated[
                 str,
-                Field(
-                    default=c.DbtOracle.Oracle.DEFAULT_PROTOCOL,
-                    description="Oracle connection protocol",
-                ),
-            ]
+                Field(description="Oracle connection protocol"),
+            ] = c.DbtOracle.Oracle.DEFAULT_PROTOCOL
 
             @classmethod
             def validate_password(cls, v: str | SecretStr) -> SecretStr:
@@ -190,55 +177,36 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
 
             oracle_host: Annotated[
                 str,
-                Field(
-                    default=c.DbtOracle.Oracle.DEFAULT_HOST,
-                    description="Oracle database host",
-                ),
-            ]
+                Field(description="Oracle database host"),
+            ] = c.DbtOracle.Oracle.DEFAULT_HOST
             oracle_username: Annotated[
                 str,
-                Field(
-                    default="oracle",
-                    description="Oracle database username",
-                ),
-            ]
+                Field(description="Oracle database username"),
+            ] = "oracle"
             oracle_password: Annotated[
                 SecretStr,
-                Field(
-                    default=SecretStr(""),
-                    description="Oracle database password",
-                ),
-            ]
+                Field(description="Oracle database password"),
+            ] = SecretStr("")
             oracle_port: Annotated[
                 t.PortNumber,
                 Field(
-                    default=c.DbtOracle.Oracle.DEFAULT_PORT,
                     alias="port",
                     description="Oracle database port",
                 ),
-            ]
+            ] = c.DbtOracle.Oracle.DEFAULT_PORT
             oracle_service_name: Annotated[
                 str,
-                Field(
-                    default=c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME,
-                    description="Oracle service name",
-                ),
-            ]
+                Field(description="Oracle service name"),
+            ] = c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
 
             sid: Annotated[
                 str | None,
-                Field(
-                    default=None,
-                    description="Oracle SID (optional)",
-                ),
-            ]
+                Field(description="Oracle SID (optional)"),
+            ] = None
             protocol: Annotated[
                 Literal["tcp", "tcps"],
-                Field(
-                    default="tcp",
-                    description="Connection protocol",
-                ),
-            ]
+                Field(description="Connection protocol"),
+            ] = "tcp"
             materialization: Annotated[
                 Literal[
                     "incremental",
@@ -246,53 +214,32 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     "table",
                     "view",
                 ],
-                Field(
-                    default="table",
-                    description="DBT materialization strategy",
-                ),
-            ]
+                Field(description="DBT materialization strategy"),
+            ] = "table"
             schema_name: Annotated[
                 str,
-                Field(
-                    default="",
-                    description="Target schema name",
-                ),
-            ]
+                Field(description="Target schema name"),
+            ] = ""
             ssl_server_dn_match: Annotated[
                 bool,
-                Field(
-                    default=False,
-                    description="Enable SSL server DN validation",
-                ),
-            ]
+                Field(description="Enable SSL server DN validation"),
+            ] = False
             nls_lang: Annotated[
                 str,
-                Field(
-                    default=c.DbtOracle.NLS_LANG,
-                    description="Oracle NLS language setting",
-                ),
-            ]
+                Field(description="Oracle NLS language setting"),
+            ] = c.DbtOracle.NLS_LANG
             nls_date_format: Annotated[
                 str,
-                Field(
-                    default=c.DbtOracle.NLS_DATE_FORMAT,
-                    description="Oracle NLS date format",
-                ),
-            ]
+                Field(description="Oracle NLS date format"),
+            ] = c.DbtOracle.NLS_DATE_FORMAT
             search_path: Annotated[
                 str,
-                Field(
-                    default="",
-                    description="Schema search path",
-                ),
-            ]
+                Field(description="Schema search path"),
+            ] = ""
             enable_metrics: Annotated[
                 bool,
-                Field(
-                    default=False,
-                    description="Enable metrics collection",
-                ),
-            ]
+                Field(description="Enable metrics collection"),
+            ] = False
             log_level: Annotated[
                 Literal[
                     "DEBUG",
@@ -301,82 +248,52 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     "ERROR",
                     "CRITICAL",
                 ],
-                Field(
-                    default="INFO",
-                    description="Runtime log verbosity",
-                ),
-            ]
+                Field(description="Runtime log verbosity"),
+            ] = "INFO"
             enable_sql_logging: Annotated[
                 bool,
-                Field(
-                    default=False,
-                    description="Enable SQL query logging",
-                ),
-            ]
+                Field(description="Enable SQL query logging"),
+            ] = False
 
             # Connection pool settings
             pool_min_size: Annotated[
                 t.PositiveInt,
-                Field(default=1, description="Minimum pool size"),
-            ]
+                Field(description="Minimum pool size"),
+            ] = 1
             pool_max_size: Annotated[
                 t.PositiveInt,
-                Field(
-                    default=10,
-                    description="Maximum pool size",
-                ),
-            ]
+                Field(description="Maximum pool size"),
+            ] = 10
             pool_increment: Annotated[
                 t.PositiveInt,
-                Field(
-                    default=1,
-                    description="Pool increment size",
-                ),
-            ]
+                Field(description="Pool increment size"),
+            ] = 1
 
             # Performance settings
             query_timeout: Annotated[
                 t.PositiveInt,
-                Field(
-                    default=300,
-                    description="Query timeout in seconds",
-                ),
-            ]
+                Field(description="Query timeout in seconds"),
+            ] = 300
             fetch_size: Annotated[
                 t.PositiveInt,
-                Field(
-                    default=1000,
-                    description="Fetch batch size",
-                ),
-            ]
+                Field(description="Fetch batch size"),
+            ] = 1000
             connect_timeout: Annotated[
                 t.PositiveInt,
-                Field(
-                    default=30,
-                    description="Connection timeout in seconds",
-                ),
-            ]
+                Field(description="Connection timeout in seconds"),
+            ] = 30
             retry_attempts: Annotated[
                 t.NonNegativeInt,
-                Field(
-                    default=3,
-                    description="Number of retry attempts",
-                ),
-            ]
+                Field(description="Number of retry attempts"),
+            ] = 3
             retry_delay: Annotated[
                 t.NonNegativeInt,
-                Field(
-                    default=1,
-                    description="Delay between retries",
-                ),
-            ]
+                Field(description="Delay between retries"),
+            ] = 1
             retry_delay_seconds: Annotated[
                 t.NonNegativeFloat,
-                Field(
-                    default=1.0,
-                    description="Delay between retries in seconds",
-                ),
-            ]
+                Field(description="Delay between retries in seconds"),
+            ] = 1.0
 
             @model_validator(mode="after")
             def validate_pool_sizes(
