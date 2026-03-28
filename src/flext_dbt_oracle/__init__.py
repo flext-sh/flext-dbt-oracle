@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_db_oracle import d, e, h, r, s, x
 
+    from flext_dbt_oracle import _utilities
     from flext_dbt_oracle.__version__ import (
         __all__,
         __author__,
@@ -25,10 +26,11 @@ if TYPE_CHECKING:
         __version__,
         __version_info__,
     )
-    from flext_dbt_oracle.connections import (
+    from flext_dbt_oracle._utilities.connections import (
         FlextDbtOracleConnections,
         build_oracle_connection_config,
     )
+    from flext_dbt_oracle._utilities.simple_api import FlextDbtOracle
     from flext_dbt_oracle.constants import (
         FlextDbtOracleConstants,
         FlextDbtOracleConstants as c,
@@ -38,7 +40,6 @@ if TYPE_CHECKING:
         FlextDbtOracleProtocols,
         FlextDbtOracleProtocols as p,
     )
-    from flext_dbt_oracle.simple_api import FlextDbtOracle
     from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
     from flext_dbt_oracle.utilities import (
         FlextDbtOracleUtilities,
@@ -46,9 +47,9 @@ if TYPE_CHECKING:
     )
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
-    "FlextDbtOracle": ["flext_dbt_oracle.simple_api", "FlextDbtOracle"],
+    "FlextDbtOracle": ["flext_dbt_oracle._utilities.simple_api", "FlextDbtOracle"],
     "FlextDbtOracleConnections": [
-        "flext_dbt_oracle.connections",
+        "flext_dbt_oracle._utilities.connections",
         "FlextDbtOracleConnections",
     ],
     "FlextDbtOracleConstants": [
@@ -74,8 +75,9 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "__url__": ["flext_dbt_oracle.__version__", "__url__"],
     "__version__": ["flext_dbt_oracle.__version__", "__version__"],
     "__version_info__": ["flext_dbt_oracle.__version__", "__version_info__"],
+    "_utilities": ["flext_dbt_oracle._utilities", ""],
     "build_oracle_connection_config": [
-        "flext_dbt_oracle.connections",
+        "flext_dbt_oracle._utilities.connections",
         "build_oracle_connection_config",
     ],
     "c": ["flext_dbt_oracle.constants", "FlextDbtOracleConstants"],
@@ -108,6 +110,7 @@ __all__ = [
     "__url__",
     "__version__",
     "__version_info__",
+    "_utilities",
     "build_oracle_connection_config",
     "c",
     "d",
