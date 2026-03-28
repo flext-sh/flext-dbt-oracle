@@ -25,7 +25,6 @@ if TYPE_CHECKING:
         __version__,
         __version_info__,
     )
-    from flext_dbt_oracle.client import FlextDbtOracleClient
     from flext_dbt_oracle.connections import (
         FlextDbtOracleConnections,
         build_oracle_connection_config,
@@ -39,7 +38,6 @@ if TYPE_CHECKING:
         FlextDbtOracleProtocols,
         FlextDbtOracleProtocols as p,
     )
-    from flext_dbt_oracle.services import FlextDbtOracleServices
     from flext_dbt_oracle.simple_api import FlextDbtOracle
     from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
     from flext_dbt_oracle.utilities import (
@@ -49,7 +47,6 @@ if TYPE_CHECKING:
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "FlextDbtOracle": ["flext_dbt_oracle.simple_api", "FlextDbtOracle"],
-    "FlextDbtOracleClient": ["flext_dbt_oracle.client", "FlextDbtOracleClient"],
     "FlextDbtOracleConnections": [
         "flext_dbt_oracle.connections",
         "FlextDbtOracleConnections",
@@ -63,7 +60,6 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "flext_dbt_oracle.protocols",
         "FlextDbtOracleProtocols",
     ],
-    "FlextDbtOracleServices": ["flext_dbt_oracle.services", "FlextDbtOracleServices"],
     "FlextDbtOracleTypes": ["flext_dbt_oracle.typings", "FlextDbtOracleTypes"],
     "FlextDbtOracleUtilities": [
         "flext_dbt_oracle.utilities",
@@ -97,12 +93,10 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
 
 __all__ = [
     "FlextDbtOracle",
-    "FlextDbtOracleClient",
     "FlextDbtOracleConnections",
     "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",
-    "FlextDbtOracleServices",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
     "__all__",

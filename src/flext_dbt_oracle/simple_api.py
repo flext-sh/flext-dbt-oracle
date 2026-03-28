@@ -8,11 +8,10 @@ from os import getenv
 from flext_core import FlextTypes
 from pydantic import TypeAdapter, ValidationError
 
-from flext_dbt_oracle.client import FlextDbtOracleClient
 from flext_dbt_oracle.connections import FlextDbtOracleConnections
 from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.models import FlextDbtOracleModels
-from flext_dbt_oracle.services import FlextDbtOracleServices
+from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
 
 _TABLE_LIST_ADAPTER: TypeAdapter[Sequence[FlextTypes.Scalar]] = TypeAdapter(
     Sequence[FlextTypes.Scalar],
@@ -36,8 +35,8 @@ class FlextDbtOracle:
                 "oracle_password": getenv("FLEXT_DBT_ORACLE_PASSWORD", ""),
             })
         )
-        self.client = FlextDbtOracleClient(self.config)
-        self.workflow_service = FlextDbtOracleServices()
+        self.client = FlextDbtOracleUtilities.DbtOracle.Client(self.config)
+        self.workflow_service = FlextDbtOracleUtilities.DbtOracle.Services()
 
     @classmethod
     def create(cls) -> FlextDbtOracle:

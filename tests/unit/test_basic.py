@@ -10,9 +10,10 @@ from __future__ import annotations
 import pytest
 
 from flext_dbt_oracle import (
-    FlextDbtOracleClient,
     FlextDbtOracleModels,
+    FlextDbtOracleUtilities,
     m,
+    u,
 )
 
 FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings
@@ -20,7 +21,7 @@ FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings
 
 def test_basic_import() -> None:
     """Test basic adapter imports work."""
-    assert FlextDbtOracleClient is not None
+    assert u.DbtOracle.Client is not None
     assert FlextDbtOracleSettings is not None
     assert FlextDbtOracleModels is not None
     assert m.DbtOracle.ModelGenerator is not None
@@ -28,7 +29,7 @@ def test_basic_import() -> None:
 
 def test_adapter_type() -> None:
     """Test adapter type is correct."""
-    assert FlextDbtOracleClient is not None
+    assert u.DbtOracle.Client is not None
 
 
 def test_credentials_class() -> None:
@@ -39,5 +40,5 @@ def test_credentials_class() -> None:
 @pytest.mark.unit
 def test_adapter_initialization() -> None:
     """Test basic adapter initialization."""
-    assert FlextDbtOracleClient is not None
+    assert FlextDbtOracleUtilities.DbtOracle.Client is not None
     assert FlextDbtOracleModels is not None
