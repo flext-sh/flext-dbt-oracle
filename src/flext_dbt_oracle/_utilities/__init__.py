@@ -21,8 +21,14 @@ if TYPE_CHECKING:
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "FlextDbtOracle": ["flext_dbt_oracle._utilities.simple_api", "FlextDbtOracle"],
-    "FlextDbtOracleConnections": ["flext_dbt_oracle._utilities.connections", "FlextDbtOracleConnections"],
-    "build_oracle_connection_config": ["flext_dbt_oracle._utilities.connections", "build_oracle_connection_config"],
+    "FlextDbtOracleConnections": [
+        "flext_dbt_oracle._utilities.connections",
+        "FlextDbtOracleConnections",
+    ],
+    "build_oracle_connection_config": [
+        "flext_dbt_oracle._utilities.connections",
+        "build_oracle_connection_config",
+    ],
 }
 
 __all__ = [
