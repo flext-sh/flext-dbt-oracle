@@ -124,6 +124,11 @@ precision = 2
 show_missing = true
 skip_covered = false
 
+[tool.coverage.run]
+omit = [
+  "*/dependency_injector/providers.pyx",
+]
+
 # [MANAGED] deptry
 [tool.deptry]
 known_first_party = [
@@ -186,7 +191,6 @@ search-path = [
   ".",
   "../flext-tests",
   "../flext-tests/src",
-  "../git+https://github.com/flext-sh/dbt-common.git@flext/relax-deps/src",
   "src",
 ]
 use-ignore-files = false
