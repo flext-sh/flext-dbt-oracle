@@ -10,21 +10,22 @@ from typing import TYPE_CHECKING
 
 from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
+from flext_dbt_oracle.__version__ import (
+    __author__,
+    __author_email__,
+    __description__,
+    __license__,
+    __title__,
+    __url__,
+    __version__,
+    __version_info__,
+)
+
 if TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_db_oracle import d, e, h, r, s, x
 
     from flext_dbt_oracle import _utilities
-    from flext_dbt_oracle.__version__ import (
-        __author__,
-        __author_email__,
-        __description__,
-        __license__,
-        __title__,
-        __url__,
-        __version__,
-        __version_info__,
-    )
     from flext_dbt_oracle._utilities.connections import (
         FlextDbtOracleConnections,
         build_oracle_connection_config,
@@ -65,14 +66,6 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "flext_dbt_oracle.utilities",
         "FlextDbtOracleUtilities",
     ],
-    "__author__": ["flext_dbt_oracle.__version__", "__author__"],
-    "__author_email__": ["flext_dbt_oracle.__version__", "__author_email__"],
-    "__description__": ["flext_dbt_oracle.__version__", "__description__"],
-    "__license__": ["flext_dbt_oracle.__version__", "__license__"],
-    "__title__": ["flext_dbt_oracle.__version__", "__title__"],
-    "__url__": ["flext_dbt_oracle.__version__", "__url__"],
-    "__version__": ["flext_dbt_oracle.__version__", "__version__"],
-    "__version_info__": ["flext_dbt_oracle.__version__", "__version_info__"],
     "_utilities": ["flext_dbt_oracle._utilities", ""],
     "build_oracle_connection_config": [
         "flext_dbt_oracle._utilities.connections",
