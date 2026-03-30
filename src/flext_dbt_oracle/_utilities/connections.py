@@ -4,8 +4,7 @@ from __future__ import annotations
 
 from pydantic import SecretStr
 
-from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.models import FlextDbtOracleModels
+from flext_dbt_oracle import FlextDbtOracleModels, c
 
 
 class FlextDbtOracleConnections:

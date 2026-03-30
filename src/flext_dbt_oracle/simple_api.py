@@ -8,10 +8,12 @@ from os import getenv
 from flext_core import FlextTypes
 from pydantic import TypeAdapter, ValidationError
 
-from flext_dbt_oracle.connections import FlextDbtOracleConnections
-from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.models import FlextDbtOracleModels
-from flext_dbt_oracle.utilities import FlextDbtOracleUtilities
+from flext_dbt_oracle import (
+    FlextDbtOracleConnections,
+    FlextDbtOracleModels,
+    FlextDbtOracleUtilities,
+    c,
+)
 
 _TABLE_LIST_ADAPTER: TypeAdapter[Sequence[FlextTypes.Scalar]] = TypeAdapter(
     Sequence[FlextTypes.Scalar],

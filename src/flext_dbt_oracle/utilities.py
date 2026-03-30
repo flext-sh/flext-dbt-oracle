@@ -7,9 +7,7 @@ from collections.abc import Mapping, Sequence
 from flext_db_oracle import FlextDbOracleUtilities
 from flext_meltano import FlextMeltanoUtilities
 
-from flext_dbt_oracle import p, t
-from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.models import FlextDbtOracleModels
+from flext_dbt_oracle import FlextDbtOracleModels, c, p, t
 
 
 class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):

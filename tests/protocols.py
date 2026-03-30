@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsProtocols
 
-from flext_dbt_oracle.protocols import FlextDbtOracleProtocols
+from flext_dbt_oracle import FlextDbtOracleProtocols
 
 
 class FlextDbtOracleTestProtocols(

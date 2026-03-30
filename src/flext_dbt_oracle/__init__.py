@@ -16,7 +16,6 @@ if TYPE_CHECKING:
 
     from flext_dbt_oracle import _utilities
     from flext_dbt_oracle.__version__ import (
-        __all__,
         __author__,
         __author_email__,
         __description__,
@@ -66,7 +65,6 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "flext_dbt_oracle.utilities",
         "FlextDbtOracleUtilities",
     ],
-    "__all__": ["flext_dbt_oracle.__version__", "__all__"],
     "__author__": ["flext_dbt_oracle.__version__", "__author__"],
     "__author_email__": ["flext_dbt_oracle.__version__", "__author_email__"],
     "__description__": ["flext_dbt_oracle.__version__", "__description__"],
@@ -101,7 +99,6 @@ __all__ = [
     "FlextDbtOracleProtocols",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
-    "__all__",
     "__author__",
     "__author_email__",
     "__description__",

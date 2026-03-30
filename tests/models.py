@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsModels
 
-from flext_dbt_oracle.models import FlextDbtOracleModels
+from flext_dbt_oracle import FlextDbtOracleModels
 
 
 class FlextDbtOracleTestModels(

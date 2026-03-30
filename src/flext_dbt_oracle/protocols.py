@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from flext_db_oracle.protocols import FlextDbOracleProtocols
+from flext_db_oracle import FlextDbOracleProtocols
 from flext_meltano import FlextMeltanoProtocols
 
 from flext_dbt_oracle import t
@@ -27,7 +27,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
     - PROVIDES: Root-level alias `p` for convenient access
 
     Usage:
-    from flext_dbt_oracle.protocols import p
+    from flext_dbt_oracle import p
 
     # Foundation protocols (inherited)
     result: p.Result[str]
