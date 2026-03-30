@@ -8,9 +8,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING
 
-from flext_core.lazy import install_lazy_exports
-
-from flext_dbt_oracle._utilities import _LAZY_IMPORTS as _CHILD_LAZY_0
+from flext_core.lazy import install_lazy_exports, merge_lazy_imports
 
 if TYPE_CHECKING:
     from flext_dbt_oracle.__version__ import *
@@ -21,43 +19,45 @@ if TYPE_CHECKING:
     from flext_dbt_oracle.typings import *
     from flext_dbt_oracle.utilities import *
 
-_LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
-    **_CHILD_LAZY_0,
-    "FlextDbtOracleConstants": "flext_dbt_oracle.constants",
-    "FlextDbtOracleModels": "flext_dbt_oracle.models",
-    "FlextDbtOracleProtocols": "flext_dbt_oracle.protocols",
-    "FlextDbtOracleTypes": "flext_dbt_oracle.typings",
-    "FlextDbtOracleUtilities": "flext_dbt_oracle.utilities",
-    "__author__": "flext_dbt_oracle.__version__",
-    "__author_email__": "flext_dbt_oracle.__version__",
-    "__description__": "flext_dbt_oracle.__version__",
-    "__license__": "flext_dbt_oracle.__version__",
-    "__title__": "flext_dbt_oracle.__version__",
-    "__url__": "flext_dbt_oracle.__version__",
-    "__version__": "flext_dbt_oracle.__version__",
-    "__version_info__": "flext_dbt_oracle.__version__",
-    "_utilities": "flext_dbt_oracle._utilities",
-    "adapters": "flext_dbt_oracle.adapters",
-    "c": ["flext_dbt_oracle.constants", "FlextDbtOracleConstants"],
-    "connections": "flext_dbt_oracle.connections",
-    "constants": "flext_dbt_oracle.constants",
-    "d": "flext_db_oracle",
-    "e": "flext_db_oracle",
-    "h": "flext_db_oracle",
-    "m": ["flext_dbt_oracle.models", "FlextDbtOracleModels"],
-    "models": "flext_dbt_oracle.models",
-    "p": ["flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"],
-    "protocols": "flext_dbt_oracle.protocols",
-    "r": "flext_db_oracle",
-    "s": "flext_db_oracle",
-    "settings": "flext_dbt_oracle.settings",
-    "simple_api": "flext_dbt_oracle.simple_api",
-    "t": ["flext_dbt_oracle.typings", "FlextDbtOracleTypes"],
-    "typings": "flext_dbt_oracle.typings",
-    "u": ["flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"],
-    "utilities": "flext_dbt_oracle.utilities",
-    "x": "flext_db_oracle",
-}
+_LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
+    ("flext_dbt_oracle._utilities",),
+    {
+        "FlextDbtOracleConstants": "flext_dbt_oracle.constants",
+        "FlextDbtOracleModels": "flext_dbt_oracle.models",
+        "FlextDbtOracleProtocols": "flext_dbt_oracle.protocols",
+        "FlextDbtOracleTypes": "flext_dbt_oracle.typings",
+        "FlextDbtOracleUtilities": "flext_dbt_oracle.utilities",
+        "__author__": "flext_dbt_oracle.__version__",
+        "__author_email__": "flext_dbt_oracle.__version__",
+        "__description__": "flext_dbt_oracle.__version__",
+        "__license__": "flext_dbt_oracle.__version__",
+        "__title__": "flext_dbt_oracle.__version__",
+        "__url__": "flext_dbt_oracle.__version__",
+        "__version__": "flext_dbt_oracle.__version__",
+        "__version_info__": "flext_dbt_oracle.__version__",
+        "_utilities": "flext_dbt_oracle._utilities",
+        "adapters": "flext_dbt_oracle.adapters",
+        "c": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
+        "connections": "flext_dbt_oracle.connections",
+        "constants": "flext_dbt_oracle.constants",
+        "d": "flext_db_oracle",
+        "e": "flext_db_oracle",
+        "h": "flext_db_oracle",
+        "m": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
+        "models": "flext_dbt_oracle.models",
+        "p": ("flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"),
+        "protocols": "flext_dbt_oracle.protocols",
+        "r": "flext_db_oracle",
+        "s": "flext_db_oracle",
+        "settings": "flext_dbt_oracle.settings",
+        "simple_api": "flext_dbt_oracle.simple_api",
+        "t": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
+        "typings": "flext_dbt_oracle.typings",
+        "u": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
+        "utilities": "flext_dbt_oracle.utilities",
+        "x": "flext_db_oracle",
+    },
+)
 
 
 install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
