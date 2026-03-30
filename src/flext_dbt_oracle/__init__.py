@@ -5,55 +5,58 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableMapping, Sequence
+from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING
 
-from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
+from flext_core.lazy import install_lazy_exports
 
 from flext_dbt_oracle.__version__ import (
-    __author__,
-    __author_email__,
-    __description__,
-    __license__,
-    __title__,
-    __url__,
-    __version__,
-    __version_info__,
+    __author__ as __author__,
+    __author_email__ as __author_email__,
+    __description__ as __description__,
+    __license__ as __license__,
+    __title__ as __title__,
+    __url__ as __url__,
+    __version__ as __version__,
+    __version_info__ as __version_info__,
 )
 
 if TYPE_CHECKING:
-    from flext_core import FlextTypes
-    from flext_db_oracle import d, e, h, r, s, x
-
     from flext_dbt_oracle import (
-        _utilities,
-        adapters,
-        connections,
-        constants,
-        models,
-        protocols,
-        settings,
-        simple_api,
-        typings,
-        utilities,
+        _utilities as _utilities,
+        adapters as adapters,
+        connections as connections,
+        constants as constants,
+        models as models,
+        protocols as protocols,
+        settings as settings,
+        simple_api as simple_api,
+        typings as typings,
+        utilities as utilities,
     )
     from flext_dbt_oracle._utilities.connections import (
-        FlextDbtOracleConnections,
-        build_oracle_connection_config,
+        FlextDbtOracleConnections as FlextDbtOracleConnections,
+        build_oracle_connection_config as build_oracle_connection_config,
     )
-    from flext_dbt_oracle._utilities.simple_api import FlextDbtOracle
+    from flext_dbt_oracle._utilities.simple_api import FlextDbtOracle as FlextDbtOracle
     from flext_dbt_oracle.constants import (
-        FlextDbtOracleConstants,
+        FlextDbtOracleConstants as FlextDbtOracleConstants,
         FlextDbtOracleConstants as c,
     )
-    from flext_dbt_oracle.models import FlextDbtOracleModels, FlextDbtOracleModels as m
+    from flext_dbt_oracle.models import (
+        FlextDbtOracleModels as FlextDbtOracleModels,
+        FlextDbtOracleModels as m,
+    )
     from flext_dbt_oracle.protocols import (
-        FlextDbtOracleProtocols,
+        FlextDbtOracleProtocols as FlextDbtOracleProtocols,
         FlextDbtOracleProtocols as p,
     )
-    from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
+    from flext_dbt_oracle.typings import (
+        FlextDbtOracleTypes as FlextDbtOracleTypes,
+        FlextDbtOracleTypes as t,
+    )
     from flext_dbt_oracle.utilities import (
-        FlextDbtOracleUtilities,
+        FlextDbtOracleUtilities as FlextDbtOracleUtilities,
         FlextDbtOracleUtilities as u,
     )
 
@@ -104,7 +107,7 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "x": ["flext_db_oracle", "x"],
 }
 
-__all__ = [
+_EXPORTS: Sequence[str] = [
     "FlextDbtOracle",
     "FlextDbtOracleConnections",
     "FlextDbtOracleConstants",
@@ -145,41 +148,4 @@ __all__ = [
 ]
 
 
-_LAZY_CACHE: MutableMapping[str, FlextTypes.ModuleExport] = {}
-
-
-def __getattr__(name: str) -> FlextTypes.ModuleExport:
-    """Lazy-load module attributes on first access (PEP 562).
-
-    A local cache ``_LAZY_CACHE`` persists resolved objects across repeated
-    accesses during process lifetime.
-
-    Args:
-        name: Attribute name requested by dir()/import.
-
-    Returns:
-        Lazy-loaded module export type.
-
-    Raises:
-        AttributeError: If attribute not registered.
-
-    """
-    if name in _LAZY_CACHE:
-        return _LAZY_CACHE[name]
-
-    value = lazy_getattr(name, _LAZY_IMPORTS, globals(), __name__)
-    _LAZY_CACHE[name] = value
-    return value
-
-
-def __dir__() -> Sequence[str]:
-    """Return list of available attributes for dir() and autocomplete.
-
-    Returns:
-        List of public names from module exports.
-
-    """
-    return sorted(__all__)
-
-
-cleanup_submodule_namespace(__name__, _LAZY_IMPORTS)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, _EXPORTS)

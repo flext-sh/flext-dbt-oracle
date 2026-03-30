@@ -5,47 +5,45 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableMapping, Sequence
+from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING
 
-from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
+from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_core import FlextTypes
-
     from tests.unit import (
-        test_basic,
-        test_config,
-        test_connections,
-        test_impl,
-        test_imports,
+        test_basic as test_basic,
+        test_config as test_config,
+        test_connections as test_connections,
+        test_impl as test_impl,
+        test_imports as test_imports,
     )
     from tests.unit.test_basic import (
-        test_adapter_initialization,
-        test_adapter_type,
-        test_basic_import,
-        test_credentials_class,
+        test_adapter_initialization as test_adapter_initialization,
+        test_adapter_type as test_adapter_type,
+        test_basic_import as test_basic_import,
+        test_credentials_class as test_credentials_class,
     )
     from tests.unit.test_config import (
-        FlextDbtOracleSettings,
-        TestConfigConstantsUsage,
-        TestConfigEdgeCases,
-        TestFlextDbtOracleSettings,
+        FlextDbtOracleSettings as FlextDbtOracleSettings,
+        TestConfigConstantsUsage as TestConfigConstantsUsage,
+        TestConfigEdgeCases as TestConfigEdgeCases,
+        TestFlextDbtOracleSettings as TestFlextDbtOracleSettings,
     )
     from tests.unit.test_connections import (
-        OracleConnectionConfig,
-        TestBuildOracleConnectionConfig,
-        TestOracleConnectionConfig,
+        OracleConnectionConfig as OracleConnectionConfig,
+        TestBuildOracleConnectionConfig as TestBuildOracleConnectionConfig,
+        TestOracleConnectionConfig as TestOracleConnectionConfig,
     )
     from tests.unit.test_impl import (
-        OracleTableAdapter,
-        OracleTableFactory,
-        TestOracleTableAdapter,
-        TestOracleTableFactory,
+        OracleTableAdapter as OracleTableAdapter,
+        OracleTableFactory as OracleTableFactory,
+        TestOracleTableAdapter as TestOracleTableAdapter,
+        TestOracleTableFactory as TestOracleTableFactory,
     )
     from tests.unit.test_imports import (
-        test_basic_functionality,
-        test_flext_dbt_oracle_imports,
+        test_basic_functionality as test_basic_functionality,
+        test_flext_dbt_oracle_imports as test_flext_dbt_oracle_imports,
     )
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
@@ -88,7 +86,7 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "test_imports": ["tests.unit.test_imports", ""],
 }
 
-__all__ = [
+_EXPORTS: Sequence[str] = [
     "FlextDbtOracleSettings",
     "OracleConnectionConfig",
     "OracleTableAdapter",
@@ -114,41 +112,4 @@ __all__ = [
 ]
 
 
-_LAZY_CACHE: MutableMapping[str, FlextTypes.ModuleExport] = {}
-
-
-def __getattr__(name: str) -> FlextTypes.ModuleExport:
-    """Lazy-load module attributes on first access (PEP 562).
-
-    A local cache ``_LAZY_CACHE`` persists resolved objects across repeated
-    accesses during process lifetime.
-
-    Args:
-        name: Attribute name requested by dir()/import.
-
-    Returns:
-        Lazy-loaded module export type.
-
-    Raises:
-        AttributeError: If attribute not registered.
-
-    """
-    if name in _LAZY_CACHE:
-        return _LAZY_CACHE[name]
-
-    value = lazy_getattr(name, _LAZY_IMPORTS, globals(), __name__)
-    _LAZY_CACHE[name] = value
-    return value
-
-
-def __dir__() -> Sequence[str]:
-    """Return list of available attributes for dir() and autocomplete.
-
-    Returns:
-        List of public names from module exports.
-
-    """
-    return sorted(__all__)
-
-
-cleanup_submodule_namespace(__name__, _LAZY_IMPORTS)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, _EXPORTS)
