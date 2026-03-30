@@ -25,7 +25,18 @@ if TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_db_oracle import d, e, h, r, s, x
 
-    from flext_dbt_oracle import _utilities
+    from flext_dbt_oracle import (
+        _utilities,
+        adapters,
+        connections,
+        constants,
+        models,
+        protocols,
+        settings,
+        simple_api,
+        typings,
+        utilities,
+    )
     from flext_dbt_oracle._utilities.connections import (
         FlextDbtOracleConnections,
         build_oracle_connection_config,
@@ -67,20 +78,29 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "FlextDbtOracleUtilities",
     ],
     "_utilities": ["flext_dbt_oracle._utilities", ""],
+    "adapters": ["flext_dbt_oracle.adapters", ""],
     "build_oracle_connection_config": [
         "flext_dbt_oracle._utilities.connections",
         "build_oracle_connection_config",
     ],
     "c": ["flext_dbt_oracle.constants", "FlextDbtOracleConstants"],
+    "connections": ["flext_dbt_oracle.connections", ""],
+    "constants": ["flext_dbt_oracle.constants", ""],
     "d": ["flext_db_oracle", "d"],
     "e": ["flext_db_oracle", "e"],
     "h": ["flext_db_oracle", "h"],
     "m": ["flext_dbt_oracle.models", "FlextDbtOracleModels"],
+    "models": ["flext_dbt_oracle.models", ""],
     "p": ["flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"],
+    "protocols": ["flext_dbt_oracle.protocols", ""],
     "r": ["flext_db_oracle", "r"],
     "s": ["flext_db_oracle", "s"],
+    "settings": ["flext_dbt_oracle.settings", ""],
+    "simple_api": ["flext_dbt_oracle.simple_api", ""],
     "t": ["flext_dbt_oracle.typings", "FlextDbtOracleTypes"],
+    "typings": ["flext_dbt_oracle.typings", ""],
     "u": ["flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"],
+    "utilities": ["flext_dbt_oracle.utilities", ""],
     "x": ["flext_db_oracle", "x"],
 }
 
@@ -101,17 +121,26 @@ __all__ = [
     "__version__",
     "__version_info__",
     "_utilities",
+    "adapters",
     "build_oracle_connection_config",
     "c",
+    "connections",
+    "constants",
     "d",
     "e",
     "h",
     "m",
+    "models",
     "p",
+    "protocols",
     "r",
     "s",
+    "settings",
+    "simple_api",
     "t",
+    "typings",
     "u",
+    "utilities",
     "x",
 ]
 

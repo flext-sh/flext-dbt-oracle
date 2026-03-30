@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_db_oracle import d, e, h, r, s, x
 
-    from tests import unit
+    from tests import conftest, constants, models, protocols, typings, unit, utilities
     from tests.conftest import (
         MockConnectionManager,
         MockDbtOracleAdapter,
@@ -52,6 +52,13 @@ if TYPE_CHECKING:
         FlextDbtOracleTestProtocols as p,
     )
     from tests.typings import FlextDbtOracleTestTypes, FlextDbtOracleTestTypes as t
+    from tests.unit import (
+        test_basic,
+        test_config,
+        test_connections,
+        test_impl,
+        test_imports,
+    )
     from tests.unit.test_basic import (
         test_adapter_initialization,
         test_adapter_type,
@@ -117,6 +124,8 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "TestOracleTableAdapter": ["tests.unit.test_impl", "TestOracleTableAdapter"],
     "TestOracleTableFactory": ["tests.unit.test_impl", "TestOracleTableFactory"],
     "c": ["tests.constants", "FlextDbtOracleTestConstants"],
+    "conftest": ["tests.conftest", ""],
+    "constants": ["tests.constants", ""],
     "d": ["flext_db_oracle", "d"],
     "dbt_error_scenarios": ["tests.conftest", "dbt_error_scenarios"],
     "dbt_macro_definitions": ["tests.conftest", "dbt_macro_definitions"],
@@ -133,6 +142,7 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "m": ["tests.models", "FlextDbtOracleTestModels"],
     "mock_dbt_oracle_adapter": ["tests.conftest", "mock_dbt_oracle_adapter"],
     "mock_dbt_runner": ["tests.conftest", "mock_dbt_runner"],
+    "models": ["tests.models", ""],
     "oracle_adapter_config": ["tests.conftest", "oracle_adapter_config"],
     "oracle_shared_container_environment": [
         "tests.conftest",
@@ -141,6 +151,7 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "oracle_sql_queries": ["tests.conftest", "oracle_sql_queries"],
     "p": ["tests.protocols", "FlextDbtOracleTestProtocols"],
     "performance_test_config": ["tests.conftest", "performance_test_config"],
+    "protocols": ["tests.protocols", ""],
     "pytest_configure": ["tests.conftest", "pytest_configure"],
     "r": ["flext_db_oracle", "r"],
     "s": ["flext_db_oracle", "s"],
@@ -152,15 +163,22 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "test_adapter_initialization",
     ],
     "test_adapter_type": ["tests.unit.test_basic", "test_adapter_type"],
+    "test_basic": ["tests.unit.test_basic", ""],
     "test_basic_functionality": ["tests.unit.test_imports", "test_basic_functionality"],
     "test_basic_import": ["tests.unit.test_basic", "test_basic_import"],
+    "test_config": ["tests.unit.test_config", ""],
+    "test_connections": ["tests.unit.test_connections", ""],
     "test_credentials_class": ["tests.unit.test_basic", "test_credentials_class"],
     "test_flext_dbt_oracle_imports": [
         "tests.unit.test_imports",
         "test_flext_dbt_oracle_imports",
     ],
+    "test_impl": ["tests.unit.test_impl", ""],
+    "test_imports": ["tests.unit.test_imports", ""],
+    "typings": ["tests.typings", ""],
     "u": ["tests.utilities", "FlextDbtOracleTestUtilities"],
     "unit": ["tests.unit", ""],
+    "utilities": ["tests.utilities", ""],
     "x": ["flext_db_oracle", "x"],
 }
 
@@ -188,6 +206,8 @@ __all__ = [
     "TestOracleTableAdapter",
     "TestOracleTableFactory",
     "c",
+    "conftest",
+    "constants",
     "d",
     "dbt_error_scenarios",
     "dbt_macro_definitions",
@@ -204,11 +224,13 @@ __all__ = [
     "m",
     "mock_dbt_oracle_adapter",
     "mock_dbt_runner",
+    "models",
     "oracle_adapter_config",
     "oracle_shared_container_environment",
     "oracle_sql_queries",
     "p",
     "performance_test_config",
+    "protocols",
     "pytest_configure",
     "r",
     "s",
@@ -217,12 +239,19 @@ __all__ = [
     "t",
     "test_adapter_initialization",
     "test_adapter_type",
+    "test_basic",
     "test_basic_functionality",
     "test_basic_import",
+    "test_config",
+    "test_connections",
     "test_credentials_class",
     "test_flext_dbt_oracle_imports",
+    "test_impl",
+    "test_imports",
+    "typings",
     "u",
     "unit",
+    "utilities",
     "x",
 ]
 

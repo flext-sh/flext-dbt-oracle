@@ -13,6 +13,7 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core import FlextTypes
 
+    from flext_dbt_oracle._utilities import connections, simple_api
     from flext_dbt_oracle._utilities.connections import (
         FlextDbtOracleConnections,
         build_oracle_connection_config,
@@ -29,12 +30,16 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "flext_dbt_oracle._utilities.connections",
         "build_oracle_connection_config",
     ],
+    "connections": ["flext_dbt_oracle._utilities.connections", ""],
+    "simple_api": ["flext_dbt_oracle._utilities.simple_api", ""],
 }
 
 __all__ = [
     "FlextDbtOracle",
     "FlextDbtOracleConnections",
     "build_oracle_connection_config",
+    "connections",
+    "simple_api",
 ]
 
 
