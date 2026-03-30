@@ -13,24 +13,13 @@ from flext_core.lazy import install_lazy_exports
 if TYPE_CHECKING:
     from flext_db_oracle import *
 
-    from tests import conftest, constants, models, protocols, typings, unit, utilities
+    from tests import conftest, constants, models, protocols, typings, utilities
     from tests.conftest import *
     from tests.constants import *
     from tests.models import *
     from tests.protocols import *
     from tests.typings import *
-    from tests.unit import (
-        test_basic,
-        test_config,
-        test_connections,
-        test_impl,
-        test_imports,
-    )
-    from tests.unit.test_basic import *
-    from tests.unit.test_config import *
-    from tests.unit.test_connections import *
-    from tests.unit.test_impl import *
-    from tests.unit.test_imports import *
+    from tests.unit import *
     from tests.utilities import *
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {

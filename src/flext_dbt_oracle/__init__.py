@@ -25,7 +25,6 @@ if TYPE_CHECKING:
     from flext_db_oracle import *
 
     from flext_dbt_oracle import (
-        _utilities,
         adapters,
         connections,
         constants,
@@ -36,8 +35,7 @@ if TYPE_CHECKING:
         typings,
         utilities,
     )
-    from flext_dbt_oracle._utilities.connections import *
-    from flext_dbt_oracle._utilities.simple_api import *
+    from flext_dbt_oracle._utilities import *
     from flext_dbt_oracle.constants import *
     from flext_dbt_oracle.models import *
     from flext_dbt_oracle.protocols import *
