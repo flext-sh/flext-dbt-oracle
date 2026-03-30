@@ -12,104 +12,42 @@ from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
     from tests.unit import (
-        test_basic as test_basic,
-        test_config as test_config,
-        test_connections as test_connections,
-        test_impl as test_impl,
-        test_imports as test_imports,
+        test_basic,
+        test_config,
+        test_connections,
+        test_impl,
+        test_imports,
     )
-    from tests.unit.test_basic import (
-        test_adapter_initialization as test_adapter_initialization,
-        test_adapter_type as test_adapter_type,
-        test_basic_import as test_basic_import,
-        test_credentials_class as test_credentials_class,
-    )
-    from tests.unit.test_config import (
-        FlextDbtOracleSettings as FlextDbtOracleSettings,
-        TestConfigConstantsUsage as TestConfigConstantsUsage,
-        TestConfigEdgeCases as TestConfigEdgeCases,
-        TestFlextDbtOracleSettings as TestFlextDbtOracleSettings,
-    )
-    from tests.unit.test_connections import (
-        OracleConnectionConfig as OracleConnectionConfig,
-        TestBuildOracleConnectionConfig as TestBuildOracleConnectionConfig,
-        TestOracleConnectionConfig as TestOracleConnectionConfig,
-    )
-    from tests.unit.test_impl import (
-        OracleTableAdapter as OracleTableAdapter,
-        OracleTableFactory as OracleTableFactory,
-        TestOracleTableAdapter as TestOracleTableAdapter,
-        TestOracleTableFactory as TestOracleTableFactory,
-    )
-    from tests.unit.test_imports import (
-        test_basic_functionality as test_basic_functionality,
-        test_flext_dbt_oracle_imports as test_flext_dbt_oracle_imports,
-    )
+    from tests.unit.test_basic import *
+    from tests.unit.test_config import *
+    from tests.unit.test_connections import *
+    from tests.unit.test_impl import *
+    from tests.unit.test_imports import *
 
-_LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
-    "FlextDbtOracleSettings": ["tests.unit.test_config", "FlextDbtOracleSettings"],
-    "OracleConnectionConfig": ["tests.unit.test_connections", "OracleConnectionConfig"],
-    "OracleTableAdapter": ["tests.unit.test_impl", "OracleTableAdapter"],
-    "OracleTableFactory": ["tests.unit.test_impl", "OracleTableFactory"],
-    "TestBuildOracleConnectionConfig": [
-        "tests.unit.test_connections",
-        "TestBuildOracleConnectionConfig",
-    ],
-    "TestConfigConstantsUsage": ["tests.unit.test_config", "TestConfigConstantsUsage"],
-    "TestConfigEdgeCases": ["tests.unit.test_config", "TestConfigEdgeCases"],
-    "TestFlextDbtOracleSettings": [
-        "tests.unit.test_config",
-        "TestFlextDbtOracleSettings",
-    ],
-    "TestOracleConnectionConfig": [
-        "tests.unit.test_connections",
-        "TestOracleConnectionConfig",
-    ],
-    "TestOracleTableAdapter": ["tests.unit.test_impl", "TestOracleTableAdapter"],
-    "TestOracleTableFactory": ["tests.unit.test_impl", "TestOracleTableFactory"],
-    "test_adapter_initialization": [
-        "tests.unit.test_basic",
-        "test_adapter_initialization",
-    ],
-    "test_adapter_type": ["tests.unit.test_basic", "test_adapter_type"],
-    "test_basic": ["tests.unit.test_basic", ""],
-    "test_basic_functionality": ["tests.unit.test_imports", "test_basic_functionality"],
-    "test_basic_import": ["tests.unit.test_basic", "test_basic_import"],
-    "test_config": ["tests.unit.test_config", ""],
-    "test_connections": ["tests.unit.test_connections", ""],
-    "test_credentials_class": ["tests.unit.test_basic", "test_credentials_class"],
-    "test_flext_dbt_oracle_imports": [
-        "tests.unit.test_imports",
-        "test_flext_dbt_oracle_imports",
-    ],
-    "test_impl": ["tests.unit.test_impl", ""],
-    "test_imports": ["tests.unit.test_imports", ""],
+_LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
+    "FlextDbtOracleSettings": "tests.unit.test_config",
+    "OracleConnectionConfig": "tests.unit.test_connections",
+    "OracleTableAdapter": "tests.unit.test_impl",
+    "OracleTableFactory": "tests.unit.test_impl",
+    "TestBuildOracleConnectionConfig": "tests.unit.test_connections",
+    "TestConfigConstantsUsage": "tests.unit.test_config",
+    "TestConfigEdgeCases": "tests.unit.test_config",
+    "TestFlextDbtOracleSettings": "tests.unit.test_config",
+    "TestOracleConnectionConfig": "tests.unit.test_connections",
+    "TestOracleTableAdapter": "tests.unit.test_impl",
+    "TestOracleTableFactory": "tests.unit.test_impl",
+    "test_adapter_initialization": "tests.unit.test_basic",
+    "test_adapter_type": "tests.unit.test_basic",
+    "test_basic": "tests.unit.test_basic",
+    "test_basic_functionality": "tests.unit.test_imports",
+    "test_basic_import": "tests.unit.test_basic",
+    "test_config": "tests.unit.test_config",
+    "test_connections": "tests.unit.test_connections",
+    "test_credentials_class": "tests.unit.test_basic",
+    "test_flext_dbt_oracle_imports": "tests.unit.test_imports",
+    "test_impl": "tests.unit.test_impl",
+    "test_imports": "tests.unit.test_imports",
 }
 
-_EXPORTS: Sequence[str] = [
-    "FlextDbtOracleSettings",
-    "OracleConnectionConfig",
-    "OracleTableAdapter",
-    "OracleTableFactory",
-    "TestBuildOracleConnectionConfig",
-    "TestConfigConstantsUsage",
-    "TestConfigEdgeCases",
-    "TestFlextDbtOracleSettings",
-    "TestOracleConnectionConfig",
-    "TestOracleTableAdapter",
-    "TestOracleTableFactory",
-    "test_adapter_initialization",
-    "test_adapter_type",
-    "test_basic",
-    "test_basic_functionality",
-    "test_basic_import",
-    "test_config",
-    "test_connections",
-    "test_credentials_class",
-    "test_flext_dbt_oracle_imports",
-    "test_impl",
-    "test_imports",
-]
 
-
-install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, _EXPORTS)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, sorted(_LAZY_IMPORTS))
