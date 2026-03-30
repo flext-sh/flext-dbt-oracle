@@ -10,10 +10,9 @@ from typing import TYPE_CHECKING
 
 from flext_core.lazy import install_lazy_exports
 
-if TYPE_CHECKING:
-    from flext_db_oracle import *
+from tests.unit import _LAZY_IMPORTS as _CHILD_LAZY_0
 
-    from tests import conftest, constants, models, protocols, typings, utilities
+if TYPE_CHECKING:
     from tests.conftest import *
     from tests.constants import *
     from tests.models import *
@@ -23,7 +22,7 @@ if TYPE_CHECKING:
     from tests.utilities import *
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
-    "FlextDbtOracleSettings": "tests.unit.test_config",
+    **_CHILD_LAZY_0,
     "FlextDbtOracleTestConstants": "tests.constants",
     "FlextDbtOracleTestModels": "tests.models",
     "FlextDbtOracleTestProtocols": "tests.protocols",
@@ -35,16 +34,6 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
     "MockModelCompiler": "tests.conftest",
     "MockRelationManager": "tests.conftest",
     "MockSqlExecutor": "tests.conftest",
-    "OracleConnectionConfig": "tests.unit.test_connections",
-    "OracleTableAdapter": "tests.unit.test_impl",
-    "OracleTableFactory": "tests.unit.test_impl",
-    "TestBuildOracleConnectionConfig": "tests.unit.test_connections",
-    "TestConfigConstantsUsage": "tests.unit.test_config",
-    "TestConfigEdgeCases": "tests.unit.test_config",
-    "TestFlextDbtOracleSettings": "tests.unit.test_config",
-    "TestOracleConnectionConfig": "tests.unit.test_connections",
-    "TestOracleTableAdapter": "tests.unit.test_impl",
-    "TestOracleTableFactory": "tests.unit.test_impl",
     "c": ["tests.constants", "FlextDbtOracleTestConstants"],
     "conftest": "tests.conftest",
     "constants": "tests.constants",
@@ -77,17 +66,6 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
     "set_test_environment": "tests.conftest",
     "shared_oracle_container": "tests.conftest",
     "t": ["tests.typings", "FlextDbtOracleTestTypes"],
-    "test_adapter_initialization": "tests.unit.test_basic",
-    "test_adapter_type": "tests.unit.test_basic",
-    "test_basic": "tests.unit.test_basic",
-    "test_basic_functionality": "tests.unit.test_imports",
-    "test_basic_import": "tests.unit.test_basic",
-    "test_config": "tests.unit.test_config",
-    "test_connections": "tests.unit.test_connections",
-    "test_credentials_class": "tests.unit.test_basic",
-    "test_flext_dbt_oracle_imports": "tests.unit.test_imports",
-    "test_impl": "tests.unit.test_impl",
-    "test_imports": "tests.unit.test_imports",
     "typings": "tests.typings",
     "u": ["tests.utilities", "FlextDbtOracleTestUtilities"],
     "unit": "tests.unit",
@@ -96,4 +74,4 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
 }
 
 
-install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, sorted(_LAZY_IMPORTS))
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
