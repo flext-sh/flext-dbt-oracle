@@ -25,12 +25,37 @@ if _TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_db_oracle import d, e, h, r, s, x
 
-    from flext_dbt_oracle._utilities import *
-    from flext_dbt_oracle.constants import *
-    from flext_dbt_oracle.models import *
-    from flext_dbt_oracle.protocols import *
-    from flext_dbt_oracle.typings import *
-    from flext_dbt_oracle.utilities import *
+    from flext_dbt_oracle import (
+        _utilities,
+        adapters,
+        connections,
+        constants,
+        models,
+        protocols,
+        settings,
+        simple_api,
+        typings,
+        utilities,
+    )
+    from flext_dbt_oracle._utilities import (
+        FlextDbtOracle,
+        FlextDbtOracleConnections,
+        build_oracle_connection_config,
+    )
+    from flext_dbt_oracle.constants import (
+        FlextDbtOracleConstants,
+        FlextDbtOracleConstants as c,
+    )
+    from flext_dbt_oracle.models import FlextDbtOracleModels, FlextDbtOracleModels as m
+    from flext_dbt_oracle.protocols import (
+        FlextDbtOracleProtocols,
+        FlextDbtOracleProtocols as p,
+    )
+    from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
+    from flext_dbt_oracle.utilities import (
+        FlextDbtOracleUtilities,
+        FlextDbtOracleUtilities as u,
+    )
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
     ("flext_dbt_oracle._utilities",),

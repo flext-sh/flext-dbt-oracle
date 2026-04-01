@@ -13,6 +13,13 @@ from flext_core.lazy import install_lazy_exports
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
 
+    from tests.unit import (
+        test_basic,
+        test_config,
+        test_connections,
+        test_impl,
+        test_imports,
+    )
     from tests.unit.test_basic import (
         test_adapter_initialization,
         test_adapter_type,

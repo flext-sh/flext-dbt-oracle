@@ -14,13 +14,72 @@ if _TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_db_oracle import d, e, h, r, s, x
 
-    from tests.conftest import *
-    from tests.constants import *
-    from tests.models import *
-    from tests.protocols import *
-    from tests.typings import *
-    from tests.unit import *
-    from tests.utilities import *
+    from tests import conftest, constants, models, protocols, typings, unit, utilities
+    from tests.conftest import (
+        MockConnectionManager,
+        MockDbtOracleAdapter,
+        MockDbtRunner,
+        MockModelCompiler,
+        MockRelationManager,
+        MockSqlExecutor,
+        dbt_error_scenarios,
+        dbt_macro_definitions,
+        dbt_model_definitions,
+        dbt_oracle_profile,
+        dbt_project_config,
+        dbt_run_config,
+        dbt_source_definitions,
+        dbt_test_config,
+        dbt_test_definitions,
+        docker_control,
+        mock_dbt_oracle_adapter,
+        mock_dbt_runner,
+        oracle_adapter_config,
+        oracle_shared_container_environment,
+        oracle_sql_queries,
+        performance_test_config,
+        pytest_configure,
+        set_test_environment,
+        shared_oracle_container,
+    )
+    from tests.constants import (
+        FlextDbtOracleTestConstants,
+        FlextDbtOracleTestConstants as c,
+    )
+    from tests.models import FlextDbtOracleTestModels, FlextDbtOracleTestModels as m
+    from tests.protocols import (
+        FlextDbtOracleTestProtocols,
+        FlextDbtOracleTestProtocols as p,
+    )
+    from tests.typings import FlextDbtOracleTestTypes, FlextDbtOracleTestTypes as t
+    from tests.unit import (
+        FlextDbtOracleSettings,
+        OracleConnectionConfig,
+        OracleTableAdapter,
+        OracleTableFactory,
+        TestBuildOracleConnectionConfig,
+        TestConfigConstantsUsage,
+        TestConfigEdgeCases,
+        TestFlextDbtOracleSettings,
+        TestOracleConnectionConfig,
+        TestOracleTableAdapter,
+        TestOracleTableFactory,
+        test_adapter_initialization,
+        test_adapter_type,
+        test_basic,
+        test_basic_functionality,
+        test_basic_import,
+        test_config,
+        test_connections,
+        test_credentials_class,
+        test_flext_dbt_oracle_imports,
+        test_impl,
+        test_imports,
+    )
+    from tests.utilities import (
+        FlextDbtOracleTestUtilities,
+        FlextDbtOracleTestUtilities as u,
+    )
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
     ("tests.unit",),
