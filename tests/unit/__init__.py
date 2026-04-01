@@ -13,11 +13,33 @@ from flext_core.lazy import install_lazy_exports
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
 
-    from tests.unit.test_basic import *
-    from tests.unit.test_config import *
-    from tests.unit.test_connections import *
-    from tests.unit.test_impl import *
-    from tests.unit.test_imports import *
+    from tests.unit.test_basic import (
+        test_adapter_initialization,
+        test_adapter_type,
+        test_basic_import,
+        test_credentials_class,
+    )
+    from tests.unit.test_config import (
+        FlextDbtOracleSettings,
+        TestConfigConstantsUsage,
+        TestConfigEdgeCases,
+        TestFlextDbtOracleSettings,
+    )
+    from tests.unit.test_connections import (
+        OracleConnectionConfig,
+        TestBuildOracleConnectionConfig,
+        TestOracleConnectionConfig,
+    )
+    from tests.unit.test_impl import (
+        OracleTableAdapter,
+        OracleTableFactory,
+        TestOracleTableAdapter,
+        TestOracleTableFactory,
+    )
+    from tests.unit.test_imports import (
+        test_basic_functionality,
+        test_flext_dbt_oracle_imports,
+    )
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
     "FlextDbtOracleSettings": "tests.unit.test_config",
