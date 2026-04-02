@@ -13,13 +13,9 @@ from collections.abc import Generator, Mapping, MutableMapping, Sequence
 
 import pytest
 from flext_tests import tk
-from pydantic import TypeAdapter, ValidationError
+from pydantic import ValidationError
 
 from tests import t
-
-_GENERAL_DICT_ADAPTER: TypeAdapter[Mapping[str, t.Primitives]] = TypeAdapter(
-    Mapping[str, t.Primitives],
-)
 
 
 @pytest.fixture(scope="session")
@@ -417,7 +413,7 @@ class MockModelCompiler:
         vars_value = context.get("vars", {})
         vars_dict: Mapping[str, t.Primitives]
         try:
-            vars_dict = _GENERAL_DICT_ADAPTER.validate_python(vars_value)
+            vars_dict = t.PRIMITIVES_MAPPING_ADAPTER.validate_python(vars_value)
         except ValidationError:
             vars_dict = {}
         for var, value in vars_dict.items():
