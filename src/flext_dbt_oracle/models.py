@@ -359,7 +359,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
 
             def get_performance_settings(
                 self,
-            ) -> Mapping[str, int]:
+            ) -> t.IntMapping:
                 """Return performance-related settings."""
                 return {
                     "pool_min_size": self.pool_min_size,

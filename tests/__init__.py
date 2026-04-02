@@ -11,8 +11,9 @@ from typing import TYPE_CHECKING as _TYPE_CHECKING
 from flext_core.lazy import install_lazy_exports, merge_lazy_imports
 
 if _TYPE_CHECKING:
+    from flext_tests import d, e, h, r, s, x
+
     from flext_core import FlextTypes
-    from flext_db_oracle import d, e, h, r, s, x
     from tests import conftest, constants, models, protocols, typings, unit, utilities
     from tests.conftest import (
         MockConnectionManager,
@@ -94,7 +95,7 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "c": ("tests.constants", "FlextDbtOracleTestConstants"),
         "conftest": "tests.conftest",
         "constants": "tests.constants",
-        "d": "flext_db_oracle",
+        "d": "flext_tests",
         "dbt_error_scenarios": "tests.conftest",
         "dbt_macro_definitions": "tests.conftest",
         "dbt_model_definitions": "tests.conftest",
@@ -105,8 +106,8 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "dbt_test_config": "tests.conftest",
         "dbt_test_definitions": "tests.conftest",
         "docker_control": "tests.conftest",
-        "e": "flext_db_oracle",
-        "h": "flext_db_oracle",
+        "e": "flext_tests",
+        "h": "flext_tests",
         "m": ("tests.models", "FlextDbtOracleTestModels"),
         "mock_dbt_oracle_adapter": "tests.conftest",
         "mock_dbt_runner": "tests.conftest",
@@ -118,8 +119,8 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "performance_test_config": "tests.conftest",
         "protocols": "tests.protocols",
         "pytest_configure": "tests.conftest",
-        "r": "flext_db_oracle",
-        "s": "flext_db_oracle",
+        "r": "flext_tests",
+        "s": "flext_tests",
         "set_test_environment": "tests.conftest",
         "shared_oracle_container": "tests.conftest",
         "t": ("tests.typings", "FlextDbtOracleTestTypes"),
@@ -127,7 +128,7 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "u": ("tests.utilities", "FlextDbtOracleTestUtilities"),
         "unit": "tests.unit",
         "utilities": "tests.utilities",
-        "x": "flext_db_oracle",
+        "x": "flext_tests",
     },
 )
 

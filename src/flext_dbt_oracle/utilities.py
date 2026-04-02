@@ -96,7 +96,7 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
                 table_count: int,
             ) -> Mapping[str, t.MetadataValue]:
                 """Generate lightweight recommendations from table volume."""
-                recommendations: Sequence[t.Scalar] = [
+                recommendations: t.ScalarList = [
                     "Process tables in batches and increase dbt threads gradually"
                     for _ in [None]
                     if table_count > c.DbtOracle.PERFORMANCE_RECOMMENDATION_THRESHOLD
