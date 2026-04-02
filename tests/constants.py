@@ -9,9 +9,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from flext_tests import FlextTestsConstants
+
 from flext_db_oracle import FlextDbOracleConstants
 from flext_meltano import FlextMeltanoConstants
-from flext_tests import FlextTestsConstants
 
 
 class FlextDbtOracleTestConstants(

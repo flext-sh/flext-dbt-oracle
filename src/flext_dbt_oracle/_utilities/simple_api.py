@@ -5,18 +5,15 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from os import getenv
 
-from flext_core import FlextTypes
-from pydantic import TypeAdapter, ValidationError
+from pydantic import ValidationError
 
+from flext_core import FlextTypes
 from flext_dbt_oracle import (
     FlextDbtOracleConnections,
     FlextDbtOracleModels,
     FlextDbtOracleUtilities,
     c,
-)
-
-_TABLE_LIST_ADAPTER: TypeAdapter[Sequence[FlextTypes.Scalar]] = TypeAdapter(
-    Sequence[FlextTypes.Scalar],
+    t,
 )
 
 
@@ -75,7 +72,7 @@ class FlextDbtOracle:
         result = self.client.run_pipeline(tables=tables)
         table_payload = result.get("tables")
         try:
-            table_count = len(_TABLE_LIST_ADAPTER.validate_python(table_payload))
+            table_count = len(t.SCALAR_LIST_ADAPTER.validate_python(table_payload))
         except ValidationError:
             table_count = 0
         recommendations = self.workflow_service.generate_recommendations(

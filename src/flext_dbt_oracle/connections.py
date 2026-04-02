@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from flext_dbt_oracle._utilities.connections import (
+from flext_dbt_oracle import (
     FlextDbtOracleConnections,
     build_oracle_connection_config,
 )

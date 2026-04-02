@@ -12,7 +12,6 @@ from flext_core.lazy import install_lazy_exports
 
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
-
     from tests.unit import (
         test_basic,
         test_config,
@@ -42,7 +41,7 @@ if _TYPE_CHECKING:
         test_flext_dbt_oracle_imports,
     )
 
-_LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
+_LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
     "FlextDbtOracleSettings": "tests.unit.test_config",
     "TestBuildOracleConnectionConfig": "tests.unit.test_connections",
     "TestConfigConstantsUsage": "tests.unit.test_config",

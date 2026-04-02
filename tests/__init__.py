@@ -13,7 +13,6 @@ from flext_core.lazy import install_lazy_exports, merge_lazy_imports
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_db_oracle import d, e, h, r, s, x
-
     from tests import conftest, constants, models, protocols, typings, unit, utilities
     from tests.conftest import (
         MockConnectionManager,
@@ -78,7 +77,7 @@ if _TYPE_CHECKING:
         FlextDbtOracleTestUtilities as u,
     )
 
-_LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
+_LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
     ("tests.unit",),
     {
         "FlextDbtOracleTestConstants": "tests.constants",

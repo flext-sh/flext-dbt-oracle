@@ -11,12 +11,18 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 
+from pydantic import TypeAdapter
+
 from flext_db_oracle import FlextDbOracleTypes
 from flext_meltano import FlextMeltanoTypes
 
 
 class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     """MRO facade composing Meltano + DbOracle type namespaces."""
+
+    SCALAR_LIST_ADAPTER: TypeAdapter[Sequence[FlextMeltanoTypes.Scalar]] = TypeAdapter(
+        Sequence[FlextMeltanoTypes.Scalar]
+    )
 
     class DbtOracle:
         """DbtOracle domain namespace for actively used type definitions."""

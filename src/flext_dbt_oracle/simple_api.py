@@ -2,6 +2,6 @@
 
 from __future__ import annotations
 
-from flext_dbt_oracle._utilities.simple_api import FlextDbtOracle
+from flext_dbt_oracle import FlextDbtOracle
 
 __all__ = ["FlextDbtOracle"]
