@@ -11,9 +11,13 @@ from typing import TYPE_CHECKING as _TYPE_CHECKING
 from flext_core.lazy import install_lazy_exports, merge_lazy_imports
 
 if _TYPE_CHECKING:
-    from flext_tests import d, e, h, r, s, x
-
     from flext_core import FlextTypes
+    from flext_core.decorators import FlextDecorators as d
+    from flext_core.exceptions import FlextExceptions as e
+    from flext_core.handlers import FlextHandlers as h
+    from flext_core.mixins import FlextMixins as x
+    from flext_core.result import FlextResult as r
+    from flext_core.service import FlextService as s
     from tests import conftest, constants, models, protocols, typings, unit, utilities
     from tests.conftest import (
         MockConnectionManager,
@@ -95,7 +99,7 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "c": ("tests.constants", "FlextDbtOracleTestConstants"),
         "conftest": "tests.conftest",
         "constants": "tests.constants",
-        "d": "flext_tests",
+        "d": ("flext_core.decorators", "FlextDecorators"),
         "dbt_error_scenarios": "tests.conftest",
         "dbt_macro_definitions": "tests.conftest",
         "dbt_model_definitions": "tests.conftest",
@@ -106,8 +110,8 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "dbt_test_config": "tests.conftest",
         "dbt_test_definitions": "tests.conftest",
         "docker_control": "tests.conftest",
-        "e": "flext_tests",
-        "h": "flext_tests",
+        "e": ("flext_core.exceptions", "FlextExceptions"),
+        "h": ("flext_core.handlers", "FlextHandlers"),
         "m": ("tests.models", "FlextDbtOracleTestModels"),
         "mock_dbt_oracle_adapter": "tests.conftest",
         "mock_dbt_runner": "tests.conftest",
@@ -119,8 +123,8 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "performance_test_config": "tests.conftest",
         "protocols": "tests.protocols",
         "pytest_configure": "tests.conftest",
-        "r": "flext_tests",
-        "s": "flext_tests",
+        "r": ("flext_core.result", "FlextResult"),
+        "s": ("flext_core.service", "FlextService"),
         "set_test_environment": "tests.conftest",
         "shared_oracle_container": "tests.conftest",
         "t": ("tests.typings", "FlextDbtOracleTestTypes"),
@@ -128,7 +132,7 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "u": ("tests.utilities", "FlextDbtOracleTestUtilities"),
         "unit": "tests.unit",
         "utilities": "tests.utilities",
-        "x": "flext_tests",
+        "x": ("flext_core.mixins", "FlextMixins"),
     },
 )
 

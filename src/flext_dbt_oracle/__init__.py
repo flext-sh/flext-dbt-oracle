@@ -22,7 +22,12 @@ from flext_dbt_oracle.__version__ import (
 
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
-    from flext_db_oracle import d, e, h, r, s, x
+    from flext_core.decorators import FlextDecorators as d
+    from flext_core.handlers import FlextHandlers as h
+    from flext_core.mixins import FlextMixins as x
+    from flext_core.result import FlextResult as r
+    from flext_core.service import FlextService as s
+    from flext_db_oracle.exceptions import FlextDbOracleExceptions as e
     from flext_dbt_oracle import (
         _utilities,
         adapters,
@@ -72,22 +77,22 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "c": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
         "connections": "flext_dbt_oracle.connections",
         "constants": "flext_dbt_oracle.constants",
-        "d": "flext_db_oracle",
-        "e": "flext_db_oracle",
-        "h": "flext_db_oracle",
+        "d": ("flext_core.decorators", "FlextDecorators"),
+        "e": ("flext_db_oracle.exceptions", "FlextDbOracleExceptions"),
+        "h": ("flext_core.handlers", "FlextHandlers"),
         "m": ("flext_dbt_oracle.models", "FlextDbtOracleModels"),
         "models": "flext_dbt_oracle.models",
         "p": ("flext_dbt_oracle.protocols", "FlextDbtOracleProtocols"),
         "protocols": "flext_dbt_oracle.protocols",
-        "r": "flext_db_oracle",
-        "s": "flext_db_oracle",
+        "r": ("flext_core.result", "FlextResult"),
+        "s": ("flext_core.service", "FlextService"),
         "settings": "flext_dbt_oracle.settings",
         "simple_api": "flext_dbt_oracle.simple_api",
         "t": ("flext_dbt_oracle.typings", "FlextDbtOracleTypes"),
         "typings": "flext_dbt_oracle.typings",
         "u": ("flext_dbt_oracle.utilities", "FlextDbtOracleUtilities"),
         "utilities": "flext_dbt_oracle.utilities",
-        "x": "flext_db_oracle",
+        "x": ("flext_core.mixins", "FlextMixins"),
     },
 )
 
