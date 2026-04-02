@@ -10,16 +10,15 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from flext_dbt_oracle import build_oracle_connection_config, m
-
-OracleConnectionConfig = m.DbtOracle.OracleConnectionConfig
+from flext_dbt_oracle import build_oracle_connection_config
+from tests import m
 
 
 class TestOracleConnectionConfig:
     """Test suite for OracleConnectionConfig class."""
 
     def test_default_values(self) -> None:
-        config = OracleConnectionConfig()
+        config = m.DbtOracle.OracleConnectionConfig()
         assert config.host == "localhost"
         assert config.port == 1521
         assert config.service_name == "XEPDB1"
@@ -27,7 +26,7 @@ class TestOracleConnectionConfig:
         assert config.protocol == "tcp"
 
     def test_custom_values(self) -> None:
-        config = OracleConnectionConfig(
+        config = m.DbtOracle.OracleConnectionConfig(
             host="db.example.com",
             port=1522,
             service_name="PROD",
@@ -42,15 +41,15 @@ class TestOracleConnectionConfig:
         assert config.protocol == "tcps"
 
     def test_get_database_identifier_service_name(self) -> None:
-        config = OracleConnectionConfig(service_name="XEPDB1")
+        config = m.DbtOracle.OracleConnectionConfig(service_name="XEPDB1")
         assert config.get_database_identifier() == "XEPDB1"
 
     def test_get_database_identifier_sid(self) -> None:
-        config = OracleConnectionConfig(sid="XE")
+        config = m.DbtOracle.OracleConnectionConfig(sid="XE")
         assert config.get_database_identifier() == "XE"
 
     def test_get_dsn_with_service_name(self) -> None:
-        config = OracleConnectionConfig(
+        config = m.DbtOracle.OracleConnectionConfig(
             host="localhost",
             port=1521,
             service_name="XEPDB1",
@@ -60,7 +59,7 @@ class TestOracleConnectionConfig:
         assert config.get_dsn() == "tcp://testuser:***@localhost:1521/XEPDB1"
 
     def test_get_dsn_with_sid(self) -> None:
-        config = OracleConnectionConfig(
+        config = m.DbtOracle.OracleConnectionConfig(
             host="localhost",
             port=1521,
             sid="XE",
@@ -72,7 +71,7 @@ class TestOracleConnectionConfig:
     def test_port_validation(self) -> None:
         port: int = 0
         with pytest.raises(ValidationError, match="greater than or equal to 1"):
-            _ = OracleConnectionConfig(port=port)
+            _ = m.DbtOracle.OracleConnectionConfig(port=port)
 
 
 class TestBuildOracleConnectionConfig:
@@ -84,7 +83,7 @@ class TestBuildOracleConnectionConfig:
             username="testuser",
             password="testpass",
         )
-        assert isinstance(config, OracleConnectionConfig)
+        assert isinstance(config, m.DbtOracle.OracleConnectionConfig)
         assert config.host == "localhost"
         assert config.username == "testuser"
         assert config.service_name == "XEPDB1"

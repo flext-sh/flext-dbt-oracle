@@ -28,6 +28,7 @@ if _TYPE_CHECKING:
     from flext_dbt_oracle import (
         _utilities,
         adapters,
+        base,
         connections,
         constants,
         models,
@@ -42,6 +43,7 @@ if _TYPE_CHECKING:
         FlextDbtOracleConnections,
         build_oracle_connection_config,
     )
+    from flext_dbt_oracle.base import FlextDbtOracleServiceBase
     from flext_dbt_oracle.constants import (
         FlextDbtOracleConstants,
         FlextDbtOracleConstants as c,
@@ -63,10 +65,12 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
         "FlextDbtOracleConstants": "flext_dbt_oracle.constants",
         "FlextDbtOracleModels": "flext_dbt_oracle.models",
         "FlextDbtOracleProtocols": "flext_dbt_oracle.protocols",
+        "FlextDbtOracleServiceBase": "flext_dbt_oracle.base",
         "FlextDbtOracleTypes": "flext_dbt_oracle.typings",
         "FlextDbtOracleUtilities": "flext_dbt_oracle.utilities",
         "_utilities": "flext_dbt_oracle._utilities",
         "adapters": "flext_dbt_oracle.adapters",
+        "base": "flext_dbt_oracle.base",
         "c": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
         "connections": "flext_dbt_oracle.connections",
         "constants": "flext_dbt_oracle.constants",

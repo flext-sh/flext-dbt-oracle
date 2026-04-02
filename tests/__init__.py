@@ -54,9 +54,6 @@ if _TYPE_CHECKING:
     from tests.typings import FlextDbtOracleTestTypes, FlextDbtOracleTestTypes as t
     from tests.unit import (
         FlextDbtOracleSettings,
-        OracleConnectionConfig,
-        OracleTableAdapter,
-        OracleTableFactory,
         TestBuildOracleConnectionConfig,
         TestConfigConstantsUsage,
         TestConfigEdgeCases,

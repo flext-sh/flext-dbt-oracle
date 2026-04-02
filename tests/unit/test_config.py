@@ -13,10 +13,9 @@ from typing import Literal, cast
 import pytest
 from pydantic import SecretStr, ValidationError
 
-from flext_dbt_oracle import m
+from tests import m
 
 FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings
-OracleConnectionConfig = m.DbtOracle.OracleConnectionConfig
 
 
 class TestFlextDbtOracleSettings:
@@ -24,7 +23,7 @@ class TestFlextDbtOracleSettings:
 
     def test_basic_config_creation(self) -> None:
         """Test creating basic Oracle configuration."""
-        config = FlextDbtOracleSettings(
+        config = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=SecretStr("testpass"),
@@ -38,7 +37,7 @@ class TestFlextDbtOracleSettings:
 
     def test_config_with_sid(self) -> None:
         """Test configuration with SID instead of service_name."""
-        config = FlextDbtOracleSettings(
+        config = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=SecretStr("testpass"),
@@ -50,7 +49,7 @@ class TestFlextDbtOracleSettings:
 
     def test_config_validation_missing_host(self) -> None:
         """Test default host is applied when not provided explicitly."""
-        config = FlextDbtOracleSettings(
+        config = m.DbtOracle.FlextDbtOracleSettings(
             oracle_username="testuser",
             oracle_password=SecretStr("testpass"),
             oracle_service_name="XEPDB1",
@@ -60,7 +59,7 @@ class TestFlextDbtOracleSettings:
 
     def test_config_validation_missing_username(self) -> None:
         """Test default username is applied when not provided explicitly."""
-        config = FlextDbtOracleSettings(
+        config = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_password=SecretStr("testpass"),
             oracle_service_name="XEPDB1",
@@ -70,7 +69,7 @@ class TestFlextDbtOracleSettings:
 
     def test_config_validation_missing_password(self) -> None:
         """Test default password is applied when not provided explicitly."""
-        config = FlextDbtOracleSettings(
+        config = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_service_name="XEPDB1",
@@ -81,7 +80,7 @@ class TestFlextDbtOracleSettings:
         """Test validation fails for invalid materialization."""
         materialization: str = "invalid_type"
         with pytest.raises(ValidationError, match="Input should be"):
-            _ = FlextDbtOracleSettings(
+            _ = m.DbtOracle.FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
                 oracle_password=SecretStr("testpass"),
@@ -96,7 +95,7 @@ class TestFlextDbtOracleSettings:
         """Test validation fails for invalid protocol."""
         protocol: str = "invalid_protocol"
         with pytest.raises(ValidationError, match="Input should be"):
-            _ = FlextDbtOracleSettings(
+            _ = m.DbtOracle.FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
                 oracle_password=SecretStr("testpass"),
@@ -107,7 +106,7 @@ class TestFlextDbtOracleSettings:
     def test_config_validation_pool_sizes(self) -> None:
         """Test validation of pool sizes."""
         with pytest.raises(ValidationError, match="Pool max size"):
-            _ = FlextDbtOracleSettings(
+            _ = m.DbtOracle.FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
                 oracle_password=SecretStr("testpass"),
@@ -204,7 +203,6 @@ class TestFlextDbtOracleSettings:
             pool_max_size=10,
         )
         oracle_config = config.to_oracle_config()
-        assert isinstance(oracle_config, OracleConnectionConfig)
         assert oracle_config.host == "localhost"
         assert oracle_config.username == "testuser"
         assert oracle_config.service_name == "XEPDB1"

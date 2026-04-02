@@ -33,16 +33,10 @@ if _TYPE_CHECKING:
         TestFlextDbtOracleSettings,
     )
     from tests.unit.test_connections import (
-        OracleConnectionConfig,
         TestBuildOracleConnectionConfig,
         TestOracleConnectionConfig,
     )
-    from tests.unit.test_impl import (
-        OracleTableAdapter,
-        OracleTableFactory,
-        TestOracleTableAdapter,
-        TestOracleTableFactory,
-    )
+    from tests.unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
     from tests.unit.test_imports import (
         test_basic_functionality,
         test_flext_dbt_oracle_imports,
@@ -50,9 +44,6 @@ if _TYPE_CHECKING:
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
     "FlextDbtOracleSettings": "tests.unit.test_config",
-    "OracleConnectionConfig": "tests.unit.test_connections",
-    "OracleTableAdapter": "tests.unit.test_impl",
-    "OracleTableFactory": "tests.unit.test_impl",
     "TestBuildOracleConnectionConfig": "tests.unit.test_connections",
     "TestConfigConstantsUsage": "tests.unit.test_config",
     "TestConfigEdgeCases": "tests.unit.test_config",
