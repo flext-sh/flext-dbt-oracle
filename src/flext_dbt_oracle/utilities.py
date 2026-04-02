@@ -7,7 +7,7 @@ from collections.abc import Mapping, Sequence
 from flext_db_oracle import FlextDbOracleUtilities
 from flext_meltano import FlextMeltanoUtilities
 
-from flext_dbt_oracle import FlextDbtOracleModels, c, p, t
+from flext_dbt_oracle import FlextDbtOracleModels, c, t
 
 
 class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
@@ -41,8 +41,6 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
 
         class Client:
             """Typed facade for Oracle extraction and DBT pipeline execution."""
-
-            Settings = p
 
             def __init__(
                 self,

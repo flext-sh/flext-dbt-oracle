@@ -21,7 +21,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     class DbtOracle:
         """DbtOracle domain namespace for actively used type definitions."""
 
-        type OraclePayload = Mapping[str, FlextMeltanoTypes.Primitives | None]
+        type OraclePayload = Mapping[str, FlextMeltanoTypes.OptionalPrimitive]
         "Oracle payload type."
         type OraclePayloadList = Sequence[OraclePayload]
         "List of Oracle payloads."

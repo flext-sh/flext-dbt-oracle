@@ -27,9 +27,9 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
 
     dbt_project_name: t.NonEmptyStr = "dbt-oracle"
 
-    @property
-    @override
-    def settings(self) -> FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings:
+    def _dbt_oracle_settings(
+        self,
+    ) -> FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings:
         """Return the typed dbt-oracle settings namespace."""
         return FlextSettings.get_global().get_namespace(
             "dbt_oracle", FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings
@@ -38,7 +38,7 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
     @override
     def get_connection_profile(self) -> t.ContainerMapping:
         """Return dbt connection profile for Oracle database."""
-        s = self.settings
+        s = self._dbt_oracle_settings()
         return {
             "type": "oracle",
             "host": s.oracle_host,
