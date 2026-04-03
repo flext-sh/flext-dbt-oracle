@@ -9,17 +9,7 @@ from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING as _TYPE_CHECKING
 
 from flext_core.lazy import install_lazy_exports, merge_lazy_imports
-from flext_dbt_oracle.__version__ import (
-    __all__,
-    __author__,
-    __author_email__,
-    __description__,
-    __license__,
-    __title__,
-    __url__,
-    __version__,
-    __version_info__,
-)
+from flext_dbt_oracle.__version__ import *
 
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
@@ -42,19 +32,22 @@ if _TYPE_CHECKING:
         typings,
         utilities,
     )
+    from flext_dbt_oracle.__version__ import (
+        __author__,
+        __author_email__,
+        __description__,
+        __license__,
+        __title__,
+        __url__,
+        __version__,
+        __version_info__,
+    )
     from flext_dbt_oracle._utilities import (
         FlextDbtOracle,
         FlextDbtOracleConnections,
-        host,
-        password,
-        port,
-        protocol,
-        service_name,
-        sid,
-        username,
+        build_oracle_connection_config,
     )
     from flext_dbt_oracle.base import FlextDbtOracleServiceBase
-    from flext_dbt_oracle.connections import build_oracle_connection_config
     from flext_dbt_oracle.constants import (
         FlextDbtOracleConstants,
         FlextDbtOracleConstants as c,
@@ -79,10 +72,17 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "FlextDbtOracleServiceBase": "flext_dbt_oracle.base",
         "FlextDbtOracleTypes": "flext_dbt_oracle.typings",
         "FlextDbtOracleUtilities": "flext_dbt_oracle.utilities",
+        "__author__": "flext_dbt_oracle.__version__",
+        "__author_email__": "flext_dbt_oracle.__version__",
+        "__description__": "flext_dbt_oracle.__version__",
+        "__license__": "flext_dbt_oracle.__version__",
+        "__title__": "flext_dbt_oracle.__version__",
+        "__url__": "flext_dbt_oracle.__version__",
+        "__version__": "flext_dbt_oracle.__version__",
+        "__version_info__": "flext_dbt_oracle.__version__",
         "_utilities": "flext_dbt_oracle._utilities",
         "adapters": "flext_dbt_oracle.adapters",
         "base": "flext_dbt_oracle.base",
-        "build_oracle_connection_config": "flext_dbt_oracle.connections",
         "c": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
         "connections": "flext_dbt_oracle.connections",
         "constants": "flext_dbt_oracle.constants",
@@ -106,19 +106,4 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
 )
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    [
-        "__all__",
-        "__author__",
-        "__author_email__",
-        "__description__",
-        "__license__",
-        "__title__",
-        "__url__",
-        "__version__",
-        "__version_info__",
-    ],
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)

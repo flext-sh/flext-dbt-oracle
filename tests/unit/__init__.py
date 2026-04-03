@@ -23,33 +23,44 @@ if _TYPE_CHECKING:
     from flext_core.service import FlextService as s
     from flext_core.typings import FlextTypes as t
     from flext_core.utilities import FlextUtilities as u
-    from flext_dbt_oracle import (
+    from tests.unit import (
         test_basic,
         test_config,
         test_connections,
         test_impl,
         test_imports,
     )
-    from flext_dbt_oracle.test_basic import (
+    from tests.unit.test_basic import (
         test_adapter_initialization,
+        test_adapter_type,
         test_basic_import,
+        test_credentials_class,
     )
-    from flext_dbt_oracle.test_config import (
+    from tests.unit.test_config import (
         FlextDbtOracleSettings,
+        TestConfigConstantsUsage,
+        TestConfigEdgeCases,
         TestFlextDbtOracleSettings,
     )
-    from flext_dbt_oracle.test_connections import TestOracleConnectionConfig
-    from flext_dbt_oracle.test_impl import TestOracleTableAdapter
-    from flext_dbt_oracle.test_imports import (
+    from tests.unit.test_connections import (
+        TestBuildOracleConnectionConfig,
+        TestOracleConnectionConfig,
+    )
+    from tests.unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
+    from tests.unit.test_imports import (
         test_basic_functionality,
         test_flext_dbt_oracle_imports,
     )
 
 _LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
-    "FlextDbtOracleSettings": "flext_dbt_oracle.test_config",
-    "TestFlextDbtOracleSettings": "flext_dbt_oracle.test_config",
-    "TestOracleConnectionConfig": "flext_dbt_oracle.test_connections",
-    "TestOracleTableAdapter": "flext_dbt_oracle.test_impl",
+    "FlextDbtOracleSettings": "tests.unit.test_config",
+    "TestBuildOracleConnectionConfig": "tests.unit.test_connections",
+    "TestConfigConstantsUsage": "tests.unit.test_config",
+    "TestConfigEdgeCases": "tests.unit.test_config",
+    "TestFlextDbtOracleSettings": "tests.unit.test_config",
+    "TestOracleConnectionConfig": "tests.unit.test_connections",
+    "TestOracleTableAdapter": "tests.unit.test_impl",
+    "TestOracleTableFactory": "tests.unit.test_impl",
     "c": ("flext_core.constants", "FlextConstants"),
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
@@ -59,15 +70,17 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
     "r": ("flext_core.result", "FlextResult"),
     "s": ("flext_core.service", "FlextService"),
     "t": ("flext_core.typings", "FlextTypes"),
-    "test_adapter_initialization": "flext_dbt_oracle.test_basic",
-    "test_basic": "flext_dbt_oracle.test_basic",
-    "test_basic_functionality": "flext_dbt_oracle.test_imports",
-    "test_basic_import": "flext_dbt_oracle.test_basic",
-    "test_config": "flext_dbt_oracle.test_config",
-    "test_connections": "flext_dbt_oracle.test_connections",
-    "test_flext_dbt_oracle_imports": "flext_dbt_oracle.test_imports",
-    "test_impl": "flext_dbt_oracle.test_impl",
-    "test_imports": "flext_dbt_oracle.test_imports",
+    "test_adapter_initialization": "tests.unit.test_basic",
+    "test_adapter_type": "tests.unit.test_basic",
+    "test_basic": "tests.unit.test_basic",
+    "test_basic_functionality": "tests.unit.test_imports",
+    "test_basic_import": "tests.unit.test_basic",
+    "test_config": "tests.unit.test_config",
+    "test_connections": "tests.unit.test_connections",
+    "test_credentials_class": "tests.unit.test_basic",
+    "test_flext_dbt_oracle_imports": "tests.unit.test_imports",
+    "test_impl": "tests.unit.test_impl",
+    "test_imports": "tests.unit.test_imports",
     "u": ("flext_core.utilities", "FlextUtilities"),
     "x": ("flext_core.mixins", "FlextMixins"),
 }
