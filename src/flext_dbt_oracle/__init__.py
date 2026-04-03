@@ -7,70 +7,60 @@ from __future__ import annotations
 
 import typing as _t
 
-from flext_core.decorators import FlextDecorators as d
-from flext_core.exceptions import FlextExceptions as e
-from flext_core.handlers import FlextHandlers as h
 from flext_core.lazy import install_lazy_exports, merge_lazy_imports
-from flext_core.mixins import FlextMixins as x
-from flext_core.result import FlextResult as r
 from flext_dbt_oracle.__version__ import *
-from flext_dbt_oracle.__version__ import (
-    __author__,
-    __author_email__,
-    __description__,
-    __license__,
-    __title__,
-    __url__,
-    __version__,
-    __version_info__,
-)
-from flext_dbt_oracle._utilities.connections import (
-    FlextDbtOracleConnections,
-    build_oracle_connection_config,
-)
-from flext_dbt_oracle._utilities.simple_api import FlextDbtOracle
-from flext_dbt_oracle.base import (
-    FlextDbtOracleServiceBase,
-    FlextDbtOracleServiceBase as s,
-)
-from flext_dbt_oracle.constants import (
-    FlextDbtOracleConstants,
-    FlextDbtOracleConstants as c,
-)
-from flext_dbt_oracle.models import FlextDbtOracleModels, FlextDbtOracleModels as m
-from flext_dbt_oracle.protocols import (
-    FlextDbtOracleProtocols,
-    FlextDbtOracleProtocols as p,
-)
-from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
-from flext_dbt_oracle.utilities import (
-    FlextDbtOracleUtilities,
-    FlextDbtOracleUtilities as u,
-)
 
 if _t.TYPE_CHECKING:
     import flext_dbt_oracle._utilities as _flext_dbt_oracle__utilities
+    from flext_dbt_oracle.__version__ import (
+        __author__,
+        __author_email__,
+        __description__,
+        __license__,
+        __title__,
+        __url__,
+        __version__,
+        __version_info__,
+    )
 
     _utilities = _flext_dbt_oracle__utilities
     import flext_dbt_oracle.adapters as _flext_dbt_oracle_adapters
+    from flext_dbt_oracle._utilities.connections import (
+        FlextDbtOracleConnections,
+        build_oracle_connection_config,
+    )
+    from flext_dbt_oracle._utilities.simple_api import FlextDbtOracle
 
     adapters = _flext_dbt_oracle_adapters
     import flext_dbt_oracle.base as _flext_dbt_oracle_base
 
     base = _flext_dbt_oracle_base
     import flext_dbt_oracle.connections as _flext_dbt_oracle_connections
+    from flext_dbt_oracle.base import (
+        FlextDbtOracleServiceBase,
+        FlextDbtOracleServiceBase as s,
+    )
 
     connections = _flext_dbt_oracle_connections
     import flext_dbt_oracle.constants as _flext_dbt_oracle_constants
 
     constants = _flext_dbt_oracle_constants
     import flext_dbt_oracle.models as _flext_dbt_oracle_models
+    from flext_dbt_oracle.constants import (
+        FlextDbtOracleConstants,
+        FlextDbtOracleConstants as c,
+    )
 
     models = _flext_dbt_oracle_models
     import flext_dbt_oracle.protocols as _flext_dbt_oracle_protocols
+    from flext_dbt_oracle.models import FlextDbtOracleModels, FlextDbtOracleModels as m
 
     protocols = _flext_dbt_oracle_protocols
     import flext_dbt_oracle.settings as _flext_dbt_oracle_settings
+    from flext_dbt_oracle.protocols import (
+        FlextDbtOracleProtocols,
+        FlextDbtOracleProtocols as p,
+    )
 
     settings = _flext_dbt_oracle_settings
     import flext_dbt_oracle.simple_api as _flext_dbt_oracle_simple_api
@@ -80,49 +70,17 @@ if _t.TYPE_CHECKING:
 
     typings = _flext_dbt_oracle_typings
     import flext_dbt_oracle.utilities as _flext_dbt_oracle_utilities
+    from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
 
     utilities = _flext_dbt_oracle_utilities
-
-    _ = (
-        FlextDbtOracle,
-        FlextDbtOracleConnections,
-        FlextDbtOracleConstants,
-        FlextDbtOracleModels,
-        FlextDbtOracleProtocols,
-        FlextDbtOracleServiceBase,
-        FlextDbtOracleTypes,
+    from flext_core.decorators import FlextDecorators as d
+    from flext_core.exceptions import FlextExceptions as e
+    from flext_core.handlers import FlextHandlers as h
+    from flext_core.mixins import FlextMixins as x
+    from flext_core.result import FlextResult as r
+    from flext_dbt_oracle.utilities import (
         FlextDbtOracleUtilities,
-        __author__,
-        __author_email__,
-        __description__,
-        __license__,
-        __title__,
-        __url__,
-        __version__,
-        __version_info__,
-        _utilities,
-        adapters,
-        base,
-        build_oracle_connection_config,
-        c,
-        connections,
-        constants,
-        d,
-        e,
-        h,
-        m,
-        models,
-        p,
-        protocols,
-        r,
-        s,
-        settings,
-        simple_api,
-        t,
-        typings,
-        u,
-        utilities,
-        x,
+        FlextDbtOracleUtilities as u,
     )
 _LAZY_IMPORTS = merge_lazy_imports(
     ("flext_dbt_oracle._utilities",),
