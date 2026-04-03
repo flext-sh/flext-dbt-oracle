@@ -1,7 +1,7 @@
 # AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
 # Regenerate with: make gen
 #
-"""FLEXT Enterprise - dbt-oracle adapter component."""
+"""Flext dbt oracle package."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING as _TYPE_CHECKING
 
 from flext_core.lazy import install_lazy_exports, merge_lazy_imports
 from flext_dbt_oracle.__version__ import (
+    __all__,
     __author__,
     __author_email__,
     __description__,
@@ -44,9 +45,16 @@ if _TYPE_CHECKING:
     from flext_dbt_oracle._utilities import (
         FlextDbtOracle,
         FlextDbtOracleConnections,
-        build_oracle_connection_config,
+        host,
+        password,
+        port,
+        protocol,
+        service_name,
+        sid,
+        username,
     )
     from flext_dbt_oracle.base import FlextDbtOracleServiceBase
+    from flext_dbt_oracle.connections import build_oracle_connection_config
     from flext_dbt_oracle.constants import (
         FlextDbtOracleConstants,
         FlextDbtOracleConstants as c,
@@ -74,6 +82,7 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "_utilities": "flext_dbt_oracle._utilities",
         "adapters": "flext_dbt_oracle.adapters",
         "base": "flext_dbt_oracle.base",
+        "build_oracle_connection_config": "flext_dbt_oracle.connections",
         "c": ("flext_dbt_oracle.constants", "FlextDbtOracleConstants"),
         "connections": "flext_dbt_oracle.connections",
         "constants": "flext_dbt_oracle.constants",
@@ -102,6 +111,7 @@ install_lazy_exports(
     globals(),
     _LAZY_IMPORTS,
     [
+        "__all__",
         "__author__",
         "__author_email__",
         "__description__",
