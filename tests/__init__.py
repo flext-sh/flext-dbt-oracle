@@ -65,42 +65,27 @@ if _t.TYPE_CHECKING:
     from tests.typings import FlextDbtOracleTestTypes, FlextDbtOracleTestTypes as t
 
     unit = _tests_unit
-    import tests.unit.test_basic as _tests_unit_test_basic
-
-    test_basic = _tests_unit_test_basic
-    import tests.unit.test_config as _tests_unit_test_config
-    from tests.unit.test_basic import (
-        test_adapter_initialization,
-        test_adapter_type,
-        test_basic_import,
-        test_credentials_class,
-    )
-
-    test_config = _tests_unit_test_config
-    import tests.unit.test_connections as _tests_unit_test_connections
-    from tests.unit.test_config import (
+    import tests.utilities as _tests_utilities
+    from tests.unit import (
         FlextDbtOracleSettings,
+        TestBuildOracleConnectionConfig,
         TestConfigConstantsUsage,
         TestConfigEdgeCases,
         TestFlextDbtOracleSettings,
-    )
-
-    test_connections = _tests_unit_test_connections
-    import tests.unit.test_impl as _tests_unit_test_impl
-    from tests.unit.test_connections import (
-        TestBuildOracleConnectionConfig,
         TestOracleConnectionConfig,
-    )
-
-    test_impl = _tests_unit_test_impl
-    import tests.unit.test_imports as _tests_unit_test_imports
-    from tests.unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
-
-    test_imports = _tests_unit_test_imports
-    import tests.utilities as _tests_utilities
-    from tests.unit.test_imports import (
+        TestOracleTableAdapter,
+        TestOracleTableFactory,
+        test_adapter_initialization,
+        test_adapter_type,
+        test_basic,
         test_basic_functionality,
+        test_basic_import,
+        test_config,
+        test_connections,
+        test_credentials_class,
         test_flext_dbt_oracle_imports,
+        test_impl,
+        test_imports,
     )
 
     utilities = _tests_utilities
