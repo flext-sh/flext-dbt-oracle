@@ -54,6 +54,7 @@ if _t.TYPE_CHECKING:
 
     settings = _flext_dbt_oracle_settings
     import flext_dbt_oracle.simple_api as _flext_dbt_oracle_simple_api
+    from flext_dbt_oracle.settings import FlextDbtOracleSettings
 
     simple_api = _flext_dbt_oracle_simple_api
     import flext_dbt_oracle.typings as _flext_dbt_oracle_typings
@@ -79,6 +80,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "FlextDbtOracleModels": "flext_dbt_oracle.models",
         "FlextDbtOracleProtocols": "flext_dbt_oracle.protocols",
         "FlextDbtOracleServiceBase": "flext_dbt_oracle.base",
+        "FlextDbtOracleSettings": "flext_dbt_oracle.settings",
         "FlextDbtOracleTypes": "flext_dbt_oracle.typings",
         "FlextDbtOracleUtilities": "flext_dbt_oracle.utilities",
         "__author__": "flext_dbt_oracle.__version__",
@@ -121,6 +123,7 @@ __all__ = [
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",
     "FlextDbtOracleServiceBase",
+    "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
     "__author__",

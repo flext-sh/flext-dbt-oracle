@@ -38,6 +38,7 @@ if _t.TYPE_CHECKING:
         oracle_sql_queries,
         performance_test_config,
         pytest_configure,
+        pytest_plugins,
         set_test_environment,
         shared_oracle_container,
     )
@@ -140,6 +141,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "performance_test_config": "tests.conftest",
         "protocols": "tests.protocols",
         "pytest_configure": "tests.conftest",
+        "pytest_plugins": "tests.conftest",
         "r": ("flext_core.result", "FlextResult"),
         "s": ("flext_core.service", "FlextService"),
         "set_test_environment": "tests.conftest",
@@ -200,6 +202,7 @@ __all__ = [
     "performance_test_config",
     "protocols",
     "pytest_configure",
+    "pytest_plugins",
     "r",
     "s",
     "set_test_environment",
