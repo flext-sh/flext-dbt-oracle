@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from os import getenv
+from typing import Self
 
 from pydantic import ValidationError
 
@@ -38,7 +39,7 @@ class FlextDbtOracle:
         self.workflow_service = FlextDbtOracleUtilities.DbtOracle.Services()
 
     @classmethod
-    def create(cls) -> FlextDbtOracle:
+    def create(cls) -> Self:
         """Create default API instance."""
         return cls()
 
