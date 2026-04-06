@@ -22,9 +22,15 @@ if _t.TYPE_CHECKING:
     simple_api = _flext_dbt_oracle__utilities_simple_api
     from flext_dbt_oracle._utilities.simple_api import FlextDbtOracle
 _LAZY_IMPORTS = {
-    "FlextDbtOracle": "flext_dbt_oracle._utilities.simple_api",
-    "FlextDbtOracleConnections": "flext_dbt_oracle._utilities.connections",
-    "build_oracle_connection_config": "flext_dbt_oracle._utilities.connections",
+    "FlextDbtOracle": ("flext_dbt_oracle._utilities.simple_api", "FlextDbtOracle"),
+    "FlextDbtOracleConnections": (
+        "flext_dbt_oracle._utilities.connections",
+        "FlextDbtOracleConnections",
+    ),
+    "build_oracle_connection_config": (
+        "flext_dbt_oracle._utilities.connections",
+        "build_oracle_connection_config",
+    ),
     "connections": "flext_dbt_oracle._utilities.connections",
     "simple_api": "flext_dbt_oracle._utilities.simple_api",
 }
