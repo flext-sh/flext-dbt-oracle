@@ -1,6 +1,6 @@
 """Test constants for flext-dbt-oracle tests.
 
-Provides FlextDbtOracleTestConstants, extending FlextTestsConstants with
+Provides TestsFlextDbtOracleConstants, extending FlextTestsConstants with
 flext-dbt-oracle-specific constants.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -11,17 +11,22 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsConstants
 
-from flext_db_oracle import FlextDbOracleConstants
-from flext_meltano import FlextMeltanoConstants
+from flext_dbt_oracle import FlextDbtOracleConstants
 
 
-class FlextDbtOracleTestConstants(
+class TestsFlextDbtOracleConstants(
     FlextTestsConstants,
-    FlextDbOracleConstants,
-    FlextMeltanoConstants,
+    FlextDbtOracleConstants,
 ):
     """Test constants for flext-dbt-oracle."""
 
+    class DbtOracle(FlextDbtOracleConstants.DbtOracle):
+        """DbtOracle test constants namespace."""
 
-c = FlextDbtOracleTestConstants
-__all__ = ["FlextDbtOracleTestConstants", "c"]
+        class Tests:
+            """Test-specific constants."""
+
+
+c = TestsFlextDbtOracleConstants
+
+__all__ = ["TestsFlextDbtOracleConstants", "c"]

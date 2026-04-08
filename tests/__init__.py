@@ -7,51 +7,41 @@ from __future__ import annotations
 
 import typing as _t
 
-from flext_core.lazy import install_lazy_exports
+from flext_core.lazy import install_lazy_exports, merge_lazy_imports
 
 if _t.TYPE_CHECKING:
     import tests.conftest as _tests_conftest
 
     conftest = _tests_conftest
     import tests.constants as _tests_constants
-    from tests.conftest import (
-        MockConnectionManager,
-        MockDbtOracleAdapter,
-        MockDbtRunner,
-        MockModelCompiler,
-        MockRelationManager,
-        MockSqlExecutor,
-        pytest_configure,
-        pytest_plugins,
-        shared_oracle_container,
-    )
 
     constants = _tests_constants
     import tests.models as _tests_models
     from tests.constants import (
-        FlextDbtOracleTestConstants,
-        FlextDbtOracleTestConstants as c,
+        TestsFlextDbtOracleConstants,
+        TestsFlextDbtOracleConstants as c,
     )
 
     models = _tests_models
     import tests.protocols as _tests_protocols
-    from tests.models import FlextDbtOracleTestModels, FlextDbtOracleTestModels as m
+    from tests.models import TestsFlextDbtOracleModels, TestsFlextDbtOracleModels as m
 
     protocols = _tests_protocols
     import tests.test_module_governance as _tests_test_module_governance
     from tests.protocols import (
-        FlextDbtOracleTestProtocols,
-        FlextDbtOracleTestProtocols as p,
+        TestsFlextDbtOracleProtocols,
+        TestsFlextDbtOracleProtocols as p,
     )
 
     test_module_governance = _tests_test_module_governance
     import tests.typings as _tests_typings
-    from tests.test_module_governance import PACKAGE_ROOT
 
     typings = _tests_typings
+    import tests.unit as _tests_unit
+    from tests.typings import TestsFlextDbtOracleTypes, TestsFlextDbtOracleTypes as t
+
+    unit = _tests_unit
     import tests.utilities as _tests_utilities
-    from tests.typings import FlextDbtOracleTestTypes, FlextDbtOracleTestTypes as t
-    from tests.unit.test_config import FlextDbtOracleSettings
 
     utilities = _tests_utilities
     from flext_core.decorators import FlextDecorators as d
@@ -61,60 +51,61 @@ if _t.TYPE_CHECKING:
     from flext_core.result import FlextResult as r
     from flext_core.service import FlextService as s
     from tests.utilities import (
-        FlextDbtOracleTestUtilities,
-        FlextDbtOracleTestUtilities as u,
+        TestsFlextDbtOracleUtilities,
+        TestsFlextDbtOracleUtilities as u,
     )
-_LAZY_IMPORTS = {
-    "FlextDbtOracleSettings": ("tests.unit.test_config", "FlextDbtOracleSettings"),
-    "FlextDbtOracleTestConstants": ("tests.constants", "FlextDbtOracleTestConstants"),
-    "FlextDbtOracleTestModels": ("tests.models", "FlextDbtOracleTestModels"),
-    "FlextDbtOracleTestProtocols": ("tests.protocols", "FlextDbtOracleTestProtocols"),
-    "FlextDbtOracleTestTypes": ("tests.typings", "FlextDbtOracleTestTypes"),
-    "FlextDbtOracleTestUtilities": ("tests.utilities", "FlextDbtOracleTestUtilities"),
-    "MockConnectionManager": ("tests.conftest", "MockConnectionManager"),
-    "MockDbtOracleAdapter": ("tests.conftest", "MockDbtOracleAdapter"),
-    "MockDbtRunner": ("tests.conftest", "MockDbtRunner"),
-    "MockModelCompiler": ("tests.conftest", "MockModelCompiler"),
-    "MockRelationManager": ("tests.conftest", "MockRelationManager"),
-    "MockSqlExecutor": ("tests.conftest", "MockSqlExecutor"),
-    "PACKAGE_ROOT": ("tests.test_module_governance", "PACKAGE_ROOT"),
-    "c": ("tests.constants", "FlextDbtOracleTestConstants"),
-    "conftest": "tests.conftest",
-    "constants": "tests.constants",
-    "d": ("flext_core.decorators", "FlextDecorators"),
-    "e": ("flext_core.exceptions", "FlextExceptions"),
-    "h": ("flext_core.handlers", "FlextHandlers"),
-    "m": ("tests.models", "FlextDbtOracleTestModels"),
-    "models": "tests.models",
-    "p": ("tests.protocols", "FlextDbtOracleTestProtocols"),
-    "protocols": "tests.protocols",
-    "pytest_configure": ("tests.conftest", "pytest_configure"),
-    "pytest_plugins": ("tests.conftest", "pytest_plugins"),
-    "r": ("flext_core.result", "FlextResult"),
-    "s": ("flext_core.service", "FlextService"),
-    "shared_oracle_container": ("tests.conftest", "shared_oracle_container"),
-    "t": ("tests.typings", "FlextDbtOracleTestTypes"),
-    "test_module_governance": "tests.test_module_governance",
-    "typings": "tests.typings",
-    "u": ("tests.utilities", "FlextDbtOracleTestUtilities"),
-    "utilities": "tests.utilities",
-    "x": ("flext_core.mixins", "FlextMixins"),
-}
+_LAZY_IMPORTS = merge_lazy_imports(
+    ("tests.unit",),
+    {
+        "TestsFlextDbtOracleConstants": (
+            "tests.constants",
+            "TestsFlextDbtOracleConstants",
+        ),
+        "TestsFlextDbtOracleModels": ("tests.models", "TestsFlextDbtOracleModels"),
+        "TestsFlextDbtOracleProtocols": (
+            "tests.protocols",
+            "TestsFlextDbtOracleProtocols",
+        ),
+        "TestsFlextDbtOracleTypes": ("tests.typings", "TestsFlextDbtOracleTypes"),
+        "TestsFlextDbtOracleUtilities": (
+            "tests.utilities",
+            "TestsFlextDbtOracleUtilities",
+        ),
+        "c": ("tests.constants", "TestsFlextDbtOracleConstants"),
+        "conftest": "tests.conftest",
+        "constants": "tests.constants",
+        "d": ("flext_core.decorators", "FlextDecorators"),
+        "e": ("flext_core.exceptions", "FlextExceptions"),
+        "h": ("flext_core.handlers", "FlextHandlers"),
+        "m": ("tests.models", "TestsFlextDbtOracleModels"),
+        "models": "tests.models",
+        "p": ("tests.protocols", "TestsFlextDbtOracleProtocols"),
+        "protocols": "tests.protocols",
+        "r": ("flext_core.result", "FlextResult"),
+        "s": ("flext_core.service", "FlextService"),
+        "t": ("tests.typings", "TestsFlextDbtOracleTypes"),
+        "test_module_governance": "tests.test_module_governance",
+        "typings": "tests.typings",
+        "u": ("tests.utilities", "TestsFlextDbtOracleUtilities"),
+        "unit": "tests.unit",
+        "utilities": "tests.utilities",
+        "x": ("flext_core.mixins", "FlextMixins"),
+    },
+)
+_ = _LAZY_IMPORTS.pop("cleanup_submodule_namespace", None)
+_ = _LAZY_IMPORTS.pop("install_lazy_exports", None)
+_ = _LAZY_IMPORTS.pop("lazy_getattr", None)
+_ = _LAZY_IMPORTS.pop("logger", None)
+_ = _LAZY_IMPORTS.pop("merge_lazy_imports", None)
+_ = _LAZY_IMPORTS.pop("output", None)
+_ = _LAZY_IMPORTS.pop("output_reporting", None)
 
 __all__ = [
-    "PACKAGE_ROOT",
-    "FlextDbtOracleSettings",
-    "FlextDbtOracleTestConstants",
-    "FlextDbtOracleTestModels",
-    "FlextDbtOracleTestProtocols",
-    "FlextDbtOracleTestTypes",
-    "FlextDbtOracleTestUtilities",
-    "MockConnectionManager",
-    "MockDbtOracleAdapter",
-    "MockDbtRunner",
-    "MockModelCompiler",
-    "MockRelationManager",
-    "MockSqlExecutor",
+    "TestsFlextDbtOracleConstants",
+    "TestsFlextDbtOracleModels",
+    "TestsFlextDbtOracleProtocols",
+    "TestsFlextDbtOracleTypes",
+    "TestsFlextDbtOracleUtilities",
     "c",
     "conftest",
     "constants",
@@ -125,15 +116,13 @@ __all__ = [
     "models",
     "p",
     "protocols",
-    "pytest_configure",
-    "pytest_plugins",
     "r",
     "s",
-    "shared_oracle_container",
     "t",
     "test_module_governance",
     "typings",
     "u",
+    "unit",
     "utilities",
     "x",
 ]

@@ -1,6 +1,6 @@
 """Test protocol definitions for flext-dbt-oracle.
 
-Provides FlextDbtOracleTestProtocols, combining FlextTestsProtocols with
+Provides TestsFlextDbtOracleProtocols, combining FlextTestsProtocols with
 FlextDbtOracleProtocols for test-specific protocol definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -14,7 +14,7 @@ from flext_tests import FlextTestsProtocols
 from flext_dbt_oracle import FlextDbtOracleProtocols
 
 
-class FlextDbtOracleTestProtocols(
+class TestsFlextDbtOracleProtocols(
     FlextTestsProtocols,
     FlextDbtOracleProtocols,
 ):
@@ -27,5 +27,6 @@ class FlextDbtOracleTestProtocols(
             """DbtOracle-specific test protocols."""
 
 
-p = FlextDbtOracleTestProtocols
-__all__ = ["FlextDbtOracleTestProtocols", "p"]
+p = TestsFlextDbtOracleProtocols
+
+__all__ = ["TestsFlextDbtOracleProtocols", "p"]

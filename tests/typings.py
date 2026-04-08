@@ -1,6 +1,6 @@
 """Test type definitions for flext-dbt-oracle.
 
-Provides FlextDbtOracleTestTypes, combining FlextTestsTypes with
+Provides TestsFlextDbtOracleTypes, combining FlextTestsTypes with
 FlextDbtOracleTypes for test-specific type definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -14,9 +14,16 @@ from flext_tests import FlextTestsTypes
 from flext_dbt_oracle import FlextDbtOracleTypes
 
 
-class FlextDbtOracleTestTypes(FlextTestsTypes, FlextDbtOracleTypes):
+class TestsFlextDbtOracleTypes(FlextTestsTypes, FlextDbtOracleTypes):
     """Test types combining FlextTestsTypes with flext-dbt-oracle types."""
 
+    class DbtOracle(FlextDbtOracleTypes.DbtOracle):
+        """DbtOracle test types namespace."""
 
-t = FlextDbtOracleTestTypes
-__all__ = ["FlextDbtOracleTestTypes", "t"]
+        class Tests:
+            """Test-specific type aliases."""
+
+
+t = TestsFlextDbtOracleTypes
+
+__all__ = ["TestsFlextDbtOracleTypes", "t"]

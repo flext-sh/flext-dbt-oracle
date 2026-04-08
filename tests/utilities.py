@@ -1,6 +1,6 @@
 """Test utilities for flext-dbt-oracle.
 
-Provides FlextDbtOracleTestUtilities, combining FlextTestsUtilities with
+Provides TestsFlextDbtOracleUtilities, combining FlextTestsUtilities with
 FlextDbtOracleUtilities for test-specific utility definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -14,12 +14,19 @@ from flext_tests import FlextTestsUtilities
 from flext_dbt_oracle import FlextDbtOracleUtilities
 
 
-class FlextDbtOracleTestUtilities(
+class TestsFlextDbtOracleUtilities(
     FlextTestsUtilities,
     FlextDbtOracleUtilities,
 ):
     """Test utilities combining FlextTestsUtilities with flext-dbt-oracle utilities."""
 
+    class DbtOracle(FlextDbtOracleUtilities.DbtOracle):
+        """DbtOracle test utilities namespace."""
 
-u = FlextDbtOracleTestUtilities
-__all__ = ["FlextDbtOracleTestUtilities", "u"]
+        class Tests:
+            """Test-specific utilities."""
+
+
+u = TestsFlextDbtOracleUtilities
+
+__all__ = ["TestsFlextDbtOracleUtilities", "u"]
