@@ -33,29 +33,4 @@ class FlextDbtOracleConnections:
         )
 
 
-def build_oracle_connection_config(
-    host: str,
-    username: str,
-    password: str,
-    service_name: str = c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME,
-    *,
-    sid: str | None = None,
-    port: int = c.DbtOracle.Oracle.DEFAULT_PORT,
-    protocol: str = c.DbtOracle.Oracle.DEFAULT_PROTOCOL,
-) -> FlextDbtOracleModels.DbtOracle.OracleConnectionConfig:
-    """Module-level shim — delegates to FlextDbtOracleConnections.build_oracle_connection_config."""
-    return FlextDbtOracleConnections.build_oracle_connection_config(
-        host=host,
-        username=username,
-        password=password,
-        service_name=service_name,
-        sid=sid,
-        port=port,
-        protocol=protocol,
-    )
-
-
-__all__ = [
-    "FlextDbtOracleConnections",
-    "build_oracle_connection_config",
-]
+__all__ = ["FlextDbtOracleConnections"]

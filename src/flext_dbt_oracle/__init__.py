@@ -15,11 +15,7 @@ if _t.TYPE_CHECKING:
 
     _utilities = _flext_dbt_oracle__utilities
     import flext_dbt_oracle.adapters as _flext_dbt_oracle_adapters
-    from flext_dbt_oracle._utilities import (
-        FlextDbtOracle,
-        FlextDbtOracleConnections,
-        build_oracle_connection_config,
-    )
+    from flext_dbt_oracle._utilities import FlextDbtOracle, FlextDbtOracleConnections
 
     adapters = _flext_dbt_oracle_adapters
     import flext_dbt_oracle.base as _flext_dbt_oracle_base
@@ -158,7 +154,6 @@ __all__ = [
     "_utilities",
     "adapters",
     "base",
-    "build_oracle_connection_config",
     "c",
     "connections",
     "constants",

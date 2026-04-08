@@ -10,7 +10,7 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from flext_dbt_oracle import build_oracle_connection_config
+from flext_dbt_oracle import FlextDbtOracleConnections
 from tests import m
 
 
@@ -75,10 +75,10 @@ class TestOracleConnectionConfig:
 
 
 class TestBuildOracleConnectionConfig:
-    """Test suite for build_oracle_connection_config function."""
+    """Test suite for the public connection facade builder."""
 
     def test_basic_build(self) -> None:
-        config = build_oracle_connection_config(
+        config = FlextDbtOracleConnections.build_oracle_connection_config(
             host="localhost",
             username="testuser",
             password="testpass",
@@ -89,7 +89,7 @@ class TestBuildOracleConnectionConfig:
         assert config.service_name == "XEPDB1"
 
     def test_build_with_sid(self) -> None:
-        config = build_oracle_connection_config(
+        config = FlextDbtOracleConnections.build_oracle_connection_config(
             host="localhost",
             username="testuser",
             password="testpass",
@@ -99,7 +99,7 @@ class TestBuildOracleConnectionConfig:
         assert config.get_database_identifier() == "XE"
 
     def test_build_with_custom_port(self) -> None:
-        config = build_oracle_connection_config(
+        config = FlextDbtOracleConnections.build_oracle_connection_config(
             host="localhost",
             username="testuser",
             password="testpass",

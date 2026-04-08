@@ -3,17 +3,14 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from os import getenv
 from typing import Self
 
 from pydantic import ValidationError
 
-from flext_core import FlextTypes
+from flext_core import FlextSettings, FlextTypes
 from flext_dbt_oracle import (
-    FlextDbtOracleConnections,
     FlextDbtOracleModels,
     FlextDbtOracleUtilities,
-    c,
     t,
 )
 
@@ -27,13 +24,9 @@ class FlextDbtOracle:
     ) -> None:
         """Initialize API with provided or default settings."""
         super().__init__()
-        self.config = (
-            config
-            or FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings.model_validate({
-                "oracle_host": c.DbtOracle.Oracle.DEFAULT_HOST,
-                "oracle_username": "user",
-                "oracle_password": getenv("FLEXT_DBT_ORACLE_PASSWORD", ""),
-            })
+        self.config = config or FlextSettings.get_global().get_namespace(
+            "dbt_oracle",
+            FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings,
         )
         self.client = FlextDbtOracleUtilities.DbtOracle.Client(self.config)
         self.workflow_service = FlextDbtOracleUtilities.DbtOracle.Services()
@@ -42,28 +35,6 @@ class FlextDbtOracle:
     def create(cls) -> Self:
         """Create default API instance."""
         return cls()
-
-    @staticmethod
-    def build_oracle_connection_config(
-        host: str,
-        username: str,
-        password: str,
-        service_name: str = c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME,
-        *,
-        sid: str | None = None,
-        port: int = c.DbtOracle.Oracle.DEFAULT_PORT,
-        protocol: str = c.DbtOracle.Oracle.DEFAULT_PROTOCOL,
-    ) -> FlextDbtOracleModels.DbtOracle.OracleConnectionConfig:
-        """Create validated Oracle connection config."""
-        return FlextDbtOracleConnections.build_oracle_connection_config(
-            host=host,
-            username=username,
-            password=password,
-            service_name=service_name,
-            sid=sid,
-            port=port,
-            protocol=protocol,
-        )
 
     def run_oracle_to_dbt_workflow(
         self,

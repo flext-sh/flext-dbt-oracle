@@ -55,10 +55,18 @@ if _t.TYPE_CHECKING:
     from tests.models import FlextDbtOracleTestModels, FlextDbtOracleTestModels as m
 
     protocols = _tests_protocols
-    import tests.typings as _tests_typings
+    import tests.test_module_governance as _tests_test_module_governance
     from tests.protocols import (
         FlextDbtOracleTestProtocols,
         FlextDbtOracleTestProtocols as p,
+    )
+
+    test_module_governance = _tests_test_module_governance
+    import tests.typings as _tests_typings
+    from tests.test_module_governance import (
+        PACKAGE_ROOT,
+        test_package_modules_do_not_define_module_level_loggers,
+        test_package_modules_do_not_define_top_level_functions,
     )
 
     typings = _tests_typings
@@ -123,6 +131,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "MockModelCompiler": ("tests.conftest", "MockModelCompiler"),
         "MockRelationManager": ("tests.conftest", "MockRelationManager"),
         "MockSqlExecutor": ("tests.conftest", "MockSqlExecutor"),
+        "PACKAGE_ROOT": ("tests.test_module_governance", "PACKAGE_ROOT"),
         "c": ("tests.constants", "FlextDbtOracleTestConstants"),
         "conftest": "tests.conftest",
         "constants": "tests.constants",
@@ -159,6 +168,15 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "set_test_environment": ("tests.conftest", "set_test_environment"),
         "shared_oracle_container": ("tests.conftest", "shared_oracle_container"),
         "t": ("tests.typings", "FlextDbtOracleTestTypes"),
+        "test_module_governance": "tests.test_module_governance",
+        "test_package_modules_do_not_define_module_level_loggers": (
+            "tests.test_module_governance",
+            "test_package_modules_do_not_define_module_level_loggers",
+        ),
+        "test_package_modules_do_not_define_top_level_functions": (
+            "tests.test_module_governance",
+            "test_package_modules_do_not_define_top_level_functions",
+        ),
         "typings": "tests.typings",
         "u": ("tests.utilities", "FlextDbtOracleTestUtilities"),
         "unit": "tests.unit",
@@ -174,6 +192,7 @@ _ = _LAZY_IMPORTS.pop("output", None)
 _ = _LAZY_IMPORTS.pop("output_reporting", None)
 
 __all__ = [
+    "PACKAGE_ROOT",
     "FlextDbtOracleSettings",
     "FlextDbtOracleTestConstants",
     "FlextDbtOracleTestModels",
@@ -237,6 +256,9 @@ __all__ = [
     "test_flext_dbt_oracle_imports",
     "test_impl",
     "test_imports",
+    "test_module_governance",
+    "test_package_modules_do_not_define_module_level_loggers",
+    "test_package_modules_do_not_define_top_level_functions",
     "typings",
     "u",
     "unit",

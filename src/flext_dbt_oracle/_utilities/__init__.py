@@ -14,10 +14,7 @@ if _t.TYPE_CHECKING:
 
     connections = _flext_dbt_oracle__utilities_connections
     import flext_dbt_oracle._utilities.simple_api as _flext_dbt_oracle__utilities_simple_api
-    from flext_dbt_oracle._utilities.connections import (
-        FlextDbtOracleConnections,
-        build_oracle_connection_config,
-    )
+    from flext_dbt_oracle._utilities.connections import FlextDbtOracleConnections
 
     simple_api = _flext_dbt_oracle__utilities_simple_api
     from flext_dbt_oracle._utilities.simple_api import FlextDbtOracle
@@ -27,10 +24,6 @@ _LAZY_IMPORTS = {
         "flext_dbt_oracle._utilities.connections",
         "FlextDbtOracleConnections",
     ),
-    "build_oracle_connection_config": (
-        "flext_dbt_oracle._utilities.connections",
-        "build_oracle_connection_config",
-    ),
     "connections": "flext_dbt_oracle._utilities.connections",
     "simple_api": "flext_dbt_oracle._utilities.simple_api",
 }
@@ -38,7 +31,6 @@ _LAZY_IMPORTS = {
 __all__ = [
     "FlextDbtOracle",
     "FlextDbtOracleConnections",
-    "build_oracle_connection_config",
     "connections",
     "simple_api",
 ]
