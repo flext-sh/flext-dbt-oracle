@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from typing import Literal
 
 from pydantic import TypeAdapter
 
@@ -23,10 +24,17 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     SCALAR_LIST_ADAPTER: TypeAdapter[Sequence[FlextMeltanoTypes.Scalar]] = TypeAdapter(
         Sequence[FlextMeltanoTypes.Scalar]
     )
+    PRIMITIVES_MAPPING_ADAPTER: TypeAdapter[
+        Mapping[str, FlextMeltanoTypes.Primitives]
+    ] = TypeAdapter(Mapping[str, FlextMeltanoTypes.Primitives])
 
     class DbtOracle:
         """DbtOracle domain namespace for actively used type definitions."""
 
+        type Materialization = Literal["incremental", "snapshot", "table", "view"]
+        "Supported DBT materialization strategies."
+        type LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+        "Supported runtime log levels."
         type OraclePayload = Mapping[str, FlextMeltanoTypes.OptionalPrimitive]
         "Oracle payload type."
         type OraclePayloadList = Sequence[OraclePayload]

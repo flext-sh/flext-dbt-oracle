@@ -32,18 +32,43 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
         class Model(FlextModels.Value):
             """Typed DBT model metadata payload."""
 
-            name: str
-            dbt_model_type: str = c.DbtOracle.DEFAULT_MODEL_TYPE
-            schema_name: str = c.DbtOracle.DEFAULT_SCHEMA_NAME
-            table_name: str
-            materialization: str = c.DbtOracle.Dbt.DEFAULT_MATERIALIZATION
-            sql_content: str
-            description: str = ""
-            source_name: str = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: Sequence[t.StrMapping] = Field(
-                default_factory=lambda: list[t.StrMapping](),
-            )
-            dependencies: t.StrSequence = Field(default_factory=list)
+            name: Annotated[str, Field(description="DBT model name")]
+            dbt_model_type: Annotated[
+                str,
+                Field(description="DBT model classification"),
+            ] = c.DbtOracle.DEFAULT_MODEL_TYPE
+            schema_name: Annotated[
+                str,
+                Field(description="Target schema name"),
+            ] = c.DbtOracle.DEFAULT_SCHEMA_NAME
+            table_name: Annotated[str, Field(description="Target table name")]
+            materialization: Annotated[
+                t.DbtOracle.Materialization,
+                Field(description="DBT materialization strategy"),
+            ] = c.DbtOracle.Dbt.DEFAULT_MATERIALIZATION
+            sql_content: Annotated[str, Field(description="Model SQL body")]
+            description: Annotated[
+                str,
+                Field(description="Human-readable model description"),
+            ] = ""
+            source_name: Annotated[
+                str,
+                Field(description="Source system name"),
+            ] = c.DbtOracle.DEFAULT_SOURCE_NAME
+            columns: Annotated[
+                Sequence[t.StrMapping],
+                Field(
+                    default_factory=list,
+                    description="Column metadata payloads",
+                ),
+            ]
+            dependencies: Annotated[
+                t.StrSequence,
+                Field(
+                    default_factory=list,
+                    description="Upstream model dependencies",
+                ),
+            ]
 
         class ModelGenerator:
             """Helper for generating deterministic staging model metadata."""
@@ -170,7 +195,6 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
             """Configuration for DBT Oracle operations."""
 
             model_config: ClassVar[ConfigDict] = ConfigDict(
-                extra="ignore",
                 populate_by_name=True,
                 frozen=False,
             )
@@ -208,12 +232,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                 Field(description="Connection protocol"),
             ] = "tcp"
             materialization: Annotated[
-                Literal[
-                    "incremental",
-                    "snapshot",
-                    "table",
-                    "view",
-                ],
+                t.DbtOracle.Materialization,
                 Field(description="DBT materialization strategy"),
             ] = "table"
             schema_name: Annotated[
@@ -241,13 +260,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                 Field(description="Enable metrics collection"),
             ] = False
             log_level: Annotated[
-                Literal[
-                    "DEBUG",
-                    "INFO",
-                    "WARNING",
-                    "ERROR",
-                    "CRITICAL",
-                ],
+                t.DbtOracle.LogLevel,
                 Field(description="Runtime log verbosity"),
             ] = "INFO"
             enable_sql_logging: Annotated[

@@ -31,7 +31,7 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
             DEFAULT_THREADS: Final[int] = 4
             DEFAULT_PROJECT_DIR: Final[str] = "."
             DEFAULT_PROFILES_DIR: Final[str] = "."
-            DEFAULT_MATERIALIZATION: Final[str] = "view"
+            DEFAULT_MATERIALIZATION: Final = "view"
 
             @unique
             class Materialization(StrEnum):
