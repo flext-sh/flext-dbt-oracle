@@ -8,11 +8,8 @@ from __future__ import annotations
 from flext_core.lazy import install_lazy_exports
 
 _LAZY_IMPORTS = {
-    "FlextDbtOracle": ("flext_dbt_oracle._utilities.simple_api", "FlextDbtOracle"),
-    "FlextDbtOracleConnections": (
-        "flext_dbt_oracle._utilities.connections",
-        "FlextDbtOracleConnections",
-    ),
+    "FlextDbtOracle": ".simple_api",
+    "FlextDbtOracleConnections": ".connections",
 }
 
 
