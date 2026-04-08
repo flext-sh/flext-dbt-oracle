@@ -13,8 +13,6 @@ _LAZY_IMPORTS = {
         "flext_dbt_oracle._utilities.connections",
         "FlextDbtOracleConnections",
     ),
-    "connections": "flext_dbt_oracle._utilities.connections",
-    "simple_api": "flext_dbt_oracle._utilities.simple_api",
 }
 
 
