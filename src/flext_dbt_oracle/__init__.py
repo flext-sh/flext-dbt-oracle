@@ -13,7 +13,6 @@ from flext_core.lazy import (
 from flext_dbt_oracle.__version__ import *
 
 if _t.TYPE_CHECKING:
-    from _utilities.connections import FlextDbtOracleConnections
     from flext_cli.base import s
 
     from flext_core.decorators import d
@@ -21,6 +20,7 @@ if _t.TYPE_CHECKING:
     from flext_core.handlers import h
     from flext_core.mixins import x
     from flext_core.result import r
+    from flext_dbt_oracle._utilities.connections import FlextDbtOracleConnections
     from flext_dbt_oracle.base import FlextDbtOracleServiceBase
     from flext_dbt_oracle.constants import FlextDbtOracleConstants, c
     from flext_dbt_oracle.models import FlextDbtOracleModels, m
@@ -64,7 +64,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "FlextDbtOracleUtilities",
                 "u",
             ),
-            "_utilities.connections": ("FlextDbtOracleConnections",),
             "flext_cli.base": ("s",),
             "flext_core.decorators": ("d",),
             "flext_core.exceptions": ("e",),
