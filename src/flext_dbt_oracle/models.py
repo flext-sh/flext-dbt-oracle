@@ -135,14 +135,18 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     return SecretStr(v)
                 return v
 
-            def get_database_identifier(self) -> str:
-                """Return the database identifier."""
+            @computed_field
+            @property
+            def database_identifier(self) -> str:
+                """Database identifier."""
                 if self.sid:
                     return self.sid
                 return self.service_name
 
-            def get_dsn(self) -> str:
-                """Return the connection string in DSN format."""
+            @computed_field
+            @property
+            def dsn(self) -> str:
+                """Connection string in DSN format."""
                 if self.sid:
                     return (
                         f"{self.protocol}://{self.username}:***@"
@@ -165,8 +169,10 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                 Field(description="Oracle table name"),
             ]
 
-            def get_relation_name(self) -> str:
-                """Return fully qualified relation name."""
+            @computed_field
+            @property
+            def relation_name(self) -> str:
+                """Fully qualified relation name."""
                 return f"{self.schema_name}.{self.table_name}"
 
             def to_metadata(self) -> t.StrMapping:
@@ -174,7 +180,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                 return {
                     "schema": self.schema_name,
                     "table": self.table_name,
-                    "relation": self.get_relation_name(),
+                    "relation": self.relation_name,
                 }
 
         class OracleTableFactory:
@@ -324,17 +330,23 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                 """Return the Oracle port."""
                 return self.oracle_port
 
-            def get_database_identifier(self) -> str:
-                """Return service name or SID identifier."""
+            @computed_field
+            @property
+            def database_identifier(self) -> str:
+                """Service name or SID identifier."""
                 return self.sid or self.oracle_service_name
 
-            def get_effective_schema(self) -> str:
-                """Return the effective schema name."""
+            @computed_field
+            @property
+            def effective_schema(self) -> str:
+                """Effective schema name."""
                 return self.schema_name or self.oracle_username
 
-            def get_connection_string(self) -> str:
-                """Generate Oracle connection string."""
-                identifier = self.get_database_identifier()
+            @computed_field
+            @property
+            def connection_string(self) -> str:
+                """Oracle connection string."""
+                identifier = self.database_identifier
                 separator = ":" if self.sid else "/"
                 return (
                     f"oracle://{self.oracle_username}:***@"
@@ -370,10 +382,10 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     protocol=self.protocol,
                 )
 
-            def get_performance_settings(
-                self,
-            ) -> t.IntMapping:
-                """Return performance-related settings."""
+            @computed_field
+            @property
+            def performance_settings(self) -> t.IntMapping:
+                """Performance-related settings."""
                 return {
                     "pool_min_size": self.pool_min_size,
                     "pool_max_size": self.pool_max_size,
@@ -385,11 +397,13 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     "retry_delay": self.retry_delay,
                 }
 
-            def get_dbt_settings(self) -> t.StrMapping:
-                """Return DBT-specific settings."""
+            @computed_field
+            @property
+            def dbt_settings(self) -> t.StrMapping:
+                """DBT-specific settings."""
                 return {
                     "database": self.oracle_service_name,
-                    "schema": self.get_effective_schema(),
+                    "schema": self.effective_schema,
                     "materialization": self.materialization,
                 }
 

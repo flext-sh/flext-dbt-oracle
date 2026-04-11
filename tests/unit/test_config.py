@@ -115,7 +115,7 @@ class TestFlextDbtOracleSettings:
                 pool_max_size=5,
             )
 
-    def test_get_connection_string(self) -> None:
+    def test_connection_string(self) -> None:
         """Test connection string generation."""
         config = FlextDbtOracleSettings(
             oracle_host="localhost",
@@ -123,14 +123,14 @@ class TestFlextDbtOracleSettings:
             oracle_password=SecretStr("testpass"),
             oracle_service_name="XEPDB1",
         )
-        conn_str = config.get_connection_string()
+        conn_str = config.connection_string
         separator = ":" if "sid" in config.model_fields_set and config.sid else "/"
         assert (
             conn_str
-            == f"oracle://testuser:***@localhost:{config.port}{separator}{config.get_database_identifier()}"
+            == f"oracle://testuser:***@localhost:{config.port}{separator}{config.database_identifier}"
         )
 
-    def test_get_connection_string_with_sid(self) -> None:
+    def test_connection_string_with_sid(self) -> None:
         """Test connection string generation with SID."""
         config = FlextDbtOracleSettings(
             oracle_host="localhost",
@@ -138,10 +138,10 @@ class TestFlextDbtOracleSettings:
             oracle_password=SecretStr("testpass"),
             sid="XE",
         )
-        conn_str = config.get_connection_string()
+        conn_str = config.connection_string
         assert conn_str == f"oracle://testuser:***@localhost:{config.port}:XE"
 
-    def test_get_effective_schema(self) -> None:
+    def test_effective_schema(self) -> None:
         """Test effective schema retrieval."""
         config = FlextDbtOracleSettings(
             oracle_host="localhost",
@@ -150,9 +150,9 @@ class TestFlextDbtOracleSettings:
             oracle_service_name="XEPDB1",
             schema_name="TEST_SCHEMA",
         )
-        assert config.get_effective_schema() == "TEST_SCHEMA"
+        assert config.effective_schema == "TEST_SCHEMA"
 
-    def test_get_database_identifier(self) -> None:
+    def test_database_identifier(self) -> None:
         """Test database identifier retrieval."""
         config = FlextDbtOracleSettings(
             oracle_host="localhost",
@@ -160,14 +160,14 @@ class TestFlextDbtOracleSettings:
             oracle_password=SecretStr("testpass"),
             oracle_service_name="XEPDB1",
         )
-        assert config.get_database_identifier() in {"XEPDB1", "XE"}
+        assert config.database_identifier in {"XEPDB1", "XE"}
         config_with_sid = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=SecretStr("testpass"),
             sid="XE",
         )
-        assert config_with_sid.get_database_identifier() == "XE"
+        assert config_with_sid.database_identifier == "XE"
 
     def test_to_connection_config(self) -> None:
         """Test conversion to connection configuration."""
@@ -207,7 +207,7 @@ class TestFlextDbtOracleSettings:
         assert oracle_config.username == "testuser"
         assert oracle_config.service_name == "XEPDB1"
 
-    def test_get_performance_settings(self) -> None:
+    def test_performance_settings(self) -> None:
         """Test performance settings retrieval."""
         config = FlextDbtOracleSettings(
             oracle_host="localhost",
@@ -218,7 +218,7 @@ class TestFlextDbtOracleSettings:
             pool_max_size=10,
             query_timeout=300,
         )
-        perf_settings = config.get_performance_settings()
+        perf_settings = config.performance_settings
         expected_keys = {
             "pool_min_size",
             "pool_max_size",
@@ -234,7 +234,7 @@ class TestFlextDbtOracleSettings:
         assert perf_settings["pool_max_size"] == 10
         assert perf_settings["query_timeout"] == 300
 
-    def test_get_dbt_settings(self) -> None:
+    def test_dbt_settings(self) -> None:
         """Test DBT settings retrieval."""
         config = FlextDbtOracleSettings(
             oracle_host="localhost",
@@ -243,7 +243,7 @@ class TestFlextDbtOracleSettings:
             oracle_service_name="XEPDB1",
             materialization="table",
         )
-        dbt_settings = config.get_dbt_settings()
+        dbt_settings = config.dbt_settings
         assert "database" in dbt_settings
         assert "schema" in dbt_settings
         assert "materialization" in dbt_settings

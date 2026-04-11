@@ -35,8 +35,10 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
         )
 
     @override
-    def get_connection_profile(self) -> t.ContainerMapping:
-        """Return dbt connection profile for Oracle database."""
+    @property
+    @override
+    def connection_profile(self) -> t.ContainerMapping:
+        """Dbt connection profile for Oracle database."""
         s = self._dbt_oracle_settings()
         return {
             "type": "oracle",

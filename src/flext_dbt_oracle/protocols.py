@@ -27,10 +27,10 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 """Compile DBT models for Oracle data processing."""
                 ...
 
-            def get_dbt_manifest(
+            def fetch_dbt_manifest(
                 self,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
-                """Get DBT manifest with Oracle model definitions."""
+                """Fetch DBT manifest with Oracle model definitions."""
                 ...
 
             def run_dbt_models(
@@ -298,10 +298,10 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
                 """Create monitoring dashboard for DBT Oracle operations."""
                 ...
 
-            def get_health_status(
+            def fetch_health_status(
                 self,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
-                """Get DBT Oracle integration health status."""
+                """Fetch DBT Oracle integration health status."""
                 ...
 
             def monitor_oracle_data_freshness(

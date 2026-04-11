@@ -36,7 +36,7 @@ def shared_oracle_container(docker_control: tk) -> Generator[str]:
         pytest.skip(f"Failed to start Oracle container: {result.error}")
     yield "flext-oracle-db-test"
     try:
-        docker_control.get_client().containers.get("flext-oracle-db-test").stop()
+        docker_control.client.containers.get("flext-oracle-db-test").stop()
     except (
         ValueError,
         TypeError,

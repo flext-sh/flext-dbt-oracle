@@ -13,12 +13,12 @@ from tests import m
 class TestOracleTableAdapter:
     """Test OracleTableAdapter."""
 
-    def test_get_relation_name(self) -> None:
+    def test_relation_name(self) -> None:
         adapter = m.DbtOracle.OracleTableAdapter(
             schema_name="HR",
             table_name="EMPLOYEES",
         )
-        assert adapter.get_relation_name() == "HR.EMPLOYEES"
+        assert adapter.relation_name == "HR.EMPLOYEES"
 
     def test_to_metadata(self) -> None:
         adapter = m.DbtOracle.OracleTableAdapter(
