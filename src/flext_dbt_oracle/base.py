@@ -30,7 +30,7 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
         self,
     ) -> FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings:
         """Return the typed dbt-oracle settings namespace."""
-        return FlextSettings.get_global().get_namespace(
+        return FlextSettings.fetch_global().fetch_namespace(
             "dbt_oracle", FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings
         )
 
