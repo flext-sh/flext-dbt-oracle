@@ -32,7 +32,7 @@ def shared_oracle_container(docker_control: tk) -> Generator[str]:
     Container auto-starts if not running and remains running after tests.
     """
     result = docker_control.start_existing_container("flext-oracle-db-test")
-    if result.is_failure:
+    if result.failure:
         pytest.skip(f"Failed to start Oracle container: {result.error}")
     yield "flext-oracle-db-test"
     try:
