@@ -13,31 +13,21 @@ from flext_core.lazy import (
 from flext_dbt_oracle.__version__ import *
 
 if _t.TYPE_CHECKING:
+    from flext_cli.base import s
+
     from flext_core.decorators import d
     from flext_core.exceptions import e
     from flext_core.handlers import h
     from flext_core.mixins import x
     from flext_core.result import r
     from flext_dbt_oracle._utilities.connections import FlextDbtOracleConnections
-    from flext_dbt_oracle.base import (
-        FlextDbtOracleServiceBase,
-        FlextDbtOracleServiceBase as s,
-    )
-    from flext_dbt_oracle.constants import (
-        FlextDbtOracleConstants,
-        FlextDbtOracleConstants as c,
-    )
-    from flext_dbt_oracle.models import FlextDbtOracleModels, FlextDbtOracleModels as m
-    from flext_dbt_oracle.protocols import (
-        FlextDbtOracleProtocols,
-        FlextDbtOracleProtocols as p,
-    )
+    from flext_dbt_oracle.base import FlextDbtOracleServiceBase
+    from flext_dbt_oracle.constants import FlextDbtOracleConstants, c
+    from flext_dbt_oracle.models import FlextDbtOracleModels, m
+    from flext_dbt_oracle.protocols import FlextDbtOracleProtocols, p
     from flext_dbt_oracle.settings import FlextDbtOracleSettings
-    from flext_dbt_oracle.typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
-    from flext_dbt_oracle.utilities import (
-        FlextDbtOracleUtilities,
-        FlextDbtOracleUtilities as u,
-    )
+    from flext_dbt_oracle.typings import FlextDbtOracleTypes, t
+    from flext_dbt_oracle.utilities import FlextDbtOracleUtilities, u
 _LAZY_IMPORTS = merge_lazy_imports(
     ("._utilities",),
     build_lazy_import_map(
@@ -53,25 +43,33 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "__version_info__",
             ),
             ".base": ("FlextDbtOracleServiceBase",),
-            ".constants": ("FlextDbtOracleConstants",),
-            ".models": ("FlextDbtOracleModels",),
-            ".protocols": ("FlextDbtOracleProtocols",),
+            ".constants": (
+                "FlextDbtOracleConstants",
+                "c",
+            ),
+            ".models": (
+                "FlextDbtOracleModels",
+                "m",
+            ),
+            ".protocols": (
+                "FlextDbtOracleProtocols",
+                "p",
+            ),
             ".settings": ("FlextDbtOracleSettings",),
-            ".typings": ("FlextDbtOracleTypes",),
-            ".utilities": ("FlextDbtOracleUtilities",),
+            ".typings": (
+                "FlextDbtOracleTypes",
+                "t",
+            ),
+            ".utilities": (
+                "FlextDbtOracleUtilities",
+                "u",
+            ),
+            "flext_cli.base": ("s",),
             "flext_core.decorators": ("d",),
             "flext_core.exceptions": ("e",),
             "flext_core.handlers": ("h",),
             "flext_core.mixins": ("x",),
             "flext_core.result": ("r",),
-        },
-        alias_groups={
-            ".base": (("s", "FlextDbtOracleServiceBase"),),
-            ".constants": (("c", "FlextDbtOracleConstants"),),
-            ".models": (("m", "FlextDbtOracleModels"),),
-            ".protocols": (("p", "FlextDbtOracleProtocols"),),
-            ".typings": (("t", "FlextDbtOracleTypes"),),
-            ".utilities": (("u", "FlextDbtOracleUtilities"),),
         },
     ),
     exclude_names=(
@@ -85,6 +83,9 @@ _LAZY_IMPORTS = merge_lazy_imports(
     ),
     module_name=__name__,
 )
+
+
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
 
 __all__ = [
     "FlextDbtOracleConnections",
@@ -115,6 +116,3 @@ __all__ = [
     "u",
     "x",
 ]
-
-
-install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
