@@ -43,11 +43,11 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
 
             def __init__(
                 self,
-                config: FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings,
+                settings: FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings,
             ) -> None:
                 """Store runtime settings used by client operations."""
                 super().__init__()
-                self.config = config
+                self.settings = settings
 
             def discover_tables(self) -> t.StrSequence:
                 """Return static table candidates for modeling flow."""

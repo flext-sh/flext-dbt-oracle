@@ -22,7 +22,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
             def compile_dbt_models(
                 self,
                 models: t.ScalarList | None = None,
-                config: t.DbtOracle.OraclePayload | None = None,
+                settings: t.DbtOracle.OraclePayload | None = None,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
                 """Compile DBT models for Oracle data processing."""
                 ...
@@ -36,7 +36,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
             def run_dbt_models(
                 self,
                 models: t.ScalarList | None = None,
-                config: t.DbtOracle.OraclePayload | None = None,
+                settings: t.DbtOracle.OraclePayload | None = None,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
                 """Run DBT models with Oracle data sources."""
                 ...
@@ -44,7 +44,7 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
             def test_dbt_models(
                 self,
                 models: t.ScalarList | None = None,
-                config: t.DbtOracle.OraclePayload | None = None,
+                settings: t.DbtOracle.OraclePayload | None = None,
             ) -> FlextMeltanoProtocols.Result[t.DbtOracle.OraclePayload]:
                 """Test DBT models with Oracle data validation."""
                 ...

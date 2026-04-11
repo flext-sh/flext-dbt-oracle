@@ -85,7 +85,7 @@ def set_test_environment() -> Generator[None]:
 def dbt_oracle_profile() -> t.ContainerMapping:
     """Dbt Oracle profile configuration for testing."""
     return {
-        "config": {
+        "settings": {
             "partial_parse": True,
             "printer_width": 120,
             "send_anonymous_usage_stats": False,
@@ -125,7 +125,7 @@ def dbt_oracle_profile() -> t.ContainerMapping:
 
 
 @pytest.fixture
-def dbt_project_config() -> t.ContainerMapping:
+def dbt_project_settings() -> t.ContainerMapping:
     """Dbt project configuration for testing."""
     return {
         "name": "flext_dbt_oracle_test",
@@ -142,7 +142,7 @@ def dbt_project_config() -> t.ContainerMapping:
         "target-path": "target",
         "clean-targets": ["target", "dbt_packages"],
         "require-dbt-version": ">=1.8.0",
-        "model_config": {
+        "model_settings": {
             "materialized": "table",
             "oracle": {"tablespace": "USERS", "compression": "NONE", "parallel": 4},
         },
@@ -155,7 +155,7 @@ def dbt_project_config() -> t.ContainerMapping:
 
 
 @pytest.fixture
-def oracle_adapter_config() -> t.ContainerMapping:
+def oracle_adapter_settings() -> t.ContainerMapping:
     """Oracle adapter configuration for testing."""
     return {
         "type": "oracle",
@@ -183,9 +183,9 @@ def oracle_adapter_config() -> t.ContainerMapping:
 def dbt_model_definitions() -> t.StrMapping:
     """Dbt model SQL definitions for testing."""
     return {
-        "staging_customers": "\n\n          {{ config(materialized='view') }}\n          SELECT\n              customer_id,\n              customer_name,\n              customer_email,\n              created_at,\n              updated_at\n          FROM {{ source('raw', 'customers') }}\n          WHERE customer_id IS NOT NULL\n      ",
-        "dim_customers": "\n\n          {{ config(\n              materialized='table',\n              oracle={'tablespace': 'USERS', 'parallel': 2}\n          ) }}\n          SELECT\n              customer_id,\n              customer_name,\n              customer_email,\n              CASE\n                  WHEN customer_email LIKE '%@%.%' THEN 'valid'\n                  ELSE 'invalid'\n              END as email_status,\n              created_at,\n              updated_at,\n              CURRENT_TIMESTAMP as dbt_updated_at\n          FROM {{ ref('staging_customers') }}\n      ",
-        "fact_orders": "\n\n          {{ config(\n              materialized='incremental',\n              unique_key='order_id',\n              oracle={'merge_update_columns': ['order_status', 'total_amount']}\n          ) }}\n          SELECT\n              order_id,\n              customer_id,\n              order_date,\n              order_status,\n              total_amount,\n              created_at,\n              updated_at\n          FROM {{ source('raw', 'orders') }}\n          {% if is_incremental() %}\n              WHERE updated_at > (SELECT MAX(updated_at) FROM {{ this }})\n          {% endif %}\n      ",
+        "staging_customers": "\n\n          {{ settings(materialized='view') }}\n          SELECT\n              customer_id,\n              customer_name,\n              customer_email,\n              created_at,\n              updated_at\n          FROM {{ source('raw', 'customers') }}\n          WHERE customer_id IS NOT NULL\n      ",
+        "dim_customers": "\n\n          {{ settings(\n              materialized='table',\n              oracle={'tablespace': 'USERS', 'parallel': 2}\n          ) }}\n          SELECT\n              customer_id,\n              customer_name,\n              customer_email,\n              CASE\n                  WHEN customer_email LIKE '%@%.%' THEN 'valid'\n                  ELSE 'invalid'\n              END as email_status,\n              created_at,\n              updated_at,\n              CURRENT_TIMESTAMP as dbt_updated_at\n          FROM {{ ref('staging_customers') }}\n      ",
+        "fact_orders": "\n\n          {{ settings(\n              materialized='incremental',\n              unique_key='order_id',\n              oracle={'merge_update_columns': ['order_status', 'total_amount']}\n          ) }}\n          SELECT\n              order_id,\n              customer_id,\n              order_date,\n              order_status,\n              total_amount,\n              created_at,\n              updated_at\n          FROM {{ source('raw', 'orders') }}\n          {% if is_incremental() %}\n              WHERE updated_at > (SELECT MAX(updated_at) FROM {{ this }})\n          {% endif %}\n      ",
     }
 
 
@@ -193,7 +193,7 @@ def dbt_model_definitions() -> t.StrMapping:
 def dbt_macro_definitions() -> t.StrMapping:
     """Dbt macro definitions for testing."""
     return {
-        "oracle_create_table_as": "\n\n          {% macro oracle_create_table_as(temporary, relation, sql) -%}\n              {% if temporary %}\n                  CREATE GLOBAL TEMPORARY TABLE {{ relation }}\n                  ON COMMIT PRESERVE ROWS\n                  AS (\n                      {{ sql }}\n                  )\n              {% else %}\n                  CREATE TABLE {{ relation }}\n                  {% if config.get('oracle', {}).get('tablespace') %}\n                      TABLESPACE {{ config.get('oracle', {}).get('tablespace') }}\n                  {% endif %}\n                  {% if config.get('oracle', {}).get('parallel') %}\n                      PARALLEL {{ config.get('oracle', {}).get('parallel') }}\n                  {% endif %}\n                  AS (\n                      {{ sql }}\n                  )\n              {% endif %}\n          {%- endmacro %}\n      ",
+        "oracle_create_table_as": "\n\n          {% macro oracle_create_table_as(temporary, relation, sql) -%}\n              {% if temporary %}\n                  CREATE GLOBAL TEMPORARY TABLE {{ relation }}\n                  ON COMMIT PRESERVE ROWS\n                  AS (\n                      {{ sql }}\n                  )\n              {% else %}\n                  CREATE TABLE {{ relation }}\n                  {% if settings.get('oracle', {}).get('tablespace') %}\n                      TABLESPACE {{ settings.get('oracle', {}).get('tablespace') }}\n                  {% endif %}\n                  {% if settings.get('oracle', {}).get('parallel') %}\n                      PARALLEL {{ settings.get('oracle', {}).get('parallel') }}\n                  {% endif %}\n                  AS (\n                      {{ sql }}\n                  )\n              {% endif %}\n          {%- endmacro %}\n      ",
         "oracle_merge_sql": "\n\n          {% macro oracle_merge_sql(target, source, unique_key, dest_columns) -%}\n              MERGE INTO {{ target }} AS target_table\n              USING ({{ source }}) AS source_table\n              ON (target_table.{{ unique_key }} = source_table.{{ unique_key }})\n              WHEN MATCHED THEN\n                  UPDATE SET\n                  {% for column in dest_columns %}\n                      {{ column }} = source_table.{{ column }}\n                      {%- if not loop.last -%},{%- endif %}\n                  {% endfor %}\n              WHEN NOT MATCHED THEN\n                  INSERT ({{ Union[dest_columns, join](', ') }})\n                  VALUES ({{\n                      Union[dest_columns, map]('prepend', 'source_table.') | join(', ')\n                  }})\n          {%- endmacro %}\n      ",
     }
 
@@ -273,7 +273,7 @@ def oracle_sql_queries() -> t.StrMapping:
 
 
 @pytest.fixture
-def dbt_run_config() -> t.ContainerMapping:
+def dbt_run_settings() -> t.ContainerMapping:
     """Dbt run configuration for testing."""
     return {
         "threads": 4,
@@ -286,7 +286,7 @@ def dbt_run_config() -> t.ContainerMapping:
 
 
 @pytest.fixture
-def dbt_test_config() -> t.ContainerMapping:
+def dbt_test_settings() -> t.ContainerMapping:
     """Dbt test configuration for testing."""
     return {
         "threads": 2,
@@ -299,7 +299,7 @@ def dbt_test_config() -> t.ContainerMapping:
 
 
 @pytest.fixture
-def performance_test_config() -> t.ContainerMapping:
+def performance_test_settings() -> t.ContainerMapping:
     """Performance test configuration."""
     return {
         "large_table_rows": 100000,
@@ -341,17 +341,17 @@ def dbt_error_scenarios() -> Sequence[t.ContainerMapping]:
     ]
 
 
-def pytest_configure(config: pytest.Config) -> None:
+def pytest_settingsure(settings: pytest.Config) -> None:
     """Configure pytest markers."""
-    config.addinivalue_line("markers", "unit: Unit tests")
-    config.addinivalue_line("markers", "integration: Integration tests")
-    config.addinivalue_line("markers", "e2e: End-to-end tests")
-    config.addinivalue_line("markers", "dbt: dbt-specific tests")
-    config.addinivalue_line("markers", "oracle: Oracle database tests")
-    config.addinivalue_line("markers", "adapter: Adapter functionality tests")
-    config.addinivalue_line("markers", "materialization: Materialization tests")
-    config.addinivalue_line("markers", "macro: Macro tests")
-    config.addinivalue_line("markers", "slow: Slow tests")
+    settings.addinivalue_line("markers", "unit: Unit tests")
+    settings.addinivalue_line("markers", "integration: Integration tests")
+    settings.addinivalue_line("markers", "e2e: End-to-end tests")
+    settings.addinivalue_line("markers", "dbt: dbt-specific tests")
+    settings.addinivalue_line("markers", "oracle: Oracle database tests")
+    settings.addinivalue_line("markers", "adapter: Adapter functionality tests")
+    settings.addinivalue_line("markers", "materialization: Materialization tests")
+    settings.addinivalue_line("markers", "macro: Macro tests")
+    settings.addinivalue_line("markers", "slow: Slow tests")
 
 
 class MockConnectionManager:
@@ -365,14 +365,14 @@ class MockConnectionManager:
     def open_connection(
         self,
         name: str,
-        config: t.ContainerMapping,
+        settings: t.ContainerMapping,
     ) -> t.MutableContainerMapping:
         """Open database connection."""
         connection: t.MutableContainerMapping = {
             "name": name,
             "state": "open",
             "handle": f"mock_handle_{name}",
-            "credentials": config,
+            "credentials": settings,
         }
         self.connections[name] = connection
         return connection
@@ -446,10 +446,10 @@ class MockRelationManager:
 class MockDbtOracleAdapter:
     """Simplified adapter using composition and Strategy Pattern."""
 
-    def __init__(self, config: t.ContainerMapping) -> None:
+    def __init__(self, settings: t.ContainerMapping) -> None:
         """Initialize the instance."""
         super().__init__()
-        self.config = config
+        self.settings = settings
         self.compiled_models: t.ContainerMapping = {}
         self.connection_manager = MockConnectionManager()
         self.sql_executor = MockSqlExecutor()
@@ -458,7 +458,7 @@ class MockDbtOracleAdapter:
 
     def open_connection(self, name: str) -> t.ContainerMapping:
         """Delegate to connection manager strategy."""
-        return self.connection_manager.open_connection(name, self.config)
+        return self.connection_manager.open_connection(name, self.settings)
 
     def close_connection(self, name: str) -> None:
         """Delegate to connection manager strategy."""

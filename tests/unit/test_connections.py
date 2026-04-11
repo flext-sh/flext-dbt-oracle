@@ -18,15 +18,15 @@ class TestOracleConnectionConfig:
     """Test suite for OracleConnectionConfig class."""
 
     def test_default_values(self) -> None:
-        config = m.DbtOracle.OracleConnectionConfig()
-        assert config.host == "localhost"
-        assert config.port == 1521
-        assert config.service_name == "XEPDB1"
-        assert config.sid is None
-        assert config.protocol == "tcp"
+        settings = m.DbtOracle.OracleConnectionConfig()
+        assert settings.host == "localhost"
+        assert settings.port == 1521
+        assert settings.service_name == "XEPDB1"
+        assert settings.sid is None
+        assert settings.protocol == "tcp"
 
     def test_custom_values(self) -> None:
-        config = m.DbtOracle.OracleConnectionConfig(
+        settings = m.DbtOracle.OracleConnectionConfig(
             host="db.example.com",
             port=1522,
             service_name="PROD",
@@ -34,39 +34,39 @@ class TestOracleConnectionConfig:
             password="secret",
             protocol="tcps",
         )
-        assert config.host == "db.example.com"
-        assert config.port == 1522
-        assert config.service_name == "PROD"
-        assert config.username == "admin"
-        assert config.protocol == "tcps"
+        assert settings.host == "db.example.com"
+        assert settings.port == 1522
+        assert settings.service_name == "PROD"
+        assert settings.username == "admin"
+        assert settings.protocol == "tcps"
 
     def test_get_database_identifier_service_name(self) -> None:
-        config = m.DbtOracle.OracleConnectionConfig(service_name="XEPDB1")
-        assert config.database_identifier == "XEPDB1"
+        settings = m.DbtOracle.OracleConnectionConfig(service_name="XEPDB1")
+        assert settings.database_identifier == "XEPDB1"
 
     def test_get_database_identifier_sid(self) -> None:
-        config = m.DbtOracle.OracleConnectionConfig(sid="XE")
-        assert config.database_identifier == "XE"
+        settings = m.DbtOracle.OracleConnectionConfig(sid="XE")
+        assert settings.database_identifier == "XE"
 
     def test_get_dsn_with_service_name(self) -> None:
-        config = m.DbtOracle.OracleConnectionConfig(
+        settings = m.DbtOracle.OracleConnectionConfig(
             host="localhost",
             port=1521,
             service_name="XEPDB1",
             username="testuser",
             password="testpass",
         )
-        assert config.dsn == "tcp://testuser:***@localhost:1521/XEPDB1"
+        assert settings.dsn == "tcp://testuser:***@localhost:1521/XEPDB1"
 
     def test_get_dsn_with_sid(self) -> None:
-        config = m.DbtOracle.OracleConnectionConfig(
+        settings = m.DbtOracle.OracleConnectionConfig(
             host="localhost",
             port=1521,
             sid="XE",
             username="testuser",
             password="testpass",
         )
-        assert config.dsn == "tcp://testuser:***@localhost:1521:XE"
+        assert settings.dsn == "tcp://testuser:***@localhost:1521:XE"
 
     def test_port_validation(self) -> None:
         port: int = 0
@@ -78,31 +78,31 @@ class TestBuildOracleConnectionConfig:
     """Test suite for the public connection facade builder."""
 
     def test_basic_build(self) -> None:
-        config = FlextDbtOracleConnections.build_oracle_connection_config(
+        settings = FlextDbtOracleConnections.build_oracle_connection_config(
             host="localhost",
             username="testuser",
             password="testpass",
         )
-        assert isinstance(config, m.DbtOracle.OracleConnectionConfig)
-        assert config.host == "localhost"
-        assert config.username == "testuser"
-        assert config.service_name == "XEPDB1"
+        assert isinstance(settings, m.DbtOracle.OracleConnectionConfig)
+        assert settings.host == "localhost"
+        assert settings.username == "testuser"
+        assert settings.service_name == "XEPDB1"
 
     def test_build_with_sid(self) -> None:
-        config = FlextDbtOracleConnections.build_oracle_connection_config(
+        settings = FlextDbtOracleConnections.build_oracle_connection_config(
             host="localhost",
             username="testuser",
             password="testpass",
             sid="XE",
         )
-        assert config.sid == "XE"
-        assert config.database_identifier == "XE"
+        assert settings.sid == "XE"
+        assert settings.database_identifier == "XE"
 
     def test_build_with_custom_port(self) -> None:
-        config = FlextDbtOracleConnections.build_oracle_connection_config(
+        settings = FlextDbtOracleConnections.build_oracle_connection_config(
             host="localhost",
             username="testuser",
             password="testpass",
             port=1522,
         )
-        assert config.port == 1522
+        assert settings.port == 1522

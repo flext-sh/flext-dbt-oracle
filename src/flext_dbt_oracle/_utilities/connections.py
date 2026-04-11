@@ -8,7 +8,7 @@ from flext_dbt_oracle import FlextDbtOracleModels, c
 
 
 class FlextDbtOracleConnections:
-    """Facade for Oracle connection config construction."""
+    """Facade for Oracle connection settings construction."""
 
     @staticmethod
     def build_oracle_connection_config(
@@ -21,7 +21,7 @@ class FlextDbtOracleConnections:
         port: int = c.DbtOracle.Oracle.DEFAULT_PORT,
         protocol: str = c.DbtOracle.Oracle.DEFAULT_PROTOCOL,
     ) -> FlextDbtOracleModels.DbtOracle.OracleConnectionConfig:
-        """Create validated Oracle connection config t.NormalizedValue."""
+        """Create validated Oracle connection settings t.NormalizedValue."""
         return FlextDbtOracleModels.DbtOracle.OracleConnectionConfig(
             host=host,
             port=port,

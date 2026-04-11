@@ -14,7 +14,7 @@ Descricao oficial atual: "FLEXT dbt Oracle - dbt Models for Oracle Database".
 
 - Entrada: datasets Oracle em staging.
 - Saida: marts analiticos prontos para consumo.
-- Dependencias: flext-db-oracle e ambiente dbt configurado.
+- Dependencias: flext-db-oracle e ambiente dbt settingsurado.
 
 ## Estado atual e risco de adocao
 
