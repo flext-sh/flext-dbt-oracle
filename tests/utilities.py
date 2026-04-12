@@ -29,4 +29,4 @@ class TestsFlextDbtOracleUtilities(
 
 u = TestsFlextDbtOracleUtilities
 
-__all__ = ["TestsFlextDbtOracleUtilities", "u"]
+__all__: list[str] = ["TestsFlextDbtOracleUtilities", "u"]

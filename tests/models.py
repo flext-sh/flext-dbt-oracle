@@ -29,7 +29,7 @@ class TestsFlextDbtOracleModels(
 
 m = TestsFlextDbtOracleModels
 
-__all__ = [
+__all__: list[str] = [
     "TestsFlextDbtOracleModels",
     "m",
 ]

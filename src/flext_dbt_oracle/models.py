@@ -5,66 +5,57 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import Annotated, ClassVar, Literal
 
-from pydantic import (
-    ConfigDict,
-    Field,
-    SecretStr,
-    computed_field,
-    model_validator,
-)
-
-from flext_core import FlextModels
-from flext_db_oracle import FlextDbOracleModels
-from flext_dbt_oracle import c, t
+from flext_db_oracle import m
+from flext_dbt_oracle import c, t, u
 from flext_meltano import FlextMeltanoModels
 
 
-class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
+class FlextDbtOracleModels(FlextMeltanoModels, m):
     """Namespace wrapper for DBT Oracle domain models.
 
-    Inherits from FlextMeltanoModels (Singer/Meltano) and FlextDbOracleModels
+    Inherits from FlextMeltanoModels (Singer/Meltano) and m
     (Oracle DB) to compose the full DBT Oracle domain namespace.
     """
 
     class DbtOracle:
         """DbtOracle domain namespace."""
 
-        class Model(FlextModels.Value):
+        class Model(m.Value):
             """Typed DBT model metadata payload."""
 
-            name: Annotated[str, Field(description="DBT model name")]
+            name: Annotated[str, u.Field(description="DBT model name")]
             dbt_model_type: Annotated[
                 str,
-                Field(description="DBT model classification"),
+                u.Field(description="DBT model classification"),
             ] = c.DbtOracle.DEFAULT_MODEL_TYPE
             schema_name: Annotated[
                 str,
-                Field(description="Target schema name"),
+                u.Field(description="Target schema name"),
             ] = c.DbtOracle.DEFAULT_SCHEMA_NAME
-            table_name: Annotated[str, Field(description="Target table name")]
+            table_name: Annotated[str, u.Field(description="Target table name")]
             materialization: Annotated[
                 t.DbtOracle.Materialization,
-                Field(description="DBT materialization strategy"),
+                u.Field(description="DBT materialization strategy"),
             ] = c.DbtOracle.Dbt.DEFAULT_MATERIALIZATION
-            sql_content: Annotated[str, Field(description="Model SQL body")]
+            sql_content: Annotated[str, u.Field(description="Model SQL body")]
             description: Annotated[
                 str,
-                Field(description="Human-readable model description"),
+                u.Field(description="Human-readable model description"),
             ] = ""
             source_name: Annotated[
                 str,
-                Field(description="Source system name"),
+                u.Field(description="Source system name"),
             ] = c.DbtOracle.DEFAULT_SOURCE_NAME
             columns: Annotated[
                 Sequence[t.StrMapping],
-                Field(
+                u.Field(
                     default_factory=list,
                     description="Column metadata payloads",
                 ),
             ]
             dependencies: Annotated[
                 t.StrSequence,
-                Field(
+                u.Field(
                     default_factory=list,
                     description="Upstream model dependencies",
                 ),
@@ -96,46 +87,46 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     for table in source_tables
                 ]
 
-        class OracleConnectionConfig(FlextModels.Value):
+        class OracleConnectionConfig(m.Value):
             """Configuration for Oracle database connections."""
 
             host: Annotated[
                 str,
-                Field(description="Oracle database host"),
+                u.Field(description="Oracle database host"),
             ] = c.DbtOracle.Oracle.DEFAULT_HOST
             port: Annotated[
                 t.PortNumber,
-                Field(description="Oracle database port"),
+                u.Field(description="Oracle database port"),
             ] = c.DbtOracle.Oracle.DEFAULT_PORT
             username: Annotated[
                 str,
-                Field(description="Oracle database username"),
+                u.Field(description="Oracle database username"),
             ] = ""
             password: Annotated[
-                str | SecretStr,
-                Field(description="Oracle database password"),
-            ] = SecretStr("")
+                str | t.SecretStr,
+                u.Field(description="Oracle database password"),
+            ] = t.SecretStr("")
             service_name: Annotated[
                 str,
-                Field(description="Oracle service name"),
+                u.Field(description="Oracle service name"),
             ] = c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
             sid: Annotated[
                 str | None,
-                Field(description="Oracle SID (optional)"),
+                u.Field(description="Oracle SID (optional)"),
             ] = None
             protocol: Annotated[
                 str,
-                Field(description="Oracle connection protocol"),
+                u.Field(description="Oracle connection protocol"),
             ] = c.DbtOracle.Oracle.DEFAULT_PROTOCOL
 
             @classmethod
-            def validate_password(cls, v: str | SecretStr) -> SecretStr:
-                """Convert string passwords to SecretStr."""
+            def validate_password(cls, v: str | t.SecretStr) -> t.SecretStr:
+                """Convert string passwords to t.SecretStr."""
                 if isinstance(v, str):
-                    return SecretStr(v)
+                    return t.SecretStr(v)
                 return v
 
-            @computed_field
+            @u.computed_field
             @property
             def database_identifier(self) -> str:
                 """Database identifier."""
@@ -143,7 +134,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     return self.sid
                 return self.service_name
 
-            @computed_field
+            @u.computed_field
             @property
             def dsn(self) -> str:
                 """Connection string in DSN format."""
@@ -157,19 +148,19 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     f"{self.host}:{self.port}/{self.service_name}"
                 )
 
-        class OracleTableAdapter(FlextModels.Value):
+        class OracleTableAdapter(m.Value):
             """Adapter for Oracle table metadata normalization."""
 
             schema_name: Annotated[
                 str,
-                Field(description="Oracle schema name"),
+                u.Field(description="Oracle schema name"),
             ]
             table_name: Annotated[
                 str,
-                Field(description="Oracle table name"),
+                u.Field(description="Oracle table name"),
             ]
 
-            @computed_field
+            @u.computed_field
             @property
             def relation_name(self) -> str:
                 """Fully qualified relation name."""
@@ -197,124 +188,124 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     table_name=table_name.strip(),
                 )
 
-        class FlextDbtOracleSettings(FlextModels.Value):
+        class FlextDbtOracleSettings(m.Value):
             """Configuration for DBT Oracle operations."""
 
-            model_config: ClassVar[ConfigDict] = ConfigDict(
+            model_config: ClassVar[c.ConfigDict] = c.ConfigDict(
                 populate_by_name=True,
                 frozen=False,
             )
 
             oracle_host: Annotated[
                 str,
-                Field(description="Oracle database host"),
+                u.Field(description="Oracle database host"),
             ] = c.DbtOracle.Oracle.DEFAULT_HOST
             oracle_username: Annotated[
                 str,
-                Field(description="Oracle database username"),
+                u.Field(description="Oracle database username"),
             ] = "oracle"
             oracle_password: Annotated[
-                SecretStr,
-                Field(description="Oracle database password"),
-            ] = SecretStr("")
+                t.SecretStr,
+                u.Field(description="Oracle database password"),
+            ] = t.SecretStr("")
             oracle_port: Annotated[
                 t.PortNumber,
-                Field(
+                u.Field(
                     alias="port",
                     description="Oracle database port",
                 ),
             ] = c.DbtOracle.Oracle.DEFAULT_PORT
             oracle_service_name: Annotated[
                 str,
-                Field(description="Oracle service name"),
+                u.Field(description="Oracle service name"),
             ] = c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
 
             sid: Annotated[
                 str | None,
-                Field(description="Oracle SID (optional)"),
+                u.Field(description="Oracle SID (optional)"),
             ] = None
             protocol: Annotated[
                 Literal["tcp", "tcps"],
-                Field(description="Connection protocol"),
+                u.Field(description="Connection protocol"),
             ] = "tcp"
             materialization: Annotated[
                 t.DbtOracle.Materialization,
-                Field(description="DBT materialization strategy"),
+                u.Field(description="DBT materialization strategy"),
             ] = "table"
             schema_name: Annotated[
                 str,
-                Field(description="Target schema name"),
+                u.Field(description="Target schema name"),
             ] = ""
             ssl_server_dn_match: Annotated[
                 bool,
-                Field(description="Enable SSL server DN validation"),
+                u.Field(description="Enable SSL server DN validation"),
             ] = False
             nls_lang: Annotated[
                 str,
-                Field(description="Oracle NLS language setting"),
+                u.Field(description="Oracle NLS language setting"),
             ] = c.DbtOracle.NLS_LANG
             nls_date_format: Annotated[
                 str,
-                Field(description="Oracle NLS date format"),
+                u.Field(description="Oracle NLS date format"),
             ] = c.DbtOracle.NLS_DATE_FORMAT
             search_path: Annotated[
                 str,
-                Field(description="Schema search path"),
+                u.Field(description="Schema search path"),
             ] = ""
             enable_metrics: Annotated[
                 bool,
-                Field(description="Enable metrics collection"),
+                u.Field(description="Enable metrics collection"),
             ] = False
             log_level: Annotated[
                 c.LogLevel,
-                Field(description="Runtime log verbosity"),
+                u.Field(description="Runtime log verbosity"),
             ] = c.LogLevel.INFO
             enable_sql_logging: Annotated[
                 bool,
-                Field(description="Enable SQL query logging"),
+                u.Field(description="Enable SQL query logging"),
             ] = False
 
             # Connection pool settings
             pool_min_size: Annotated[
                 t.PositiveInt,
-                Field(description="Minimum pool size"),
+                u.Field(description="Minimum pool size"),
             ] = 1
             pool_max_size: Annotated[
                 t.PositiveInt,
-                Field(description="Maximum pool size"),
+                u.Field(description="Maximum pool size"),
             ] = 10
             pool_increment: Annotated[
                 t.PositiveInt,
-                Field(description="Pool increment size"),
+                u.Field(description="Pool increment size"),
             ] = 1
 
             # Performance settings
             query_timeout: Annotated[
                 t.PositiveInt,
-                Field(description="Query timeout in seconds"),
+                u.Field(description="Query timeout in seconds"),
             ] = 300
             fetch_size: Annotated[
                 t.PositiveInt,
-                Field(description="Fetch batch size"),
+                u.Field(description="Fetch batch size"),
             ] = 1000
             connect_timeout: Annotated[
                 t.PositiveInt,
-                Field(description="Connection timeout in seconds"),
+                u.Field(description="Connection timeout in seconds"),
             ] = 30
             retry_attempts: Annotated[
                 t.NonNegativeInt,
-                Field(description="Number of retry attempts"),
+                u.Field(description="Number of retry attempts"),
             ] = 3
             retry_delay: Annotated[
                 t.NonNegativeInt,
-                Field(description="Delay between retries"),
+                u.Field(description="Delay between retries"),
             ] = 1
             retry_delay_seconds: Annotated[
                 t.NonNegativeFloat,
-                Field(description="Delay between retries in seconds"),
+                u.Field(description="Delay between retries in seconds"),
             ] = 1.0
 
-            @model_validator(mode="after")
+            @u.model_validator(mode="after")
             def validate_pool_sizes(
                 self,
             ) -> FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings:
@@ -324,25 +315,25 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     raise ValueError(msg)
                 return self
 
-            @computed_field
+            @u.computed_field
             @property
             def port(self) -> int:
                 """Return the Oracle port."""
                 return self.oracle_port
 
-            @computed_field
+            @u.computed_field
             @property
             def database_identifier(self) -> str:
                 """Service name or SID identifier."""
                 return self.sid or self.oracle_service_name
 
-            @computed_field
+            @u.computed_field
             @property
             def effective_schema(self) -> str:
                 """Effective schema name."""
                 return self.schema_name or self.oracle_username
 
-            @computed_field
+            @u.computed_field
             @property
             def connection_string(self) -> str:
                 """Oracle connection string."""
@@ -382,7 +373,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     protocol=self.protocol,
                 )
 
-            @computed_field
+            @u.computed_field
             @property
             def performance_settings(self) -> t.IntMapping:
                 """Performance-related settings."""
@@ -397,7 +388,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                     "retry_delay": self.retry_delay,
                 }
 
-            @computed_field
+            @u.computed_field
             @property
             def dbt_settings(self) -> t.StrMapping:
                 """DBT-specific settings."""
@@ -418,7 +409,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
 
 m = FlextDbtOracleModels
 
-__all__ = [
+__all__: list[str] = [
     "FlextDbtOracleModels",
     "m",
 ]

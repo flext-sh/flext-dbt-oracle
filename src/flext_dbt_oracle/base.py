@@ -52,4 +52,4 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
         }
 
 
-__all__ = ["FlextDbtOracleServiceBase"]
+__all__: list[str] = ["FlextDbtOracleServiceBase"]

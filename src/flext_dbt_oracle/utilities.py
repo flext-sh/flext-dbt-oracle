@@ -108,6 +108,6 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
                 return {"workflow": workflow_name, "status": "running"}
 
 
-__all__ = ["FlextDbtOracleUtilities", "u"]
+__all__: list[str] = ["FlextDbtOracleUtilities", "u"]
 
 u = FlextDbtOracleUtilities

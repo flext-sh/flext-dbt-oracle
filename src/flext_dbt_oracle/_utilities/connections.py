@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-from pydantic import SecretStr
-
-from flext_dbt_oracle import FlextDbtOracleModels, c
+from flext_dbt_oracle import FlextDbtOracleModels, c, t
 
 
 class FlextDbtOracleConnections:
@@ -28,9 +26,9 @@ class FlextDbtOracleConnections:
             service_name=service_name,
             sid=sid,
             username=username,
-            password=SecretStr(password),
+            password=t.SecretStr(password),
             protocol=protocol,
         )
 
 
-__all__ = ["FlextDbtOracleConnections"]
+__all__: list[str] = ["FlextDbtOracleConnections"]

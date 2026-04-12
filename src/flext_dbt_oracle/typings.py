@@ -12,21 +12,20 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import Literal
 
-from pydantic import TypeAdapter
-
 from flext_db_oracle import FlextDbOracleTypes
+from flext_dbt_oracle import u
 from flext_meltano import FlextMeltanoTypes
 
 
 class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     """MRO facade composing Meltano + DbOracle type namespaces."""
 
-    SCALAR_LIST_ADAPTER: TypeAdapter[Sequence[FlextMeltanoTypes.Scalar]] = TypeAdapter(
-        Sequence[FlextMeltanoTypes.Scalar]
+    SCALAR_LIST_ADAPTER: u.TypeAdapter[Sequence[FlextMeltanoTypes.Scalar]] = (
+        u.TypeAdapter(Sequence[FlextMeltanoTypes.Scalar])
     )
-    PRIMITIVES_MAPPING_ADAPTER: TypeAdapter[
+    PRIMITIVES_MAPPING_ADAPTER: u.TypeAdapter[
         Mapping[str, FlextMeltanoTypes.Primitives]
-    ] = TypeAdapter(Mapping[str, FlextMeltanoTypes.Primitives])
+    ] = u.TypeAdapter(Mapping[str, FlextMeltanoTypes.Primitives])
 
     class DbtOracle:
         """DbtOracle domain namespace for actively used type definitions."""
@@ -42,7 +41,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
 
 
 t = FlextDbtOracleTypes
-__all__ = [
+__all__: list[str] = [
     "FlextDbtOracleTypes",
     "t",
 ]
