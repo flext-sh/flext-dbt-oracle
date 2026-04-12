@@ -13,7 +13,7 @@ from typing import Literal, cast
 import pytest
 from pydantic import SecretStr, ValidationError
 
-from tests import m
+from tests import c, m
 
 FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings
 
@@ -267,7 +267,7 @@ class TestConfigEdgeCases:
             nls_date_format="DD/MM/YYYY",
             search_path="schema1,schema2",
             enable_metrics=True,
-            log_level="DEBUG",
+            log_level=c.LogLevel.DEBUG,
             enable_sql_logging=True,
             pool_min_size=1,
             pool_max_size=20,

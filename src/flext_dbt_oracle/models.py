@@ -266,9 +266,9 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbOracleModels):
                 Field(description="Enable metrics collection"),
             ] = False
             log_level: Annotated[
-                t.DbtOracle.LogLevel,
+                c.LogLevel,
                 Field(description="Runtime log verbosity"),
-            ] = "INFO"
+            ] = c.LogLevel.INFO
             enable_sql_logging: Annotated[
                 bool,
                 Field(description="Enable SQL query logging"),

@@ -7,10 +7,14 @@ from typing import ClassVar
 from pydantic_settings import SettingsConfigDict
 
 from flext_core import FlextSettings
+from flext_dbt_oracle.models import FlextDbtOracleModels
 
 
-@FlextSettings.auto_register("dbt-oracle")
-class FlextDbtOracleSettings(FlextSettings):
+@FlextSettings.auto_register("dbt_oracle")
+class FlextDbtOracleSettings(
+    FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings,
+    FlextSettings,
+):
     """DBT Oracle pipeline configuration."""
 
     model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(

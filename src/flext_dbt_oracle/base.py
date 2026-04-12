@@ -13,7 +13,8 @@ from __future__ import annotations
 from typing import override
 
 from flext_core import FlextSettings
-from flext_dbt_oracle import FlextDbtOracleModels, t
+from flext_dbt_oracle import t
+from flext_dbt_oracle.settings import FlextDbtOracleSettings
 from flext_meltano import FlextMeltanoDbtServiceBase
 
 
@@ -28,10 +29,10 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
 
     def _dbt_oracle_settings(
         self,
-    ) -> FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings:
+    ) -> FlextDbtOracleSettings:
         """Return the typed dbt-oracle settings namespace."""
         return FlextSettings.fetch_global().fetch_namespace(
-            "dbt_oracle", FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings
+            "dbt_oracle", FlextDbtOracleSettings
         )
 
     @override
