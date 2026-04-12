@@ -17,8 +17,6 @@ from pydantic import ValidationError
 
 from tests import t
 
-pytest_plugins = ["flext_tests.conftest_plugin"]
-
 
 @pytest.fixture(scope="session")
 def docker_control() -> tk:
