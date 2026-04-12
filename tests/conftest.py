@@ -142,7 +142,7 @@ def dbt_project_settings() -> t.ContainerMapping:
         "target-path": "target",
         "clean-targets": ["target", "dbt_packages"],
         "require-dbt-version": ">=1.8.0",
-        "model_settings": {
+        "model_config": {
             "materialized": "table",
             "oracle": {"tablespace": "USERS", "compression": "NONE", "parallel": 4},
         },
@@ -341,17 +341,17 @@ def dbt_error_scenarios() -> Sequence[t.ContainerMapping]:
     ]
 
 
-def pytest_settingsure(settings: pytest.Config) -> None:
+def pytest_configure(config: pytest.Config) -> None:
     """Configure pytest markers."""
-    settings.addinivalue_line("markers", "unit: Unit tests")
-    settings.addinivalue_line("markers", "integration: Integration tests")
-    settings.addinivalue_line("markers", "e2e: End-to-end tests")
-    settings.addinivalue_line("markers", "dbt: dbt-specific tests")
-    settings.addinivalue_line("markers", "oracle: Oracle database tests")
-    settings.addinivalue_line("markers", "adapter: Adapter functionality tests")
-    settings.addinivalue_line("markers", "materialization: Materialization tests")
-    settings.addinivalue_line("markers", "macro: Macro tests")
-    settings.addinivalue_line("markers", "slow: Slow tests")
+    config.addinivalue_line("markers", "unit: Unit tests")
+    config.addinivalue_line("markers", "integration: Integration tests")
+    config.addinivalue_line("markers", "e2e: End-to-end tests")
+    config.addinivalue_line("markers", "dbt: dbt-specific tests")
+    config.addinivalue_line("markers", "oracle: Oracle database tests")
+    config.addinivalue_line("markers", "adapter: Adapter functionality tests")
+    config.addinivalue_line("markers", "materialization: Materialization tests")
+    config.addinivalue_line("markers", "macro: Macro tests")
+    config.addinivalue_line("markers", "slow: Slow tests")
 
 
 class MockConnectionManager:
