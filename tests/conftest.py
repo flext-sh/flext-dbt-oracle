@@ -82,7 +82,7 @@ def set_test_environment() -> Generator[None]:
 
 
 @pytest.fixture
-def dbt_oracle_profile() -> t.ContainerMapping:
+def dbt_oracle_profile() -> t.RecursiveContainerMapping:
     """Dbt Oracle profile configuration for testing."""
     return {
         "settings": {
@@ -125,7 +125,7 @@ def dbt_oracle_profile() -> t.ContainerMapping:
 
 
 @pytest.fixture
-def dbt_project_settings() -> t.ContainerMapping:
+def dbt_project_settings() -> t.RecursiveContainerMapping:
     """Dbt project configuration for testing."""
     return {
         "name": "flext_dbt_oracle_test",
@@ -155,7 +155,7 @@ def dbt_project_settings() -> t.ContainerMapping:
 
 
 @pytest.fixture
-def oracle_adapter_settings() -> t.ContainerMapping:
+def oracle_adapter_settings() -> t.RecursiveContainerMapping:
     """Oracle adapter configuration for testing."""
     return {
         "type": "oracle",
@@ -209,7 +209,7 @@ def dbt_test_definitions() -> t.StrMapping:
 
 
 @pytest.fixture
-def dbt_source_definitions() -> t.ContainerMapping:
+def dbt_source_definitions() -> t.RecursiveContainerMapping:
     """Dbt source definitions for testing."""
     return {
         "version": 2,
@@ -273,7 +273,7 @@ def oracle_sql_queries() -> t.StrMapping:
 
 
 @pytest.fixture
-def dbt_run_settings() -> t.ContainerMapping:
+def dbt_run_settings() -> t.RecursiveContainerMapping:
     """Dbt run configuration for testing."""
     return {
         "threads": 4,
@@ -286,7 +286,7 @@ def dbt_run_settings() -> t.ContainerMapping:
 
 
 @pytest.fixture
-def dbt_test_settings() -> t.ContainerMapping:
+def dbt_test_settings() -> t.RecursiveContainerMapping:
     """Dbt test configuration for testing."""
     return {
         "threads": 2,
@@ -299,7 +299,7 @@ def dbt_test_settings() -> t.ContainerMapping:
 
 
 @pytest.fixture
-def performance_test_settings() -> t.ContainerMapping:
+def performance_test_settings() -> t.RecursiveContainerMapping:
     """Performance test configuration."""
     return {
         "large_table_rows": 100000,
@@ -311,7 +311,7 @@ def performance_test_settings() -> t.ContainerMapping:
 
 
 @pytest.fixture
-def dbt_error_scenarios() -> Sequence[t.ContainerMapping]:
+def dbt_error_scenarios() -> Sequence[t.RecursiveContainerMapping]:
     """Dbt error scenarios for testing."""
     return [
         {
@@ -360,15 +360,15 @@ class MockConnectionManager:
     def __init__(self) -> None:
         """Initialize connection manager."""
         super().__init__()
-        self.connections: MutableMapping[str, t.MutableContainerMapping] = {}
+        self.connections: MutableMapping[str, t.MutableRecursiveContainerMapping] = {}
 
     def open_connection(
         self,
         name: str,
-        settings: t.ContainerMapping,
-    ) -> t.MutableContainerMapping:
+        settings: t.RecursiveContainerMapping,
+    ) -> t.MutableRecursiveContainerMapping:
         """Open database connection."""
-        connection: t.MutableContainerMapping = {
+        connection: t.MutableRecursiveContainerMapping = {
             "name": name,
             "state": "open",
             "handle": f"mock_handle_{name}",
@@ -409,7 +409,9 @@ class MockSqlExecutor:
 class MockModelCompiler:
     """Strategy for model compilation (Single Responsibility Principle)."""
 
-    def compile_model(self, model_sql: str, context: t.ContainerMapping) -> str:
+    def compile_model(
+        self, model_sql: str, context: t.RecursiveContainerMapping
+    ) -> str:
         """Compile dbt model SQL."""
         compiled = model_sql
         vars_value = context.get("vars", {})
@@ -446,17 +448,17 @@ class MockRelationManager:
 class MockDbtOracleAdapter:
     """Simplified adapter using composition and Strategy Pattern."""
 
-    def __init__(self, settings: t.ContainerMapping) -> None:
+    def __init__(self, settings: t.RecursiveContainerMapping) -> None:
         """Initialize the instance."""
         super().__init__()
         self.settings = settings
-        self.compiled_models: t.ContainerMapping = {}
+        self.compiled_models: t.RecursiveContainerMapping = {}
         self.connection_manager = MockConnectionManager()
         self.sql_executor = MockSqlExecutor()
         self.model_compiler = MockModelCompiler()
         self.relation_manager = MockRelationManager()
 
-    def open_connection(self, name: str) -> t.ContainerMapping:
+    def open_connection(self, name: str) -> t.RecursiveContainerMapping:
         """Delegate to connection manager strategy."""
         return self.connection_manager.open_connection(name, self.settings)
 
@@ -473,7 +475,9 @@ class MockDbtOracleAdapter:
         """Delegate to SQL executor strategy."""
         return self.sql_executor.execute(sql, auto_begin=auto_begin)
 
-    def compile_model(self, model_sql: str, context: t.ContainerMapping) -> str:
+    def compile_model(
+        self, model_sql: str, context: t.RecursiveContainerMapping
+    ) -> str:
         """Delegate to model compiler strategy."""
         return self.model_compiler.compile_model(model_sql, context)
 
@@ -500,14 +504,16 @@ class MockDbtRunner:
         super().__init__()
         self.project_dir = project_dir
         self.profiles_dir = profiles_dir
-        self.results: t.ContainerMapping = {}
+        self.results: t.RecursiveContainerMapping = {}
 
-    def run_models(self, models: t.StrSequence | None = None) -> t.ContainerMapping:
+    def run_models(
+        self, models: t.StrSequence | None = None
+    ) -> t.RecursiveContainerMapping:
         """Run dbt models."""
-        results: list[t.ContainerMapping] = []
+        results: list[t.RecursiveContainerMapping] = []
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
-            result: t.ContainerMapping = {
+            result: t.RecursiveContainerMapping = {
                 "unique_id": f"model.test.{model}",
                 "status": "success",
                 "execution_time": 2.5,
@@ -516,13 +522,15 @@ class MockDbtRunner:
             results.append(result)
         return {"results": results, "elapsed_time": 10.5}
 
-    def run_tests(self, models: t.StrSequence | None = None) -> t.ContainerMapping:
+    def run_tests(
+        self, models: t.StrSequence | None = None
+    ) -> t.RecursiveContainerMapping:
         """Run dbt tests."""
         _ = models
-        results: list[t.ContainerMapping] = []
+        results: list[t.RecursiveContainerMapping] = []
         tests = ["test_unique_customer_id", "test_not_null_order_id"]
         for test in tests:
-            result: t.ContainerMapping = {
+            result: t.RecursiveContainerMapping = {
                 "unique_id": f"test.test.{test}",
                 "status": "pass",
                 "execution_time": 1.2,
@@ -531,7 +539,9 @@ class MockDbtRunner:
             results.append(result)
         return {"results": results, "elapsed_time": 5.0}
 
-    def compile(self, models: t.StrSequence | None = None) -> t.ContainerMapping:
+    def compile(
+        self, models: t.StrSequence | None = None
+    ) -> t.RecursiveContainerMapping:
         """Compile dbt models."""
         compiled: dict[str, str] = {}
         models = models or ["dim_customers", "fact_orders"]
