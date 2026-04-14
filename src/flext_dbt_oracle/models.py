@@ -126,7 +126,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                     return t.SecretStr(v)
                 return v
 
-            @u.computed_field
+            @u.computed_field(return_type=str)
             @property
             def database_identifier(self) -> str:
                 """Database identifier."""
@@ -134,7 +134,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                     return self.sid
                 return self.service_name
 
-            @u.computed_field
+            @u.computed_field(return_type=str)
             @property
             def dsn(self) -> str:
                 """Connection string in DSN format."""
@@ -160,7 +160,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                 u.Field(description="Oracle table name"),
             ]
 
-            @u.computed_field
+            @u.computed_field(return_type=str)
             @property
             def relation_name(self) -> str:
                 """Fully qualified relation name."""
@@ -315,25 +315,25 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                     raise ValueError(msg)
                 return self
 
-            @u.computed_field
+            @u.computed_field(return_type=int)
             @property
             def port(self) -> int:
                 """Return the Oracle port."""
                 return self.oracle_port
 
-            @u.computed_field
+            @u.computed_field(return_type=str)
             @property
             def database_identifier(self) -> str:
                 """Service name or SID identifier."""
                 return self.sid or self.oracle_service_name
 
-            @u.computed_field
+            @u.computed_field(return_type=str)
             @property
             def effective_schema(self) -> str:
                 """Effective schema name."""
                 return self.schema_name or self.oracle_username
 
-            @u.computed_field
+            @u.computed_field(return_type=str)
             @property
             def connection_string(self) -> str:
                 """Oracle connection string."""
@@ -373,7 +373,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                     protocol=self.protocol,
                 )
 
-            @u.computed_field
+            @u.computed_field(return_type=t.IntMapping)
             @property
             def performance_settings(self) -> t.IntMapping:
                 """Performance-related settings."""
@@ -388,7 +388,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                     "retry_delay": self.retry_delay,
                 }
 
-            @u.computed_field
+            @u.computed_field(return_type=t.StrMapping)
             @property
             def dbt_settings(self) -> t.StrMapping:
                 """DBT-specific settings."""
