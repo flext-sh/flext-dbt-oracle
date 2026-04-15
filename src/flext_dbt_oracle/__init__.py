@@ -13,7 +13,6 @@ from flext_core.lazy import (
 from flext_dbt_oracle.__version__ import *
 
 if _t.TYPE_CHECKING:
-    from flext_db_oracle import d, e, h, r, s, x
     from flext_dbt_oracle._utilities.connections import FlextDbtOracleConnections
     from flext_dbt_oracle.base import FlextDbtOracleServiceBase
     from flext_dbt_oracle.constants import FlextDbtOracleConstants, c
@@ -22,6 +21,7 @@ if _t.TYPE_CHECKING:
     from flext_dbt_oracle.settings import FlextDbtOracleSettings
     from flext_dbt_oracle.typings import FlextDbtOracleTypes, t
     from flext_dbt_oracle.utilities import FlextDbtOracleUtilities, u
+    from flext_meltano import d, e, h, r, s, x
 _LAZY_IMPORTS = merge_lazy_imports(
     ("._utilities",),
     build_lazy_import_map(
@@ -58,7 +58,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "FlextDbtOracleUtilities",
                 "u",
             ),
-            "flext_db_oracle": (
+            "flext_meltano": (
                 "d",
                 "e",
                 "h",
@@ -69,10 +69,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
         },
     ),
     exclude_names=(
-        "FlextDispatcher",
-        "FlextLogger",
-        "FlextRegistry",
-        "FlextRuntime",
         "cleanup_submodule_namespace",
         "install_lazy_exports",
         "lazy_getattr",

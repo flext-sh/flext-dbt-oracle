@@ -13,8 +13,7 @@ from __future__ import annotations
 from typing import override
 
 from flext_core import FlextSettings
-from flext_dbt_oracle import t
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
+from flext_dbt_oracle import FlextDbtOracleSettings, t
 from flext_meltano import FlextMeltanoDbtServiceBase
 
 

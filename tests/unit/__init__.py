@@ -13,6 +13,19 @@ _LAZY_IMPORTS = build_lazy_import_map(
         ".test_impl": ("test_impl",),
         ".test_imports": ("test_imports",),
         ".test_module_governance": ("test_module_governance",),
+        "flext_dbt_oracle": (
+            "c",
+            "d",
+            "e",
+            "h",
+            "m",
+            "p",
+            "r",
+            "s",
+            "t",
+            "u",
+            "x",
+        ),
     },
 )
 
