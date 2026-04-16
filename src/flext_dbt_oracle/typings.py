@@ -14,14 +14,14 @@ from typing import Literal
 
 from flext_db_oracle import FlextDbOracleTypes
 from flext_dbt_oracle import u
-from flext_meltano import FlextMeltanoTypes
+from flext_meltano import FlextMeltanoTypes, t
 
 
-class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
+class FlextDbtOracleTypes(t, FlextDbOracleTypes):
     """MRO facade composing Meltano + DbOracle type namespaces."""
 
-    SCALAR_LIST_ADAPTER: u.TypeAdapter[Sequence[FlextMeltanoTypes.Scalar]] = (
-        u.TypeAdapter(Sequence[FlextMeltanoTypes.Scalar])
+    SCALAR_LIST_ADAPTER: u.TypeAdapter[Sequence[t.Scalar]] = u.TypeAdapter(
+        Sequence[t.Scalar]
     )
     PRIMITIVES_MAPPING_ADAPTER: u.TypeAdapter[
         Mapping[str, FlextMeltanoTypes.Primitives]
@@ -34,7 +34,7 @@ class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
         "Supported DBT materialization strategies."
         type LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
         "Supported runtime log levels."
-        type OraclePayload = Mapping[str, FlextMeltanoTypes.OptionalPrimitive]
+        type OraclePayload = Mapping[str, t.OptionalPrimitive]
         "Oracle payload type."
         type OraclePayloadList = Sequence[OraclePayload]
         "List of Oracle payloads."

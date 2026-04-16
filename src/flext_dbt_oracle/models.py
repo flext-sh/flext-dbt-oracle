@@ -191,7 +191,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
         class FlextDbtOracleSettings(m.Value):
             """Configuration for DBT Oracle operations."""
 
-            model_config: ClassVar[c.ConfigDict] = c.ConfigDict(
+            model_config: ClassVar[m.ConfigDict] = m.ConfigDict(
                 populate_by_name=True,
                 frozen=False,
             )

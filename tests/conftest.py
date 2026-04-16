@@ -13,9 +13,8 @@ from collections.abc import Generator, Mapping, MutableMapping, Sequence
 
 import pytest
 from flext_tests import tk
-from pydantic import ValidationError
 
-from tests import t
+from tests import c, t
 
 
 @pytest.fixture(scope="session")
@@ -416,7 +415,7 @@ class MockModelCompiler:
         vars_dict: Mapping[str, t.Primitives]
         try:
             vars_dict = t.PRIMITIVES_MAPPING_ADAPTER.validate_python(vars_value)
-        except ValidationError:
+        except c.ValidationError:
             vars_dict = {}
         for var, value in vars_dict.items():
             compiled = compiled.replace(f"{{{{ var('{var}') }}}}", str(value))
