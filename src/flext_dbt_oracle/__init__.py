@@ -36,6 +36,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "__version__",
                 "__version_info__",
             ),
+            "._utilities.connections": ("FlextDbtOracleConnections",),
             ".base": ("FlextDbtOracleServiceBase",),
             ".constants": (
                 "FlextDbtOracleConstants",
