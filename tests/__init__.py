@@ -15,15 +15,41 @@ if _t.TYPE_CHECKING:
     from flext_tests import td, tf, tk, tm, tv
 
     from flext_dbt_oracle import d, e, h, r, s, x
+    from tests.conftest import (
+        MockConnectionManager,
+        MockDbtOracleAdapter,
+        MockDbtRunner,
+        MockModelCompiler,
+        MockRelationManager,
+        MockSqlExecutor,
+    )
     from tests.constants import TestsFlextDbtOracleConstants, c
     from tests.models import TestsFlextDbtOracleModels, m
     from tests.protocols import TestsFlextDbtOracleProtocols, p
     from tests.typings import TestsFlextDbtOracleTypes, t
+    from tests.unit.test_config import (
+        TestConfigConstantsUsage,
+        TestConfigEdgeCases,
+        TestFlextDbtOracleSettings,
+    )
+    from tests.unit.test_connections import (
+        TestBuildOracleConnectionConfig,
+        TestOracleConnectionConfig,
+    )
+    from tests.unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
     from tests.utilities import TestsFlextDbtOracleUtilities, u
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
     build_lazy_import_map(
         {
+            ".conftest": (
+                "MockConnectionManager",
+                "MockDbtOracleAdapter",
+                "MockDbtRunner",
+                "MockModelCompiler",
+                "MockRelationManager",
+                "MockSqlExecutor",
+            ),
             ".constants": (
                 "TestsFlextDbtOracleConstants",
                 "c",
@@ -39,6 +65,19 @@ _LAZY_IMPORTS = merge_lazy_imports(
             ".typings": (
                 "TestsFlextDbtOracleTypes",
                 "t",
+            ),
+            ".unit.test_config": (
+                "TestConfigConstantsUsage",
+                "TestConfigEdgeCases",
+                "TestFlextDbtOracleSettings",
+            ),
+            ".unit.test_connections": (
+                "TestBuildOracleConnectionConfig",
+                "TestOracleConnectionConfig",
+            ),
+            ".unit.test_impl": (
+                "TestOracleTableAdapter",
+                "TestOracleTableFactory",
             ),
             ".utilities": (
                 "TestsFlextDbtOracleUtilities",
@@ -77,6 +116,19 @@ _LAZY_IMPORTS = merge_lazy_imports(
 install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
 
 __all__: list[str] = [
+    "MockConnectionManager",
+    "MockDbtOracleAdapter",
+    "MockDbtRunner",
+    "MockModelCompiler",
+    "MockRelationManager",
+    "MockSqlExecutor",
+    "TestBuildOracleConnectionConfig",
+    "TestConfigConstantsUsage",
+    "TestConfigEdgeCases",
+    "TestFlextDbtOracleSettings",
+    "TestOracleConnectionConfig",
+    "TestOracleTableAdapter",
+    "TestOracleTableFactory",
     "TestsFlextDbtOracleConstants",
     "TestsFlextDbtOracleModels",
     "TestsFlextDbtOracleProtocols",
