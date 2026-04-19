@@ -48,17 +48,11 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
             ] = c.DbtOracle.DEFAULT_SOURCE_NAME
             columns: Annotated[
                 Sequence[t.StrMapping],
-                u.Field(
-                    default_factory=list,
-                    description="Column metadata payloads",
-                ),
+                u.Field(default_factory=tuple),
             ]
             dependencies: Annotated[
                 t.StrSequence,
-                u.Field(
-                    default_factory=list,
-                    description="Upstream model dependencies",
-                ),
+                u.Field(default_factory=tuple),
             ]
 
         class ModelGenerator:
