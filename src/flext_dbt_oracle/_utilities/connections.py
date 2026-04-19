@@ -19,7 +19,7 @@ class FlextDbtOracleConnections:
         port: int = c.DbtOracle.Oracle.DEFAULT_PORT,
         protocol: str = c.DbtOracle.Oracle.DEFAULT_PROTOCOL,
     ) -> FlextDbtOracleModels.DbtOracle.OracleConnectionConfig:
-        """Create validated Oracle connection settings t.RecursiveContainer."""
+        """Create validated Oracle connection settings t.Container."""
         return FlextDbtOracleModels.DbtOracle.OracleConnectionConfig(
             host=host,
             port=port,
