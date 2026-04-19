@@ -11,9 +11,8 @@ from collections.abc import Sequence
 from typing import Literal, cast
 
 import pytest
-from pydantic import SecretStr, ValidationError
 
-from tests import c, m
+from tests import c, e, m, t
 
 FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings
 
@@ -26,7 +25,7 @@ class TestFlextDbtOracleSettings:
         settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
         )
         assert settings.oracle_host == "localhost"
@@ -40,7 +39,7 @@ class TestFlextDbtOracleSettings:
         settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             sid="XE",
         )
         assert settings.oracle_host == "localhost"
@@ -51,7 +50,7 @@ class TestFlextDbtOracleSettings:
         """Test default host is applied when not provided explicitly."""
         settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
         )
         assert isinstance(settings.oracle_host, str)
@@ -61,7 +60,7 @@ class TestFlextDbtOracleSettings:
         """Test default username is applied when not provided explicitly."""
         settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
         )
         assert isinstance(settings.oracle_username, str)
@@ -74,16 +73,16 @@ class TestFlextDbtOracleSettings:
             oracle_username="testuser",
             oracle_service_name="XEPDB1",
         )
-        assert isinstance(settings.oracle_password, SecretStr)
+        assert isinstance(settings.oracle_password, t.SecretStr)
 
     def test_config_validation_invalid_materialization(self) -> None:
         """Test validation fails for invalid materialization."""
         materialization: str = "invalid_type"
-        with pytest.raises(ValidationError, match="Input should be"):
+        with pytest.raises(e.ValidationError, match="Input should be"):
             _ = m.DbtOracle.FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
-                oracle_password=SecretStr("testpass"),
+                oracle_password=t.SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
                 materialization=cast(
                     "Literal['incremental', 'snapshot', 'table', 'view']",
@@ -94,22 +93,22 @@ class TestFlextDbtOracleSettings:
     def test_config_validation_invalid_protocol(self) -> None:
         """Test validation fails for invalid protocol."""
         protocol: str = "invalid_protocol"
-        with pytest.raises(ValidationError, match="Input should be"):
+        with pytest.raises(e.ValidationError, match="Input should be"):
             _ = m.DbtOracle.FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
-                oracle_password=SecretStr("testpass"),
+                oracle_password=t.SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
                 protocol=cast("Literal['tcp', 'tcps']", protocol),
             )
 
     def test_config_validation_pool_sizes(self) -> None:
         """Test validation of pool sizes."""
-        with pytest.raises(ValidationError, match="Pool max size"):
+        with pytest.raises(e.ValidationError, match="Pool max size"):
             _ = m.DbtOracle.FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
-                oracle_password=SecretStr("testpass"),
+                oracle_password=t.SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
                 pool_min_size=10,
                 pool_max_size=5,
@@ -120,7 +119,7 @@ class TestFlextDbtOracleSettings:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
         )
         conn_str = settings.connection_string
@@ -135,7 +134,7 @@ class TestFlextDbtOracleSettings:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             sid="XE",
         )
         conn_str = settings.connection_string
@@ -146,7 +145,7 @@ class TestFlextDbtOracleSettings:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
             schema_name="TEST_SCHEMA",
         )
@@ -157,14 +156,14 @@ class TestFlextDbtOracleSettings:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
         )
         assert settings.database_identifier in {"XEPDB1", "XE"}
         config_with_sid = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             sid="XE",
         )
         assert config_with_sid.database_identifier == "XE"
@@ -174,7 +173,7 @@ class TestFlextDbtOracleSettings:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
         )
         conn_config = settings.to_connection_config()
@@ -197,7 +196,7 @@ class TestFlextDbtOracleSettings:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
             pool_min_size=2,
             pool_max_size=10,
@@ -212,7 +211,7 @@ class TestFlextDbtOracleSettings:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
             pool_min_size=2,
             pool_max_size=10,
@@ -239,7 +238,7 @@ class TestFlextDbtOracleSettings:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
             materialization="table",
         )
@@ -258,7 +257,7 @@ class TestConfigEdgeCases:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
             oracle_port=1522,
             protocol="tcps",
@@ -293,7 +292,7 @@ class TestConfigEdgeCases:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
         )
         assert settings.oracle_service_name is not None
 
@@ -302,7 +301,7 @@ class TestConfigEdgeCases:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
             oracle_port=1521,
             pool_min_size=1,
@@ -325,7 +324,7 @@ class TestConfigEdgeCases:
             settings = FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
-                oracle_password=SecretStr("testpass"),
+                oracle_password=t.SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
                 materialization=materialization,
             )
@@ -338,7 +337,7 @@ class TestConfigEdgeCases:
             settings = FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
-                oracle_password=SecretStr("testpass"),
+                oracle_password=t.SecretStr("testpass"),
                 oracle_service_name="XEPDB1",
                 protocol=protocol,
             )
@@ -353,7 +352,7 @@ class TestConfigConstantsUsage:
         settings = FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
-            oracle_password=SecretStr("testpass"),
+            oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
         )
         assert isinstance(settings.port, int)
