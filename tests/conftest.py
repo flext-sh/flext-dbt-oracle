@@ -9,7 +9,12 @@ from __future__ import annotations
 
 import os
 import tempfile
-from collections.abc import Generator, Mapping, MutableMapping, Sequence
+from collections.abc import (
+    Generator,
+    Mapping,
+    MutableMapping,
+    Sequence,
+)
 
 import pytest
 from flext_tests import tk

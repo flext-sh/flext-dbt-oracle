@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import (
+    Mapping,
+    Sequence,
+)
 
 from flext_db_oracle import FlextDbOracleUtilities
 from flext_dbt_oracle import FlextDbtOracleModels, c, t

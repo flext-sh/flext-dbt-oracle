@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import (
+    Mapping,
+    Sequence,
+)
 from typing import Annotated, ClassVar, Literal
 
 from flext_db_oracle import m
