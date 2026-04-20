@@ -16,8 +16,9 @@ from collections.abc import (
 from typing import override
 
 from flext_core import FlextSettings
-from flext_dbt_oracle import FlextDbtOracleSettings, t
 from flext_meltano import FlextMeltanoDbtServiceBase
+
+from flext_dbt_oracle import FlextDbtOracleSettings, t
 
 
 class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):

@@ -16,8 +16,9 @@ from collections.abc import (
 from typing import Literal
 
 from flext_db_oracle import FlextDbOracleTypes
-from flext_dbt_oracle import u
 from flext_meltano import FlextMeltanoTypes, t
+
+from flext_dbt_oracle import u
 
 
 class FlextDbtOracleTypes(t, FlextDbOracleTypes):

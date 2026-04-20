@@ -9,8 +9,9 @@ from collections.abc import (
 from typing import Annotated, ClassVar, Literal
 
 from flext_db_oracle import m
-from flext_dbt_oracle import c, t, u
 from flext_meltano import FlextMeltanoModels
+
+from flext_dbt_oracle import c, t, u
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, m):

@@ -5,8 +5,9 @@ from __future__ import annotations
 from typing import Protocol, runtime_checkable
 
 from flext_db_oracle import FlextDbOracleProtocols
-from flext_dbt_oracle import t
 from flext_meltano import FlextMeltanoProtocols
+
+from flext_dbt_oracle import t
 
 
 class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):

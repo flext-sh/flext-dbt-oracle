@@ -145,7 +145,16 @@ omit = [ "*/dependency_injector/providers.pyx" ]
 
 # [MANAGED] deptry
 [tool.deptry]
-known_first_party = [ "flext_core", "flext_db_oracle", "flext_dbt_oracle", "flext_meltano" ]
+known_first_party = [
+  "agate",
+  "dbt-common",
+  "flext-core",
+  "flext-db-oracle",
+  "flext-meltano",
+  "flext_dbt_oracle",
+  "pydantic",
+  "pydantic-core",
+]
 pep621_dev_dependency_groups = [ "dev" ]
 
 [tool.hatch.metadata]
@@ -467,7 +476,16 @@ select = [ "ALL" ]
 [tool.ruff.lint.isort]
 combine-as-imports = true
 force-single-line = false
-known-first-party = [ "flext_core", "flext_db_oracle", "flext_dbt_oracle", "flext_meltano" ]
+known-first-party = [
+  "agate",
+  "dbt-common",
+  "flext-core",
+  "flext-db-oracle",
+  "flext-meltano",
+  "flext_dbt_oracle",
+  "pydantic",
+  "pydantic-core",
+]
 split-on-trailing-comma = true
 
 [tool.ruff.lint.per-file-ignores]

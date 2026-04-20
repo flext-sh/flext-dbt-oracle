@@ -8,8 +8,9 @@ from collections.abc import (
 )
 
 from flext_db_oracle import FlextDbOracleUtilities
-from flext_dbt_oracle import FlextDbtOracleModels, c, t
 from flext_meltano import FlextMeltanoUtilities
+
+from flext_dbt_oracle import FlextDbtOracleModels, c, t
 
 
 class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
