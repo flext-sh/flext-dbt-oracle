@@ -362,15 +362,15 @@ class MockConnectionManager:
     def __init__(self) -> None:
         """Initialize connection manager."""
         super().__init__()
-        self.connections: MutableMapping[str, t.MutableRecursiveContainerMapping] = {}
+        self.connections: MutableMapping[str, t.MutableFlatContainerMapping] = {}
 
     def open_connection(
         self,
         name: str,
         settings: Mapping[str, t.Container],
-    ) -> t.MutableRecursiveContainerMapping:
+    ) -> t.MutableFlatContainerMapping:
         """Open database connection."""
-        connection: t.MutableRecursiveContainerMapping = {
+        connection: t.MutableFlatContainerMapping = {
             "name": name,
             "state": "open",
             "handle": f"mock_handle_{name}",
