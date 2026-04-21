@@ -16,9 +16,9 @@ from collections.abc import (
 from typing import Literal
 
 from flext_db_oracle import FlextDbOracleTypes
-from flext_meltano import FlextMeltanoTypes, t
+from flext_meltano import t
 
-from flext_dbt_oracle import u
+from flext_dbt_oracle import c, u
 
 
 class FlextDbtOracleTypes(t, FlextDbOracleTypes):
@@ -27,18 +27,18 @@ class FlextDbtOracleTypes(t, FlextDbOracleTypes):
     SCALAR_LIST_ADAPTER: u.TypeAdapter[Sequence[t.Scalar]] = u.TypeAdapter(
         Sequence[t.Scalar]
     )
-    PRIMITIVES_MAPPING_ADAPTER: u.TypeAdapter[
-        Mapping[str, FlextMeltanoTypes.Primitives]
-    ] = u.TypeAdapter(Mapping[str, FlextMeltanoTypes.Primitives])
+    PRIMITIVES_MAPPING_ADAPTER: u.TypeAdapter[Mapping[str, t.Primitives]] = (
+        u.TypeAdapter(Mapping[str, t.Primitives])
+    )
 
     class DbtOracle:
         """DbtOracle domain namespace for actively used type definitions."""
 
-        type Materialization = Literal["incremental", "snapshot", "table", "view"]
+        type Materialization = c.DbtOracle.Dbt.Materialization
         "Supported DBT materialization strategies."
         type LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
         "Supported runtime log levels."
-        type OraclePayload = Mapping[str, t.OptionalPrimitive]
+        type OraclePayload = t.Cli.JsonMapping
         "Oracle payload type."
         type OraclePayloadList = Sequence[OraclePayload]
         "List of Oracle payloads."

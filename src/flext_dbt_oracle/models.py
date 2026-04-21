@@ -9,12 +9,12 @@ from collections.abc import (
 from typing import Annotated, ClassVar, Literal
 
 from flext_db_oracle import m
-from flext_meltano import FlextMeltanoModels
+from flext_meltano import m as meltano_m
 
 from flext_dbt_oracle import c, t, u
 
 
-class FlextDbtOracleModels(FlextMeltanoModels, m):
+class FlextDbtOracleModels(meltano_m, m):
     """Namespace wrapper for DBT Oracle domain models.
 
     Inherits from FlextMeltanoModels (Singer/Meltano) and m
@@ -229,7 +229,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
             materialization: Annotated[
                 t.DbtOracle.Materialization,
                 u.Field(description="DBT materialization strategy"),
-            ] = "table"
+            ] = c.DbtOracle.Dbt.Materialization.TABLE
             schema_name: Annotated[
                 str,
                 u.Field(description="Target schema name"),

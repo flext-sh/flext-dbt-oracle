@@ -6,10 +6,10 @@ from enum import StrEnum, unique
 from typing import Final
 
 from flext_db_oracle import FlextDbOracleConstants
-from flext_meltano import FlextMeltanoConstants
+from flext_meltano import c
 
 
-class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
+class FlextDbtOracleConstants(c, FlextDbOracleConstants):
     """Domain constants for DBT Oracle workflows."""
 
     class DbtOracle:
@@ -27,12 +27,6 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
         class Dbt:
             """DBT runtime defaults and enums."""
 
-            DEFAULT_TARGET: Final[str] = "dev"
-            DEFAULT_THREADS: Final[int] = 4
-            DEFAULT_PROJECT_DIR: Final[str] = "."
-            DEFAULT_PROFILES_DIR: Final[str] = "."
-            DEFAULT_MATERIALIZATION: Final = "view"
-
             @unique
             class Materialization(StrEnum):
                 """Valid DBT materialization values."""
@@ -41,6 +35,12 @@ class FlextDbtOracleConstants(FlextMeltanoConstants, FlextDbOracleConstants):
                 VIEW = "view"
                 INCREMENTAL = "incremental"
                 SNAPSHOT = "snapshot"
+
+            DEFAULT_TARGET: Final[str] = "dev"
+            DEFAULT_THREADS: Final[int] = 4
+            DEFAULT_PROJECT_DIR: Final[str] = "."
+            DEFAULT_PROFILES_DIR: Final[str] = "."
+            DEFAULT_MATERIALIZATION: Final[Materialization] = Materialization.VIEW
 
         DEFAULT_MODEL_TYPE: Final[str] = "staging"
         DEFAULT_SOURCE_NAME: Final[str] = "oracle"

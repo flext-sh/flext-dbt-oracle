@@ -8,12 +8,12 @@ from collections.abc import (
 )
 
 from flext_db_oracle import FlextDbOracleUtilities
-from flext_meltano import FlextMeltanoUtilities
+from flext_meltano import u
 
 from flext_dbt_oracle import FlextDbtOracleModels, c, t
 
 
-class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
+class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
     """Namespace for DBT Oracle utility helpers."""
 
     class DbtOracle:
@@ -73,14 +73,13 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
             ) -> Mapping[str, t.MetadataValue]:
                 """Run discover and extraction pipeline for selected tables."""
                 selected_tables = tables or self.discover_tables()
-                selected_tables_json: t.ScalarList = list(selected_tables)
                 extracted = {
                     table: self.extract_table_data(table, filters)
                     for table in selected_tables
                 }
                 return {
                     "status": "completed",
-                    "tables": selected_tables_json,
+                    "tables": list(selected_tables),
                     "record_count": sum(len(rows) for rows in extracted.values()),
                 }
 
@@ -100,12 +99,18 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
                 table_count: int,
             ) -> Mapping[str, t.MetadataValue]:
                 """Generate lightweight recommendations from table volume."""
-                recommendations: t.ScalarList = [
+                recommendations: list[str] = [
                     "Process tables in batches and increase dbt threads gradually"
                     for _ in [None]
                     if table_count > c.DbtOracle.PERFORMANCE_RECOMMENDATION_THRESHOLD
                 ]
-                return {"table_count": table_count, "recommendations": recommendations}
+                payload: dict[str, t.MetadataValue] = {
+                    "table_count": table_count,
+                    "recommendations": t.Cli.JSON_VALUE_ADAPTER.validate_python(
+                        recommendations,
+                    ),
+                }
+                return payload
 
             def track_execution(self, workflow_name: str) -> t.ConfigurationMapping:
                 """Build a minimal execution tracking payload."""
