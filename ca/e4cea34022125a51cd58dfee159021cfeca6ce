@@ -1,0 +1,14 @@
+tests/conftest.py
+  h_9db9d35f50cf33 278
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.2",
+  "base_commit_sha": "cae4cea34022125a51cd58dfee159021cfeca6ce",
+  "prompts": {},
+  "humans": {
+    "h_9db9d35f50cf33": {
+      "author": "FLEXT Bot"
+    }
+  }
+}
