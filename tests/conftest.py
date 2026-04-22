@@ -275,7 +275,7 @@ def oracle_sql_queries() -> t.StrMapping:
 
 
 @pytest.fixture
-def dbt_run_settings() -> Mapping[str, t.Container]:
+def dbt_run_settings() -> Mapping[str, t.ContainerValueMapping]:
     """Dbt run configuration for testing."""
     return {
         "threads": 4,
