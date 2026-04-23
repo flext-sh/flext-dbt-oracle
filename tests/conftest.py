@@ -370,11 +370,12 @@ class MockConnectionManager:
         settings: t.JsonMapping,
     ) -> t.MutableJsonMapping:
         """Open database connection."""
+        credentials_payload: dict[str, t.JsonValue] = dict(settings)
         connection: t.MutableJsonMapping = {
             "name": name,
             "state": "open",
             "handle": f"mock_handle_{name}",
-            "credentials": settings,
+            "credentials": credentials_payload,
         }
         self.connections[name] = connection
         return connection
@@ -506,40 +507,43 @@ class MockDbtRunner:
 
     def run_models(self, models: t.StrSequence | None = None) -> t.JsonMapping:
         """Run dbt models."""
-        results: list[t.JsonMapping] = []
+        results: list[t.JsonValue] = []
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
-            result = {
+            result: dict[str, t.JsonValue] = {
                 "unique_id": f"model.test.{model}",
                 "status": "success",
                 "execution_time": 2.5,
                 "rows_affected": 1000,
             }
             results.append(result)
-        return {"results": results, "elapsed_time": 10.5}
+        payload: t.JsonMapping = {"results": results, "elapsed_time": 10.5}
+        return payload
 
     def run_tests(self, models: t.StrSequence | None = None) -> t.JsonMapping:
         """Run dbt tests."""
         _ = models
-        results: list[t.JsonMapping] = []
+        results: list[t.JsonValue] = []
         tests = ["test_unique_customer_id", "test_not_null_order_id"]
         for test in tests:
-            result = {
+            result: dict[str, t.JsonValue] = {
                 "unique_id": f"test.test.{test}",
                 "status": "pass",
                 "execution_time": 1.2,
                 "failures": 0,
             }
             results.append(result)
-        return {"results": results, "elapsed_time": 5.0}
+        payload: t.JsonMapping = {"results": results, "elapsed_time": 5.0}
+        return payload
 
     def compile(self, models: t.StrSequence | None = None) -> t.JsonMapping:
         """Compile dbt models."""
-        compiled: dict[str, str] = {}
+        compiled: dict[str, t.JsonValue] = {}
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
             compiled[model] = f"SELECT * FROM compiled_{model}"
-        return {"compiled": compiled}
+        payload: t.JsonMapping = {"compiled": compiled}
+        return payload
 
 
 @pytest.fixture

@@ -15,10 +15,11 @@ from collections.abc import (
 )
 from typing import Literal
 
+from flext_core import u
 from flext_db_oracle import FlextDbOracleTypes
 from flext_meltano import t
 
-from flext_dbt_oracle import c, u
+from flext_dbt_oracle.constants import c
 
 
 class FlextDbtOracleTypes(t, FlextDbOracleTypes):

@@ -6,15 +6,13 @@ from collections.abc import (
     Mapping,
     Sequence,
 )
-from typing import TYPE_CHECKING
 
 from flext_db_oracle import FlextDbOracleUtilities
 from flext_meltano import u
 
-from flext_dbt_oracle import c, t
-
-if TYPE_CHECKING:
-    from flext_dbt_oracle.models import FlextDbtOracleModels
+from flext_dbt_oracle.constants import c
+from flext_dbt_oracle.models import FlextDbtOracleModels
+from flext_dbt_oracle.typings import t
 
 
 class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
@@ -81,11 +79,13 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                     table: self.extract_table_data(table, filters)
                     for table in selected_tables
                 }
-                return {
+                tables_payload: list[t.JsonValue] = [str(x) for x in selected_tables]
+                result: Mapping[str, t.JsonValue] = {
                     "status": "completed",
-                    "tables": list(selected_tables),
+                    "tables": tables_payload,
                     "record_count": sum(len(rows) for rows in extracted.values()),
                 }
+                return result
 
             def test_connection(self) -> t.ConfigurationMapping:
                 """Return a basic health payload for Oracle connectivity."""
