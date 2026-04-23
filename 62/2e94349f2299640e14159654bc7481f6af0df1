@@ -1,0 +1,30 @@
+tests/conftest.py
+  02db55bf620bbdf2 373,378,510,513,520-521,526,529,536-537,541,545-546
+src/flext_dbt_oracle/typings.py
+  02db55bf620bbdf2 18,22
+src/flext_dbt_oracle/models.py
+  02db55bf620bbdf2 11,15-16
+src/flext_dbt_oracle/utilities.py
+  02db55bf620bbdf2 13-15,82-83,85,88
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.2",
+  "base_commit_sha": "622e94349f2299640e14159654bc7481f6af0df1",
+  "prompts": {
+    "02db55bf620bbdf2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dd88b7e6-5715-4a2d-af33-58b483877723",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "FLEXT Bot",
+      "messages": [],
+      "total_additions": 25,
+      "total_deletions": 18,
+      "accepted_lines": 25,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/552bc37294f0fc01ea8c022b47d26c992dbec812530c9c3b17fdda51462d8874"
+    }
+  }
+}
