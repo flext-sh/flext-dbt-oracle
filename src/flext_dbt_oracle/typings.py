@@ -35,7 +35,7 @@ class FlextDbtOracleTypes(t, FlextDbOracleTypes):
     class DbtOracle:
         """DbtOracle domain namespace for actively used type definitions."""
 
-        type Materialization = c.DbtOracle.Dbt.Materialization
+        Materialization = c.DbtOracle.Dbt.Materialization
         "Supported DBT materialization strategies."
         type LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
         "Supported runtime log levels."

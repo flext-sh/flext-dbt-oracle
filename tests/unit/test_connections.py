@@ -10,7 +10,7 @@ from __future__ import annotations
 import pytest
 
 from flext_dbt_oracle import FlextDbtOracleConnections
-from tests import e, m
+from tests import c, m
 
 
 class TestOracleConnectionConfig:
@@ -69,7 +69,7 @@ class TestOracleConnectionConfig:
 
     def test_port_validation(self) -> None:
         port: int = 0
-        with pytest.raises(e.ValidationError, match="greater than or equal to 1"):
+        with pytest.raises(c.ValidationError, match="greater than or equal to 1"):
             _ = m.DbtOracle.OracleConnectionConfig(port=port)
 
 

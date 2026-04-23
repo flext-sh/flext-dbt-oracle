@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from flext_dbt_oracle import FlextDbtOracleModels, c, t
+from flext_dbt_oracle.constants import c
+from flext_dbt_oracle.models import FlextDbtOracleModels
+from flext_dbt_oracle.typings import t
 
 
 class FlextDbtOracleConnections:

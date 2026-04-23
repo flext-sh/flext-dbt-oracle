@@ -14,7 +14,7 @@ from typing import Literal, cast
 
 import pytest
 
-from tests import c, e, m, t
+from tests import c, m, t
 
 FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings
 
@@ -80,7 +80,7 @@ class TestFlextDbtOracleSettings:
     def test_config_validation_invalid_materialization(self) -> None:
         """Test validation fails for invalid materialization."""
         materialization: str = "invalid_type"
-        with pytest.raises(e.ValidationError, match="Input should be"):
+        with pytest.raises(c.ValidationError, match="Input should be"):
             _ = m.DbtOracle.FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
@@ -95,7 +95,7 @@ class TestFlextDbtOracleSettings:
     def test_config_validation_invalid_protocol(self) -> None:
         """Test validation fails for invalid protocol."""
         protocol: str = "invalid_protocol"
-        with pytest.raises(e.ValidationError, match="Input should be"):
+        with pytest.raises(c.ValidationError, match="Input should be"):
             _ = m.DbtOracle.FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
@@ -106,7 +106,7 @@ class TestFlextDbtOracleSettings:
 
     def test_config_validation_pool_sizes(self) -> None:
         """Test validation of pool sizes."""
-        with pytest.raises(e.ValidationError, match="Pool max size"):
+        with pytest.raises(c.ValidationError, match="Pool max size"):
             _ = m.DbtOracle.FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
@@ -242,7 +242,7 @@ class TestFlextDbtOracleSettings:
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
-            materialization="table",
+            materialization=c.DbtOracle.Dbt.Materialization.TABLE,
         )
         dbt_settings = settings.dbt_settings
         assert "database" in dbt_settings
@@ -319,9 +319,13 @@ class TestConfigEdgeCases:
 
     def test_config_materialization_validation_all_valid_types(self) -> None:
         """Test all valid materialization types."""
-        valid_materializations: Sequence[
-            Literal["table", "view", "incremental", "snapshot"]
-        ] = ["table", "view", "incremental", "snapshot"]
+        Materialization = c.DbtOracle.Dbt.Materialization
+        valid_materializations: Sequence[Materialization] = [
+            Materialization.TABLE,
+            Materialization.VIEW,
+            Materialization.INCREMENTAL,
+            Materialization.SNAPSHOT,
+        ]
         for materialization in valid_materializations:
             settings = FlextDbtOracleSettings(
                 oracle_host="localhost",
