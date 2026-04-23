@@ -38,7 +38,7 @@ class FlextDbtOracleTypes(t, FlextDbOracleTypes):
         "Supported DBT materialization strategies."
         type LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
         "Supported runtime log levels."
-        type OraclePayload = t.Cli.JsonMapping
+        type OraclePayload = t.JsonMapping
         "Oracle payload type."
         type OraclePayloadList = Sequence[OraclePayload]
         "List of Oracle payloads."

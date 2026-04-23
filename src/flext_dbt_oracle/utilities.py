@@ -70,7 +70,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                 self,
                 tables: t.StrSequence | None = None,
                 filters: t.ConfigurationMapping | None = None,
-            ) -> Mapping[str, t.MetadataValue]:
+            ) -> Mapping[str, t.JsonValue]:
                 """Run discover and extraction pipeline for selected tables."""
                 selected_tables = tables or self.discover_tables()
                 extracted = {
@@ -97,14 +97,14 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
             def generate_recommendations(
                 self,
                 table_count: int,
-            ) -> Mapping[str, t.MetadataValue]:
+            ) -> Mapping[str, t.JsonValue]:
                 """Generate lightweight recommendations from table volume."""
                 recommendations: list[str] = [
                     "Process tables in batches and increase dbt threads gradually"
                     for _ in [None]
                     if table_count > c.DbtOracle.PERFORMANCE_RECOMMENDATION_THRESHOLD
                 ]
-                payload: dict[str, t.MetadataValue] = {
+                payload: dict[str, t.JsonValue] = {
                     "table_count": table_count,
                     "recommendations": t.Cli.JSON_VALUE_ADAPTER.validate_python(
                         recommendations,

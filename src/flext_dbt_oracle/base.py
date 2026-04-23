@@ -10,9 +10,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-)
 from typing import override
 
 from flext_core import FlextSettings
@@ -41,7 +38,7 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
     @override
     @property
     @override
-    def connection_profile(self) -> Mapping[str, t.Container]:
+    def connection_profile(self) -> t.JsonMapping:
         """Dbt connection profile for Oracle database."""
         s = self._dbt_oracle_settings()
         return {

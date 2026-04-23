@@ -84,7 +84,7 @@ def set_test_environment() -> Generator[None]:
 
 
 @pytest.fixture
-def dbt_oracle_profile() -> Mapping[str, t.Container]:
+def dbt_oracle_profile() -> t.JsonMapping:
     """Dbt Oracle profile configuration for testing."""
     return {
         "settings": {
@@ -127,7 +127,7 @@ def dbt_oracle_profile() -> Mapping[str, t.Container]:
 
 
 @pytest.fixture
-def dbt_project_settings() -> Mapping[str, t.Container]:
+def dbt_project_settings() -> t.JsonMapping:
     """Dbt project configuration for testing."""
     return {
         "name": "flext_dbt_oracle_test",
@@ -157,7 +157,7 @@ def dbt_project_settings() -> Mapping[str, t.Container]:
 
 
 @pytest.fixture
-def oracle_adapter_settings() -> Mapping[str, t.Container]:
+def oracle_adapter_settings() -> t.JsonMapping:
     """Oracle adapter configuration for testing."""
     return {
         "type": "oracle",
@@ -211,7 +211,7 @@ def dbt_test_definitions() -> t.StrMapping:
 
 
 @pytest.fixture
-def dbt_source_definitions() -> Mapping[str, t.Container]:
+def dbt_source_definitions() -> t.JsonMapping:
     """Dbt source definitions for testing."""
     return {
         "version": 2,
@@ -275,7 +275,7 @@ def oracle_sql_queries() -> t.StrMapping:
 
 
 @pytest.fixture
-def dbt_run_settings() -> Mapping[str, t.ContainerValueMapping]:
+def dbt_run_settings() -> t.JsonMapping:
     """Dbt run configuration for testing."""
     return {
         "threads": 4,
@@ -288,7 +288,7 @@ def dbt_run_settings() -> Mapping[str, t.ContainerValueMapping]:
 
 
 @pytest.fixture
-def dbt_test_settings() -> Mapping[str, t.Container]:
+def dbt_test_settings() -> t.JsonMapping:
     """Dbt test configuration for testing."""
     return {
         "threads": 2,
@@ -301,7 +301,7 @@ def dbt_test_settings() -> Mapping[str, t.Container]:
 
 
 @pytest.fixture
-def performance_test_settings() -> Mapping[str, t.Container]:
+def performance_test_settings() -> t.JsonMapping:
     """Performance test configuration."""
     return {
         "large_table_rows": 100000,
@@ -313,7 +313,7 @@ def performance_test_settings() -> Mapping[str, t.Container]:
 
 
 @pytest.fixture
-def dbt_error_scenarios() -> Sequence[Mapping[str, t.Container]]:
+def dbt_error_scenarios() -> Sequence[t.JsonMapping]:
     """Dbt error scenarios for testing."""
     return [
         {
@@ -362,15 +362,15 @@ class MockConnectionManager:
     def __init__(self) -> None:
         """Initialize connection manager."""
         super().__init__()
-        self.connections: MutableMapping[str, t.MutableFlatContainerMapping] = {}
+        self.connections: MutableMapping[str, t.MutableJsonMapping] = {}
 
     def open_connection(
         self,
         name: str,
-        settings: Mapping[str, t.Container],
-    ) -> t.MutableFlatContainerMapping:
+        settings: t.JsonMapping,
+    ) -> t.MutableJsonMapping:
         """Open database connection."""
-        connection: t.MutableFlatContainerMapping = {
+        connection: t.MutableJsonMapping = {
             "name": name,
             "state": "open",
             "handle": f"mock_handle_{name}",
@@ -411,7 +411,7 @@ class MockSqlExecutor:
 class MockModelCompiler:
     """Strategy for model compilation (Single Responsibility Principle)."""
 
-    def compile_model(self, model_sql: str, context: Mapping[str, t.Container]) -> str:
+    def compile_model(self, model_sql: str, context: t.JsonMapping) -> str:
         """Compile dbt model SQL."""
         compiled = model_sql
         vars_value = context.get("vars", {})
@@ -448,17 +448,17 @@ class MockRelationManager:
 class MockDbtOracleAdapter:
     """Simplified adapter using composition and Strategy Pattern."""
 
-    def __init__(self, settings: Mapping[str, t.Container]) -> None:
+    def __init__(self, settings: t.JsonMapping) -> None:
         """Initialize the instance."""
         super().__init__()
         self.settings = settings
-        self.compiled_models: Mapping[str, t.Container] = {}
+        self.compiled_models = {}
         self.connection_manager = MockConnectionManager()
         self.sql_executor = MockSqlExecutor()
         self.model_compiler = MockModelCompiler()
         self.relation_manager = MockRelationManager()
 
-    def open_connection(self, name: str) -> Mapping[str, t.Container]:
+    def open_connection(self, name: str) -> t.JsonMapping:
         """Delegate to connection manager strategy."""
         return self.connection_manager.open_connection(name, self.settings)
 
@@ -475,7 +475,7 @@ class MockDbtOracleAdapter:
         """Delegate to SQL executor strategy."""
         return self.sql_executor.execute(sql, auto_begin=auto_begin)
 
-    def compile_model(self, model_sql: str, context: Mapping[str, t.Container]) -> str:
+    def compile_model(self, model_sql: str, context: t.JsonMapping) -> str:
         """Delegate to model compiler strategy."""
         return self.model_compiler.compile_model(model_sql, context)
 
@@ -502,16 +502,14 @@ class MockDbtRunner:
         super().__init__()
         self.project_dir = project_dir
         self.profiles_dir = profiles_dir
-        self.results: Mapping[str, t.Container] = {}
+        self.results = {}
 
-    def run_models(
-        self, models: t.StrSequence | None = None
-    ) -> Mapping[str, t.Container]:
+    def run_models(self, models: t.StrSequence | None = None) -> t.JsonMapping:
         """Run dbt models."""
-        results: list[Mapping[str, t.Container]] = []
+        results: list[t.JsonMapping] = []
         models = models or ["dim_customers", "fact_orders"]
         for model in models:
-            result: Mapping[str, t.Container] = {
+            result = {
                 "unique_id": f"model.test.{model}",
                 "status": "success",
                 "execution_time": 2.5,
@@ -520,15 +518,13 @@ class MockDbtRunner:
             results.append(result)
         return {"results": results, "elapsed_time": 10.5}
 
-    def run_tests(
-        self, models: t.StrSequence | None = None
-    ) -> Mapping[str, t.Container]:
+    def run_tests(self, models: t.StrSequence | None = None) -> t.JsonMapping:
         """Run dbt tests."""
         _ = models
-        results: list[Mapping[str, t.Container]] = []
+        results: list[t.JsonMapping] = []
         tests = ["test_unique_customer_id", "test_not_null_order_id"]
         for test in tests:
-            result: Mapping[str, t.Container] = {
+            result = {
                 "unique_id": f"test.test.{test}",
                 "status": "pass",
                 "execution_time": 1.2,
@@ -537,7 +533,7 @@ class MockDbtRunner:
             results.append(result)
         return {"results": results, "elapsed_time": 5.0}
 
-    def compile(self, models: t.StrSequence | None = None) -> Mapping[str, t.Container]:
+    def compile(self, models: t.StrSequence | None = None) -> t.JsonMapping:
         """Compile dbt models."""
         compiled: dict[str, str] = {}
         models = models or ["dim_customers", "fact_orders"]
