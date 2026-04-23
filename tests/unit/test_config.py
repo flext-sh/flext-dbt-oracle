@@ -319,12 +319,12 @@ class TestConfigEdgeCases:
 
     def test_config_materialization_validation_all_valid_types(self) -> None:
         """Test all valid materialization types."""
-        Materialization = c.DbtOracle.Dbt.Materialization
-        valid_materializations: Sequence[Materialization] = [
-            Materialization.TABLE,
-            Materialization.VIEW,
-            Materialization.INCREMENTAL,
-            Materialization.SNAPSHOT,
+        materialization_enum = c.DbtOracle.Dbt.Materialization
+        valid_materializations: Sequence[materialization_enum] = [
+            materialization_enum.TABLE,
+            materialization_enum.VIEW,
+            materialization_enum.INCREMENTAL,
+            materialization_enum.SNAPSHOT,
         ]
         for materialization in valid_materializations:
             settings = FlextDbtOracleSettings(
