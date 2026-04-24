@@ -27,9 +27,7 @@ if _t.TYPE_CHECKING:
     from tests.models import TestsFlextDbtOracleModels, m
     from tests.protocols import TestsFlextDbtOracleProtocols, p
     from tests.typings import TestsFlextDbtOracleTypes, t
-    from tests.unit.test_config import (
-        TestsFlextDbtOracleConfig,
-    )
+    from tests.unit.test_config import TestsFlextDbtOracleConfig
     from tests.unit.test_connections import (
         TestBuildOracleConnectionConfig,
         TestOracleConnectionConfig,
