@@ -13,9 +13,7 @@ def _package_root() -> Path:
     src_dir: str = c.DbtOracle.Tests.SRC_DIR
     package_dir: str = c.DbtOracle.Tests.PACKAGE_DIR
     project_root: Path = Path(
-        Path(__file__)
-        .resolve()
-        .parents[project_root_parent_depth],
+        Path(__file__).resolve().parents[project_root_parent_depth],
     )
     package_root: Path = project_root / src_dir / package_dir
     return package_root
