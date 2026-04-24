@@ -91,7 +91,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                 """Return a basic health payload for Oracle connectivity."""
                 return {
                     "status": "connected",
-                    "host": "localhost",
+                    "host": c.LOCALHOST,
                     "database": "XEPDB1",
                 }
 
