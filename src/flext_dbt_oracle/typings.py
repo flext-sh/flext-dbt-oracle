@@ -13,7 +13,6 @@ from collections.abc import (
     Mapping,
     Sequence,
 )
-from typing import Literal
 
 from flext_core import u
 from flext_db_oracle import FlextDbOracleTypes
@@ -37,8 +36,6 @@ class FlextDbtOracleTypes(t, FlextDbOracleTypes):
 
         Materialization = c.DbtOracle.Dbt.Materialization
         "Supported DBT materialization strategies."
-        type LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
-        "Supported runtime log levels."
         type OraclePayload = t.JsonMapping
         "Oracle payload type."
         type OraclePayloadList = Sequence[OraclePayload]

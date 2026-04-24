@@ -9,6 +9,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import Final
+
 from flext_tests import FlextTestsConstants
 
 from flext_dbt_oracle import FlextDbtOracleConstants
@@ -25,6 +27,13 @@ class TestsFlextDbtOracleConstants(
 
         class Tests:
             """Test-specific constants."""
+
+            class ModuleGovernance:
+                """Module-governance constants for dbt-oracle tests."""
+
+                PROJECT_ROOT_PARENT_DEPTH: Final[int] = 1
+                SRC_DIR: Final[str] = "src"
+                PACKAGE_DIR: Final[str] = "flext_dbt_oracle"
 
 
 c = TestsFlextDbtOracleConstants
