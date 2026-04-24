@@ -10,7 +10,7 @@ from __future__ import annotations
 from tests import m
 
 
-class TestOracleTableAdapter:
+class TestsFlextDbtOracleImpl:
     """Test OracleTableAdapter."""
 
     def test_relation_name(self) -> None:
@@ -37,10 +37,6 @@ class TestOracleTableAdapter:
         )
         assert adapter.schema_name == "SYS"
         assert adapter.table_name == "DUAL"
-
-
-class TestOracleTableFactory:
-    """Test OracleTableFactory."""
 
     def test_create_basic(self) -> None:
         adapter = m.DbtOracle.OracleTableFactory.create("HR", "EMPLOYEES")

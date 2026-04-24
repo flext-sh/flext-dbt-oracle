@@ -19,7 +19,7 @@ from tests import c, m, t
 FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings
 
 
-class TestFlextDbtOracleSettings:
+class TestsFlextDbtOracleConfig:
     """Test DBT Oracle configuration functionality."""
 
     def test_basic_config_creation(self) -> None:
@@ -250,10 +250,6 @@ class TestFlextDbtOracleSettings:
         assert "materialization" in dbt_settings
         assert dbt_settings["materialization"] == "table"
 
-
-class TestConfigEdgeCases:
-    """Test configuration edge cases and error conditions."""
-
     def test_config_with_all_optional_fields(self) -> None:
         """Test configuration with all optional fields set."""
         settings = FlextDbtOracleSettings(
@@ -348,10 +344,6 @@ class TestConfigEdgeCases:
                 protocol=protocol,
             )
             assert settings.protocol == protocol
-
-
-class TestConfigConstantsUsage:
-    """Test usage of configuration constants."""
 
     def test_config_uses_default_constants(self) -> None:
         """Test that configuration uses default constants appropriately."""

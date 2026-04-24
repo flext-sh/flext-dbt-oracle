@@ -28,15 +28,13 @@ if _t.TYPE_CHECKING:
     from tests.protocols import TestsFlextDbtOracleProtocols, p
     from tests.typings import TestsFlextDbtOracleTypes, t
     from tests.unit.test_config import (
-        TestConfigConstantsUsage,
-        TestConfigEdgeCases,
-        TestFlextDbtOracleSettings,
+        TestsFlextDbtOracleConfig,
     )
     from tests.unit.test_connections import (
         TestBuildOracleConnectionConfig,
         TestOracleConnectionConfig,
     )
-    from tests.unit.test_impl import TestOracleTableAdapter, TestOracleTableFactory
+    from tests.unit.test_impl import TestsFlextDbtOracleImpl
     from tests.utilities import TestsFlextDbtOracleUtilities, u
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
@@ -66,19 +64,12 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "TestsFlextDbtOracleTypes",
                 "t",
             ),
-            ".unit.test_config": (
-                "TestConfigConstantsUsage",
-                "TestConfigEdgeCases",
-                "TestFlextDbtOracleSettings",
-            ),
+            ".unit.test_config": ("TestsFlextDbtOracleConfig",),
             ".unit.test_connections": (
                 "TestBuildOracleConnectionConfig",
                 "TestOracleConnectionConfig",
             ),
-            ".unit.test_impl": (
-                "TestOracleTableAdapter",
-                "TestOracleTableFactory",
-            ),
+            ".unit.test_impl": ("TestsFlextDbtOracleImpl",),
             ".utilities": (
                 "TestsFlextDbtOracleUtilities",
                 "u",
@@ -123,13 +114,10 @@ __all__: list[str] = [
     "MockRelationManager",
     "MockSqlExecutor",
     "TestBuildOracleConnectionConfig",
-    "TestConfigConstantsUsage",
-    "TestConfigEdgeCases",
-    "TestFlextDbtOracleSettings",
     "TestOracleConnectionConfig",
-    "TestOracleTableAdapter",
-    "TestOracleTableFactory",
+    "TestsFlextDbtOracleConfig",
     "TestsFlextDbtOracleConstants",
+    "TestsFlextDbtOracleImpl",
     "TestsFlextDbtOracleModels",
     "TestsFlextDbtOracleProtocols",
     "TestsFlextDbtOracleTypes",
