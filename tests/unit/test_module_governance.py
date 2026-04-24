@@ -9,13 +9,16 @@ from tests import c
 
 
 def _package_root() -> Path:
-    return (
+    project_root_parent_depth: int = c.DbtOracle.Tests.PROJECT_ROOT_PARENT_DEPTH
+    src_dir: str = c.DbtOracle.Tests.SRC_DIR
+    package_dir: str = c.DbtOracle.Tests.PACKAGE_DIR
+    project_root: Path = Path(
         Path(__file__)
         .resolve()
-        .parents[c.DbtOracle.Tests.ModuleGovernance.PROJECT_ROOT_PARENT_DEPTH]
-        / c.DbtOracle.Tests.ModuleGovernance.SRC_DIR
-        / c.DbtOracle.Tests.ModuleGovernance.PACKAGE_DIR
+        .parents[project_root_parent_depth],
     )
+    package_root: Path = project_root / src_dir / package_dir
+    return package_root
 
 
 def _iter_package_modules() -> list[Path]:
