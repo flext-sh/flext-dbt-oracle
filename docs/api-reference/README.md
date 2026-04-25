@@ -1,3 +1,9 @@
+<!-- TOC START -->
+- [Source of Truth](#source-of-truth)
+- [Generated Pages](#generated-pages)
+- [Surface Summary](#surface-summary)
+<!-- TOC END -->
+
 <!-- AUTO-GENERATED — DO NOT EDIT MANUALLY -->
 
 # flext-dbt-oracle API Reference
@@ -19,7 +25,7 @@ This section is generated from public exports and real docstrings.
 
 ## Surface Summary
 
-- Primary facades: `FlextDbtOracleServiceBase`, `FlextDbtOracleUtilities`, `FlextDbtOracleSettings`, `FlextDbtOracleProtocols`, `FlextDbtOracleModels`, `FlextDbtOracleConnections` (+2 more)
+- Primary facades: `FlextDbtOracleTypes`, `FlextDbtOracleSettings`, `FlextDbtOracleServiceBase`, `FlextDbtOracleProtocols`, `FlextDbtOracleConstants`, `FlextDbtOracleConnections` (+2 more)
 - Generated module pages: `8`
 
 - [Back to project docs](../index.md)
