@@ -1,0 +1,24 @@
+tests/unit/test_config.py
+  8101ec7ad65f4317 119,134,145,156,163,173,196,211,238,253,288,297,324,337,348
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "14b03b5b028fac73079dc38f4925d52af2745c66",
+  "prompts": {
+    "8101ec7ad65f4317": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "557c886b-b02d-489a-8237-05da7f2a1438",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "FLEXT Bot",
+      "messages": [],
+      "total_additions": 15,
+      "total_deletions": 17,
+      "accepted_lines": 15,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/bf0cb1818f000c7a54e23c4c8bb8fde9c1555796b03b17a1edbd55951f966dc7"
+    }
+  }
+}
