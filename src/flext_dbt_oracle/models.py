@@ -10,13 +10,13 @@ from typing import Annotated, ClassVar, Literal
 
 from flext_core import u
 from flext_db_oracle import m
-from flext_meltano import m as meltano_m
+from flext_meltano import FlextMeltanoModels
 
 from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.typings import t
 
 
-class FlextDbtOracleModels(meltano_m, m):
+class FlextDbtOracleModels(FlextMeltanoModels, m):
     """Namespace wrapper for DBT Oracle domain models.
 
     Inherits from FlextMeltanoModels (Singer/Meltano) and m
@@ -40,7 +40,7 @@ class FlextDbtOracleModels(meltano_m, m):
             ] = c.DbtOracle.DEFAULT_SCHEMA_NAME
             table_name: Annotated[str, u.Field(description="Target table name")]
             materialization: Annotated[
-                t.DbtOracle.Materialization,
+                c.DbtOracle.Dbt.Materialization,
                 u.Field(description="DBT materialization strategy"),
             ] = c.DbtOracle.Dbt.DEFAULT_MATERIALIZATION
             sql_content: Annotated[str, u.Field(description="Model SQL body")]
@@ -229,7 +229,7 @@ class FlextDbtOracleModels(meltano_m, m):
                 u.Field(description="Connection protocol"),
             ] = "tcp"
             materialization: Annotated[
-                t.DbtOracle.Materialization,
+                c.DbtOracle.Dbt.Materialization,
                 u.Field(description="DBT materialization strategy"),
             ] = c.DbtOracle.Dbt.Materialization.TABLE
             schema_name: Annotated[

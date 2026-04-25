@@ -16,8 +16,6 @@ import pytest
 
 from tests import c, m, t
 
-FlextDbtOracleSettings = m.DbtOracle.FlextDbtOracleSettings
-
 
 class TestsFlextDbtOracleConfig:
     """Test DBT Oracle configuration functionality."""
@@ -118,7 +116,7 @@ class TestsFlextDbtOracleConfig:
 
     def test_connection_string(self) -> None:
         """Test connection string generation."""
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
@@ -133,7 +131,7 @@ class TestsFlextDbtOracleConfig:
 
     def test_connection_string_with_sid(self) -> None:
         """Test connection string generation with SID."""
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
@@ -144,7 +142,7 @@ class TestsFlextDbtOracleConfig:
 
     def test_effective_schema(self) -> None:
         """Test effective schema retrieval."""
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
@@ -155,14 +153,14 @@ class TestsFlextDbtOracleConfig:
 
     def test_database_identifier(self) -> None:
         """Test database identifier retrieval."""
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
             oracle_service_name="XEPDB1",
         )
         assert settings.database_identifier in {"XEPDB1", "XE"}
-        config_with_sid = FlextDbtOracleSettings(
+        config_with_sid = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
@@ -172,7 +170,7 @@ class TestsFlextDbtOracleConfig:
 
     def test_to_connection_config(self) -> None:
         """Test conversion to connection configuration."""
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
@@ -195,7 +193,7 @@ class TestsFlextDbtOracleConfig:
 
     def test_to_oracle_config(self) -> None:
         """Test conversion to Oracle settings."""
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
@@ -210,7 +208,7 @@ class TestsFlextDbtOracleConfig:
 
     def test_performance_settings(self) -> None:
         """Test performance settings retrieval."""
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
@@ -237,7 +235,7 @@ class TestsFlextDbtOracleConfig:
 
     def test_dbt_settings(self) -> None:
         """Test DBT settings retrieval."""
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
@@ -252,7 +250,7 @@ class TestsFlextDbtOracleConfig:
 
     def test_config_with_all_optional_fields(self) -> None:
         """Test configuration with all optional fields set."""
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
@@ -287,7 +285,7 @@ class TestsFlextDbtOracleConfig:
 
         Test that default service name is used when neither service_name nor sid provided.
         """
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
@@ -296,7 +294,7 @@ class TestsFlextDbtOracleConfig:
 
     def test_config_field_validation_ranges(self) -> None:
         """Test field validation for numeric ranges."""
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),
@@ -323,7 +321,7 @@ class TestsFlextDbtOracleConfig:
             materialization_enum.SNAPSHOT,
         ]
         for materialization in valid_materializations:
-            settings = FlextDbtOracleSettings(
+            settings = m.DbtOracle.FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
                 oracle_password=t.SecretStr("testpass"),
@@ -336,7 +334,7 @@ class TestsFlextDbtOracleConfig:
         """Test all valid protocol types."""
         valid_protocols: Sequence[Literal["tcp", "tcps"]] = ["tcp", "tcps"]
         for protocol in valid_protocols:
-            settings = FlextDbtOracleSettings(
+            settings = m.DbtOracle.FlextDbtOracleSettings(
                 oracle_host="localhost",
                 oracle_username="testuser",
                 oracle_password=t.SecretStr("testpass"),
@@ -347,7 +345,7 @@ class TestsFlextDbtOracleConfig:
 
     def test_config_uses_default_constants(self) -> None:
         """Test that configuration uses default constants appropriately."""
-        settings = FlextDbtOracleSettings(
+        settings = m.DbtOracle.FlextDbtOracleSettings(
             oracle_host="localhost",
             oracle_username="testuser",
             oracle_password=t.SecretStr("testpass"),

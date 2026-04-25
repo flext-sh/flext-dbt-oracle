@@ -18,8 +18,6 @@ from flext_core import u
 from flext_db_oracle import FlextDbOracleTypes
 from flext_meltano import t
 
-from flext_dbt_oracle.constants import c
-
 
 class FlextDbtOracleTypes(t, FlextDbOracleTypes):
     """MRO facade composing Meltano + DbOracle type namespaces."""
@@ -34,8 +32,6 @@ class FlextDbtOracleTypes(t, FlextDbOracleTypes):
     class DbtOracle:
         """DbtOracle domain namespace for actively used type definitions."""
 
-        Materialization = c.DbtOracle.Dbt.Materialization
-        "Supported DBT materialization strategies."
         type OraclePayload = t.JsonMapping
         "Oracle payload type."
         type OraclePayloadList = Sequence[OraclePayload]
