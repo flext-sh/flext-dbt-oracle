@@ -27,12 +27,12 @@ if _t.TYPE_CHECKING:
     from tests.models import TestsFlextDbtOracleModels, m
     from tests.protocols import TestsFlextDbtOracleProtocols, p
     from tests.typings import TestsFlextDbtOracleTypes, t
+    from tests.unit.test_basic import TestsFlextDbtOracleBasic
     from tests.unit.test_config import TestsFlextDbtOracleConfig
-    from tests.unit.test_connections import (
-        TestBuildOracleConnectionConfig,
-        TestOracleConnectionConfig,
-    )
+    from tests.unit.test_connections import TestsFlextDbtOracleConnections
     from tests.unit.test_impl import TestsFlextDbtOracleImpl
+    from tests.unit.test_imports import TestsFlextDbtOracleImports
+    from tests.unit.test_module_governance import TestsFlextDbtOracleModuleGovernance
     from tests.utilities import TestsFlextDbtOracleUtilities, u
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
@@ -62,12 +62,12 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "TestsFlextDbtOracleTypes",
                 "t",
             ),
+            ".unit.test_basic": ("TestsFlextDbtOracleBasic",),
             ".unit.test_config": ("TestsFlextDbtOracleConfig",),
-            ".unit.test_connections": (
-                "TestBuildOracleConnectionConfig",
-                "TestOracleConnectionConfig",
-            ),
+            ".unit.test_connections": ("TestsFlextDbtOracleConnections",),
             ".unit.test_impl": ("TestsFlextDbtOracleImpl",),
+            ".unit.test_imports": ("TestsFlextDbtOracleImports",),
+            ".unit.test_module_governance": ("TestsFlextDbtOracleModuleGovernance",),
             ".utilities": (
                 "TestsFlextDbtOracleUtilities",
                 "u",
@@ -121,12 +121,14 @@ __all__: list[str] = [
     "MockModelCompiler",
     "MockRelationManager",
     "MockSqlExecutor",
-    "TestBuildOracleConnectionConfig",
-    "TestOracleConnectionConfig",
+    "TestsFlextDbtOracleBasic",
     "TestsFlextDbtOracleConfig",
+    "TestsFlextDbtOracleConnections",
     "TestsFlextDbtOracleConstants",
     "TestsFlextDbtOracleImpl",
+    "TestsFlextDbtOracleImports",
     "TestsFlextDbtOracleModels",
+    "TestsFlextDbtOracleModuleGovernance",
     "TestsFlextDbtOracleProtocols",
     "TestsFlextDbtOracleTypes",
     "TestsFlextDbtOracleUtilities",

@@ -13,7 +13,7 @@ from flext_dbt_oracle import FlextDbtOracleConnections
 from tests import c, m
 
 
-class TestOracleConnectionConfig:
+class TestsFlextDbtOracleConnections:
     """Test suite for OracleConnectionConfig class."""
 
     def test_default_values(self) -> None:
@@ -72,8 +72,6 @@ class TestOracleConnectionConfig:
         with pytest.raises(c.ValidationError, match="greater than or equal to 1"):
             _ = m.DbtOracle.OracleConnectionConfig(port=port)
 
-
-class TestBuildOracleConnectionConfig:
     """Test suite for the public connection facade builder."""
 
     def test_basic_build(self) -> None:

@@ -7,15 +7,12 @@ from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 _LAZY_IMPORTS = build_lazy_import_map(
     {
-        ".test_basic": ("test_basic",),
+        ".test_basic": ("TestsFlextDbtOracleBasic",),
         ".test_config": ("TestsFlextDbtOracleConfig",),
-        ".test_connections": (
-            "TestBuildOracleConnectionConfig",
-            "TestOracleConnectionConfig",
-        ),
+        ".test_connections": ("TestsFlextDbtOracleConnections",),
         ".test_impl": ("TestsFlextDbtOracleImpl",),
-        ".test_imports": ("test_imports",),
-        ".test_module_governance": ("test_module_governance",),
+        ".test_imports": ("TestsFlextDbtOracleImports",),
+        ".test_module_governance": ("TestsFlextDbtOracleModuleGovernance",),
     },
 )
 
