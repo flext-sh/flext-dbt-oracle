@@ -8,11 +8,10 @@ from collections.abc import (
 )
 
 from flext_db_oracle import FlextDbOracleUtilities
-from flext_meltano import u
-
 from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.models import FlextDbtOracleModels
 from flext_dbt_oracle.typings import t
+from flext_meltano import u
 
 
 class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):

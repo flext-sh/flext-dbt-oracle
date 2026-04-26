@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import ClassVar
 
 from flext_core import FlextSettings
-
 from flext_dbt_oracle import m
 
 

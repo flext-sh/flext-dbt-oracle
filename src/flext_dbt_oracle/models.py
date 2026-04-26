@@ -10,10 +10,9 @@ from typing import Annotated, ClassVar, Literal
 
 from flext_core import u
 from flext_db_oracle import m
-from flext_meltano import FlextMeltanoModels
-
 from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.typings import t
+from flext_meltano import FlextMeltanoModels
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, m):
