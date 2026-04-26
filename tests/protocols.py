@@ -20,12 +20,6 @@ class TestsFlextDbtOracleProtocols(
 ):
     """Test protocols combining FlextTestsProtocols and FlextDbtOracleProtocols."""
 
-    class DbtOracle(FlextDbtOracleProtocols.DbtOracle):
-        """DbtOracle test protocols namespace."""
-
-        class Tests:
-            """DbtOracle-specific test protocols."""
-
 
 p = TestsFlextDbtOracleProtocols
 
