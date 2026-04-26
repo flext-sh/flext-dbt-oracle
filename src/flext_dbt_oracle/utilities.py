@@ -39,10 +39,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
         class Validation:
             """Payload validation helpers."""
 
-            @staticmethod
-            def validate_non_empty_rows(rows: Sequence[t.ConfigurationMapping]) -> bool:
-                """Return true when row list contains values."""
-                return bool(rows)
+            pass
 
         class Client:
             """Typed facade for Oracle extraction and DBT pipeline execution."""

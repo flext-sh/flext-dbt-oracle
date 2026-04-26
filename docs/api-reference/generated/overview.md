@@ -7,9 +7,9 @@
 - Description: FLEXT dbt Oracle - dbt Models for Oracle Database
 - Project class: `integration`
 - Keywords: `data-transformation`, `dbt`, `enterprise`, `flext`, `sql`, `typed`
-- Main facades: `FlextDbtOracleConnections`, `FlextDbtOracleServiceBase`, `FlextDbtOracleConstants`, `FlextDbtOracleUtilities`, `FlextDbtOracleProtocols`, `FlextDbtOracleSettings`, `FlextDbtOracleModels`, `FlextDbtOracleTypes`
+- Main facades: `FlextDbtOracleUtilities`, `FlextDbtOracleModels`, `FlextDbtOracleConnections`, `FlextDbtOracleProtocols`, `FlextDbtOracleTypes`, `FlextDbtOracleConstants`, `FlextDbtOracleSettings`, `FlextDbtOracleServiceBase`
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
-- Public symbol exports: `FlextDbtOracleConnections`, `FlextDbtOracleServiceBase`, `FlextDbtOracleConstants`, `FlextDbtOracleUtilities`, `FlextDbtOracleProtocols`, `FlextDbtOracleSettings`, `FlextDbtOracleModels`, `FlextDbtOracleTypes`
+- Public symbol exports: `FlextDbtOracleUtilities`, `FlextDbtOracleModels`, `FlextDbtOracleConnections`, `FlextDbtOracleProtocols`, `FlextDbtOracleTypes`, `FlextDbtOracleConstants`, `FlextDbtOracleSettings`, `FlextDbtOracleServiceBase`
 - Exported module shortcuts: _none_
 - Generated module pages: `8`
 
