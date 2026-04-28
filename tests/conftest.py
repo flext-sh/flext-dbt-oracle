@@ -453,7 +453,6 @@ class MockDbtOracleAdapter:
         """Initialize the instance."""
         super().__init__()
         self.settings = settings
-        self.compiled_models = {}
         self.connection_manager = MockConnectionManager()
         self.sql_executor = MockSqlExecutor()
         self.model_compiler = MockModelCompiler()
@@ -503,7 +502,6 @@ class MockDbtRunner:
         super().__init__()
         self.project_dir = project_dir
         self.profiles_dir = profiles_dir
-        self.results = {}
 
     def run_models(self, models: t.StrSequence | None = None) -> t.JsonMapping:
         """Run dbt models."""

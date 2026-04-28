@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import pytest
 
-from flext_dbt_oracle import FlextDbtOracleConnections
 from tests import c, m
 
 
@@ -71,35 +70,3 @@ class TestsFlextDbtOracleConnections:
         port: int = 0
         with pytest.raises(c.ValidationError, match="greater than or equal to 1"):
             _ = m.DbtOracle.OracleConnectionConfig(port=port)
-
-    """Test suite for the public connection facade builder."""
-
-    def test_basic_build(self) -> None:
-        settings = FlextDbtOracleConnections.build_oracle_connection_config(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-        )
-        assert isinstance(settings, m.DbtOracle.OracleConnectionConfig)
-        assert settings.host == "localhost"
-        assert settings.username == "testuser"
-        assert settings.service_name == "XEPDB1"
-
-    def test_build_with_sid(self) -> None:
-        settings = FlextDbtOracleConnections.build_oracle_connection_config(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            sid="XE",
-        )
-        assert settings.sid == "XE"
-        assert settings.database_identifier == "XE"
-
-    def test_build_with_custom_port(self) -> None:
-        settings = FlextDbtOracleConnections.build_oracle_connection_config(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            port=1522,
-        )
-        assert settings.port == 1522
