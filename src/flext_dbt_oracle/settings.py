@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from typing import Annotated, ClassVar, Literal
 
-from flext_core import FlextSettings
-from flext_dbt_oracle import c, m, t, u
+from flext_core import FlextSettings, m, u
+from flext_dbt_oracle import c, t
+from flext_dbt_oracle.models import FlextDbtOracleModels
 
 
 @FlextSettings.auto_register("dbt_oracle")
@@ -15,6 +16,7 @@ class FlextDbtOracleSettings(FlextSettings):
     model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
         env_prefix="FLEXT_DBT_ORACLE_",
         extra="ignore",
+        populate_by_name=True,
     )
 
     oracle_host: Annotated[
@@ -31,10 +33,7 @@ class FlextDbtOracleSettings(FlextSettings):
     ] = t.SecretStr("")
     oracle_port: Annotated[
         t.PortNumber,
-        u.Field(
-            alias="port",
-            description="Oracle database port",
-        ),
+        u.Field(description="Oracle database port"),
     ] = c.DbtOracle.Oracle.DEFAULT_PORT
     oracle_service_name: Annotated[
         str,
@@ -174,6 +173,43 @@ class FlextDbtOracleSettings(FlextSettings):
             "username": self.oracle_username,
             "password": self.oracle_password.get_secret_value(),
             "protocol": self.protocol,
+        }
+
+    def to_oracle_config(self) -> FlextDbtOracleModels.DbtOracle.OracleConnectionConfig:
+        """Convert to OracleConnectionConfig."""
+        return FlextDbtOracleModels.DbtOracle.OracleConnectionConfig(
+            host=self.oracle_host,
+            port=self.port,
+            username=self.oracle_username,
+            password=self.oracle_password,
+            service_name=self.oracle_service_name,
+            sid=self.sid,
+            protocol=self.protocol,
+        )
+
+    @u.computed_field(return_type=t.IntMapping)
+    @property
+    def performance_settings(self) -> t.IntMapping:
+        """Performance-related settings."""
+        return {
+            "pool_min_size": self.pool_min_size,
+            "pool_max_size": self.pool_max_size,
+            "pool_increment": self.pool_increment,
+            "query_timeout": self.query_timeout,
+            "fetch_size": self.fetch_size,
+            "connect_timeout": self.connect_timeout,
+            "retry_attempts": self.retry_attempts,
+            "retry_delay": self.retry_delay,
+        }
+
+    @u.computed_field(return_type=t.StrMapping)
+    @property
+    def dbt_settings(self) -> t.StrMapping:
+        """DBT-specific settings."""
+        return {
+            "database": self.oracle_service_name,
+            "schema": self.effective_schema,
+            "materialization": self.materialization,
         }
 
 

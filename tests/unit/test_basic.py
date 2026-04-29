@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import pytest
 
+from flext_dbt_oracle.settings import FlextDbtOracleSettings
 from tests import m, u
 
 
@@ -18,7 +19,7 @@ class TestsFlextDbtOracleBasic:
     def test_basic_import(self) -> None:
         """Test basic adapter imports work."""
         assert u.DbtOracle.Client is not None
-        assert m.DbtOracle.FlextDbtOracleSettings is not None
+        assert FlextDbtOracleSettings is not None
         assert m is not None
         assert m.DbtOracle.ModelGenerator is not None
 
@@ -28,7 +29,7 @@ class TestsFlextDbtOracleBasic:
 
     def test_credentials_class(self) -> None:
         """Test credentials class is available."""
-        assert m.DbtOracle.FlextDbtOracleSettings is not None
+        assert FlextDbtOracleSettings is not None
 
     @pytest.mark.unit
     def test_adapter_initialization(self) -> None:

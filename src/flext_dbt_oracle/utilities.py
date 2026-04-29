@@ -9,7 +9,7 @@ from collections.abc import (
 
 from flext_db_oracle import FlextDbOracleUtilities
 from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.models import FlextDbtOracleModels
+from flext_dbt_oracle.settings import FlextDbtOracleSettings
 from flext_dbt_oracle.typings import t
 from flext_meltano import u
 
@@ -45,7 +45,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
 
             def __init__(
                 self,
-                settings: FlextDbtOracleModels.DbtOracle.FlextDbtOracleSettings,
+                settings: FlextDbtOracleSettings,
             ) -> None:
                 """Store runtime settings used by client operations."""
                 super().__init__()
