@@ -11,7 +11,7 @@ This project portal is generated from `pyproject.toml`, package exports, and rea
 
 ## Start Here
 
-- [Guides](guides/README.md)
+- [Guides](./guides/README.md)
 - [API Reference](api-reference/README.md)
 - [Generated API Overview](api-reference/generated/overview.md)
 - [Generated Module Index](api-reference/generated/modules/index.md)

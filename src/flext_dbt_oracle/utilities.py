@@ -75,7 +75,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                     table: self.extract_table_data(table, filters)
                     for table in selected_tables
                 }
-                tables_payload: list[t.JsonValue] = [str(x) for x in selected_tables]
+                tables_payload: list[t.JsonValue] = list(selected_tables)
                 result: Mapping[str, t.JsonValue] = {
                     "status": "completed",
                     "tables": tables_payload,

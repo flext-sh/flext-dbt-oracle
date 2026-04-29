@@ -47,7 +47,6 @@
 ## 🔗 External Links
 
 - [Workspace Documentation](../../docs/index.md)
-- [Contributing Guide](../../CONTRIBUTING.md)
 - [License](../LICENSE)
 
 ## 📊 Status

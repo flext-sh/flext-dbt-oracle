@@ -324,7 +324,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
             @property
             def port(self) -> int:
                 """Return the Oracle port."""
-                return int(self.oracle_port)
+                return self.oracle_port
 
             @u.computed_field(return_type=str)
             @property

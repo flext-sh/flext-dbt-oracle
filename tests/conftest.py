@@ -15,6 +15,7 @@ from collections.abc import (
     MutableMapping,
     Sequence,
 )
+from pathlib import Path
 
 import pytest
 from flext_tests import tk
@@ -25,43 +26,45 @@ from tests import c, t
 @pytest.fixture(scope="session")
 def docker_control() -> tk:
     """Provide tk instance for container management."""
-    return tk()
+    return tk.shared(
+        "flext-oracle-db-test",
+        workspace_root=Path(__file__).resolve().parents[2],
+    )
 
 
+@pytest.fixture(scope="session")
 def shared_oracle_container(docker_control: tk) -> Generator[str]:
     """Start and maintain flext-oracle-db-test container.
 
     Container auto-starts if not running and remains running after tests.
     """
-    result = docker_control.start_existing_container("flext-oracle-db-test")
+    result = docker_control.execute()
     if result.failure:
         pytest.skip(f"Failed to start Oracle container: {result.error}")
+    resolved_port = next(
+        (
+            int(host_port)
+            for container_port, host_port in result.value.ports.items()
+            if container_port.startswith("1521") and host_port.isdigit()
+        ),
+        1522,
+    )
+    os.environ.update({
+        "DBT_ORACLE_ORACLE_HOST": "localhost",
+        "DBT_ORACLE_ORACLE_PORT": str(resolved_port),
+        "DBT_ORACLE_ORACLE_USERNAME": "flext_test",
+        "DBT_ORACLE_ORACLE_PASSWORD": "flext_test_password",
+        "DBT_ORACLE_ORACLE_SERVICE_NAME": "FLEXTDB",
+        "DBT_ORACLE_ORACLE_SCHEMA": "FLEXT_TEST",
+    })
     yield "flext-oracle-db-test"
-    try:
-        docker_control.client.containers.get("flext-oracle-db-test").stop()
-    except (
-        ValueError,
-        TypeError,
-        KeyError,
-        AttributeError,
-        OSError,
-        RuntimeError,
-        ImportError,
-    ):
-        pass
+    _ = docker_control.down()
 
 
 @pytest.fixture(scope="session", autouse=True)
-def oracle_shared_container_environment() -> None:
+def oracle_shared_container_environment(shared_oracle_container: str) -> None:
     """Setup Oracle environment variables for shared container (pytest-oracle-xe)."""
-    os.environ.update({
-        "DBT_ORACLE_ORACLE_HOST": "localhost",
-        "DBT_ORACLE_ORACLE_PORT": "10521",
-        "DBT_ORACLE_ORACLE_USERNAME": "system",
-        "DBT_ORACLE_ORACLE_PASSWORD": "oracle",
-        "DBT_ORACLE_ORACLE_SERVICE_NAME": "XE",
-        "DBT_ORACLE_ORACLE_SCHEMA": "FLEXT_TEST",
-    })
+    _ = shared_oracle_container
 
 
 @pytest.fixture(autouse=True)
