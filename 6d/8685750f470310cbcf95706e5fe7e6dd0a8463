@@ -1,0 +1,14 @@
+docs/guides/troubleshooting.md
+  h_9db9d35f50cf33 370,604
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "6d8685750f470310cbcf95706e5fe7e6dd0a8463",
+  "prompts": {},
+  "humans": {
+    "h_9db9d35f50cf33": {
+      "author": "FLEXT Bot"
+    }
+  }
+}
