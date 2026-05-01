@@ -7,9 +7,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import (
-    Sequence,
-)
 from typing import Literal, cast
 
 import pytest
@@ -319,7 +316,7 @@ class TestsFlextDbtOracleConfig:
     def test_config_materialization_validation_all_valid_types(self) -> None:
         """Test all valid materialization types."""
         materialization_enum = c.DbtOracle.Dbt.Materialization
-        valid_materializations: Sequence[materialization_enum] = [
+        valid_materializations: t.SequenceOf[materialization_enum] = [
             materialization_enum.TABLE,
             materialization_enum.VIEW,
             materialization_enum.INCREMENTAL,
@@ -337,7 +334,7 @@ class TestsFlextDbtOracleConfig:
 
     def test_config_protocol_validation_all_valid_types(self) -> None:
         """Test all valid protocol types."""
-        valid_protocols: Sequence[Literal["tcp", "tcps"]] = ["tcp", "tcps"]
+        valid_protocols: t.SequenceOf[Literal["tcp", "tcps"]] = ["tcp", "tcps"]
         for protocol in valid_protocols:
             settings = FlextDbtOracleSettings(
                 oracle_host="localhost",

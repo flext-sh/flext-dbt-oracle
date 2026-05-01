@@ -2,11 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-    Sequence,
-)
-
 from flext_db_oracle import FlextDbOracleUtilities
 from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
@@ -59,7 +54,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                 self,
                 table_name: str,
                 filters: t.ConfigurationMapping | None = None,
-            ) -> Sequence[t.ConfigurationMapping]:
+            ) -> t.SequenceOf[t.ConfigurationMapping]:
                 """Return deterministic sample payload for a table."""
                 _ = filters
                 return [{"table": table_name, "id": 1, "status": "sample"}]
@@ -68,7 +63,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                 self,
                 tables: t.StrSequence | None = None,
                 filters: t.ConfigurationMapping | None = None,
-            ) -> Mapping[str, t.JsonValue]:
+            ) -> t.MappingKV[str, t.JsonValue]:
                 """Run discover and extraction pipeline for selected tables."""
                 selected_tables = tables or self.discover_tables()
                 extracted = {
@@ -76,7 +71,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                     for table in selected_tables
                 }
                 tables_payload: list[t.JsonValue] = list(selected_tables)
-                result: Mapping[str, t.JsonValue] = {
+                result: t.MappingKV[str, t.JsonValue] = {
                     "status": "completed",
                     "tables": tables_payload,
                     "record_count": sum(len(rows) for rows in extracted.values()),
@@ -97,7 +92,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
             def generate_recommendations(
                 self,
                 table_count: int,
-            ) -> Mapping[str, t.JsonValue]:
+            ) -> t.MappingKV[str, t.JsonValue]:
                 """Generate lightweight recommendations from table volume."""
                 recommendations: list[str] = [
                     "Process tables in batches and increase dbt threads gradually"

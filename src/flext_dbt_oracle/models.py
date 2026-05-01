@@ -2,9 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import (
-    Sequence,
-)
 from typing import Annotated
 
 from flext_core import u
@@ -51,7 +48,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                 u.Field(description="Source system name"),
             ] = c.DbtOracle.DEFAULT_SOURCE_NAME
             columns: Annotated[
-                Sequence[t.StrMapping],
+                t.SequenceOf[t.StrMapping],
                 u.Field(
                     default_factory=tuple,
                     description="Normalized column metadata for the DBT model",
@@ -79,7 +76,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
             def generate_staging_models(
                 self,
                 source_tables: t.StrSequence,
-            ) -> Sequence[FlextDbtOracleModels.DbtOracle.Model]:
+            ) -> t.SequenceOf[FlextDbtOracleModels.DbtOracle.Model]:
                 """Create one staging model definition per source table."""
                 return [
                     FlextDbtOracleModels.DbtOracle.Model(

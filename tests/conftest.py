@@ -11,9 +11,7 @@ import os
 import tempfile
 from collections.abc import (
     Generator,
-    Mapping,
     MutableMapping,
-    Sequence,
 )
 from pathlib import Path
 
@@ -316,7 +314,7 @@ def performance_test_settings() -> t.JsonMapping:
 
 
 @pytest.fixture
-def dbt_error_scenarios() -> Sequence[t.JsonMapping]:
+def dbt_error_scenarios() -> t.SequenceOf[t.JsonMapping]:
     """Dbt error scenarios for testing."""
     return [
         {
@@ -398,10 +396,10 @@ class MockSqlExecutor:
         sql: str,
         *,
         auto_begin: bool = True,
-    ) -> tuple[str, Sequence[t.StrMapping]]:
+    ) -> tuple[str, t.SequenceOf[t.StrMapping]]:
         """Execute SQL statement with reduced branching."""
         _ = auto_begin
-        sql_strategies: MutableMapping[str, tuple[str, Sequence[t.StrMapping]]] = {
+        sql_strategies: MutableMapping[str, tuple[str, t.SequenceOf[t.StrMapping]]] = {
             "CREATE TABLE": ("CREATE", list[t.StrMapping]()),
             "INSERT": ("INSERT", list[t.StrMapping]()),
             "SELECT": ("SELECT", [{"column1": "value1", "column2": "value2"}]),
@@ -419,7 +417,7 @@ class MockModelCompiler:
         """Compile dbt model SQL."""
         compiled = model_sql
         vars_value = context.get("vars", {})
-        vars_dict: Mapping[str, t.Primitives]
+        vars_dict: t.MappingKV[str, t.Primitives]
         try:
             vars_dict = t.PRIMITIVES_MAPPING_ADAPTER.validate_python(vars_value)
         except c.ValidationError:
@@ -441,7 +439,7 @@ class MockRelationManager:
             "type": "table",
         }
 
-    def list_relations_without_caching(self, schema: str) -> Sequence[t.StrMapping]:
+    def list_relations_without_caching(self, schema: str) -> t.SequenceOf[t.StrMapping]:
         """List relations in schema."""
         return [
             {"schema": schema, "identifier": "customers", "type": "table"},
@@ -474,7 +472,7 @@ class MockDbtOracleAdapter:
         sql: str,
         *,
         auto_begin: bool = True,
-    ) -> tuple[str, Sequence[t.StrMapping]]:
+    ) -> tuple[str, t.SequenceOf[t.StrMapping]]:
         """Delegate to SQL executor strategy."""
         return self.sql_executor.execute(sql, auto_begin=auto_begin)
 
@@ -486,7 +484,7 @@ class MockDbtOracleAdapter:
         """Delegate to relation manager strategy."""
         return self.relation_manager.get_relation(database, schema, identifier)
 
-    def list_relations_without_caching(self, schema: str) -> Sequence[t.StrMapping]:
+    def list_relations_without_caching(self, schema: str) -> t.SequenceOf[t.StrMapping]:
         """Delegate to relation manager strategy."""
         return self.relation_manager.list_relations_without_caching(schema)
 

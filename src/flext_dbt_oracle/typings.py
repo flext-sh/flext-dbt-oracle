@@ -23,7 +23,7 @@ class FlextDbtOracleTypes(t, FlextDbOracleTypes):
     """MRO facade composing Meltano + DbOracle type namespaces."""
 
     SCALAR_LIST_ADAPTER: u.TypeAdapter[Sequence[t.Scalar]] = u.TypeAdapter(
-        Sequence[t.Scalar]
+        t.SequenceOf[t.Scalar]
     )
     PRIMITIVES_MAPPING_ADAPTER: u.TypeAdapter[Mapping[str, t.Primitives]] = (
         u.TypeAdapter(Mapping[str, t.Primitives])
@@ -34,7 +34,7 @@ class FlextDbtOracleTypes(t, FlextDbOracleTypes):
 
         type OraclePayload = t.JsonMapping
         "Oracle payload type."
-        type OraclePayloadList = Sequence[OraclePayload]
+        type OraclePayloadList = t.SequenceOf[OraclePayload]
         "List of Oracle payloads."
 
 
