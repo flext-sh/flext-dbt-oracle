@@ -18,7 +18,6 @@ if _t.TYPE_CHECKING:
         __version__,
         __version_info__,
     )
-    from flext_dbt_oracle.base import FlextDbtOracleServiceBase
     from flext_dbt_oracle.constants import FlextDbtOracleConstants, c
     from flext_dbt_oracle.models import FlextDbtOracleModels, m
     from flext_dbt_oracle.protocols import FlextDbtOracleProtocols, p
@@ -38,7 +37,6 @@ _LAZY_IMPORTS = build_lazy_import_map(
             "__version__",
             "__version_info__",
         ),
-        ".base": ("FlextDbtOracleServiceBase",),
         ".constants": (
             "FlextDbtOracleConstants",
             "c",
@@ -78,7 +76,6 @@ __all__: list[str] = [
     "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",
-    "FlextDbtOracleServiceBase",
     "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
