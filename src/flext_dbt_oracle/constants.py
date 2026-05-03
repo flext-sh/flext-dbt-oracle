@@ -22,7 +22,6 @@ class FlextDbtOracleConstants(c, FlextDbOracleConstants):
             DEFAULT_PORT: Final[int] = 1521
             DEFAULT_SERVICE_NAME: Final[str] = "XEPDB1"
             DEFAULT_PROTOCOL: Final[str] = "tcp"
-            DEFAULT_SCHEMA: Final[str] = "public"
 
         class Dbt:
             """DBT runtime defaults and enums."""
@@ -37,8 +36,6 @@ class FlextDbtOracleConstants(c, FlextDbOracleConstants):
                 SNAPSHOT = "snapshot"
 
             DEFAULT_TARGET: Final[str] = "dev"
-            DEFAULT_THREADS: Final[int] = 4
-            DEFAULT_PROJECT_DIR: Final[str] = "."
             DEFAULT_PROFILES_DIR: Final[str] = "."
             DEFAULT_MATERIALIZATION: Final[Materialization] = Materialization.VIEW
 
