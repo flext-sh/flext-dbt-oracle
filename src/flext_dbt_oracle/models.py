@@ -175,20 +175,6 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                     "relation": self.relation_name,
                 }
 
-        class OracleTableFactory:
-            """Factory for creating Oracle table adapters."""
-
-            @staticmethod
-            def create(
-                schema_name: str,
-                table_name: str,
-            ) -> FlextDbtOracleModels.DbtOracle.OracleTableAdapter:
-                """Create adapter with trimmed, normalized names."""
-                return FlextDbtOracleModels.DbtOracle.OracleTableAdapter(
-                    schema_name=schema_name.strip() or c.DbtOracle.DEFAULT_SCHEMA_NAME,
-                    table_name=table_name.strip(),
-                )
-
     @classmethod
     def create_generator(
         cls,

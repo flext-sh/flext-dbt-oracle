@@ -37,22 +37,3 @@ class TestsFlextDbtOracleImpl:
         )
         assert adapter.schema_name == "SYS"
         assert adapter.table_name == "DUAL"
-
-    def test_create_basic(self) -> None:
-        adapter = m.DbtOracle.OracleTableFactory.create("HR", "EMPLOYEES")
-        assert isinstance(adapter, m.DbtOracle.OracleTableAdapter)
-        assert adapter.schema_name == "HR"
-        assert adapter.table_name == "EMPLOYEES"
-
-    def test_create_trims_whitespace(self) -> None:
-        adapter = m.DbtOracle.OracleTableFactory.create("  HR  ", "  EMPLOYEES  ")
-        assert adapter.schema_name == "HR"
-        assert adapter.table_name == "EMPLOYEES"
-
-    def test_create_empty_schema_defaults_to_public(self) -> None:
-        adapter = m.DbtOracle.OracleTableFactory.create("", "EMPLOYEES")
-        assert adapter.schema_name == "public"
-
-    def test_create_whitespace_schema_defaults_to_public(self) -> None:
-        adapter = m.DbtOracle.OracleTableFactory.create("   ", "EMPLOYEES")
-        assert adapter.schema_name == "public"
