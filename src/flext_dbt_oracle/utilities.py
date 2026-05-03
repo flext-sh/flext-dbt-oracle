@@ -15,26 +15,6 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
     class DbtOracle:
         """DBT Oracle domain utilities namespace."""
 
-        class Sql:
-            """SQL text generation helpers."""
-
-            @staticmethod
-            def generate_incremental_filter(column_name: str, days_back: int) -> str:
-                """Generate incremental filter predicate."""
-                return (
-                    f"where {column_name} >= current_date - interval '{days_back}' day"
-                )
-
-            @staticmethod
-            def generate_source_query(schema_name: str, table_name: str) -> str:
-                """Generate source selection SQL text."""
-                return f"select * from {schema_name}.{table_name}"  # nosec B608
-
-        class Validation:
-            """Payload validation helpers."""
-
-            pass
-
         class Client:
             """Typed facade for Oracle extraction and DBT pipeline execution."""
 
@@ -85,31 +65,6 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                     "host": c.LOCALHOST,
                     "database": "XEPDB1",
                 }
-
-        class Services:
-            """Utility service namespace for DBT Oracle workflows."""
-
-            def generate_recommendations(
-                self,
-                table_count: int,
-            ) -> t.MappingKV[str, t.JsonValue]:
-                """Generate lightweight recommendations from table volume."""
-                recommendations: list[str] = [
-                    "Process tables in batches and increase dbt threads gradually"
-                    for _ in [None]
-                    if table_count > c.DbtOracle.PERFORMANCE_RECOMMENDATION_THRESHOLD
-                ]
-                payload: dict[str, t.JsonValue] = {
-                    "table_count": table_count,
-                    "recommendations": t.Cli.JSON_VALUE_ADAPTER.validate_python(
-                        recommendations,
-                    ),
-                }
-                return payload
-
-            def track_execution(self, workflow_name: str) -> t.ConfigurationMapping:
-                """Build a minimal execution tracking payload."""
-                return {"workflow": workflow_name, "status": "running"}
 
 
 __all__: list[str] = ["FlextDbtOracleUtilities", "u"]
