@@ -136,7 +136,8 @@ class FlextDbtOracleSettings(FlextSettingsBase):
     @property
     def port(self) -> int:
         """Return the Oracle port."""
-        return self.oracle_port
+        oracle_port: int = self.oracle_port
+        return oracle_port
 
     @u.computed_field(return_type=str)
     @property
