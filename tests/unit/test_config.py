@@ -20,7 +20,7 @@ class TestsFlextDbtOracleConfig:
 
     def setup_method(self) -> None:
         """Reset singleton before each test to avoid cross-test pollution."""
-        FlextDbtOracleSettings._reset_instance()
+        FlextDbtOracleSettings.reset_instance()
 
     def test_basic_config_creation(self) -> None:
         """Test creating basic Oracle configuration."""
