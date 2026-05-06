@@ -43,7 +43,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                 self,
                 tables: t.StrSequence | None = None,
                 filters: t.ConfigurationMapping | None = None,
-            ) -> t.MappingKV[str, t.JsonValue]:
+            ) -> t.JsonMapping:
                 """Run discover and extraction pipeline for selected tables."""
                 selected_tables = tables or self.discover_tables()
                 extracted = {
@@ -51,7 +51,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                     for table in selected_tables
                 }
                 tables_payload: list[t.JsonValue] = list(selected_tables)
-                result: t.MappingKV[str, t.JsonValue] = {
+                result: t.JsonMapping = {
                     "status": "completed",
                     "tables": tables_payload,
                     "record_count": sum(len(rows) for rows in extracted.values()),
