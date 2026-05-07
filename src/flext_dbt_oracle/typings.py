@@ -9,25 +9,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-    Sequence,
-)
-
-from flext_core import u
 from flext_db_oracle import FlextDbOracleTypes
 from flext_meltano import t
 
 
 class FlextDbtOracleTypes(t, FlextDbOracleTypes):
     """MRO facade composing Meltano + DbOracle type namespaces."""
-
-    SCALAR_LIST_ADAPTER: u.TypeAdapter[Sequence[t.Scalar]] = u.TypeAdapter(
-        t.SequenceOf[t.Scalar]
-    )
-    PRIMITIVES_MAPPING_ADAPTER: u.TypeAdapter[Mapping[str, t.Primitives]] = (
-        u.TypeAdapter(Mapping[str, t.Primitives])
-    )
 
     class DbtOracle:
         """DbtOracle domain namespace for actively used type definitions."""
