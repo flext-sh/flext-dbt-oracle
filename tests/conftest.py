@@ -7,13 +7,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import os
-import tempfile
 from collections.abc import Generator
 from pathlib import Path
 
 import pytest
 from flext_tests import tk
+
+from tests import tf, u
 
 
 @pytest.fixture(scope="session")
@@ -39,15 +39,15 @@ def shared_oracle_container(docker_control: tk) -> Generator[str]:
         ),
         1522,
     )
-    os.environ.update({
+    with u.Tests.env_vars_context({
         "DBT_ORACLE_ORACLE_HOST": "localhost",
         "DBT_ORACLE_ORACLE_PORT": str(resolved_port),
         "DBT_ORACLE_ORACLE_USERNAME": "flext_test",
         "DBT_ORACLE_ORACLE_PASSWORD": "flext_test_password",
         "DBT_ORACLE_ORACLE_SERVICE_NAME": "FLEXTDB",
         "DBT_ORACLE_ORACLE_SCHEMA": "FLEXT_TEST",
-    })
-    yield "flext-oracle-db-test"
+    }):
+        yield "flext-oracle-db-test"
     _ = docker_control.down()
 
 
@@ -60,17 +60,15 @@ def oracle_shared_container_environment(shared_oracle_container: str) -> None:
 @pytest.fixture(autouse=True)
 def set_test_environment() -> Generator[None]:
     """Set test environment variables."""
-    os.environ["FLEXT_ENV"] = "test"
-    os.environ["FLEXT_LOG_LEVEL"] = "debug"
-    temp_dir = tempfile.mkdtemp(prefix="dbt_profiles_")
-    os.environ["DBT_PROFILES_DIR"] = temp_dir
-    os.environ["DBT_TEST_USER_1"] = "dbt_test_user_1"
-    os.environ["DBT_TEST_USER_2"] = "dbt_test_user_2"
-    os.environ["DBT_TEST_USER_3"] = "dbt_test_user_3"
-    yield
-    _ = os.environ.pop("FLEXT_ENV", None)
-    _ = os.environ.pop("FLEXT_LOG_LEVEL", None)
-    _ = os.environ.pop("DBT_PROFILES_DIR", None)
-    _ = os.environ.pop("DBT_TEST_USER_1", None)
-    _ = os.environ.pop("DBT_TEST_USER_2", None)
-    _ = os.environ.pop("DBT_TEST_USER_3", None)
+    with (
+        tf().temporary_directory() as temp_dir,
+        u.Tests.env_vars_context({
+            "FLEXT_ENV": "test",
+            "FLEXT_LOG_LEVEL": "debug",
+            "DBT_PROFILES_DIR": temp_dir,
+            "DBT_TEST_USER_1": "dbt_test_user_1",
+            "DBT_TEST_USER_2": "dbt_test_user_2",
+            "DBT_TEST_USER_3": "dbt_test_user_3",
+        }),
+    ):
+        yield

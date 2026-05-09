@@ -14,10 +14,12 @@ from flext_core.lazy import (
 if _t.TYPE_CHECKING:
     from flext_tests import td, tf, tk, tm, tv
 
-    from flext_dbt_oracle import d, e, h, r, s, x
+    from flext_dbt_oracle import d, e, h, r, x
+    from tests.base import TestsFlextDbtOracleServiceBase, s
     from tests.constants import TestsFlextDbtOracleConstants, c
     from tests.models import TestsFlextDbtOracleModels, m
     from tests.protocols import TestsFlextDbtOracleProtocols, p
+    from tests.settings import TestsFlextDbtOracleSettings
     from tests.typings import TestsFlextDbtOracleTypes, t
     from tests.unit.test_basic import TestsFlextDbtOracleBasic
     from tests.unit.test_config import TestsFlextDbtOracleConfig
@@ -30,6 +32,10 @@ _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
     build_lazy_import_map(
         {
+            ".base": (
+                "TestsFlextDbtOracleServiceBase",
+                "s",
+            ),
             ".constants": (
                 "TestsFlextDbtOracleConstants",
                 "c",
@@ -42,6 +48,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "TestsFlextDbtOracleProtocols",
                 "p",
             ),
+            ".settings": ("TestsFlextDbtOracleSettings",),
             ".typings": (
                 "TestsFlextDbtOracleTypes",
                 "t",
@@ -61,7 +68,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "e",
                 "h",
                 "r",
-                "s",
                 "x",
             ),
             "flext_tests": (
@@ -108,6 +114,8 @@ __all__: list[str] = [
     "TestsFlextDbtOracleModels",
     "TestsFlextDbtOracleModuleGovernance",
     "TestsFlextDbtOracleProtocols",
+    "TestsFlextDbtOracleServiceBase",
+    "TestsFlextDbtOracleSettings",
     "TestsFlextDbtOracleTypes",
     "TestsFlextDbtOracleUtilities",
     "c",
