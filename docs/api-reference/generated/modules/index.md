@@ -4,8 +4,6 @@
 
 These pages are generated from public modules and their docstrings.
 
-- [flext_dbt_oracle](flext_dbt_oracle.md)
-- [flext_dbt_oracle.base](base.md)
 - [flext_dbt_oracle.constants](constants.md)
 - [flext_dbt_oracle.models](models.md)
 - [flext_dbt_oracle.protocols](protocols.md)
