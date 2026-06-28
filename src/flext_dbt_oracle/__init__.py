@@ -18,13 +18,30 @@ from flext_dbt_oracle.__version__ import (
 )
 
 if _t.TYPE_CHECKING:
-    from flext_dbt_oracle.constants import FlextDbtOracleConstants, c
-    from flext_dbt_oracle.models import FlextDbtOracleModels, m
-    from flext_dbt_oracle.protocols import FlextDbtOracleProtocols, p
-    from flext_dbt_oracle.settings import FlextDbtOracleSettings
-    from flext_dbt_oracle.typings import FlextDbtOracleTypes, t
-    from flext_dbt_oracle.utilities import FlextDbtOracleUtilities, u
-    from flext_meltano import d, e, h, r, s, x
+    from flext_dbt_oracle.constants import (
+        FlextDbtOracleConstants as FlextDbtOracleConstants,
+        c as c,
+    )
+    from flext_dbt_oracle.models import (
+        FlextDbtOracleModels as FlextDbtOracleModels,
+        m as m,
+    )
+    from flext_dbt_oracle.protocols import (
+        FlextDbtOracleProtocols as FlextDbtOracleProtocols,
+        p as p,
+    )
+    from flext_dbt_oracle.settings import (
+        FlextDbtOracleSettings as FlextDbtOracleSettings,
+    )
+    from flext_dbt_oracle.typings import (
+        FlextDbtOracleTypes as FlextDbtOracleTypes,
+        t as t,
+    )
+    from flext_dbt_oracle.utilities import (
+        FlextDbtOracleUtilities as FlextDbtOracleUtilities,
+        u as u,
+    )
+    from flext_meltano import d as d, e as e, h as h, r as r, s as s, x as x
 _LAZY_IMPORTS = build_lazy_import_map(
     {
         ".constants": (
