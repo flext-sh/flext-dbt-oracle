@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
-from tests import c, t
+from tests.constants import c
+from tests.typings import t
 
 
 class FlextDbtOracleConfigConnectionPart:

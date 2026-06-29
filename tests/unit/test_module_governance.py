@@ -8,7 +8,7 @@ from collections.abc import Iterator
 from pathlib import Path
 from types import ModuleType
 
-from tests import c
+from tests.constants import c
 
 
 def _package_root() -> Path:

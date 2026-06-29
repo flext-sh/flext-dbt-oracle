@@ -11,9 +11,9 @@ from collections.abc import Generator
 from pathlib import Path
 
 import pytest
-from flext_tests import tk
+from flext_tests import tf, tk
 
-from tests import tf, u
+from tests.utilities import u
 
 
 @pytest.fixture(scope="session")
