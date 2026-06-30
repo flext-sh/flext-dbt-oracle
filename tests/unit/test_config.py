@@ -8,11 +8,9 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_dbt_oracle.settings import FlextDbtOracleSettings
-from tests.unit._config_parts import (
-    FlextDbtOracleConfigConnectionPart,
-    FlextDbtOracleConfigConstructionPart,
-    FlextDbtOracleConfigValidationPart,
-)
+from tests.unit._config_parts.connection import FlextDbtOracleConfigConnectionPart
+from tests.unit._config_parts.construction import FlextDbtOracleConfigConstructionPart
+from tests.unit._config_parts.validation import FlextDbtOracleConfigValidationPart
 
 
 class TestsFlextDbtOracleConfig(
