@@ -3,12 +3,80 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from flext_core.lazy import (
     build_lazy_import_map,
     install_lazy_exports,
     merge_lazy_imports,
 )
 
+if TYPE_CHECKING:
+    from flext_tests import (
+        d as d,
+        e as e,
+        h as h,
+        r as r,
+        td as td,
+        tf as tf,
+        tk as tk,
+        tm as tm,
+        tv as tv,
+        x as x,
+    )
+
+    from tests.base import (
+        TestsFlextDbtOracleServiceBase as TestsFlextDbtOracleServiceBase,
+        s as s,
+    )
+    from tests.constants import (
+        TestsFlextDbtOracleConstants as TestsFlextDbtOracleConstants,
+        c as c,
+    )
+    from tests.models import (
+        TestsFlextDbtOracleModels as TestsFlextDbtOracleModels,
+        m as m,
+    )
+    from tests.protocols import (
+        TestsFlextDbtOracleProtocols as TestsFlextDbtOracleProtocols,
+        p as p,
+    )
+    from tests.settings import (
+        TestsFlextDbtOracleSettings as TestsFlextDbtOracleSettings,
+    )
+    from tests.typings import (
+        TestsFlextDbtOracleTypes as TestsFlextDbtOracleTypes,
+        t as t,
+    )
+    from tests.unit._config_parts.connection import (
+        FlextDbtOracleConfigConnectionPart as FlextDbtOracleConfigConnectionPart,
+    )
+    from tests.unit._config_parts.construction import (
+        FlextDbtOracleConfigConstructionPart as FlextDbtOracleConfigConstructionPart,
+    )
+    from tests.unit._config_parts.validation import (
+        FlextDbtOracleConfigValidationPart as FlextDbtOracleConfigValidationPart,
+    )
+    from tests.unit.test_basic import (
+        TestsFlextDbtOracleBasic as TestsFlextDbtOracleBasic,
+    )
+    from tests.unit.test_config import (
+        TestsFlextDbtOracleConfig as TestsFlextDbtOracleConfig,
+    )
+    from tests.unit.test_connections import (
+        TestsFlextDbtOracleConnections as TestsFlextDbtOracleConnections,
+    )
+    from tests.unit.test_impl import TestsFlextDbtOracleImpl as TestsFlextDbtOracleImpl
+    from tests.unit.test_imports import (
+        TestsFlextDbtOracleImports as TestsFlextDbtOracleImports,
+    )
+    from tests.unit.test_module_governance import (
+        TestsFlextDbtOracleModuleGovernance as TestsFlextDbtOracleModuleGovernance,
+    )
+    from tests.utilities import (
+        TestsFlextDbtOracleUtilities as TestsFlextDbtOracleUtilities,
+        u as u,
+    )
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
     build_lazy_import_map(
