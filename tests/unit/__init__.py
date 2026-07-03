@@ -3,12 +3,42 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from flext_core.lazy import (
     build_lazy_import_map,
     install_lazy_exports,
     merge_lazy_imports,
 )
 
+if TYPE_CHECKING:
+    from flext_dbt_oracle.tests.unit._config_parts.connection import (
+        FlextDbtOracleConfigConnectionPart as FlextDbtOracleConfigConnectionPart,
+    )
+    from flext_dbt_oracle.tests.unit._config_parts.construction import (
+        FlextDbtOracleConfigConstructionPart as FlextDbtOracleConfigConstructionPart,
+    )
+    from flext_dbt_oracle.tests.unit._config_parts.validation import (
+        FlextDbtOracleConfigValidationPart as FlextDbtOracleConfigValidationPart,
+    )
+    from flext_dbt_oracle.tests.unit.test_basic import (
+        TestsFlextDbtOracleBasic as TestsFlextDbtOracleBasic,
+    )
+    from flext_dbt_oracle.tests.unit.test_config import (
+        TestsFlextDbtOracleConfig as TestsFlextDbtOracleConfig,
+    )
+    from flext_dbt_oracle.tests.unit.test_connections import (
+        TestsFlextDbtOracleConnections as TestsFlextDbtOracleConnections,
+    )
+    from flext_dbt_oracle.tests.unit.test_impl import (
+        TestsFlextDbtOracleImpl as TestsFlextDbtOracleImpl,
+    )
+    from flext_dbt_oracle.tests.unit.test_imports import (
+        TestsFlextDbtOracleImports as TestsFlextDbtOracleImports,
+    )
+    from flext_dbt_oracle.tests.unit.test_module_governance import (
+        TestsFlextDbtOracleModuleGovernance as TestsFlextDbtOracleModuleGovernance,
+    )
 _LAZY_IMPORTS = merge_lazy_imports(
     ("._config_parts",),
     build_lazy_import_map(
@@ -23,24 +53,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
             ".test_impl": ("TestsFlextDbtOracleImpl",),
             ".test_imports": ("TestsFlextDbtOracleImports",),
             ".test_module_governance": ("TestsFlextDbtOracleModuleGovernance",),
-            "flext_tests": (
-                "c",
-                "d",
-                "e",
-                "h",
-                "m",
-                "p",
-                "r",
-                "s",
-                "t",
-                "td",
-                "tf",
-                "tk",
-                "tm",
-                "tv",
-                "u",
-                "x",
-            ),
         },
     ),
     exclude_names=(

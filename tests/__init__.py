@@ -25,55 +25,57 @@ if TYPE_CHECKING:
         x as x,
     )
 
-    from tests.base import (
+    from flext_dbt_oracle.tests.base import (
         TestsFlextDbtOracleServiceBase as TestsFlextDbtOracleServiceBase,
         s as s,
     )
-    from tests.constants import (
+    from flext_dbt_oracle.tests.constants import (
         TestsFlextDbtOracleConstants as TestsFlextDbtOracleConstants,
         c as c,
     )
-    from tests.models import (
+    from flext_dbt_oracle.tests.models import (
         TestsFlextDbtOracleModels as TestsFlextDbtOracleModels,
         m as m,
     )
-    from tests.protocols import (
+    from flext_dbt_oracle.tests.protocols import (
         TestsFlextDbtOracleProtocols as TestsFlextDbtOracleProtocols,
         p as p,
     )
-    from tests.settings import (
+    from flext_dbt_oracle.tests.settings import (
         TestsFlextDbtOracleSettings as TestsFlextDbtOracleSettings,
     )
-    from tests.typings import (
+    from flext_dbt_oracle.tests.typings import (
         TestsFlextDbtOracleTypes as TestsFlextDbtOracleTypes,
         t as t,
     )
-    from tests.unit._config_parts.connection import (
+    from flext_dbt_oracle.tests.unit._config_parts.connection import (
         FlextDbtOracleConfigConnectionPart as FlextDbtOracleConfigConnectionPart,
     )
-    from tests.unit._config_parts.construction import (
+    from flext_dbt_oracle.tests.unit._config_parts.construction import (
         FlextDbtOracleConfigConstructionPart as FlextDbtOracleConfigConstructionPart,
     )
-    from tests.unit._config_parts.validation import (
+    from flext_dbt_oracle.tests.unit._config_parts.validation import (
         FlextDbtOracleConfigValidationPart as FlextDbtOracleConfigValidationPart,
     )
-    from tests.unit.test_basic import (
+    from flext_dbt_oracle.tests.unit.test_basic import (
         TestsFlextDbtOracleBasic as TestsFlextDbtOracleBasic,
     )
-    from tests.unit.test_config import (
+    from flext_dbt_oracle.tests.unit.test_config import (
         TestsFlextDbtOracleConfig as TestsFlextDbtOracleConfig,
     )
-    from tests.unit.test_connections import (
+    from flext_dbt_oracle.tests.unit.test_connections import (
         TestsFlextDbtOracleConnections as TestsFlextDbtOracleConnections,
     )
-    from tests.unit.test_impl import TestsFlextDbtOracleImpl as TestsFlextDbtOracleImpl
-    from tests.unit.test_imports import (
+    from flext_dbt_oracle.tests.unit.test_impl import (
+        TestsFlextDbtOracleImpl as TestsFlextDbtOracleImpl,
+    )
+    from flext_dbt_oracle.tests.unit.test_imports import (
         TestsFlextDbtOracleImports as TestsFlextDbtOracleImports,
     )
-    from tests.unit.test_module_governance import (
+    from flext_dbt_oracle.tests.unit.test_module_governance import (
         TestsFlextDbtOracleModuleGovernance as TestsFlextDbtOracleModuleGovernance,
     )
-    from tests.utilities import (
+    from flext_dbt_oracle.tests.utilities import (
         TestsFlextDbtOracleUtilities as TestsFlextDbtOracleUtilities,
         u as u,
     )
