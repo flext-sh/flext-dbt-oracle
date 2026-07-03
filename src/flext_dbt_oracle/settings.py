@@ -4,9 +4,10 @@ from __future__ import annotations
 
 from typing import Annotated, ClassVar, Literal
 
-from flext_core import FlextSettingsBase, m, u
+from flext_core import FlextSettingsBase
 from flext_dbt_oracle import c, t
-from flext_dbt_oracle.models import FlextDbtOracleModels
+from flext_dbt_oracle.models import FlextDbtOracleModels, m
+from flext_dbt_oracle.utilities import u
 
 
 class FlextDbtOracleSettings(FlextSettingsBase):

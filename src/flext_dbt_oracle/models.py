@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from flext_core import u
 from flext_db_oracle import m
 from flext_dbt_oracle.constants import c
 from flext_dbt_oracle.typings import t
+from flext_dbt_oracle.utilities import u
 from flext_meltano import FlextMeltanoModels
 
 
