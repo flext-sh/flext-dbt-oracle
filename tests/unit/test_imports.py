@@ -16,14 +16,16 @@ import flext_dbt_oracle.models
 import flext_dbt_oracle.settings
 
 
-def test_flext_dbt_oracle_imports() -> None:
-    assert flext_dbt_oracle is not None
-    assert flext_dbt_oracle.adapters is not None
-    assert flext_dbt_oracle.connections is not None
-    assert flext_dbt_oracle.models is not None
-    assert flext_dbt_oracle.settings is not None
+class TestsFlextDbtOracleImports:
+    """Behavior contract for test_imports."""
 
+    def test_flext_dbt_oracle_imports(self) -> None:
+        assert flext_dbt_oracle is not None
+        assert flext_dbt_oracle.adapters is not None
+        assert flext_dbt_oracle.connections is not None
+        assert flext_dbt_oracle.models is not None
+        assert flext_dbt_oracle.settings is not None
 
-@pytest.mark.unit
-def test_basic_functionality() -> None:
-    assert True
+    @pytest.mark.unit
+    def test_basic_functionality(self) -> None:
+        assert True

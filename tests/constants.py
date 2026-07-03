@@ -1,6 +1,7 @@
-"""Module skeleton for TestsFlextDbtOracleConstants.
+"""Test constants for flext-dbt-oracle tests.
 
-Test constants for flextdbtoracle.
+Provides TestsFlextDbtOracleConstants, extending FlextTestsConstants with
+flext-dbt-oracle-specific constants.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -8,8 +9,30 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import Final
+
 from flext_tests import FlextTestsConstants
 
+from flext_dbt_oracle import FlextDbtOracleConstants
 
-class TestsFlextDbtOracleConstants(FlextTestsConstants):
-    """Test constants for flextdbtoracle."""
+
+class TestsFlextDbtOracleConstants(
+    FlextTestsConstants,
+    FlextDbtOracleConstants,
+):
+    """Test constants for flext-dbt-oracle."""
+
+    class DbtOracle(FlextDbtOracleConstants.DbtOracle):
+        """DbtOracle test constants namespace."""
+
+        class Tests:
+            """Test-specific constants."""
+
+            PROJECT_ROOT_PARENT_DEPTH: Final[int] = 1
+            SRC_DIR: Final[str] = "src"
+            PACKAGE_DIR: Final[str] = "flext_dbt_oracle"
+
+
+c = TestsFlextDbtOracleConstants
+
+__all__: list[str] = ["TestsFlextDbtOracleConstants", "c"]

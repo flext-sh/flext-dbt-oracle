@@ -11,28 +11,16 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsProtocols
 
-from flext_dbt_oracle.protocols import FlextDbtOracleProtocols
+from flext_dbt_oracle import FlextDbtOracleProtocols
 
 
-class TestsFlextDbtOracleProtocols(FlextTestsProtocols, FlextDbtOracleProtocols):
-    """Test protocols combining FlextTestsProtocols and FlextDbtOracleProtocols.
-
-    Provides access to:
-    - p.Tests.Docker.* (from FlextTestsProtocols)
-    - p.Tests.Factory.* (from FlextTestsProtocols)
-    - p.DbtOracle.* (from FlextDbtOracleProtocols)
-    """
-
-    class Tests(FlextTestsProtocols.Tests):
-        """Project-specific test protocols.
-
-        Extends FlextTestsProtocols.Tests with DbtOracle-specific protocols.
-        """
-
-        class DbtOracle:
-            """DbtOracle-specific test protocols."""
+class TestsFlextDbtOracleProtocols(
+    FlextTestsProtocols,
+    FlextDbtOracleProtocols,
+):
+    """Test protocols combining FlextTestsProtocols and FlextDbtOracleProtocols."""
 
 
 p = TestsFlextDbtOracleProtocols
-p = TestsFlextDbtOracleProtocols
-__all__ = ["TestsFlextDbtOracleProtocols", "p"]
+
+__all__: list[str] = ["TestsFlextDbtOracleProtocols", "p"]
