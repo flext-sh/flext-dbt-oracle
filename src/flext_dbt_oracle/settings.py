@@ -7,7 +7,7 @@ from typing import Annotated, ClassVar, Literal
 from flext_core import FlextSettingsBase
 from flext_dbt_oracle import c, t
 from flext_dbt_oracle.models import FlextDbtOracleModels, m
-from flext_dbt_oracle.utilities import u
+from flext_meltano import u
 
 
 class FlextDbtOracleSettings(FlextSettingsBase):

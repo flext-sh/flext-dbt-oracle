@@ -2,11 +2,15 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from flext_db_oracle import FlextDbOracleUtilities
 from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
 from flext_dbt_oracle.typings import t
 from flext_meltano import u
+
+if TYPE_CHECKING:
+    from flext_dbt_oracle.settings import FlextDbtOracleSettings
 
 
 class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
