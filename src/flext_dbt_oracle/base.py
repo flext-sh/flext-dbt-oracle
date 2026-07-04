@@ -27,7 +27,7 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
     @property
     @override
     def settings(self) -> FlextDbtOracleSettings:
-        """Return the typed dbt-oracle settings namespace."""
+        """The typed dbt-oracle settings namespace."""
         return FlextDbtOracleSettings.fetch_global()
 
     @property
