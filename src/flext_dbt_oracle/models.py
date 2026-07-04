@@ -46,20 +46,14 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                 str,
                 u.Field(description="Source system name"),
             ] = c.DbtOracle.DEFAULT_SOURCE_NAME
-            columns: Annotated[
-                t.SequenceOf[t.StrMapping],
-                u.Field(
-                    default_factory=tuple,
-                    description="Normalized column metadata for the DBT model",
-                ),
-            ]
-            dependencies: Annotated[
-                t.StrSequence,
-                u.Field(
-                    default_factory=tuple,
-                    description="Upstream DBT model dependencies",
-                ),
-            ]
+            columns: t.SequenceOf[t.StrMapping] = u.Field(
+                default_factory=tuple,
+                description="Normalized column metadata for the DBT model",
+            )
+            dependencies: t.StrSequence = u.Field(
+                default_factory=tuple,
+                description="Upstream DBT model dependencies",
+            )
 
         class ModelGenerator:
             """Helper for generating deterministic staging model metadata."""
