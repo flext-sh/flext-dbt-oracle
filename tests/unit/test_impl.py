@@ -5,6 +5,9 @@ SPDX-License-Identifier: MIT
 
 """
 
+# mypy: warn-unused-ignores=False
+# Why: pyrefly flags mutation of frozen Pydantic fields, which mypy does not.
+
 from __future__ import annotations
 
 import pytest
@@ -95,7 +98,7 @@ class TestsFlextDbtOracleImpl:
         adapter = OracleTableAdapter(schema_name="HR", table_name="EMP")
 
         with pytest.raises(ValidationError):
-            adapter.schema_name = "SYS"
+            adapter.schema_name = "SYS"  # type: ignore[assignment]
 
     @pytest.mark.parametrize(
         "kwargs", [{"schema_name": "HR"}, {"table_name": "EMP"}, {}]
