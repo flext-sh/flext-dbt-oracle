@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Literal, cast
+from typing import Literal
 
 import pytest
 
@@ -32,7 +32,9 @@ class TestsFlextDbtOracleConfig:
             "oracle_password": t.SecretStr("testpass").get_secret_value(),
         }
         base.update(overrides)
-        return FlextDbtOracleSettings.model_validate(base)
+        settings = FlextDbtOracleSettings.model_validate(base)
+        assert isinstance(settings, FlextDbtOracleSettings)
+        return settings
 
     # ------------------------------------------------------------------ #
     # Construction & field state (public model API)                       #
@@ -124,10 +126,7 @@ class TestsFlextDbtOracleConfig:
         with pytest.raises(c.ValidationError, match="Input should be"):
             _ = self._build(
                 oracle_service_name="XEPDB1",
-                materialization=cast(
-                    "Literal['incremental', 'snapshot', 'table', 'view']",
-                    "invalid_type",
-                ),
+                materialization="invalid_type",
             )
 
     def test_invalid_protocol_is_rejected(self) -> None:
@@ -135,7 +134,7 @@ class TestsFlextDbtOracleConfig:
         with pytest.raises(c.ValidationError, match="Input should be"):
             _ = self._build(
                 oracle_service_name="XEPDB1",
-                protocol=cast("Literal['tcp', 'tcps']", "invalid_protocol"),
+                protocol="invalid_protocol",
             )
 
     def test_pool_max_below_min_is_rejected(self) -> None:
