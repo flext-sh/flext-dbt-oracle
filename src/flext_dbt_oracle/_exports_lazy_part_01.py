@@ -32,7 +32,7 @@ FLEXT_DBT_ORACLE_LAZY_IMPORTS_PART_01 = build_lazy_import_map(
             "FlextDbtOracleUtilities",
             "u",
         ),
-        "flext_meltano": (
+        "flext_core._root_typing_parts": (
             "d",
             "e",
             "h",

@@ -4,13 +4,12 @@ from __future__ import annotations
 
 from typing import Annotated, ClassVar, Literal
 
-from flext_core import FlextSettingsBase
 from flext_dbt_oracle import c, t
 from flext_dbt_oracle.models import FlextDbtOracleModels, m
-from flext_meltano import u
+from flext_meltano import FlextMeltanoSettings, u
 
 
-class FlextDbtOracleSettings(FlextSettingsBase):
+class FlextDbtOracleSettings(FlextMeltanoSettings):
     """DBT Oracle pipeline configuration."""
 
     model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(

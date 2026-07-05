@@ -8,27 +8,29 @@ from __future__ import annotations
 
 from typing import Annotated, override
 
-from flext_dbt_oracle import FlextDbtOracleSettings, c, t
+from flext_dbt_oracle import FlextDbtOracleSettings, c, m, t
 from flext_meltano import FlextMeltanoDbtServiceBase, u
 
 
 class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
     """Base class for flext-dbt-oracle services."""
 
-    settings_type: Annotated[
-        type | None,
-        u.Field(description="Settings class for DBT Oracle service initialization"),
-    ] = FlextDbtOracleSettings
     dbt_project_name: Annotated[
         t.NonEmptyStr,
         u.Field(description="Canonical dbt project name for DBT Oracle services"),
     ] = "dbt-oracle"
 
+    @classmethod
+    def _runtime_bootstrap_options(cls) -> m.RuntimeBootstrapOptions:
+        """Return runtime bootstrap options for DBT Oracle services."""
+        return m.RuntimeBootstrapOptions(settings_type=FlextDbtOracleSettings)
+
     @property
     @override
     def settings(self) -> FlextDbtOracleSettings:
         """The typed dbt-oracle settings namespace."""
-        return FlextDbtOracleSettings.fetch_global()
+        settings: FlextDbtOracleSettings = FlextDbtOracleSettings.fetch_global()
+        return settings
 
     @property
     @override
