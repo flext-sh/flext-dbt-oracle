@@ -14,13 +14,14 @@ from typing import TYPE_CHECKING
 import pytest
 from flext_tests import tf, tk
 
+from flext_dbt_oracle import t
 from tests.utilities import u
 
 if TYPE_CHECKING:
     from collections.abc import Generator
 
 
-_ENV_BACKUP: dict[str, str | None] = {}
+_ENV_BACKUP: t.MutableMappingKV[str, str | None] = {}
 
 
 def pytest_sessionstart(session: pytest.Session) -> None:

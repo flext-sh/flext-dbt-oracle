@@ -26,7 +26,7 @@ class TestsFlextDbtOracleConfig:
     @staticmethod
     def _build(**overrides: object) -> FlextDbtOracleSettings:
         """Construct settings with mandatory identity fields plus overrides."""
-        base: dict[str, object] = {
+        base: t.MutableMappingKV[str, object] = {
             "oracle_host": "localhost",
             "oracle_username": "testuser",
             "oracle_password": t.SecretStr("testpass").get_secret_value(),
