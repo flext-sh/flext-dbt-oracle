@@ -97,7 +97,9 @@ class TestsFlextDbtOracleImpl:
         with pytest.raises(ValidationError):
             adapter.schema_name = "SYS"
 
-    @pytest.mark.parametrize("kwargs", [{"schema_name": "HR"}, {"table_name": "EMP"}, {}])
+    @pytest.mark.parametrize(
+        "kwargs", [{"schema_name": "HR"}, {"table_name": "EMP"}, {}]
+    )
     def test_missing_required_field_raises_validation_error(
         self,
         kwargs: dict[str, str],
