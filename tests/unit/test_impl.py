@@ -98,7 +98,7 @@ class TestsFlextDbtOracleImpl:
         adapter = OracleTableAdapter(schema_name="HR", table_name="EMP")
 
         with pytest.raises(ValidationError):
-            adapter.schema_name = "SYS"  # type: ignore[assignment]
+            adapter.schema_name = "SYS"
 
     @pytest.mark.parametrize(
         "kwargs", [{"schema_name": "HR"}, {"table_name": "EMP"}, {}]
