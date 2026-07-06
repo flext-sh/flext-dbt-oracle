@@ -3,12 +3,44 @@
 
 from __future__ import annotations
 
-from flext_core.lazy import merge_lazy_imports
-from flext_dbt_oracle._exports_lazy_part_01 import FLEXT_DBT_ORACLE_LAZY_IMPORTS_PART_01
+from flext_core.lazy import build_lazy_import_map, merge_lazy_imports
 
-_LOCAL_LAZY_IMPORTS = {
-    **FLEXT_DBT_ORACLE_LAZY_IMPORTS_PART_01,
-}
+_LOCAL_LAZY_IMPORTS = build_lazy_import_map(
+    {
+        ".base": (
+            "FlextDbtOracleServiceBase",
+            "s",
+        ),
+        ".constants": (
+            "FlextDbtOracleConstants",
+            "c",
+        ),
+        ".models": (
+            "FlextDbtOracleModels",
+            "m",
+        ),
+        ".protocols": (
+            "FlextDbtOracleProtocols",
+            "p",
+        ),
+        ".settings": ("FlextDbtOracleSettings",),
+        ".typings": (
+            "FlextDbtOracleTypes",
+            "t",
+        ),
+        ".utilities": (
+            "FlextDbtOracleUtilities",
+            "u",
+        ),
+        "flext_core._root_typing_parts.facades": (
+            "d",
+            "e",
+            "h",
+            "r",
+            "x",
+        ),
+    },
+)
 
 FLEXT_DBT_ORACLE_LAZY_IMPORTS = merge_lazy_imports(
     (),
