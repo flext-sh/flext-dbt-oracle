@@ -61,10 +61,11 @@ class FlextDbtOracleSettings(FlextMeltanoSettings):
         retry_delay_seconds: Annotated[float, Field(default=1.0, ge=0, description="Retry delay (s)")]
 
         @model_validator(mode="after")
-        def _validate_pool_sizes(self) -> "FlextDbtOracleSettings._DbtOracle":
+        def _validate_pool_sizes(self) -> FlextDbtOracleSettings._DbtOracle:
             """Validate pool upper bound against minimum."""
             if self.pool_max_size < self.pool_min_size:
-                raise ValueError("Pool max size must be >= pool min size")
+                msg = "Pool max size must be >= pool min size"
+                raise ValueError(msg)
             return self
 
     if TYPE_CHECKING:
