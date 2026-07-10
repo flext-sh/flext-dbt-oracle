@@ -6,7 +6,7 @@ from typing import Literal, cast
 
 import pytest
 
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
+from flext_dbt_oracle._settings import FlextDbtOracleSettings
 from tests.constants import c
 from tests.typings import t
 

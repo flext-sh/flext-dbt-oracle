@@ -10,7 +10,7 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
+from flext_dbt_oracle._settings import FlextDbtOracleSettings
 
 
 class TestsFlextDbtOracleBasic:

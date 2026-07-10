@@ -10,7 +10,7 @@ from __future__ import annotations
 import pytest
 
 from flext_dbt_oracle import c, m
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
+from flext_dbt_oracle._settings import FlextDbtOracleSettings
 
 
 class TestsFlextDbtOracleImports:
