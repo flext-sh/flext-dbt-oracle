@@ -19,6 +19,10 @@ from flext_dbt_oracle.__version__ import (
 
 if TYPE_CHECKING:
     from flext_db_oracle import d as d, e as e, h as h, r as r, x as x
+    from flext_dbt_oracle._settings import (
+        FlextDbtOracleSettings as FlextDbtOracleSettings,
+        settings as settings,
+    )
     from flext_dbt_oracle.base import (
         FlextDbtOracleServiceBase as FlextDbtOracleServiceBase,
         s as s,
