@@ -8,8 +8,10 @@ from __future__ import annotations
 
 from typing import Annotated, override
 
-from flext_dbt_oracle import FlextDbtOracleSettings, c, m, t
-from flext_meltano import FlextMeltanoDbtServiceBase, u
+# NOTE (multi-agent): settings-fallout lane (mro-rn88) — import the module `settings`
+# singleton for the strict `from <pkg> import settings` access form (was bare/undefined).
+from flext_dbt_oracle import FlextDbtOracleSettings, c, m, settings, t
+from flext_meltano import FlextMeltanoDbtServiceBase, p, u
 
 
 class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
@@ -33,19 +35,21 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
 
     @property
     @override
-    def connection_profile(self) -> t.JsonMapping:
+    def connection_profile(self) -> p.Meltano.DbtConnectionProfile:
         """Dbt connection profile for Oracle-backed workflows."""
-        active_settings = settings
-        return {
-            "type": "oracle",
-            "host": active_settings.DbtOracle.oracle_host,
-            "port": active_settings.DbtOracle.oracle_port,
-            "user": active_settings.DbtOracle.oracle_username,
-            "password": active_settings.DbtOracle.oracle_password,
-            "service_name": active_settings.DbtOracle.oracle_service_name,
-            "schema": active_settings.DbtOracle.schema_name or c.DbtOracle.DEFAULT_SCHEMA_NAME,
-            "project": self.dbt_project_name,
-        }
+        # NOTE (multi-agent): mro-rn88 ADR-006 thin-driver — connection scalars from
+        # settings.DbOracle.* (SSOT, no duplication); dbt schema from settings.DbtOracle.
+        db = settings.DbOracle
+        return m.DbtOracle.DbtConnectionProfile(
+            host=db.host,
+            port=db.port,
+            user=db.username,
+            password=db.password,
+            service_name=db.service_name,
+            schema_name=settings.DbtOracle.schema_name
+            or c.DbtOracle.DEFAULT_SCHEMA_NAME,
+            project=self.dbt_project_name,
+        )
 
 
 s = FlextDbtOracleServiceBase

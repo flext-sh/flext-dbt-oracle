@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import pytest
 
+from flext_db_oracle import FlextDbOracleSettings
 from flext_dbt_oracle import c, m
 from flext_dbt_oracle._settings import FlextDbtOracleSettings
 
@@ -25,72 +26,40 @@ class TestsFlextDbtOracleImports:
             "snapshot",
         }
 
+    # NOTE (multi-agent): mro-rn88 — settings dedup: Oracle connection scalars are
+    # SSOT in settings.DbOracle.* (inherited); settings.DbtOracle.* holds dbt knobs.
     def test_settings_defaults_expose_oracle_connection_contract(self) -> None:
         settings = FlextDbtOracleSettings()
 
-        assert settings.port == c.DbtOracle.Oracle.DEFAULT_PORT
-        assert settings.database_identifier == c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
-        # effective_schema falls back to the username when schema_name is empty.
-        assert settings.effective_schema == settings.oracle_username
+        assert settings.DbOracle.port == c.DbtOracle.Oracle.DEFAULT_PORT
+        assert settings.DbOracle.service_name == c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
+        assert settings.DbOracle.host == "localhost"
+        assert settings.DbtOracle.schema_name == ""
 
-    def test_settings_connection_string_masks_password(self) -> None:
-        settings = FlextDbtOracleSettings(oracle_password="topsecret")
-
-        connection_string = settings.connection_string
-
-        assert "topsecret" not in connection_string
-        assert "***" in connection_string
-        assert settings.oracle_host in connection_string
-
-    def test_settings_sid_overrides_service_name_identifier(self) -> None:
-        settings = FlextDbtOracleSettings(sid="ORCLSID")
-
-        assert settings.database_identifier == "ORCLSID"
-        # SID identifiers are joined with ':' in the connection string.
-        assert ":ORCLSID" in settings.connection_string
-
-    def test_settings_effective_schema_prefers_explicit_schema(self) -> None:
-        settings = FlextDbtOracleSettings(schema_name="analytics")
-
-        assert settings.effective_schema == "analytics"
-
-    def test_to_connection_config_returns_public_password_value(self) -> None:
-        settings = FlextDbtOracleSettings(
-            oracle_password="pw",
-            sid="SID1",
+    def test_settings_namespace_round_trips_constructor_values(self) -> None:
+        settings = FlextDbOracleSettings(
+            DbOracle={
+                "host": "db.example.com",
+                "password": "topsecret",
+                "sid": "ORCLSID",
+            },
         )
+        oracle = FlextDbtOracleSettings(
+            DbtOracle={"schema_name": "analytics"},
+        ).DbtOracle
 
-        config = settings.to_connection_config()
+        assert settings.DbOracle.host == "db.example.com"
+        assert settings.DbOracle.password == "topsecret"
+        assert settings.DbOracle.sid == "ORCLSID"
+        assert oracle.schema_name == "analytics"
 
-        assert config["host"] == settings.oracle_host
-        assert config["port"] == settings.port
-        assert config["sid"] == "SID1"
-        assert config["password"] == "pw"
+    def test_dbt_settings_namespace_exposes_materialization(self) -> None:
+        oracle = FlextDbtOracleSettings(
+            DbtOracle={"schema_name": "stg", "materialization": "view"},
+        ).DbtOracle
 
-    def test_to_oracle_config_builds_connection_model(self) -> None:
-        settings = FlextDbtOracleSettings(oracle_host="db.example.com")
-
-        oracle_config = settings.to_oracle_config()
-
-        assert isinstance(
-            oracle_config,
-            m.DbtOracle.OracleConnectionConfig,
-        )
-        assert oracle_config.host == "db.example.com"
-        assert oracle_config.port == settings.port
-
-    def test_pool_max_below_min_raises_validation_error(self) -> None:
-        with pytest.raises(ValueError, match="Pool max size must be >= pool min size"):
-            FlextDbtOracleSettings(pool_min_size=5, pool_max_size=1)
-
-    def test_dbt_settings_reflect_effective_schema_and_materialization(self) -> None:
-        settings = FlextDbtOracleSettings(schema_name="stg")
-
-        dbt_settings = settings.dbt_settings
-
-        assert dbt_settings["schema"] == "stg"
-        assert dbt_settings["database"] == settings.oracle_service_name
-        assert dbt_settings["materialization"] == settings.materialization
+        assert oracle.schema_name == "stg"
+        assert oracle.materialization == "view"
 
     def test_model_defaults_apply_domain_constants(self) -> None:
         model = m.DbtOracle.Model(

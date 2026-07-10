@@ -28,6 +28,8 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
             ) -> None:
                 """Store runtime settings used by client operations."""
                 super().__init__()
+                # NOTE (multi-agent): mro-rn88 — retain injected settings (docstring contract; fixes ARG002).
+                self._settings = settings
 
             def discover_tables(self) -> t.StrSequence:
                 """Return static table candidates for modeling flow."""

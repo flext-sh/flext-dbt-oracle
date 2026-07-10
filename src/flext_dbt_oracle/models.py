@@ -142,6 +142,27 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                     f"{self.host}:{self.port}/{self.service_name}"
                 )
 
+        class DbtConnectionProfile(m.Value):
+            # NOTE (multi-agent): settings-fallout lane (mro-rn88) — typed model for
+            # the dbt Oracle connection profile so base.py stops hand-assembling a raw
+            # dict (flext-law §1.2/§3a: build a model, emit model_dump at the edge).
+            """Typed dbt profile for Oracle-backed workflows (JSON wire shape)."""
+
+            type: Annotated[
+                str,
+                u.Field(description="dbt adapter type"),
+            ] = "oracle"
+            host: Annotated[str, u.Field(description="Oracle database host")]
+            port: Annotated[t.PortNumber, u.Field(description="Oracle database port")]
+            user: Annotated[str, u.Field(description="Oracle database username")]
+            password: Annotated[str, u.Field(description="Oracle database password")]
+            service_name: Annotated[str, u.Field(description="Oracle service name")]
+            schema_name: Annotated[
+                str,
+                u.Field(serialization_alias="schema", description="Target dbt schema"),
+            ]
+            project: Annotated[str, u.Field(description="dbt project name")]
+
         class OracleTableAdapter(m.Value):
             """Adapter for Oracle table metadata normalization."""
 
