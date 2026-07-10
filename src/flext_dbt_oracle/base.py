@@ -38,12 +38,12 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
         active_settings = settings
         return {
             "type": "oracle",
-            "host": active_settings.oracle_host,
-            "port": active_settings.oracle_port,
-            "user": active_settings.oracle_username,
-            "password": active_settings.oracle_password.get_secret_value(),
-            "service_name": active_settings.oracle_service_name,
-            "schema": active_settings.schema_name or c.DbtOracle.DEFAULT_SCHEMA_NAME,
+            "host": active_settings.DbtOracle.oracle_host,
+            "port": active_settings.DbtOracle.oracle_port,
+            "user": active_settings.DbtOracle.oracle_username,
+            "password": active_settings.DbtOracle.oracle_password,
+            "service_name": active_settings.DbtOracle.oracle_service_name,
+            "schema": active_settings.DbtOracle.schema_name or c.DbtOracle.DEFAULT_SCHEMA_NAME,
             "project": self.dbt_project_name,
         }
 

@@ -82,12 +82,11 @@ _LAZY_IMPORTS = build_lazy_import_map(
 
 
 __all__: tuple[str, ...] = (
-    "FlextDbtOracleSettings",
-    "settings",
     "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",
     "FlextDbtOracleServiceBase",
+    "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
     "__author__",
@@ -106,6 +105,7 @@ __all__: tuple[str, ...] = (
     "p",
     "r",
     "s",
+    "settings",
     "t",
     "u",
     "x",
