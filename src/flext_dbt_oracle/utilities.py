@@ -9,7 +9,7 @@ from flext_dbt_oracle.constants import c
 from flext_meltano import u
 
 if TYPE_CHECKING:
-    from flext_dbt_oracle.settings import FlextDbtOracleSettings
+    from flext_dbt_oracle._settings import FlextDbtOracleSettings
     from flext_dbt_oracle.typings import t
 
 
@@ -28,7 +28,6 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
             ) -> None:
                 """Store runtime settings used by client operations."""
                 super().__init__()
-                self.settings = settings
 
             def discover_tables(self) -> t.StrSequence:
                 """Return static table candidates for modeling flow."""

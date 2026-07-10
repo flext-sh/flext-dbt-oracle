@@ -213,4 +213,8 @@ class FlextDbtOracleSettings(FlextMeltanoSettings):
         }
 
 
-__all__: list[str] = ["FlextDbtOracleSettings"]
+
+settings: FlextDbtOracleSettings = FlextDbtOracleSettings.fetch_global()
+"""Pre-instantiated project settings singleton — ``from flext_dbt_oracle import settings``."""
+
+__all__: list[str] = ["FlextDbtOracleSettings", "settings"]

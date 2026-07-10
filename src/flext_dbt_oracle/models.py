@@ -64,7 +64,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
             ) -> None:
                 """Store optional generation-time configuration."""
                 super().__init__()
-                self.settings = settings or {}
+                settings = settings or {}
 
             def generate_staging_models(
                 self,

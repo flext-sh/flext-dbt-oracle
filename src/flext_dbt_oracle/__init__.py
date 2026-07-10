@@ -35,9 +35,6 @@ if TYPE_CHECKING:
         FlextDbtOracleProtocols as FlextDbtOracleProtocols,
         p as p,
     )
-    from flext_dbt_oracle.settings import (
-        FlextDbtOracleSettings as FlextDbtOracleSettings,
-    )
     from flext_dbt_oracle.typings import (
         FlextDbtOracleTypes as FlextDbtOracleTypes,
         t as t,
@@ -48,6 +45,7 @@ if TYPE_CHECKING:
     )
 _LAZY_IMPORTS = build_lazy_import_map(
     {
+        "._settings": ("FlextDbtOracleSettings", "settings"),
         ".base": (
             "FlextDbtOracleServiceBase",
             "s",
@@ -64,7 +62,6 @@ _LAZY_IMPORTS = build_lazy_import_map(
             "FlextDbtOracleProtocols",
             "p",
         ),
-        ".settings": ("FlextDbtOracleSettings",),
         ".typings": (
             "FlextDbtOracleTypes",
             "t",
@@ -85,11 +82,12 @@ _LAZY_IMPORTS = build_lazy_import_map(
 
 
 __all__: tuple[str, ...] = (
+    "FlextDbtOracleSettings",
+    "settings",
     "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",
     "FlextDbtOracleServiceBase",
-    "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
     "__author__",

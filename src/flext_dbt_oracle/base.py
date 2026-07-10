@@ -29,14 +29,13 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
     @override
     def settings(self) -> FlextDbtOracleSettings:
         """The typed dbt-oracle settings namespace."""
-        settings: FlextDbtOracleSettings = FlextDbtOracleSettings.fetch_global()
         return settings
 
     @property
     @override
     def connection_profile(self) -> t.JsonMapping:
         """Dbt connection profile for Oracle-backed workflows."""
-        active_settings = self.settings
+        active_settings = settings
         return {
             "type": "oracle",
             "host": active_settings.oracle_host,
