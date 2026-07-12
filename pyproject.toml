@@ -224,7 +224,7 @@ search-path = [
   "../flext-db-oracle/src",
   "../flext-infra/src",
   "../flext-infra/tmp_flow_test",
-  "../flext-meltano/examples",
+  # mro-f1fe (agent: kimi-sweep): removed stale search-path to migrated examples (legado/)
   "../flext-meltano/src",
   "../flext-tests/src",
   "src",
