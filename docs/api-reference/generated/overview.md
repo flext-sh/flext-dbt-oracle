@@ -11,7 +11,7 @@
 - Keywords: `data-transformation`, `dbt`, `enterprise`, `flext`, `sql`, `typed`
 - Main facades: _none_
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
-- Public symbol exports: `FlextDbtOracleConstants`, `FlextDbtOracleTypes`, `FlextDbtOracleUtilities`, `FlextDbtOracleProtocols`, `FlextDbtOracleSettings`, `FlextDbtOracleServiceBase`, `settings`, `FlextDbtOracleModels`
+- Public symbol exports: `FlextDbtOracleServiceBase`, `FlextDbtOracleTypes`, `FlextDbtOracleModels`, `FlextDbtOracleUtilities`, `FlextDbtOracleConstants`, `FlextDbtOracleSettings`, `settings`, `FlextDbtOracleProtocols`
 - Exported module shortcuts: _none_
 - Generated module pages: `6`
 
