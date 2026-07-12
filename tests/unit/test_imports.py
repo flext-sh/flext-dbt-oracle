@@ -10,7 +10,7 @@ from __future__ import annotations
 import pytest
 
 from flext_db_oracle import FlextDbOracleSettings
-from flext_dbt_oracle import c, m
+from flext_dbt_oracle import c, m, u
 from flext_dbt_oracle._settings import FlextDbtOracleSettings
 
 
@@ -38,14 +38,14 @@ class TestsFlextDbtOracleImports:
 
     def test_settings_namespace_round_trips_constructor_values(self) -> None:
         settings = FlextDbOracleSettings(
-            DbOracle={
-                "host": "db.example.com",
-                "password": "topsecret",
-                "sid": "ORCLSID",
-            },
+            DbOracle=FlextDbOracleSettings._DbOracle(
+                host="db.example.com",
+                password="topsecret",
+                sid="ORCLSID",
+            ),
         )
         oracle = FlextDbtOracleSettings(
-            DbtOracle={"schema_name": "analytics"},
+            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="analytics"),
         ).DbtOracle
 
         assert settings.DbOracle.host == "db.example.com"
@@ -55,7 +55,9 @@ class TestsFlextDbtOracleImports:
 
     def test_dbt_settings_namespace_exposes_materialization(self) -> None:
         oracle = FlextDbtOracleSettings(
-            DbtOracle={"schema_name": "stg", "materialization": "view"},
+            DbtOracle=FlextDbtOracleSettings._DbtOracle(
+                schema_name="stg", materialization="view"
+            ),
         ).DbtOracle
 
         assert oracle.schema_name == "stg"
@@ -87,9 +89,7 @@ class TestsFlextDbtOracleImports:
         self,
         source_tables: tuple[str, ...],
     ) -> None:
-        generator = m.create_generator()
-
-        models = generator.generate_staging_models(source_tables)
+        models = u.DbtOracle.ModelBuilder.generate_staging_models(source_tables)
 
         assert [model.name for model in models] == [
             f"stg_oracle_{table}" for table in source_tables
@@ -127,7 +127,7 @@ class TestsFlextDbtOracleImports:
         )
 
         assert adapter.relation_name == "sales.orders"
-        assert adapter.to_metadata() == {
+        assert adapter.model_dump(by_alias=True) == {
             "schema": "sales",
             "table": "orders",
             "relation": "sales.orders",

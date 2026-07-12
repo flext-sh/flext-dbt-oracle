@@ -29,7 +29,9 @@ class TestsFlextDbtOracleBasic:
 
     def test_explicit_schema_name_is_the_target_schema(self) -> None:
         """An explicit DbtOracle.schema_name is preserved."""
-        settings = FlextDbtOracleSettings(DbtOracle={"schema_name": "ANALYTICS"})
+        settings = FlextDbtOracleSettings(
+            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="ANALYTICS")
+        )
 
         assert settings.DbtOracle.schema_name == "ANALYTICS"
 
@@ -80,7 +82,10 @@ class TestsFlextDbtOracleBasic:
     ) -> None:
         """pool_max >= pool_min is a valid DbOracle configuration."""
         settings = FlextDbOracleSettings(
-            DbOracle={"pool_min": pool_min, "pool_max": pool_max},
+            DbOracle=FlextDbOracleSettings._DbOracle(
+                pool_min=pool_min,
+                pool_max=pool_max,
+            ),
         )
 
         assert settings.DbOracle.pool_min == pool_min
@@ -89,7 +94,9 @@ class TestsFlextDbtOracleBasic:
     def test_settings_are_idempotent_under_model_dump_roundtrip(self) -> None:
         """Re-instantiating from model_dump preserves observable dbt state."""
         settings = FlextDbtOracleSettings(
-            DbtOracle={"schema_name": "SCHEMA_A", "materialization": "view"},
+            DbtOracle=FlextDbtOracleSettings._DbtOracle(
+                schema_name="SCHEMA_A", materialization="view"
+            ),
         )
 
         rebuilt = FlextDbtOracleSettings.model_validate(settings.model_dump())

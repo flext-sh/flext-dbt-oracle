@@ -37,7 +37,7 @@ class FlextDbtOracleConfigConnectionPart:
     def test_effective_schema_from_dbt_namespace(self) -> None:
         """The effective schema is the DbtOracle.schema_name scalar."""
         oracle = FlextDbtOracleSettings(
-            DbtOracle={"schema_name": "TEST_SCHEMA"},
+            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="TEST_SCHEMA"),
         ).DbtOracle
         assert oracle.schema_name == "TEST_SCHEMA"
 

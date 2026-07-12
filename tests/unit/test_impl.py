@@ -53,21 +53,21 @@ class TestsFlextDbtOracleImpl:
         assert adapter.schema_name == "HR"
         assert adapter.table_name == "EMPLOYEES"
 
-    def test_to_metadata_returns_full_public_contract(self) -> None:
-        """to_metadata surfaces schema, table and computed relation."""
+    def test_model_dump_by_alias_returns_full_public_contract(self) -> None:
+        """model_dump(by_alias=True) surfaces schema, table and computed relation."""
         adapter = OracleTableAdapter(schema_name="HR", table_name="EMPLOYEES")
 
-        assert adapter.to_metadata() == {
+        assert adapter.model_dump(by_alias=True) == {
             "schema": "HR",
             "table": "EMPLOYEES",
             "relation": "HR.EMPLOYEES",
         }
 
-    def test_to_metadata_relation_matches_relation_name(self) -> None:
-        """to_metadata['relation'] is consistent with relation_name."""
+    def test_dumped_relation_matches_relation_name(self) -> None:
+        """model_dump(by_alias=True)['relation'] is consistent with relation_name."""
         adapter = OracleTableAdapter(schema_name="FIN", table_name="LEDGER")
 
-        assert adapter.to_metadata()["relation"] == adapter.relation_name
+        assert adapter.model_dump(by_alias=True)["relation"] == adapter.relation_name
 
     def test_model_dump_includes_computed_relation_name(self) -> None:
         """The serialized model carries the computed relation_name."""

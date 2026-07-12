@@ -27,11 +27,11 @@ class TestsFlextDbtOracleConfig:
     def test_connection_scalars_come_from_dboracle_namespace(self) -> None:
         """Oracle connection scalars are supplied via the DbOracle namespace."""
         settings = FlextDbOracleSettings(
-            DbOracle={
-                "host": "db.internal",
-                "username": "svc",
-                "service_name": "XEPDB1",
-            },
+            DbOracle=FlextDbOracleSettings._DbOracle(
+                host="db.internal",
+                username="svc",
+                service_name="XEPDB1",
+            ),
         )
         assert settings.DbOracle.host == "db.internal"
         assert settings.DbOracle.username == "svc"
@@ -60,14 +60,14 @@ class TestsFlextDbtOracleConfig:
     def test_dbt_only_knobs_round_trip_through_namespace(self) -> None:
         """A fully populated dbt construction exposes every override verbatim."""
         oracle = FlextDbtOracleSettings(
-            DbtOracle={
-                "nls_lang": "AMERICAN_AMERICA.AL32UTF8",
-                "nls_date_format": "DD/MM/YYYY",
-                "search_path": "schema1,schema2",
-                "enable_metrics": True,
-                "enable_sql_logging": True,
-                "dbt_log_level": "DEBUG",
-            },
+            DbtOracle=FlextDbtOracleSettings._DbtOracle(
+                nls_lang="AMERICAN_AMERICA.AL32UTF8",
+                nls_date_format="DD/MM/YYYY",
+                search_path="schema1,schema2",
+                enable_metrics=True,
+                enable_sql_logging=True,
+                dbt_log_level="DEBUG",
+            ),
         ).DbtOracle
         assert oracle.nls_lang == "AMERICAN_AMERICA.AL32UTF8"
         assert oracle.nls_date_format == "DD/MM/YYYY"
@@ -93,14 +93,14 @@ class TestsFlextDbtOracleConfig:
         # materialization is a plain str (domain checks belong at the consumer).
         """Materialization accepts arbitrary strings (scalar settings)."""
         oracle = FlextDbtOracleSettings(
-            DbtOracle={"materialization": "custom"},
+            DbtOracle=FlextDbtOracleSettings._DbtOracle(materialization="custom"),
         ).DbtOracle
         assert oracle.materialization == "custom"
 
     def test_pool_bounds_round_trip_through_dboracle(self) -> None:
         """Pool bounds are DbOracle scalars preserved at construction."""
         settings = FlextDbOracleSettings(
-            DbOracle={"pool_min": 5, "pool_max": 5},
+            DbOracle=FlextDbOracleSettings._DbOracle(pool_min=5, pool_max=5),
         )
         assert settings.DbOracle.pool_min == 5
         assert settings.DbOracle.pool_max == 5
@@ -108,7 +108,9 @@ class TestsFlextDbtOracleConfig:
     def test_numeric_fields_retain_supplied_values(self) -> None:
         """Numeric DbOracle fields accept and preserve valid in-range values."""
         settings = FlextDbOracleSettings(
-            DbOracle={"port": 1521, "pool_min": 1, "pool_max": 50, "timeout": 60},
+            DbOracle=FlextDbOracleSettings._DbOracle(
+                port=1521, pool_min=1, pool_max=50, timeout=60
+            ),
         )
         assert settings.DbOracle.port == 1521
         assert settings.DbOracle.pool_min == 1
@@ -130,14 +132,16 @@ class TestsFlextDbtOracleConfig:
     ) -> None:
         """Each supported materialization is preserved on the namespace."""
         oracle = FlextDbtOracleSettings(
-            DbtOracle={"materialization": materialization},
+            DbtOracle=FlextDbtOracleSettings._DbtOracle(
+                materialization=materialization
+            ),
         ).DbtOracle
         assert oracle.materialization == materialization
 
     def test_sid_and_service_name_coexist_on_dboracle(self) -> None:
         """Both SID and service name are retained as DbOracle scalar fields."""
         settings = FlextDbOracleSettings(
-            DbOracle={"sid": "XE", "service_name": "XEPDB1"},
+            DbOracle=FlextDbOracleSettings._DbOracle(sid="XE", service_name="XEPDB1"),
         )
         assert settings.DbOracle.sid == "XE"
         assert settings.DbOracle.service_name == "XEPDB1"
@@ -146,7 +150,7 @@ class TestsFlextDbtOracleConfig:
         """schema_name is an empty-default scalar overridable at construction."""
         assert FlextDbtOracleSettings().DbtOracle.schema_name == ""
         oracle = FlextDbtOracleSettings(
-            DbtOracle={"schema_name": "TEST_SCHEMA"},
+            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="TEST_SCHEMA"),
         ).DbtOracle
         assert oracle.schema_name == "TEST_SCHEMA"
 
