@@ -21,8 +21,7 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "agate>=1.14.2",
-  "dbt-common @ git+https://github.com/flext-sh/dbt-common.git@flext/relax-deps",
+  "dbt-common>=1.38.0",
   "flext-core",
   "flext-db-oracle",
   "flext-meltano",
