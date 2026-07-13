@@ -14,7 +14,7 @@ import pytest
 
 from flext_db_oracle import FlextDbOracleSettings
 from flext_dbt_oracle._settings import FlextDbtOracleSettings
-from tests.constants import c
+from tests import c
 
 
 class TestsFlextDbtOracleConfig:

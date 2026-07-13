@@ -15,7 +15,7 @@ import pytest
 from flext_tests import tf, tk
 
 from flext_dbt_oracle import t
-from tests.utilities import u
+from tests import u
 
 if TYPE_CHECKING:
     from collections.abc import Generator

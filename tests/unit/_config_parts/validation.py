@@ -7,8 +7,7 @@ from __future__ import annotations
 # scalars (no enum rejection) and pool bounds carry no cross-field validator here.
 from flext_db_oracle import FlextDbOracleSettings
 from flext_dbt_oracle._settings import FlextDbtOracleSettings
-from tests.constants import c
-from tests.typings import t
+from tests import c, t
 
 
 class FlextDbtOracleConfigValidationPart:
