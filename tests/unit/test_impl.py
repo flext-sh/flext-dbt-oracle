@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_tests import tm
 from pydantic import ValidationError
 
 from tests import m
@@ -44,54 +45,60 @@ class TestsFlextDbtOracleImpl:
             table_name=table_name,
         )
 
-        assert adapter.relation_name == expected_relation
+        tm.that(adapter.relation_name, eq=expected_relation)
 
     def test_public_fields_expose_supplied_values(self) -> None:
         """The constructor arguments are readable as public fields."""
         adapter = OracleTableAdapter(schema_name="HR", table_name="EMPLOYEES")
 
-        assert adapter.schema_name == "HR"
-        assert adapter.table_name == "EMPLOYEES"
+        tm.that(adapter.schema_name, eq="HR")
+        tm.that(adapter.table_name, eq="EMPLOYEES")
 
     def test_model_dump_by_alias_returns_full_public_contract(self) -> None:
         """model_dump(by_alias=True) surfaces schema, table and computed relation."""
         adapter = OracleTableAdapter(schema_name="HR", table_name="EMPLOYEES")
 
-        assert adapter.model_dump(by_alias=True) == {
-            "schema": "HR",
-            "table": "EMPLOYEES",
-            "relation": "HR.EMPLOYEES",
-        }
+        tm.that(
+            adapter.model_dump(by_alias=True),
+            eq={
+                "schema": "HR",
+                "table": "EMPLOYEES",
+                "relation": "HR.EMPLOYEES",
+            },
+        )
 
     def test_dumped_relation_matches_relation_name(self) -> None:
         """model_dump(by_alias=True)['relation'] is consistent with relation_name."""
         adapter = OracleTableAdapter(schema_name="FIN", table_name="LEDGER")
 
-        assert adapter.model_dump(by_alias=True)["relation"] == adapter.relation_name
+        tm.that(adapter.model_dump(by_alias=True)["relation"], eq=adapter.relation_name)
 
     def test_model_dump_includes_computed_relation_name(self) -> None:
         """The serialized model carries the computed relation_name."""
         adapter = OracleTableAdapter(schema_name="HR", table_name="JOBS")
 
-        assert adapter.model_dump() == {
-            "schema_name": "HR",
-            "table_name": "JOBS",
-            "relation_name": "HR.JOBS",
-        }
+        tm.that(
+            adapter.model_dump(),
+            eq={
+                "schema_name": "HR",
+                "table_name": "JOBS",
+                "relation_name": "HR.JOBS",
+            },
+        )
 
     def test_value_equality_by_public_state(self) -> None:
         """Two adapters with identical fields compare equal."""
         left = OracleTableAdapter(schema_name="HR", table_name="EMP")
         right = OracleTableAdapter(schema_name="HR", table_name="EMP")
 
-        assert left == right
+        tm.that(left, eq=right)
 
     def test_distinct_state_is_not_equal(self) -> None:
         """Adapters differing in any field are not equal."""
         base = OracleTableAdapter(schema_name="HR", table_name="EMP")
 
-        assert base != OracleTableAdapter(schema_name="HR", table_name="DEPT")
-        assert base != OracleTableAdapter(schema_name="SYS", table_name="EMP")
+        tm.that(base, ne=OracleTableAdapter(schema_name="HR", table_name="DEPT"))
+        tm.that(base, ne=OracleTableAdapter(schema_name="SYS", table_name="EMP"))
 
     def test_adapter_is_immutable(self) -> None:
         """Adapter is a frozen value object; mutation is rejected."""

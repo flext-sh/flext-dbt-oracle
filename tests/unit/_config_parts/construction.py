@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from flext_tests import tm
+
 # NOTE (multi-agent): mro-rn88 — settings dedup: Oracle connection scalars via
 # settings.DbOracle.* (inherited); settings.DbtOracle.* holds dbt-only knobs.
 from flext_db_oracle import FlextDbOracleSettings
@@ -20,10 +22,10 @@ class FlextDbtOracleConfigConstructionPart:
                 service_name="XEPDB1",
             ),
         )
-        assert settings.DbOracle.host == "localhost"
-        assert settings.DbOracle.username == "testuser"
-        assert settings.DbOracle.service_name == "XEPDB1"
-        assert isinstance(settings.DbOracle.port, int)
+        tm.that(settings.DbOracle.host, eq="localhost")
+        tm.that(settings.DbOracle.username, eq="testuser")
+        tm.that(settings.DbOracle.service_name, eq="XEPDB1")
+        tm.that(settings.DbOracle.port, is_=int)
         assert settings.DbOracle.port > 0
 
     def test_config_with_sid(self) -> None:
@@ -33,9 +35,9 @@ class FlextDbtOracleConfigConstructionPart:
                 host="localhost", username="testuser", sid="XE"
             ),
         )
-        assert settings.DbOracle.host == "localhost"
-        assert settings.DbOracle.username == "testuser"
-        assert settings.DbOracle.sid == "XE"
+        tm.that(settings.DbOracle.host, eq="localhost")
+        tm.that(settings.DbOracle.username, eq="testuser")
+        tm.that(settings.DbOracle.sid, eq="XE")
 
     def test_config_with_all_dbt_optional_fields(self) -> None:
         """Test dbt configuration with all optional knobs set."""
@@ -49,11 +51,11 @@ class FlextDbtOracleConfigConstructionPart:
                 enable_sql_logging=True,
             ),
         ).DbtOracle
-        assert oracle.nls_lang == "AMERICAN_AMERICA.AL32UTF8"
-        assert oracle.nls_date_format == "DD/MM/YYYY"
-        assert oracle.enable_metrics is True
-        assert oracle.dbt_log_level == "DEBUG"
-        assert oracle.enable_sql_logging is True
+        tm.that(oracle.nls_lang, eq="AMERICAN_AMERICA.AL32UTF8")
+        tm.that(oracle.nls_date_format, eq="DD/MM/YYYY")
+        tm.that(oracle.enable_metrics, eq=True)
+        tm.that(oracle.dbt_log_level, eq="DEBUG")
+        tm.that(oracle.enable_sql_logging, eq=True)
 
     def test_config_defaults_when_no_service_name_or_sid(self) -> None:
         """Test default service name when neither service_name nor sid is provided."""
@@ -62,18 +64,21 @@ class FlextDbtOracleConfigConstructionPart:
                 host="localhost", username="testuser"
             ),
         )
-        assert settings.DbOracle.service_name is not None
+        tm.that(settings.DbOracle.service_name, none=False)
 
     def test_config_uses_default_constants(self) -> None:
         """Test that configuration uses default constants appropriately."""
         settings = FlextDbtOracleSettings()
-        assert isinstance(settings.DbOracle.port, int)
+        tm.that(settings.DbOracle.port, is_=int)
         assert settings.DbOracle.port > 0
-        assert settings.DbtOracle.materialization in {
-            "table",
-            "view",
-            "incremental",
-            "snapshot",
-        }
+        tm.that(
+            {
+                "table",
+                "view",
+                "incremental",
+                "snapshot",
+            },
+            has=settings.DbtOracle.materialization,
+        )
         assert settings.DbOracle.pool_min >= 1
         assert settings.DbOracle.pool_max >= settings.DbOracle.pool_min

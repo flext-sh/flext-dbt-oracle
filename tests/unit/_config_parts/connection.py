@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from flext_tests import tm
+
 # NOTE (multi-agent): mro-rn88 — settings dedup: connection identifiers/dsn come from
 # the typed m.DbtOracle.OracleConnectionConfig model; schema from settings.DbtOracle.
 from flext_dbt_oracle import m
@@ -19,10 +21,13 @@ class FlextDbtOracleConfigConnectionPart:
             password="testpass",
             service_name="XEPDB1",
         )
-        assert config.dsn == (
-            f"tcp://testuser:***@localhost:{config.port}/{config.database_identifier}"
+        tm.that(
+            config.dsn,
+            eq=(
+                f"tcp://testuser:***@localhost:{config.port}/{config.database_identifier}"
+            ),
         )
-        assert "testpass" not in config.dsn
+        tm.that(config.dsn, lacks="testpass")
 
     def test_dsn_uses_colon_separator_with_sid(self) -> None:
         """SID DSN uses ':' as the identifier separator."""
@@ -32,24 +37,24 @@ class FlextDbtOracleConfigConnectionPart:
             password="testpass",
             sid="XE",
         )
-        assert config.dsn == f"tcp://testuser:***@localhost:{config.port}:XE"
+        tm.that(config.dsn, eq=f"tcp://testuser:***@localhost:{config.port}:XE")
 
     def test_effective_schema_from_dbt_namespace(self) -> None:
         """The effective schema is the DbtOracle.schema_name scalar."""
         oracle = FlextDbtOracleSettings(
             DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="TEST_SCHEMA"),
         ).DbtOracle
-        assert oracle.schema_name == "TEST_SCHEMA"
+        tm.that(oracle.schema_name, eq="TEST_SCHEMA")
 
     def test_database_identifier_prefers_sid(self) -> None:
         """database_identifier resolves from service_name, or SID when present."""
         config = m.DbtOracle.OracleConnectionConfig(service_name="XEPDB1")
-        assert config.database_identifier == "XEPDB1"
+        tm.that(config.database_identifier, eq="XEPDB1")
         config_with_sid = m.DbtOracle.OracleConnectionConfig(
             service_name="XEPDB1",
             sid="XE",
         )
-        assert config_with_sid.database_identifier == "XE"
+        tm.that(config_with_sid.database_identifier, eq="XE")
 
     def test_connection_config_carries_identity_fields(self) -> None:
         """The typed connection config exposes the supplied identity fields."""
@@ -58,6 +63,6 @@ class FlextDbtOracleConfigConnectionPart:
             username="testuser",
             service_name="XEPDB1",
         )
-        assert config.host == "localhost"
-        assert config.username == "testuser"
-        assert config.service_name == "XEPDB1"
+        tm.that(config.host, eq="localhost")
+        tm.that(config.username, eq="testuser")
+        tm.that(config.service_name, eq="XEPDB1")

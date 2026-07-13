@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_tests import tm
 
 from flext_db_oracle import FlextDbOracleSettings
 from flext_dbt_oracle import c, m, u
@@ -19,22 +20,27 @@ class TestsFlextDbtOracleImports:
 
     def test_materialization_enum_members_are_dbt_values(self) -> None:
         materialization = c.DbtOracle.Dbt.Materialization
-        assert {member.value for member in materialization} == {
-            "table",
-            "view",
-            "incremental",
-            "snapshot",
-        }
+        tm.that(
+            {member.value for member in materialization},
+            eq={
+                "table",
+                "view",
+                "incremental",
+                "snapshot",
+            },
+        )
 
     # NOTE (multi-agent): mro-rn88 — settings dedup: Oracle connection scalars are
     # SSOT in settings.DbOracle.* (inherited); settings.DbtOracle.* holds dbt knobs.
     def test_settings_defaults_expose_oracle_connection_contract(self) -> None:
         settings = FlextDbtOracleSettings()
 
-        assert settings.DbOracle.port == c.DbtOracle.Oracle.DEFAULT_PORT
-        assert settings.DbOracle.service_name == c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
-        assert settings.DbOracle.host == "localhost"
-        assert settings.DbtOracle.schema_name == ""
+        tm.that(settings.DbOracle.port, eq=c.DbtOracle.Oracle.DEFAULT_PORT)
+        tm.that(
+            settings.DbOracle.service_name, eq=c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
+        )
+        tm.that(settings.DbOracle.host, eq="localhost")
+        tm.that(settings.DbtOracle.schema_name, eq="")
 
     def test_settings_namespace_round_trips_constructor_values(self) -> None:
         settings = FlextDbOracleSettings(
@@ -48,10 +54,10 @@ class TestsFlextDbtOracleImports:
             DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="analytics"),
         ).DbtOracle
 
-        assert settings.DbOracle.host == "db.example.com"
-        assert settings.DbOracle.password == "topsecret"
-        assert settings.DbOracle.sid == "ORCLSID"
-        assert oracle.schema_name == "analytics"
+        tm.that(settings.DbOracle.host, eq="db.example.com")
+        tm.that(settings.DbOracle.password, eq="topsecret")
+        tm.that(settings.DbOracle.sid, eq="ORCLSID")
+        tm.that(oracle.schema_name, eq="analytics")
 
     def test_dbt_settings_namespace_exposes_materialization(self) -> None:
         oracle = FlextDbtOracleSettings(
@@ -60,8 +66,8 @@ class TestsFlextDbtOracleImports:
             ),
         ).DbtOracle
 
-        assert oracle.schema_name == "stg"
-        assert oracle.materialization == "view"
+        tm.that(oracle.schema_name, eq="stg")
+        tm.that(oracle.materialization, eq="view")
 
     def test_model_defaults_apply_domain_constants(self) -> None:
         model = m.DbtOracle.Model(
@@ -70,12 +76,12 @@ class TestsFlextDbtOracleImports:
             sql_content="select 1",
         )
 
-        assert model.dbt_model_type == c.DbtOracle.DEFAULT_MODEL_TYPE
-        assert model.schema_name == c.DbtOracle.DEFAULT_SCHEMA_NAME
-        assert model.source_name == c.DbtOracle.DEFAULT_SOURCE_NAME
-        assert model.materialization == c.DbtOracle.Dbt.DEFAULT_MATERIALIZATION
-        assert model.columns == ()
-        assert model.dependencies == ()
+        tm.that(model.dbt_model_type, eq=c.DbtOracle.DEFAULT_MODEL_TYPE)
+        tm.that(model.schema_name, eq=c.DbtOracle.DEFAULT_SCHEMA_NAME)
+        tm.that(model.source_name, eq=c.DbtOracle.DEFAULT_SOURCE_NAME)
+        tm.that(model.materialization, eq=c.DbtOracle.Dbt.DEFAULT_MATERIALIZATION)
+        tm.that(model.columns, eq=())
+        tm.that(model.dependencies, eq=())
 
     @pytest.mark.parametrize(
         "source_tables",
@@ -91,12 +97,13 @@ class TestsFlextDbtOracleImports:
     ) -> None:
         models = u.DbtOracle.ModelBuilder.generate_staging_models(source_tables)
 
-        assert [model.name for model in models] == [
-            f"stg_oracle_{table}" for table in source_tables
-        ]
+        tm.that(
+            [model.name for model in models],
+            eq=[f"stg_oracle_{table}" for table in source_tables],
+        )
         for table, model in zip(source_tables, models, strict=True):
-            assert model.table_name == f"stg_{table}"
-            assert f"source('oracle', '{table}')" in model.sql_content
+            tm.that(model.table_name, eq=f"stg_{table}")
+            tm.that(model.sql_content, has=f"source('oracle', '{table}')")
 
     def test_oracle_connection_config_dsn_uses_service_when_no_sid(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig(
@@ -105,9 +112,9 @@ class TestsFlextDbtOracleImports:
             service_name="SVC",
         )
 
-        assert config.database_identifier == "SVC"
+        tm.that(config.database_identifier, eq="SVC")
         assert config.dsn.endswith("/SVC")
-        assert config.username in config.dsn
+        tm.that(config.dsn, has=config.username)
 
     def test_oracle_connection_config_dsn_uses_sid_when_present(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig(
@@ -117,7 +124,7 @@ class TestsFlextDbtOracleImports:
             service_name="SVC",
         )
 
-        assert config.database_identifier == "SID9"
+        tm.that(config.database_identifier, eq="SID9")
         assert config.dsn.endswith(":SID9")
 
     def test_oracle_table_adapter_exposes_qualified_relation(self) -> None:
@@ -126,12 +133,15 @@ class TestsFlextDbtOracleImports:
             table_name="orders",
         )
 
-        assert adapter.relation_name == "sales.orders"
-        assert adapter.model_dump(by_alias=True) == {
-            "schema": "sales",
-            "table": "orders",
-            "relation": "sales.orders",
-        }
+        tm.that(adapter.relation_name, eq="sales.orders")
+        tm.that(
+            adapter.model_dump(by_alias=True),
+            eq={
+                "schema": "sales",
+                "table": "orders",
+                "relation": "sales.orders",
+            },
+        )
 
 
 __all__: list[str] = ["TestsFlextDbtOracleImports"]
