@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from flext_tests import tm
+
 # NOTE (multi-agent): mro-rn88 — settings dedup: Oracle connection scalars via
 # settings.DbOracle.* (inherited); per ADR-005 materialization/protocol are free
 # scalars (no enum rejection) and pool bounds carry no cross-field validator here.
@@ -20,8 +22,8 @@ class FlextDbtOracleConfigValidationPart:
                 username="testuser", service_name="XEPDB1"
             ),
         )
-        assert isinstance(settings.DbOracle.host, str)
-        assert settings.DbOracle.host != ""
+        tm.that(settings.DbOracle.host, is_=str)
+        tm.that(settings.DbOracle.host, ne="")
 
     def test_config_default_username_applied(self) -> None:
         """Test default username is applied when not provided explicitly."""
@@ -30,8 +32,8 @@ class FlextDbtOracleConfigValidationPart:
                 host="localhost", service_name="XEPDB1"
             ),
         )
-        assert isinstance(settings.DbOracle.username, str)
-        assert settings.DbOracle.username != ""
+        tm.that(settings.DbOracle.username, is_=str)
+        tm.that(settings.DbOracle.username, ne="")
 
     def test_config_default_password_applied(self) -> None:
         """Test default password is applied when not provided explicitly."""
@@ -40,7 +42,7 @@ class FlextDbtOracleConfigValidationPart:
                 host="localhost", username="testuser"
             ),
         )
-        assert isinstance(settings.DbOracle.password, str)
+        tm.that(settings.DbOracle.password, is_=str)
 
     def test_config_numeric_ranges_round_trip(self) -> None:
         """Test numeric DbOracle fields accept and preserve valid ranges."""
@@ -55,10 +57,10 @@ class FlextDbtOracleConfigValidationPart:
                 timeout=60,
             ),
         )
-        assert settings.DbOracle.port == 1521
-        assert settings.DbOracle.pool_min == 1
-        assert settings.DbOracle.pool_max == 50
-        assert settings.DbOracle.timeout == 60
+        tm.that(settings.DbOracle.port, eq=1521)
+        tm.that(settings.DbOracle.pool_min, eq=1)
+        tm.that(settings.DbOracle.pool_max, eq=50)
+        tm.that(settings.DbOracle.timeout, eq=60)
 
     def test_config_materialization_all_valid_types(self) -> None:
         """Test all valid materialization types round-trip on the dbt namespace."""
@@ -75,4 +77,4 @@ class FlextDbtOracleConfigValidationPart:
                     materialization=materialization
                 ),
             ).DbtOracle
-            assert oracle.materialization == materialization
+            tm.that(oracle.materialization, eq=materialization)

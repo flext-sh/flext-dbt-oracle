@@ -8,12 +8,10 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_tests import tm
 
-# NOTE (multi-agent): mro-rn88 — Oracle connection scalars are SSOT in DbOracle.*;
-# derived identifiers/dsn come from the typed OracleConnectionConfig model.
 from flext_db_oracle import FlextDbOracleSettings
-from flext_dbt_oracle import m
-from flext_dbt_oracle._settings import FlextDbtOracleSettings
+from flext_dbt_oracle import FlextDbtOracleSettings, m
 
 
 class TestsFlextDbtOracleBasic:
@@ -23,17 +21,17 @@ class TestsFlextDbtOracleBasic:
         """Dbt settings surface DbOracle connection scalars and DbtOracle knobs."""
         settings = FlextDbtOracleSettings()
 
-        assert settings.DbOracle.host == "localhost"
-        assert settings.DbOracle.service_name == "XEPDB1"
-        assert settings.DbtOracle.materialization == "table"
+        tm.that(settings.DbOracle.host, eq="localhost")
+        tm.that(settings.DbOracle.service_name, eq="XEPDB1")
+        tm.that(settings.DbtOracle.materialization, eq="table")
 
     def test_explicit_schema_name_is_the_target_schema(self) -> None:
         """An explicit DbtOracle.schema_name is preserved."""
         settings = FlextDbtOracleSettings(
-            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="ANALYTICS")
+            DbtOracle=FlextDbtOracleSettings.DbtOracle(schema_name="ANALYTICS")
         )
 
-        assert settings.DbtOracle.schema_name == "ANALYTICS"
+        tm.that(settings.DbtOracle.schema_name, eq="ANALYTICS")
 
     def test_connection_dsn_masks_password_and_uses_service_separator(self) -> None:
         """Service-name connections use '/' and never leak the password."""
@@ -45,8 +43,8 @@ class TestsFlextDbtOracleBasic:
             service_name="ORCLPDB1",
         )
 
-        assert config.dsn == "tcp://scott:***@db.example.com:1521/ORCLPDB1"
-        assert "tiger" not in config.dsn
+        tm.that(config.dsn, eq="tcp://scott:***@db.example.com:1521/ORCLPDB1")
+        tm.that(config.dsn, lacks="tiger")
 
     def test_connection_dsn_uses_colon_separator_for_sid(self) -> None:
         """SID connections use ':' as the identifier separator."""
@@ -63,13 +61,13 @@ class TestsFlextDbtOracleBasic:
         """Without a SID the identifier resolves from the service name."""
         config = m.DbtOracle.OracleConnectionConfig(service_name="SVC")
 
-        assert config.database_identifier == "SVC"
+        tm.that(config.database_identifier, eq="SVC")
 
     def test_sid_overrides_service_name_as_identifier(self) -> None:
         """When a SID is provided it wins over the service name."""
         config = m.DbtOracle.OracleConnectionConfig(service_name="SVC", sid="XE")
 
-        assert config.database_identifier == "XE"
+        tm.that(config.database_identifier, eq="XE")
 
     @pytest.mark.parametrize(
         ("pool_min", "pool_max"),
@@ -82,27 +80,29 @@ class TestsFlextDbtOracleBasic:
     ) -> None:
         """pool_max >= pool_min is a valid DbOracle configuration."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
+            DbOracle=FlextDbOracleSettings.DbOracle(
                 pool_min=pool_min,
                 pool_max=pool_max,
             ),
         )
 
-        assert settings.DbOracle.pool_min == pool_min
-        assert settings.DbOracle.pool_max == pool_max
+        tm.that(settings.DbOracle.pool_min, eq=pool_min)
+        tm.that(settings.DbOracle.pool_max, eq=pool_max)
 
     def test_settings_are_idempotent_under_model_dump_roundtrip(self) -> None:
         """Re-instantiating from model_dump preserves observable dbt state."""
         settings = FlextDbtOracleSettings(
-            DbtOracle=FlextDbtOracleSettings._DbtOracle(
+            DbtOracle=FlextDbtOracleSettings.DbtOracle(
                 schema_name="SCHEMA_A", materialization="view"
             ),
         )
 
         rebuilt = FlextDbtOracleSettings.model_validate(settings.model_dump())
 
-        assert rebuilt.DbtOracle.schema_name == settings.DbtOracle.schema_name
-        assert rebuilt.DbtOracle.materialization == settings.DbtOracle.materialization
+        tm.that(rebuilt.DbtOracle.schema_name, eq=settings.DbtOracle.schema_name)
+        tm.that(
+            rebuilt.DbtOracle.materialization, eq=settings.DbtOracle.materialization
+        )
 
 
 __all__: list[str] = ["TestsFlextDbtOracleBasic"]

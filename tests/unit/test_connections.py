@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_tests import tm
 
 from tests import c, m
 
@@ -23,12 +24,12 @@ class TestsFlextDbtOracleConnections:
     def test_defaults_expose_documented_field_values(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig()
 
-        assert config.host == "localhost"
-        assert config.port == 1521
-        assert config.service_name == "XEPDB1"
-        assert config.sid is None
-        assert config.protocol == "tcp"
-        assert config.username == ""
+        tm.that(config.host, eq="localhost")
+        tm.that(config.port, eq=1521)
+        tm.that(config.service_name, eq="XEPDB1")
+        tm.that(config.sid, none=True)
+        tm.that(config.protocol, eq="tcp")
+        tm.that(config.username, eq="")
 
     def test_custom_values_are_preserved_on_public_fields(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig(
@@ -40,11 +41,11 @@ class TestsFlextDbtOracleConnections:
             protocol="tcps",
         )
 
-        assert config.host == "db.example.com"
-        assert config.port == 1522
-        assert config.service_name == "PROD"
-        assert config.username == "admin"
-        assert config.protocol == "tcps"
+        tm.that(config.host, eq="db.example.com")
+        tm.that(config.port, eq=1522)
+        tm.that(config.service_name, eq="PROD")
+        tm.that(config.username, eq="admin")
+        tm.that(config.protocol, eq="tcps")
 
     @pytest.mark.parametrize(
         ("sid", "service_name", "expected"),
@@ -66,7 +67,7 @@ class TestsFlextDbtOracleConnections:
             service_name=service_name,
         )
 
-        assert config.database_identifier == expected
+        tm.that(config.database_identifier, eq=expected)
 
     def test_dsn_uses_service_name_path_when_no_sid(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig(
@@ -77,7 +78,7 @@ class TestsFlextDbtOracleConnections:
             password="testpass",
         )
 
-        assert config.dsn == "tcp://testuser:***@localhost:1521/XEPDB1"
+        tm.that(config.dsn, eq="tcp://testuser:***@localhost:1521/XEPDB1")
 
     def test_dsn_uses_sid_path_when_sid_present(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig(
@@ -88,7 +89,7 @@ class TestsFlextDbtOracleConnections:
             password="testpass",
         )
 
-        assert config.dsn == "tcp://testuser:***@localhost:1521:XE"
+        tm.that(config.dsn, eq="tcp://testuser:***@localhost:1521:XE")
 
     def test_dsn_never_leaks_plaintext_password(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig(
@@ -97,8 +98,8 @@ class TestsFlextDbtOracleConnections:
             service_name="XEPDB1",
         )
 
-        assert "topsecret" not in config.dsn
-        assert ":***@" in config.dsn
+        tm.that(config.dsn, lacks="topsecret")
+        tm.that(config.dsn, has=":***@")
 
     @pytest.mark.parametrize("protocol", ["tcp", "tcps"])
     def test_dsn_honours_configured_protocol_scheme(self, protocol: str) -> None:
@@ -119,14 +120,14 @@ class TestsFlextDbtOracleConnections:
         )
         dumped = config.model_dump()
 
-        assert dumped["database_identifier"] == "XE"
-        assert dumped["dsn"] == config.dsn
+        tm.that(dumped["database_identifier"], eq="XE")
+        tm.that(dumped["dsn"], eq=config.dsn)
 
     def test_computed_fields_are_idempotent(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig(service_name="XEPDB1")
 
-        assert config.dsn == config.dsn
-        assert config.database_identifier == config.database_identifier
+        tm.that(config.dsn, eq=config.dsn)
+        tm.that(config.database_identifier, eq=config.database_identifier)
 
     @pytest.mark.parametrize("port", [0, -1])
     def test_out_of_range_port_raises_validation_error(self, port: int) -> None:
