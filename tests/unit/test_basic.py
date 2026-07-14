@@ -10,11 +10,8 @@ from __future__ import annotations
 import pytest
 from flext_tests import tm
 
-# NOTE (multi-agent): mro-rn88 — Oracle connection scalars are SSOT in DbOracle.*;
-# derived identifiers/dsn come from the typed OracleConnectionConfig model.
 from flext_db_oracle import FlextDbOracleSettings
-from flext_dbt_oracle import m
-from flext_dbt_oracle._settings import FlextDbtOracleSettings
+from flext_dbt_oracle import FlextDbtOracleSettings, m
 
 
 class TestsFlextDbtOracleBasic:
@@ -31,7 +28,7 @@ class TestsFlextDbtOracleBasic:
     def test_explicit_schema_name_is_the_target_schema(self) -> None:
         """An explicit DbtOracle.schema_name is preserved."""
         settings = FlextDbtOracleSettings(
-            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="ANALYTICS")
+            DbtOracle=FlextDbtOracleSettings.DbtOracle(schema_name="ANALYTICS")
         )
 
         tm.that(settings.DbtOracle.schema_name, eq="ANALYTICS")
@@ -83,7 +80,7 @@ class TestsFlextDbtOracleBasic:
     ) -> None:
         """pool_max >= pool_min is a valid DbOracle configuration."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
+            DbOracle=FlextDbOracleSettings.DbOracle(
                 pool_min=pool_min,
                 pool_max=pool_max,
             ),
@@ -95,7 +92,7 @@ class TestsFlextDbtOracleBasic:
     def test_settings_are_idempotent_under_model_dump_roundtrip(self) -> None:
         """Re-instantiating from model_dump preserves observable dbt state."""
         settings = FlextDbtOracleSettings(
-            DbtOracle=FlextDbtOracleSettings._DbtOracle(
+            DbtOracle=FlextDbtOracleSettings.DbtOracle(
                 schema_name="SCHEMA_A", materialization="view"
             ),
         )
