@@ -37,7 +37,7 @@ if TYPE_CHECKING:
     )
     from flext_dbt_oracle.protocols import (
         FlextDbtOracleProtocols as FlextDbtOracleProtocols,
-        p as p,
+        p,
     )
     from flext_dbt_oracle.typings import (
         FlextDbtOracleTypes as FlextDbtOracleTypes,
@@ -45,7 +45,7 @@ if TYPE_CHECKING:
     )
     from flext_dbt_oracle.utilities import (
         FlextDbtOracleUtilities as FlextDbtOracleUtilities,
-        u as u,
+        u,
     )
 _LAZY_IMPORTS = build_lazy_import_map(
     {
