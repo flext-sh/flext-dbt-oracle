@@ -8,18 +8,14 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import os
+from collections.abc import Generator
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pytest
 from flext_tests import tf, tk
 
 from flext_dbt_oracle import t
 from tests import u
-
-if TYPE_CHECKING:
-    from collections.abc import Generator
-
 
 _ENV_BACKUP: t.MutableMappingKV[str, str | None] = {}
 

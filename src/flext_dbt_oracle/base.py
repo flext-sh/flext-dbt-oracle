@@ -29,12 +29,6 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
 
     @property
     @override
-    def settings(self) -> FlextDbtOracleSettings:
-        """The typed dbt-oracle settings namespace."""
-        return settings
-
-    @property
-    @override
     def connection_profile(self) -> p.Meltano.DbtConnectionProfile:
         """Dbt connection profile for Oracle-backed workflows."""
         # NOTE (multi-agent): mro-rn88 ADR-006 thin-driver — connection scalars from

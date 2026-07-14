@@ -18,72 +18,118 @@ from flext_dbt_oracle.__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_db_oracle import d as d, e as e, h as h, r as r, x as x
-    from flext_dbt_oracle._settings import (
-        FlextDbtOracleSettings as FlextDbtOracleSettings,
-        settings as settings,
-    )
-    from flext_dbt_oracle.base import (
-        FlextDbtOracleServiceBase as FlextDbtOracleServiceBase,
-        s as s,
-    )
-    from flext_dbt_oracle.constants import (
-        FlextDbtOracleConstants as FlextDbtOracleConstants,
-        c as c,
-    )
-    from flext_dbt_oracle.models import (
-        FlextDbtOracleModels as FlextDbtOracleModels,
-        m as m,
-    )
-    from flext_dbt_oracle.protocols import (
-        FlextDbtOracleProtocols as FlextDbtOracleProtocols,
+    from flext_db_oracle import d, e, h, r, x
+
+    from ._settings import FlextDbtOracleSettings, settings
+    from .base import FlextDbtOracleServiceBase, s
+    from .constants import FlextDbtOracleConstants, FlextDbtOracleConstants as c
+    from .models import FlextDbtOracleModels, FlextDbtOracleModels as m
+    from .protocols import FlextDbtOracleProtocols, FlextDbtOracleProtocols as p
+    from .typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
+    from .utilities import FlextDbtOracleUtilities, FlextDbtOracleUtilities as u
+
+    _ = (
+        c,
+        FlextDbtOracleConstants,
+        t,
+        FlextDbtOracleTypes,
         p,
-    )
-    from flext_dbt_oracle.typings import (
-        FlextDbtOracleTypes as FlextDbtOracleTypes,
-        t as t,
-    )
-    from flext_dbt_oracle.utilities import (
-        FlextDbtOracleUtilities as FlextDbtOracleUtilities,
+        FlextDbtOracleProtocols,
+        m,
+        FlextDbtOracleModels,
         u,
+        FlextDbtOracleUtilities,
+        d,
+        e,
+        h,
+        r,
+        x,
+        s,
+        FlextDbtOracleServiceBase,
+        FlextDbtOracleSettings,
+        settings,
     )
+
+
+_LAZY_MODULES: dict[str, tuple[str, ...]] = {
+    "._settings": (
+        "FlextDbtOracleSettings",
+        "settings",
+    ),
+    ".base": (
+        "FlextDbtOracleServiceBase",
+        "s",
+    ),
+    ".constants": (
+        "FlextDbtOracleConstants",
+        "c",
+    ),
+    ".models": (
+        "FlextDbtOracleModels",
+        "m",
+    ),
+    ".protocols": (
+        "FlextDbtOracleProtocols",
+        "p",
+    ),
+    ".typings": (
+        "FlextDbtOracleTypes",
+        "t",
+    ),
+    ".utilities": (
+        "FlextDbtOracleUtilities",
+        "u",
+    ),
+    "flext_db_oracle": (
+        "d",
+        "e",
+        "h",
+        "r",
+        "x",
+    ),
+}
+
+
+_LAZY_ALIAS_GROUPS: dict[str, tuple[tuple[str, str], ...]] = {}
+
+
 _LAZY_IMPORTS = build_lazy_import_map(
-    {
-        "._settings": ("FlextDbtOracleSettings", "settings"),
-        ".base": (
-            "FlextDbtOracleServiceBase",
-            "s",
-        ),
-        ".constants": (
-            "FlextDbtOracleConstants",
-            "c",
-        ),
-        ".models": (
-            "FlextDbtOracleModels",
-            "m",
-        ),
-        ".protocols": (
-            "FlextDbtOracleProtocols",
-            "p",
-        ),
-        ".typings": (
-            "FlextDbtOracleTypes",
-            "t",
-        ),
-        ".utilities": (
-            "FlextDbtOracleUtilities",
-            "u",
-        ),
-        "flext_db_oracle": (
-            "d",
-            "e",
-            "h",
-            "r",
-            "x",
-        ),
-    },
+    _LAZY_MODULES,
+    alias_groups=_LAZY_ALIAS_GROUPS,
+    sort_keys=False,
 )
 
+_DIRECT_IMPORTS: tuple[str, ...] = (
+    "FlextDbtOracleConstants",
+    "FlextDbtOracleModels",
+    "FlextDbtOracleProtocols",
+    "FlextDbtOracleServiceBase",
+    "FlextDbtOracleSettings",
+    "FlextDbtOracleTypes",
+    "FlextDbtOracleUtilities",
+    "__author__",
+    "__author_email__",
+    "__description__",
+    "__license__",
+    "__title__",
+    "__url__",
+    "__version__",
+    "__version_info__",
+    "build_lazy_import_map",
+    "c",
+    "d",
+    "e",
+    "h",
+    "install_lazy_exports",
+    "m",
+    "p",
+    "r",
+    "s",
+    "settings",
+    "t",
+    "u",
+    "x",
+)
 
 __all__: tuple[str, ...] = (
     "FlextDbtOracleConstants",
