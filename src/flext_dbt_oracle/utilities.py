@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from flext_db_oracle import FlextDbOracleUtilities
-from flext_dbt_oracle import c, m, t
+from flext_dbt_oracle import c, m, p, t
 from flext_dbt_oracle._settings import FlextDbtOracleSettings
 from flext_meltano import u
 
