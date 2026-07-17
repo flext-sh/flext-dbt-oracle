@@ -10,8 +10,8 @@ from typing import Annotated, override
 
 # NOTE (multi-agent): settings-fallout lane (mro-rn88) — import the module `settings`
 # singleton for the strict `from <pkg> import settings` access form (was bare/undefined).
-from flext_dbt_oracle import FlextDbtOracleSettings, c, m, settings, t
-from flext_meltano import FlextMeltanoDbtServiceBase, p, u
+from flext_dbt_oracle import FlextDbtOracleSettings, c, m, r, settings, t, u
+from flext_meltano import FlextMeltanoDbtServiceBase, p
 
 
 class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
@@ -43,6 +43,19 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
             schema_name=settings.DbtOracle.schema_name
             or c.DbtOracle.DEFAULT_SCHEMA_NAME,
             project=self.dbt_project_name,
+        )
+
+    def generate_staging_models(
+        self,
+        source_tables: t.StrSequence,
+    ) -> p.Result[m.DbtOracle.ModelGenerationResult]:
+        """Generate DBT staging models for the given source tables."""
+        models = u.DbtOracle.ModelBuilder.generate_staging_models(source_tables)
+        return r[m.DbtOracle.ModelGenerationResult].ok(
+            m.DbtOracle.ModelGenerationResult(
+                models_generated=len(models),
+                model_names=tuple(model.name for model in models),
+            ),
         )
 
 

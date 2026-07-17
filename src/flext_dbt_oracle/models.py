@@ -54,8 +54,17 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                 description="Upstream DBT model dependencies",
             )
 
-        # NOTE (multi-agent, bead mro-wfc8.1): ModelGenerator moved to
-        # u.DbtOracle.ModelBuilder (behavior belongs in utilities, not on/among models).
+        class ModelGenerationResult(m.Value):
+            """Summary metadata for a DBT staging-model generation run."""
+
+            models_generated: Annotated[
+                int,
+                u.Field(description="Number of generated DBT models"),
+            ]
+            model_names: t.StrSequence = u.Field(
+                default_factory=tuple,
+                description="Names of the generated DBT models",
+            )
 
         class OracleConnectionConfig(m.Value):
             """Configuration for Oracle database connections."""
