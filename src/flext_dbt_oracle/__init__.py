@@ -20,6 +20,7 @@ from flext_dbt_oracle.__version__ import (
 if TYPE_CHECKING:
     from flext_db_oracle import d, e, h, r, x
 
+    from ._config import FlextDbtOracleConfig, config
     from ._settings import FlextDbtOracleSettings, settings
     from .base import FlextDbtOracleServiceBase, s
     from .constants import FlextDbtOracleConstants, FlextDbtOracleConstants as c
@@ -46,12 +47,18 @@ if TYPE_CHECKING:
         x,
         s,
         FlextDbtOracleServiceBase,
+        FlextDbtOracleConfig,
+        config,
         FlextDbtOracleSettings,
         settings,
     )
 
 
 _LAZY_MODULES: dict[str, tuple[str, ...]] = {
+    "._config": (
+        "FlextDbtOracleConfig",
+        "config",
+    ),
     "._settings": (
         "FlextDbtOracleSettings",
         "settings",
@@ -100,6 +107,7 @@ _LAZY_IMPORTS = build_lazy_import_map(
 )
 
 _DIRECT_IMPORTS: tuple[str, ...] = (
+    "FlextDbtOracleConfig",
     "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",
@@ -117,6 +125,7 @@ _DIRECT_IMPORTS: tuple[str, ...] = (
     "__version_info__",
     "build_lazy_import_map",
     "c",
+    "config",
     "d",
     "e",
     "h",
@@ -132,6 +141,7 @@ _DIRECT_IMPORTS: tuple[str, ...] = (
 )
 
 __all__: tuple[str, ...] = (
+    "FlextDbtOracleConfig",
     "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",
@@ -148,6 +158,7 @@ __all__: tuple[str, ...] = (
     "__version__",
     "__version_info__",
     "c",
+    "config",
     "d",
     "e",
     "h",

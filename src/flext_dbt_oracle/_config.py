@@ -1,8 +1,10 @@
-"""FlextDbtOracleConfig — frozen config singleton for flext-dbt-oracle (ADR-005 §7).
+"""FlextDbtOracleConfig — frozen, validated config singleton for flext-dbt-oracle.
 
-Model-less: business rules live in ``config/*.yaml`` under the ``DbtOracle:`` key and
-are exposed through the open ``config.DbtOracle`` namespace (``extra="allow"``), with
-no per-domain model. Access is ``config.DbtOracle.<domain>[<key>...]``.
+Every ``config/*.yaml`` file is auto-discovered and deep-merged at first
+``fetch_global`` call (model-less, ``extra="allow"`` at the FlextMeltanoConfig base).
+The flat YAML is then validated into the pure-Pydantic ``_models.config``
+shapes and exposed as typed domain objects under ``config.DbtOracle`` — never a
+model-less dict subscript.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -10,21 +12,28 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict
+from functools import cached_property
+from pathlib import Path
+from typing import ClassVar
 
+from flext_dbt_oracle._models.config import FlextDbtOracleConfigModels
 from flext_meltano import FlextMeltanoConfig
 
 
-class _DbtOracleNamespace(BaseModel):
-    """Open, frozen namespace exposing every ``config/*.yaml`` domain model-less."""
-
-    model_config = ConfigDict(extra="allow", frozen=True)
-
-
 class FlextDbtOracleConfig(FlextMeltanoConfig):
-    """DbtOracle config auto-loaded model-less from ``config/*.yaml``."""
+    """DbtOracle config auto-loaded from ``config/*.yaml`` and validated via models."""
 
-    DbtOracle: _DbtOracleNamespace = _DbtOracleNamespace()
+    CONFIG_DIR: ClassVar[str] = str(
+        Path(__file__).resolve().parents[2] / "config",
+    )
+
+    @cached_property
+    def DbtOracle(self) -> FlextDbtOracleConfigModels.DbtOracle:  # noqa: N802
+        """Validated ``DbtOracle`` business-rule config namespace."""
+        root = FlextDbtOracleConfigModels.Root.model_validate(
+            dict(self.model_extra or {}),
+        )
+        return root.DbtOracle
 
 
 config: FlextDbtOracleConfig = FlextDbtOracleConfig.fetch_global()
