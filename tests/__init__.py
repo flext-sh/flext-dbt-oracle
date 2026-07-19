@@ -39,7 +39,7 @@ if TYPE_CHECKING:
     )
     from tests.protocols import (
         TestsFlextDbtOracleProtocols as TestsFlextDbtOracleProtocols,
-        p,
+        p as p,
     )
     from tests.settings import (
         TestsFlextDbtOracleSettings as TestsFlextDbtOracleSettings,
@@ -75,7 +75,7 @@ if TYPE_CHECKING:
     )
     from tests.utilities import (
         TestsFlextDbtOracleUtilities as TestsFlextDbtOracleUtilities,
-        u,
+        u as u,
     )
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
