@@ -28,7 +28,7 @@ class FlextDbtOracleConfig(FlextMeltanoConfig):
     )
 
     @cached_property
-    def DbtOracle(self) -> FlextDbtOracleConfigModels.DbtOracle:  # noqa: N802
+    def DbtOracle(self) -> FlextDbtOracleConfigModels.DbtOracle:
         """Validated ``DbtOracle`` business-rule config namespace."""
         root = FlextDbtOracleConfigModels.Root.model_validate(
             dict(self.model_extra or {}),
