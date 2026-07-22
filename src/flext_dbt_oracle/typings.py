@@ -26,7 +26,4 @@ class FlextDbtOracleTypes(t, FlextDbOracleTypes):
 
 
 t = FlextDbtOracleTypes
-__all__: list[str] = [
-    "FlextDbtOracleTypes",
-    "t",
-]
+__all__: list[str] = ["FlextDbtOracleTypes", "t"]

@@ -11,15 +11,11 @@ from __future__ import annotations
 
 from typing import Final
 
+from flext_dbt_oracle import FlextDbtOracleConstants
 from flext_tests import FlextTestsConstants
 
-from flext_dbt_oracle import FlextDbtOracleConstants
 
-
-class TestsFlextDbtOracleConstants(
-    FlextTestsConstants,
-    FlextDbtOracleConstants,
-):
+class TestsFlextDbtOracleConstants(FlextTestsConstants, FlextDbtOracleConstants):
     """Test constants for flext-dbt-oracle."""
 
     class DbtOracle(FlextDbtOracleConstants.DbtOracle):

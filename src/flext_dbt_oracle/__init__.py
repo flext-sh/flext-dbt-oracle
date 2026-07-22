@@ -47,42 +47,16 @@ if TYPE_CHECKING:
         FlextDbtOracleUtilities as FlextDbtOracleUtilities,
         u,
     )
-_LAZY_IMPORTS = build_lazy_import_map(
-    {
-        "._settings": ("FlextDbtOracleSettings", "settings"),
-        ".base": (
-            "FlextDbtOracleServiceBase",
-            "s",
-        ),
-        ".constants": (
-            "FlextDbtOracleConstants",
-            "c",
-        ),
-        ".models": (
-            "FlextDbtOracleModels",
-            "m",
-        ),
-        ".protocols": (
-            "FlextDbtOracleProtocols",
-            "p",
-        ),
-        ".typings": (
-            "FlextDbtOracleTypes",
-            "t",
-        ),
-        ".utilities": (
-            "FlextDbtOracleUtilities",
-            "u",
-        ),
-        "flext_db_oracle": (
-            "d",
-            "e",
-            "h",
-            "r",
-            "x",
-        ),
-    },
-)
+_LAZY_IMPORTS = build_lazy_import_map({
+    "._settings": ("FlextDbtOracleSettings", "settings"),
+    ".base": ("FlextDbtOracleServiceBase", "s"),
+    ".constants": ("FlextDbtOracleConstants", "c"),
+    ".models": ("FlextDbtOracleModels", "m"),
+    ".protocols": ("FlextDbtOracleProtocols", "p"),
+    ".typings": ("FlextDbtOracleTypes", "t"),
+    ".utilities": ("FlextDbtOracleUtilities", "u"),
+    "flext_db_oracle": ("d", "e", "h", "r", "x"),
+})
 
 
 __all__: tuple[str, ...] = (
@@ -116,9 +90,4 @@ __all__: tuple[str, ...] = (
 )
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    public_exports=__all__,
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, public_exports=__all__)

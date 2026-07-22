@@ -11,38 +11,36 @@ from flext_core.lazy import (
 
 _LAZY_IMPORTS = merge_lazy_imports(
     ("._config_parts",),
-    build_lazy_import_map(
-        {
-            "._config_parts": ("_config_parts",),
-            "._config_parts.connection": ("FlextDbtOracleConfigConnectionPart",),
-            "._config_parts.construction": ("FlextDbtOracleConfigConstructionPart",),
-            "._config_parts.validation": ("FlextDbtOracleConfigValidationPart",),
-            ".test_basic": ("TestsFlextDbtOracleBasic",),
-            ".test_config": ("TestsFlextDbtOracleConfig",),
-            ".test_connections": ("TestsFlextDbtOracleConnections",),
-            ".test_impl": ("TestsFlextDbtOracleImpl",),
-            ".test_imports": ("TestsFlextDbtOracleImports",),
-            ".test_module_governance": ("TestsFlextDbtOracleModuleGovernance",),
-            "flext_tests": (
-                "c",
-                "d",
-                "e",
-                "h",
-                "m",
-                "p",
-                "r",
-                "s",
-                "t",
-                "td",
-                "tf",
-                "tk",
-                "tm",
-                "tv",
-                "u",
-                "x",
-            ),
-        },
-    ),
+    build_lazy_import_map({
+        "._config_parts": ("_config_parts",),
+        "._config_parts.connection": ("FlextDbtOracleConfigConnectionPart",),
+        "._config_parts.construction": ("FlextDbtOracleConfigConstructionPart",),
+        "._config_parts.validation": ("FlextDbtOracleConfigValidationPart",),
+        ".test_basic": ("TestsFlextDbtOracleBasic",),
+        ".test_config": ("TestsFlextDbtOracleConfig",),
+        ".test_connections": ("TestsFlextDbtOracleConnections",),
+        ".test_impl": ("TestsFlextDbtOracleImpl",),
+        ".test_imports": ("TestsFlextDbtOracleImports",),
+        ".test_module_governance": ("TestsFlextDbtOracleModuleGovernance",),
+        "flext_tests": (
+            "c",
+            "d",
+            "e",
+            "h",
+            "m",
+            "p",
+            "r",
+            "s",
+            "t",
+            "td",
+            "tf",
+            "tk",
+            "tm",
+            "tv",
+            "u",
+            "x",
+        ),
+    }),
     exclude_names=(
         "cleanup_submodule_namespace",
         "install_lazy_exports",
@@ -66,9 +64,4 @@ _LAZY_IMPORTS = merge_lazy_imports(
 )
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    publish_all=False,
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, publish_all=False)

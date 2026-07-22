@@ -24,7 +24,6 @@ if TYPE_CHECKING:
         tv as tv,
         x as x,
     )
-
     from tests.base import (
         TestsFlextDbtOracleServiceBase as TestsFlextDbtOracleServiceBase,
         s as s,
@@ -79,60 +78,27 @@ if TYPE_CHECKING:
     )
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
-    build_lazy_import_map(
-        {
-            ".base": (
-                "TestsFlextDbtOracleServiceBase",
-                "s",
-            ),
-            ".conftest": ("conftest",),
-            ".constants": (
-                "TestsFlextDbtOracleConstants",
-                "c",
-            ),
-            ".models": (
-                "TestsFlextDbtOracleModels",
-                "m",
-            ),
-            ".protocols": (
-                "TestsFlextDbtOracleProtocols",
-                "p",
-            ),
-            ".settings": ("TestsFlextDbtOracleSettings",),
-            ".typings": (
-                "TestsFlextDbtOracleTypes",
-                "t",
-            ),
-            ".unit": ("unit",),
-            ".unit._config_parts.connection": ("FlextDbtOracleConfigConnectionPart",),
-            ".unit._config_parts.construction": (
-                "FlextDbtOracleConfigConstructionPart",
-            ),
-            ".unit._config_parts.validation": ("FlextDbtOracleConfigValidationPart",),
-            ".unit.test_basic": ("TestsFlextDbtOracleBasic",),
-            ".unit.test_config": ("TestsFlextDbtOracleConfig",),
-            ".unit.test_connections": ("TestsFlextDbtOracleConnections",),
-            ".unit.test_impl": ("TestsFlextDbtOracleImpl",),
-            ".unit.test_imports": ("TestsFlextDbtOracleImports",),
-            ".unit.test_module_governance": ("TestsFlextDbtOracleModuleGovernance",),
-            ".utilities": (
-                "TestsFlextDbtOracleUtilities",
-                "u",
-            ),
-            "flext_tests": (
-                "d",
-                "e",
-                "h",
-                "r",
-                "td",
-                "tf",
-                "tk",
-                "tm",
-                "tv",
-                "x",
-            ),
-        },
-    ),
+    build_lazy_import_map({
+        ".base": ("TestsFlextDbtOracleServiceBase", "s"),
+        ".conftest": ("conftest",),
+        ".constants": ("TestsFlextDbtOracleConstants", "c"),
+        ".models": ("TestsFlextDbtOracleModels", "m"),
+        ".protocols": ("TestsFlextDbtOracleProtocols", "p"),
+        ".settings": ("TestsFlextDbtOracleSettings",),
+        ".typings": ("TestsFlextDbtOracleTypes", "t"),
+        ".unit": ("unit",),
+        ".unit._config_parts.connection": ("FlextDbtOracleConfigConnectionPart",),
+        ".unit._config_parts.construction": ("FlextDbtOracleConfigConstructionPart",),
+        ".unit._config_parts.validation": ("FlextDbtOracleConfigValidationPart",),
+        ".unit.test_basic": ("TestsFlextDbtOracleBasic",),
+        ".unit.test_config": ("TestsFlextDbtOracleConfig",),
+        ".unit.test_connections": ("TestsFlextDbtOracleConnections",),
+        ".unit.test_impl": ("TestsFlextDbtOracleImpl",),
+        ".unit.test_imports": ("TestsFlextDbtOracleImports",),
+        ".unit.test_module_governance": ("TestsFlextDbtOracleModuleGovernance",),
+        ".utilities": ("TestsFlextDbtOracleUtilities", "u"),
+        "flext_tests": ("d", "e", "h", "r", "td", "tf", "tk", "tm", "tv", "x"),
+    }),
     exclude_names=(
         "cleanup_submodule_namespace",
         "install_lazy_exports",
@@ -156,9 +122,4 @@ _LAZY_IMPORTS = merge_lazy_imports(
 )
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    publish_all=False,
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, publish_all=False)

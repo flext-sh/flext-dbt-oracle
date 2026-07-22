@@ -24,13 +24,11 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
 
             name: Annotated[str, u.Field(description="DBT model name")]
             dbt_model_type: Annotated[
-                str,
-                u.Field(description="DBT model classification"),
+                str, u.Field(description="DBT model classification")
             ] = c.DbtOracle.DEFAULT_MODEL_TYPE
-            schema_name: Annotated[
-                str,
-                u.Field(description="Target schema name"),
-            ] = c.DbtOracle.DEFAULT_SCHEMA_NAME
+            schema_name: Annotated[str, u.Field(description="Target schema name")] = (
+                c.DbtOracle.DEFAULT_SCHEMA_NAME
+            )
             table_name: Annotated[str, u.Field(description="Target table name")]
             materialization: Annotated[
                 c.DbtOracle.Dbt.Materialization,
@@ -38,20 +36,17 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
             ] = c.DbtOracle.Dbt.DEFAULT_MATERIALIZATION
             sql_content: Annotated[str, u.Field(description="Model SQL body")]
             description: Annotated[
-                str,
-                u.Field(description="Human-readable model description"),
+                str, u.Field(description="Human-readable model description")
             ] = ""
-            source_name: Annotated[
-                str,
-                u.Field(description="Source system name"),
-            ] = c.DbtOracle.DEFAULT_SOURCE_NAME
+            source_name: Annotated[str, u.Field(description="Source system name")] = (
+                c.DbtOracle.DEFAULT_SOURCE_NAME
+            )
             columns: t.SequenceOf[t.StrMapping] = u.Field(
                 default_factory=tuple,
                 description="Normalized column metadata for the DBT model",
             )
             dependencies: t.StrSequence = u.Field(
-                default_factory=tuple,
-                description="Upstream DBT model dependencies",
+                default_factory=tuple, description="Upstream DBT model dependencies"
             )
 
         # NOTE (multi-agent, bead mro-wfc8.1): ModelGenerator moved to
@@ -60,33 +55,26 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
         class OracleConnectionConfig(m.Value):
             """Configuration for Oracle database connections."""
 
-            host: Annotated[
-                str,
-                u.Field(description="Oracle database host"),
-            ] = c.DbtOracle.Oracle.DEFAULT_HOST
+            host: Annotated[str, u.Field(description="Oracle database host")] = (
+                c.DbtOracle.Oracle.DEFAULT_HOST
+            )
             port: Annotated[
-                t.PortNumber,
-                u.Field(description="Oracle database port"),
+                t.PortNumber, u.Field(description="Oracle database port")
             ] = c.DbtOracle.Oracle.DEFAULT_PORT
             username: Annotated[
-                str,
-                u.Field(description="Oracle database username"),
+                str, u.Field(description="Oracle database username")
             ] = ""
             password: Annotated[
-                t.SecretStr,
-                u.Field(description="Oracle database password"),
+                t.SecretStr, u.Field(description="Oracle database password")
             ] = t.SecretStr("")
-            service_name: Annotated[
-                str,
-                u.Field(description="Oracle service name"),
-            ] = c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
-            sid: Annotated[
-                str | None,
-                u.Field(description="Oracle SID (optional)"),
-            ] = None
+            service_name: Annotated[str, u.Field(description="Oracle service name")] = (
+                c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
+            )
+            sid: Annotated[str | None, u.Field(description="Oracle SID (optional)")] = (
+                None
+            )
             protocol: Annotated[
-                str,
-                u.Field(description="Oracle connection protocol"),
+                str, u.Field(description="Oracle connection protocol")
             ] = c.DbtOracle.Oracle.DEFAULT_PROTOCOL
 
             # NOTE (multi-agent, bead mro-wfc8.1): the former validate_password classmethod
@@ -121,10 +109,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
             # dict (flext-law §1.2/§3a: build a model, emit model_dump at the edge).
             """Typed dbt profile for Oracle-backed workflows (JSON wire shape)."""
 
-            type: Annotated[
-                str,
-                u.Field(description="dbt adapter type"),
-            ] = "oracle"
+            type: Annotated[str, u.Field(description="dbt adapter type")] = "oracle"
             host: Annotated[str, u.Field(description="Oracle database host")]
             port: Annotated[t.PortNumber, u.Field(description="Oracle database port")]
             user: Annotated[str, u.Field(description="Oracle database username")]
@@ -161,7 +146,4 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
 
 m = FlextDbtOracleModels
 
-__all__: list[str] = [
-    "FlextDbtOracleModels",
-    "m",
-]
+__all__: list[str] = ["FlextDbtOracleModels", "m"]

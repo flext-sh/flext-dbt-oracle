@@ -2,13 +2,12 @@
 
 from __future__ import annotations
 
-from flext_tests import tm
-
 # NOTE (multi-agent): mro-rn88 — settings dedup: Oracle connection scalars via
 # settings.DbOracle.* (inherited); per ADR-005 materialization/protocol are free
 # scalars (no enum rejection) and pool bounds carry no cross-field validator here.
 from flext_db_oracle import FlextDbOracleSettings
 from flext_dbt_oracle._settings import FlextDbtOracleSettings
+from flext_tests import tm
 from tests import c, t
 
 
@@ -20,7 +19,7 @@ class FlextDbtOracleConfigValidationPart:
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings._DbOracle(
                 username="testuser", service_name="XEPDB1"
-            ),
+            )
         )
         tm.that(settings.DbOracle.host, is_=str)
         tm.that(settings.DbOracle.host, ne="")
@@ -30,7 +29,7 @@ class FlextDbtOracleConfigValidationPart:
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings._DbOracle(
                 host="localhost", service_name="XEPDB1"
-            ),
+            )
         )
         tm.that(settings.DbOracle.username, is_=str)
         tm.that(settings.DbOracle.username, ne="")
@@ -40,7 +39,7 @@ class FlextDbtOracleConfigValidationPart:
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings._DbOracle(
                 host="localhost", username="testuser"
-            ),
+            )
         )
         tm.that(settings.DbOracle.password, is_=str)
 
@@ -55,7 +54,7 @@ class FlextDbtOracleConfigValidationPart:
                 pool_min=1,
                 pool_max=50,
                 timeout=60,
-            ),
+            )
         )
         tm.that(settings.DbOracle.port, eq=1521)
         tm.that(settings.DbOracle.pool_min, eq=1)
@@ -75,6 +74,6 @@ class FlextDbtOracleConfigValidationPart:
             oracle = FlextDbtOracleSettings(
                 DbtOracle=FlextDbtOracleSettings._DbtOracle(
                     materialization=materialization
-                ),
+                )
             ).DbtOracle
             tm.that(oracle.materialization, eq=materialization)

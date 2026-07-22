@@ -8,11 +8,11 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import tm
 
 from flext_db_oracle import FlextDbOracleSettings
 from flext_dbt_oracle import c, m, u
 from flext_dbt_oracle._settings import FlextDbtOracleSettings
+from flext_tests import tm
 
 
 class TestsFlextDbtOracleImports:
@@ -22,12 +22,7 @@ class TestsFlextDbtOracleImports:
         materialization = c.DbtOracle.Dbt.Materialization
         tm.that(
             {member.value for member in materialization},
-            eq={
-                "table",
-                "view",
-                "incremental",
-                "snapshot",
-            },
+            eq={"table", "view", "incremental", "snapshot"},
         )
 
     # NOTE (multi-agent): mro-rn88 — settings dedup: Oracle connection scalars are
@@ -45,13 +40,11 @@ class TestsFlextDbtOracleImports:
     def test_settings_namespace_round_trips_constructor_values(self) -> None:
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings._DbOracle(
-                host="db.example.com",
-                password="topsecret",
-                sid="ORCLSID",
-            ),
+                host="db.example.com", password="topsecret", sid="ORCLSID"
+            )
         )
         oracle = FlextDbtOracleSettings(
-            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="analytics"),
+            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="analytics")
         ).DbtOracle
 
         tm.that(settings.DbOracle.host, eq="db.example.com")
@@ -63,7 +56,7 @@ class TestsFlextDbtOracleImports:
         oracle = FlextDbtOracleSettings(
             DbtOracle=FlextDbtOracleSettings._DbtOracle(
                 schema_name="stg", materialization="view"
-            ),
+            )
         ).DbtOracle
 
         tm.that(oracle.schema_name, eq="stg")
@@ -71,9 +64,7 @@ class TestsFlextDbtOracleImports:
 
     def test_model_defaults_apply_domain_constants(self) -> None:
         model = m.DbtOracle.Model(
-            name="orders",
-            table_name="stg_orders",
-            sql_content="select 1",
+            name="orders", table_name="stg_orders", sql_content="select 1"
         )
 
         tm.that(model.dbt_model_type, eq=c.DbtOracle.DEFAULT_MODEL_TYPE)
@@ -84,16 +75,10 @@ class TestsFlextDbtOracleImports:
         tm.that(model.dependencies, eq=())
 
     @pytest.mark.parametrize(
-        "source_tables",
-        [
-            (),
-            ("customers",),
-            ("customers", "orders"),
-        ],
+        "source_tables", [(), ("customers",), ("customers", "orders")]
     )
     def test_generate_staging_models_names_one_model_per_table(
-        self,
-        source_tables: tuple[str, ...],
+        self, source_tables: tuple[str, ...]
     ) -> None:
         models = u.DbtOracle.ModelBuilder.generate_staging_models(source_tables)
 
@@ -107,9 +92,7 @@ class TestsFlextDbtOracleImports:
 
     def test_oracle_connection_config_dsn_uses_service_when_no_sid(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig(
-            host="h",
-            username="u",
-            service_name="SVC",
+            host="h", username="u", service_name="SVC"
         )
 
         tm.that(config.database_identifier, eq="SVC")
@@ -118,10 +101,7 @@ class TestsFlextDbtOracleImports:
 
     def test_oracle_connection_config_dsn_uses_sid_when_present(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig(
-            host="h",
-            username="u",
-            sid="SID9",
-            service_name="SVC",
+            host="h", username="u", sid="SID9", service_name="SVC"
         )
 
         tm.that(config.database_identifier, eq="SID9")
@@ -129,18 +109,13 @@ class TestsFlextDbtOracleImports:
 
     def test_oracle_table_adapter_exposes_qualified_relation(self) -> None:
         adapter = m.DbtOracle.OracleTableAdapter(
-            schema_name="sales",
-            table_name="orders",
+            schema_name="sales", table_name="orders"
         )
 
         tm.that(adapter.relation_name, eq="sales.orders")
         tm.that(
             adapter.model_dump(by_alias=True),
-            eq={
-                "schema": "sales",
-                "table": "orders",
-                "relation": "sales.orders",
-            },
+            eq={"schema": "sales", "table": "orders", "relation": "sales.orders"},
         )
 
 

@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-from flext_tests import tm
-
 # NOTE (multi-agent): mro-rn88 — settings dedup: Oracle connection scalars via
 # settings.DbOracle.* (inherited); settings.DbtOracle.* holds dbt-only knobs.
 from flext_db_oracle import FlextDbOracleSettings
 from flext_dbt_oracle._settings import FlextDbtOracleSettings
+from flext_tests import tm
 
 
 class FlextDbtOracleConfigConstructionPart:
@@ -17,10 +16,8 @@ class FlextDbtOracleConfigConstructionPart:
         """Test creating basic Oracle configuration via DbOracle namespace."""
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings._DbOracle(
-                host="localhost",
-                username="testuser",
-                service_name="XEPDB1",
-            ),
+                host="localhost", username="testuser", service_name="XEPDB1"
+            )
         )
         tm.that(settings.DbOracle.host, eq="localhost")
         tm.that(settings.DbOracle.username, eq="testuser")
@@ -33,7 +30,7 @@ class FlextDbtOracleConfigConstructionPart:
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings._DbOracle(
                 host="localhost", username="testuser", sid="XE"
-            ),
+            )
         )
         tm.that(settings.DbOracle.host, eq="localhost")
         tm.that(settings.DbOracle.username, eq="testuser")
@@ -49,7 +46,7 @@ class FlextDbtOracleConfigConstructionPart:
                 enable_metrics=True,
                 dbt_log_level="DEBUG",
                 enable_sql_logging=True,
-            ),
+            )
         ).DbtOracle
         tm.that(oracle.nls_lang, eq="AMERICAN_AMERICA.AL32UTF8")
         tm.that(oracle.nls_date_format, eq="DD/MM/YYYY")
@@ -62,7 +59,7 @@ class FlextDbtOracleConfigConstructionPart:
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings._DbOracle(
                 host="localhost", username="testuser"
-            ),
+            )
         )
         tm.that(settings.DbOracle.service_name, none=False)
 
@@ -72,12 +69,7 @@ class FlextDbtOracleConfigConstructionPart:
         tm.that(settings.DbOracle.port, is_=int)
         assert settings.DbOracle.port > 0
         tm.that(
-            {
-                "table",
-                "view",
-                "incremental",
-                "snapshot",
-            },
+            {"table", "view", "incremental", "snapshot"},
             has=settings.DbtOracle.materialization,
         )
         assert settings.DbOracle.pool_min >= 1
