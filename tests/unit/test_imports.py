@@ -10,8 +10,7 @@ from __future__ import annotations
 import pytest
 
 from flext_db_oracle import FlextDbOracleSettings
-from flext_dbt_oracle import c, m, u
-from flext_dbt_oracle._settings import FlextDbtOracleSettings
+from flext_dbt_oracle import FlextDbtOracleSettings, c, m, u
 from flext_tests import tm
 
 
@@ -38,25 +37,26 @@ class TestsFlextDbtOracleImports:
         tm.that(settings.DbtOracle.schema_name, eq="")
 
     def test_settings_namespace_round_trips_constructor_values(self) -> None:
+        credential = "topsecret"
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
-                host="db.example.com", password="topsecret", sid="ORCLSID"
-            )
+            DbOracle={
+                "host": "db.example.com",
+                "password": credential,
+                "sid": "ORCLSID",
+            }
         )
         oracle = FlextDbtOracleSettings(
-            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="analytics")
+            DbtOracle={"schema_name": "analytics"}
         ).DbtOracle
 
         tm.that(settings.DbOracle.host, eq="db.example.com")
-        tm.that(settings.DbOracle.password, eq="topsecret")
+        tm.that(settings.DbOracle.password, eq=credential)
         tm.that(settings.DbOracle.sid, eq="ORCLSID")
         tm.that(oracle.schema_name, eq="analytics")
 
     def test_dbt_settings_namespace_exposes_materialization(self) -> None:
         oracle = FlextDbtOracleSettings(
-            DbtOracle=FlextDbtOracleSettings._DbtOracle(
-                schema_name="stg", materialization="view"
-            )
+            DbtOracle={"schema_name": "stg", "materialization": "view"}
         ).DbtOracle
 
         tm.that(oracle.schema_name, eq="stg")

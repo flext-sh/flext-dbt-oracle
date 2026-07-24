@@ -27,24 +27,23 @@ class TestsFlextDbtOracleBasic:
 
     def test_explicit_schema_name_is_the_target_schema(self) -> None:
         """An explicit DbtOracle.schema_name is preserved."""
-        settings = FlextDbtOracleSettings(
-            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="ANALYTICS")
-        )
+        settings = FlextDbtOracleSettings(DbtOracle={"schema_name": "ANALYTICS"})
 
         tm.that(settings.DbtOracle.schema_name, eq="ANALYTICS")
 
     def test_connection_dsn_masks_password_and_uses_service_separator(self) -> None:
         """Service-name connections use '/' and never leak the password."""
+        credential = "tiger"
         config = m.DbtOracle.OracleConnectionConfig(
             host="db.example.com",
             username="scott",
-            password="tiger",
+            password=credential,
             port=1521,
             service_name="ORCLPDB1",
         )
 
         tm.that(config.dsn, eq="tcp://scott:***@db.example.com:1521/ORCLPDB1")
-        tm.that(config.dsn, lacks="tiger")
+        tm.that(config.dsn, lacks=credential)
 
     def test_connection_dsn_uses_colon_separator_for_sid(self) -> None:
         """SID connections use ':' as the identifier separator."""
@@ -70,9 +69,7 @@ class TestsFlextDbtOracleBasic:
     def test_valid_pool_bounds_are_accepted(self, pool_min: int, pool_max: int) -> None:
         """pool_max >= pool_min is a valid DbOracle configuration."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
-                pool_min=pool_min, pool_max=pool_max
-            )
+            DbOracle={"pool_min": pool_min, "pool_max": pool_max}
         )
 
         tm.that(settings.DbOracle.pool_min, eq=pool_min)
@@ -81,9 +78,7 @@ class TestsFlextDbtOracleBasic:
     def test_settings_are_idempotent_under_model_dump_roundtrip(self) -> None:
         """Re-instantiating from model_dump preserves observable dbt state."""
         settings = FlextDbtOracleSettings(
-            DbtOracle=FlextDbtOracleSettings._DbtOracle(
-                schema_name="SCHEMA_A", materialization="view"
-            )
+            DbtOracle={"schema_name": "SCHEMA_A", "materialization": "view"}
         )
 
         rebuilt = FlextDbtOracleSettings.model_validate(settings.model_dump())

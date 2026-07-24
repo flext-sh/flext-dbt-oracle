@@ -6,7 +6,7 @@ from __future__ import annotations
 # settings.DbOracle.* (inherited); per ADR-005 materialization/protocol are free
 # scalars (no enum rejection) and pool bounds carry no cross-field validator here.
 from flext_db_oracle import FlextDbOracleSettings
-from flext_dbt_oracle._settings import FlextDbtOracleSettings
+from flext_dbt_oracle import FlextDbtOracleSettings
 from flext_tests import tm
 from tests import c, t
 
@@ -17,9 +17,7 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_default_host_applied(self) -> None:
         """Test default host is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
-                username="testuser", service_name="XEPDB1"
-            )
+            DbOracle={"username": "testuser", "service_name": "XEPDB1"}
         )
         tm.that(settings.DbOracle.host, is_=str)
         tm.that(settings.DbOracle.host, ne="")
@@ -27,9 +25,7 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_default_username_applied(self) -> None:
         """Test default username is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
-                host="localhost", service_name="XEPDB1"
-            )
+            DbOracle={"host": "localhost", "service_name": "XEPDB1"}
         )
         tm.that(settings.DbOracle.username, is_=str)
         tm.that(settings.DbOracle.username, ne="")
@@ -37,24 +33,22 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_default_password_applied(self) -> None:
         """Test default password is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
-                host="localhost", username="testuser"
-            )
+            DbOracle={"host": "localhost", "username": "testuser"}
         )
         tm.that(settings.DbOracle.password, is_=str)
 
     def test_config_numeric_ranges_round_trip(self) -> None:
         """Test numeric DbOracle fields accept and preserve valid ranges."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
-                host="localhost",
-                username="testuser",
-                service_name="XEPDB1",
-                port=1521,
-                pool_min=1,
-                pool_max=50,
-                timeout=60,
-            )
+            DbOracle={
+                "host": "localhost",
+                "username": "testuser",
+                "service_name": "XEPDB1",
+                "port": 1521,
+                "pool_min": 1,
+                "pool_max": 50,
+                "timeout": 60,
+            }
         )
         tm.that(settings.DbOracle.port, eq=1521)
         tm.that(settings.DbOracle.pool_min, eq=1)
@@ -72,8 +66,6 @@ class FlextDbtOracleConfigValidationPart:
         ]
         for materialization in valid_materializations:
             oracle = FlextDbtOracleSettings(
-                DbtOracle=FlextDbtOracleSettings._DbtOracle(
-                    materialization=materialization
-                )
+                DbtOracle={"materialization": materialization}
             ).DbtOracle
             tm.that(oracle.materialization, eq=materialization)
