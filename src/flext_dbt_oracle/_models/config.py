@@ -22,11 +22,7 @@ class FlextDbtOracleConfigModels:
         model_config = ConfigDict(frozen=True, extra="forbid")
 
         host: str = Field(description="Default Oracle host.")
-        port: int = Field(
-            ge=1,
-            le=65535,
-            description="Default Oracle listener port.",
-        )
+        port: int = Field(ge=1, le=65535, description="Default Oracle listener port.")
         service_name: str = Field(description="Default Oracle service name.")
         protocol: str = Field(description="Default Oracle connection protocol.")
 
@@ -69,8 +65,7 @@ class FlextDbtOracleConfigModels:
             description="Whether to enable SQL query logging."
         )
         performance_recommendation_threshold: int = Field(
-            ge=1,
-            description="Threshold for performance recommendations.",
+            ge=1, description="Threshold for performance recommendations."
         )
 
     class DbtOracle(BaseModel):
@@ -79,19 +74,17 @@ class FlextDbtOracleConfigModels:
         model_config = ConfigDict(frozen=True, extra="forbid")
 
         oracle: FlextDbtOracleConfigModels.Oracle = Field(
-            description="Oracle connection defaults.",
+            description="Oracle connection defaults."
         )
-        dbt: FlextDbtOracleConfigModels.Dbt = Field(
-            description="DBT runtime defaults.",
-        )
+        dbt: FlextDbtOracleConfigModels.Dbt = Field(description="DBT runtime defaults.")
         defaults: FlextDbtOracleConfigModels.Defaults = Field(
-            description="DBT model defaults.",
+            description="DBT model defaults."
         )
         formatting: FlextDbtOracleConfigModels.Formatting = Field(
-            description="Oracle NLS formatting defaults.",
+            description="Oracle NLS formatting defaults."
         )
         runtime: FlextDbtOracleConfigModels.Runtime = Field(
-            description="DBT runtime behavior defaults.",
+            description="DBT runtime behavior defaults."
         )
 
     class Root(BaseModel):
@@ -100,7 +93,7 @@ class FlextDbtOracleConfigModels:
         model_config = ConfigDict(frozen=True, extra="ignore")
 
         DbtOracle: FlextDbtOracleConfigModels.DbtOracle = Field(
-            description="DBT Oracle business-rule config namespace.",
+            description="DBT Oracle business-rule config namespace."
         )
 
 

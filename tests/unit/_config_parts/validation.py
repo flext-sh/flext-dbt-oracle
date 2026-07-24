@@ -20,7 +20,7 @@ class FlextDbtOracleConfigValidationPart:
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings._DbOracle(
                 username="testuser", service_name="XEPDB1"
-            ),
+            )
         )
         tm.that(settings.DbOracle.host, is_=str)
         tm.that(settings.DbOracle.host, ne="")
@@ -30,7 +30,7 @@ class FlextDbtOracleConfigValidationPart:
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings._DbOracle(
                 host="localhost", service_name="XEPDB1"
-            ),
+            )
         )
         tm.that(settings.DbOracle.username, is_=str)
         tm.that(settings.DbOracle.username, ne="")
@@ -40,7 +40,7 @@ class FlextDbtOracleConfigValidationPart:
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings._DbOracle(
                 host="localhost", username="testuser"
-            ),
+            )
         )
         tm.that(settings.DbOracle.password, is_=str)
 
@@ -55,7 +55,7 @@ class FlextDbtOracleConfigValidationPart:
                 pool_min=1,
                 pool_max=50,
                 timeout=60,
-            ),
+            )
         )
         tm.that(settings.DbOracle.port, eq=1521)
         tm.that(settings.DbOracle.pool_min, eq=1)
@@ -75,6 +75,6 @@ class FlextDbtOracleConfigValidationPart:
             oracle = FlextDbtOracleSettings(
                 DbtOracle=FlextDbtOracleSettings._DbtOracle(
                     materialization=materialization
-                ),
+                )
             ).DbtOracle
             tm.that(oracle.materialization, eq=materialization)

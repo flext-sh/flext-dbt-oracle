@@ -65,8 +65,7 @@ class FlextDbtOracleSettings(FlextDbOracleSettings, FlextMeltanoSettings):
         DbtOracle: _DbtOracle
     else:
         DbtOracle: _DbtOracle = Field(
-            default_factory=_DbtOracle,
-            description="Namespaced dbt-specific settings.",
+            default_factory=_DbtOracle, description="Namespaced dbt-specific settings."
         )
 
 

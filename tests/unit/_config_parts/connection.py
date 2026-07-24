@@ -32,17 +32,14 @@ class FlextDbtOracleConfigConnectionPart:
     def test_dsn_uses_colon_separator_with_sid(self) -> None:
         """SID DSN uses ':' as the identifier separator."""
         config = m.DbtOracle.OracleConnectionConfig(
-            host="localhost",
-            username="testuser",
-            password="testpass",
-            sid="XE",
+            host="localhost", username="testuser", password="testpass", sid="XE"
         )
         tm.that(config.dsn, eq=f"tcp://testuser:***@localhost:{config.port}:XE")
 
     def test_effective_schema_from_dbt_namespace(self) -> None:
         """The effective schema is the DbtOracle.schema_name scalar."""
         oracle = FlextDbtOracleSettings(
-            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="TEST_SCHEMA"),
+            DbtOracle=FlextDbtOracleSettings._DbtOracle(schema_name="TEST_SCHEMA")
         ).DbtOracle
         tm.that(oracle.schema_name, eq="TEST_SCHEMA")
 
@@ -51,17 +48,14 @@ class FlextDbtOracleConfigConnectionPart:
         config = m.DbtOracle.OracleConnectionConfig(service_name="XEPDB1")
         tm.that(config.database_identifier, eq="XEPDB1")
         config_with_sid = m.DbtOracle.OracleConnectionConfig(
-            service_name="XEPDB1",
-            sid="XE",
+            service_name="XEPDB1", sid="XE"
         )
         tm.that(config_with_sid.database_identifier, eq="XE")
 
     def test_connection_config_carries_identity_fields(self) -> None:
         """The typed connection config exposes the supplied identity fields."""
         config = m.DbtOracle.OracleConnectionConfig(
-            host="localhost",
-            username="testuser",
-            service_name="XEPDB1",
+            host="localhost", username="testuser", service_name="XEPDB1"
         )
         tm.that(config.host, eq="localhost")
         tm.that(config.username, eq="testuser")

@@ -57,15 +57,9 @@ class TestsFlextDbtOracleConnections:
         ],
     )
     def test_database_identifier_prefers_sid_over_service_name(
-        self,
-        sid: str | None,
-        service_name: str,
-        expected: str,
+        self, sid: str | None, service_name: str, expected: str
     ) -> None:
-        config = m.DbtOracle.OracleConnectionConfig(
-            sid=sid,
-            service_name=service_name,
-        )
+        config = m.DbtOracle.OracleConnectionConfig(sid=sid, service_name=service_name)
 
         tm.that(config.database_identifier, eq=expected)
 
@@ -93,9 +87,7 @@ class TestsFlextDbtOracleConnections:
 
     def test_dsn_never_leaks_plaintext_password(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig(
-            username="testuser",
-            password="topsecret",
-            service_name="XEPDB1",
+            username="testuser", password="topsecret", service_name="XEPDB1"
         )
 
         tm.that(config.dsn, lacks="topsecret")
@@ -104,19 +96,14 @@ class TestsFlextDbtOracleConnections:
     @pytest.mark.parametrize("protocol", ["tcp", "tcps"])
     def test_dsn_honours_configured_protocol_scheme(self, protocol: str) -> None:
         config = m.DbtOracle.OracleConnectionConfig(
-            protocol=protocol,
-            host="h",
-            port=1521,
-            service_name="SVC",
+            protocol=protocol, host="h", port=1521, service_name="SVC"
         )
 
         assert config.dsn.startswith(f"{protocol}://")
 
     def test_model_dump_exposes_computed_fields(self) -> None:
         config = m.DbtOracle.OracleConnectionConfig(
-            sid="XE",
-            username="u",
-            password="p",
+            sid="XE", username="u", password="p"
         )
         dumped = config.model_dump()
 
@@ -131,8 +118,5 @@ class TestsFlextDbtOracleConnections:
 
     @pytest.mark.parametrize("port", [0, -1])
     def test_out_of_range_port_raises_validation_error(self, port: int) -> None:
-        with pytest.raises(
-            c.ValidationError,
-            match="greater than or equal to 1",
-        ):
+        with pytest.raises(c.ValidationError, match="greater than or equal to 1"):
             _ = m.DbtOracle.OracleConnectionConfig(port=port)

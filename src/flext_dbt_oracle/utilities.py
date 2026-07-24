@@ -21,10 +21,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
         class Client:
             """Typed facade for Oracle extraction and DBT pipeline execution."""
 
-            def __init__(
-                self,
-                settings: FlextDbtOracleSettings,
-            ) -> None:
+            def __init__(self, settings: FlextDbtOracleSettings) -> None:
                 """Store runtime settings used by client operations."""
                 super().__init__()
                 # NOTE (multi-agent): mro-rn88 — retain injected settings (docstring contract; fixes ARG002).
@@ -35,9 +32,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                 return ["customers", "orders", "order_items"]
 
             def extract_table_data(
-                self,
-                table_name: str,
-                filters: t.ConfigurationMapping | None = None,
+                self, table_name: str, filters: t.ConfigurationMapping | None = None
             ) -> t.SequenceOf[t.ConfigurationMapping]:
                 """Return deterministic sample payload for a table."""
                 _ = filters

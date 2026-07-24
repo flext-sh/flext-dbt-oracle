@@ -14,10 +14,7 @@ from flext_tests import FlextTestsProtocols
 from flext_dbt_oracle import FlextDbtOracleProtocols
 
 
-class TestsFlextDbtOracleProtocols(
-    FlextTestsProtocols,
-    FlextDbtOracleProtocols,
-):
+class TestsFlextDbtOracleProtocols(FlextTestsProtocols, FlextDbtOracleProtocols):
     """Test protocols combining FlextTestsProtocols and FlextDbtOracleProtocols."""
 
 

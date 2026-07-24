@@ -34,16 +34,10 @@ class TestsFlextDbtOracleImpl:
         ],
     )
     def test_relation_name_is_qualified_schema_dot_table(
-        self,
-        schema_name: str,
-        table_name: str,
-        expected_relation: str,
+        self, schema_name: str, table_name: str, expected_relation: str
     ) -> None:
         """relation_name qualifies the table with its schema."""
-        adapter = OracleTableAdapter(
-            schema_name=schema_name,
-            table_name=table_name,
-        )
+        adapter = OracleTableAdapter(schema_name=schema_name, table_name=table_name)
 
         tm.that(adapter.relation_name, eq=expected_relation)
 
@@ -60,11 +54,7 @@ class TestsFlextDbtOracleImpl:
 
         tm.that(
             adapter.model_dump(by_alias=True),
-            eq={
-                "schema": "HR",
-                "table": "EMPLOYEES",
-                "relation": "HR.EMPLOYEES",
-            },
+            eq={"schema": "HR", "table": "EMPLOYEES", "relation": "HR.EMPLOYEES"},
         )
 
     def test_dumped_relation_matches_relation_name(self) -> None:
@@ -79,11 +69,7 @@ class TestsFlextDbtOracleImpl:
 
         tm.that(
             adapter.model_dump(),
-            eq={
-                "schema_name": "HR",
-                "table_name": "JOBS",
-                "relation_name": "HR.JOBS",
-            },
+            eq={"schema_name": "HR", "table_name": "JOBS", "relation_name": "HR.JOBS"},
         )
 
     def test_value_equality_by_public_state(self) -> None:
@@ -111,8 +97,7 @@ class TestsFlextDbtOracleImpl:
         "kwargs", [{"schema_name": "HR"}, {"table_name": "EMP"}, {}]
     )
     def test_missing_required_field_raises_validation_error(
-        self,
-        kwargs: dict[str, str],
+        self, kwargs: dict[str, str]
     ) -> None:
         """Both schema_name and table_name are mandatory."""
         with pytest.raises(ValidationError):

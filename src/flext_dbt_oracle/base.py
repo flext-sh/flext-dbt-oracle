@@ -46,8 +46,7 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
         )
 
     def generate_staging_models(
-        self,
-        source_tables: t.StrSequence,
+        self, source_tables: t.StrSequence
     ) -> p.Result[m.DbtOracle.ModelGenerationResult]:
         """Generate DBT staging models for the given source tables."""
         models = u.DbtOracle.ModelBuilder.generate_staging_models(source_tables)
@@ -55,7 +54,7 @@ class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
             m.DbtOracle.ModelGenerationResult(
                 models_generated=len(models),
                 model_names=tuple(model.name for model in models),
-            ),
+            )
         )
 
 

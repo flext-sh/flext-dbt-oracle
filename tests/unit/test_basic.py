@@ -49,10 +49,7 @@ class TestsFlextDbtOracleBasic:
     def test_connection_dsn_uses_colon_separator_for_sid(self) -> None:
         """SID connections use ':' as the identifier separator."""
         config = m.DbtOracle.OracleConnectionConfig(
-            host="db.example.com",
-            username="scott",
-            port=1521,
-            sid="XE",
+            host="db.example.com", username="scott", port=1521, sid="XE"
         )
 
         assert config.dsn.endswith(":XE")
@@ -69,21 +66,13 @@ class TestsFlextDbtOracleBasic:
 
         tm.that(config.database_identifier, eq="XE")
 
-    @pytest.mark.parametrize(
-        ("pool_min", "pool_max"),
-        [(1, 10), (5, 5), (2, 3)],
-    )
-    def test_valid_pool_bounds_are_accepted(
-        self,
-        pool_min: int,
-        pool_max: int,
-    ) -> None:
+    @pytest.mark.parametrize(("pool_min", "pool_max"), [(1, 10), (5, 5), (2, 3)])
+    def test_valid_pool_bounds_are_accepted(self, pool_min: int, pool_max: int) -> None:
         """pool_max >= pool_min is a valid DbOracle configuration."""
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings._DbOracle(
-                pool_min=pool_min,
-                pool_max=pool_max,
-            ),
+                pool_min=pool_min, pool_max=pool_max
+            )
         )
 
         tm.that(settings.DbOracle.pool_min, eq=pool_min)
@@ -94,7 +83,7 @@ class TestsFlextDbtOracleBasic:
         settings = FlextDbtOracleSettings(
             DbtOracle=FlextDbtOracleSettings._DbtOracle(
                 schema_name="SCHEMA_A", materialization="view"
-            ),
+            )
         )
 
         rebuilt = FlextDbtOracleSettings.model_validate(settings.model_dump())

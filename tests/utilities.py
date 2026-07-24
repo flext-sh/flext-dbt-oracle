@@ -14,10 +14,7 @@ from flext_tests import FlextTestsUtilities
 from flext_dbt_oracle import FlextDbtOracleUtilities
 
 
-class TestsFlextDbtOracleUtilities(
-    FlextTestsUtilities,
-    FlextDbtOracleUtilities,
-):
+class TestsFlextDbtOracleUtilities(FlextTestsUtilities, FlextDbtOracleUtilities):
     """Test utilities combining FlextTestsUtilities with flext-dbt-oracle utilities."""
 
     class DbtOracle(FlextDbtOracleUtilities.DbtOracle):

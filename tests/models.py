@@ -14,10 +14,7 @@ from flext_tests import FlextTestsModels
 from flext_dbt_oracle import FlextDbtOracleModels
 
 
-class TestsFlextDbtOracleModels(
-    FlextTestsModels,
-    FlextDbtOracleModels,
-):
+class TestsFlextDbtOracleModels(FlextTestsModels, FlextDbtOracleModels):
     """Test models combining FlextTestsModels with flext-dbt-oracle models."""
 
     class DbtOracle(FlextDbtOracleModels.DbtOracle):
@@ -29,7 +26,4 @@ class TestsFlextDbtOracleModels(
 
 m = TestsFlextDbtOracleModels
 
-__all__: list[str] = [
-    "TestsFlextDbtOracleModels",
-    "m",
-]
+__all__: list[str] = ["TestsFlextDbtOracleModels", "m"]

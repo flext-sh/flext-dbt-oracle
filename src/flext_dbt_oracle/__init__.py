@@ -55,45 +55,15 @@ if TYPE_CHECKING:
 
 
 _LAZY_MODULES: dict[str, tuple[str, ...]] = {
-    "._config": (
-        "FlextDbtOracleConfig",
-        "config",
-    ),
-    "._settings": (
-        "FlextDbtOracleSettings",
-        "settings",
-    ),
-    ".base": (
-        "FlextDbtOracleServiceBase",
-        "s",
-    ),
-    ".constants": (
-        "FlextDbtOracleConstants",
-        "c",
-    ),
-    ".models": (
-        "FlextDbtOracleModels",
-        "m",
-    ),
-    ".protocols": (
-        "FlextDbtOracleProtocols",
-        "p",
-    ),
-    ".typings": (
-        "FlextDbtOracleTypes",
-        "t",
-    ),
-    ".utilities": (
-        "FlextDbtOracleUtilities",
-        "u",
-    ),
-    "flext_db_oracle": (
-        "d",
-        "e",
-        "h",
-        "r",
-        "x",
-    ),
+    "._config": ("FlextDbtOracleConfig", "config"),
+    "._settings": ("FlextDbtOracleSettings", "settings"),
+    ".base": ("FlextDbtOracleServiceBase", "s"),
+    ".constants": ("FlextDbtOracleConstants", "c"),
+    ".models": ("FlextDbtOracleModels", "m"),
+    ".protocols": ("FlextDbtOracleProtocols", "p"),
+    ".typings": ("FlextDbtOracleTypes", "t"),
+    ".utilities": ("FlextDbtOracleUtilities", "u"),
+    "flext_db_oracle": ("d", "e", "h", "r", "x"),
 }
 
 
@@ -101,9 +71,7 @@ _LAZY_ALIAS_GROUPS: dict[str, tuple[tuple[str, str], ...]] = {}
 
 
 _LAZY_IMPORTS = build_lazy_import_map(
-    _LAZY_MODULES,
-    alias_groups=_LAZY_ALIAS_GROUPS,
-    sort_keys=False,
+    _LAZY_MODULES, alias_groups=_LAZY_ALIAS_GROUPS, sort_keys=False
 )
 
 _DIRECT_IMPORTS: tuple[str, ...] = (
@@ -173,9 +141,4 @@ __all__: tuple[str, ...] = (
 )
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    public_exports=__all__,
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, public_exports=__all__)
