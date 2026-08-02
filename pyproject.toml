@@ -182,6 +182,7 @@ project-excludes = [
 project-includes = ["examples/**/*.py*", "src/**/*.py*", "tests/**/*.py*"]
 python-version = "3.13"
 search-path = [
+  "src",
   ".",
   "../flext-cli/src",
   "../flext-core/src",
@@ -189,7 +190,6 @@ search-path = [
   "../flext-infra/src",
   "../flext-meltano/src",
   "../flext-tests/src",
-  "src",
 ]
 use-ignore-files = false
 
