@@ -8,43 +8,48 @@ from __future__ import annotations
 
 from typing import Annotated, override
 
-from flext_dbt_oracle import FlextDbtOracleSettings, c, t
-from flext_meltano import FlextMeltanoDbtServiceBase, u
+# NOTE (multi-agent): settings-fallout lane (mro-rn88) — import the module `settings`
+# singleton for the strict `from <pkg> import settings` access form (was bare/undefined).
+from flext_dbt_oracle import FlextDbtOracleSettings, c, m, settings, t
+from flext_meltano import FlextMeltanoDbtServiceBase, p, u
 
 
 class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
     """Base class for flext-dbt-oracle services."""
 
-    settings_type: Annotated[
-        type | None,
-        u.Field(description="Settings class for DBT Oracle service initialization"),
-    ] = FlextDbtOracleSettings
     dbt_project_name: Annotated[
         t.NonEmptyStr,
         u.Field(description="Canonical dbt project name for DBT Oracle services"),
     ] = "dbt-oracle"
 
-    @property
-    @override
-    def settings(self) -> FlextDbtOracleSettings:
-        """Return the typed dbt-oracle settings namespace."""
-        return FlextDbtOracleSettings.fetch_global()
+    @classmethod
+    def _runtime_bootstrap_options(cls) -> m.RuntimeBootstrapOptions:
+        """Return runtime bootstrap options for DBT Oracle services."""
+        return m.RuntimeBootstrapOptions(settings_type=FlextDbtOracleSettings)
 
     @property
     @override
-    def connection_profile(self) -> t.JsonMapping:
+    def settings(self) -> FlextDbtOracleSettings:
+        """The typed dbt-oracle settings namespace."""
+        return settings
+
+    @property
+    @override
+    def connection_profile(self) -> p.Meltano.DbtConnectionProfile:
         """Dbt connection profile for Oracle-backed workflows."""
-        active_settings = self.settings
-        return {
-            "type": "oracle",
-            "host": active_settings.oracle_host,
-            "port": active_settings.oracle_port,
-            "user": active_settings.oracle_username,
-            "password": active_settings.oracle_password.get_secret_value(),
-            "service_name": active_settings.oracle_service_name,
-            "schema": active_settings.schema_name or c.DbtOracle.DEFAULT_SCHEMA_NAME,
-            "project": self.dbt_project_name,
-        }
+        # NOTE (multi-agent): mro-rn88 ADR-006 thin-driver — connection scalars from
+        # settings.DbOracle.* (SSOT, no duplication); dbt schema from settings.DbtOracle.
+        db = settings.DbOracle
+        return m.DbtOracle.DbtConnectionProfile(
+            host=db.host,
+            port=db.port,
+            user=db.username,
+            password=db.password,
+            service_name=db.service_name,
+            schema_name=settings.DbtOracle.schema_name
+            or c.DbtOracle.DEFAULT_SCHEMA_NAME,
+            project=self.dbt_project_name,
+        )
 
 
 s = FlextDbtOracleServiceBase

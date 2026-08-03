@@ -2,107 +2,61 @@
 
 from __future__ import annotations
 
-from typing import Literal, cast
-
-import pytest
-
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
-from tests.constants import c
-from tests.typings import t
+# NOTE (multi-agent): mro-rn88 — settings dedup: Oracle connection scalars via
+# settings.DbOracle.* (inherited); per ADR-005 materialization/protocol are free
+# scalars (no enum rejection) and pool bounds carry no cross-field validator here.
+from flext_db_oracle import FlextDbOracleSettings
+from flext_dbt_oracle import FlextDbtOracleSettings
+from flext_tests import tm
+from tests import c, t
 
 
 class FlextDbtOracleConfigValidationPart:
     """Configuration validation coverage."""
 
-    def test_config_validation_missing_host(self) -> None:
+    def test_config_default_host_applied(self) -> None:
         """Test default host is applied when not provided explicitly."""
-        settings = FlextDbtOracleSettings(
-            oracle_username="testuser",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            oracle_service_name="XEPDB1",
+        settings = FlextDbOracleSettings(
+            DbOracle={"username": "testuser", "service_name": "XEPDB1"}
         )
-        assert isinstance(settings.oracle_host, str)
-        assert settings.oracle_host != ""
+        tm.that(settings.DbOracle.host, is_=str)
+        tm.that(settings.DbOracle.host, ne="")
 
-    def test_config_validation_missing_username(self) -> None:
+    def test_config_default_username_applied(self) -> None:
         """Test default username is applied when not provided explicitly."""
-        settings = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            oracle_service_name="XEPDB1",
+        settings = FlextDbOracleSettings(
+            DbOracle={"host": "localhost", "service_name": "XEPDB1"}
         )
-        assert isinstance(settings.oracle_username, str)
-        assert settings.oracle_username != ""
+        tm.that(settings.DbOracle.username, is_=str)
+        tm.that(settings.DbOracle.username, ne="")
 
-    def test_config_validation_missing_password(self) -> None:
+    def test_config_default_password_applied(self) -> None:
         """Test default password is applied when not provided explicitly."""
-        settings = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_username="testuser",
-            oracle_service_name="XEPDB1",
+        settings = FlextDbOracleSettings(
+            DbOracle={"host": "localhost", "username": "testuser"}
         )
-        assert isinstance(settings.oracle_password, t.SecretStr)
+        tm.that(settings.DbOracle.password, is_=str)
 
-    def test_config_validation_invalid_materialization(self) -> None:
-        """Test validation fails for invalid materialization."""
-        materialization: str = "invalid_type"
-        with pytest.raises(c.ValidationError, match="Input should be"):
-            _ = FlextDbtOracleSettings(
-                oracle_host="localhost",
-                oracle_username="testuser",
-                oracle_password=t.SecretStr("testpass").get_secret_value(),
-                oracle_service_name="XEPDB1",
-                materialization=cast(
-                    "Literal['incremental', 'snapshot', 'table', 'view']",
-                    materialization,
-                ),
-            )
-
-    def test_config_validation_invalid_protocol(self) -> None:
-        """Test validation fails for invalid protocol."""
-        protocol: str = "invalid_protocol"
-        with pytest.raises(c.ValidationError, match="Input should be"):
-            _ = FlextDbtOracleSettings(
-                oracle_host="localhost",
-                oracle_username="testuser",
-                oracle_password=t.SecretStr("testpass").get_secret_value(),
-                oracle_service_name="XEPDB1",
-                protocol=cast("Literal['tcp', 'tcps']", protocol),
-            )
-
-    def test_config_validation_pool_sizes(self) -> None:
-        """Test validation of pool sizes."""
-        with pytest.raises(c.ValidationError, match="Pool max size"):
-            _ = FlextDbtOracleSettings(
-                oracle_host="localhost",
-                oracle_username="testuser",
-                oracle_password=t.SecretStr("testpass").get_secret_value(),
-                oracle_service_name="XEPDB1",
-                pool_min_size=10,
-                pool_max_size=5,
-            )
-
-    def test_config_field_validation_ranges(self) -> None:
-        """Test field validation for numeric ranges."""
-        settings = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_username="testuser",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            oracle_service_name="XEPDB1",
-            oracle_port=1521,
-            pool_min_size=1,
-            pool_max_size=50,
-            query_timeout=600,
-            retry_delay_seconds=0.5,
+    def test_config_numeric_ranges_round_trip(self) -> None:
+        """Test numeric DbOracle fields accept and preserve valid ranges."""
+        settings = FlextDbOracleSettings(
+            DbOracle={
+                "host": "localhost",
+                "username": "testuser",
+                "service_name": "XEPDB1",
+                "port": 1521,
+                "pool_min": 1,
+                "pool_max": 50,
+                "timeout": 60,
+            }
         )
-        assert settings.port == 1521
-        assert settings.pool_min_size == 1
-        assert settings.pool_max_size == 50
-        assert settings.query_timeout == 600
-        assert abs(settings.retry_delay_seconds - 0.5) < 1e-9
+        tm.that(settings.DbOracle.port, eq=1521)
+        tm.that(settings.DbOracle.pool_min, eq=1)
+        tm.that(settings.DbOracle.pool_max, eq=50)
+        tm.that(settings.DbOracle.timeout, eq=60)
 
-    def test_config_materialization_validation_all_valid_types(self) -> None:
-        """Test all valid materialization types."""
+    def test_config_materialization_all_valid_types(self) -> None:
+        """Test all valid materialization types round-trip on the dbt namespace."""
         materialization_enum = c.DbtOracle.Dbt.Materialization
         valid_materializations: t.SequenceOf[materialization_enum] = [
             materialization_enum.TABLE,
@@ -111,24 +65,7 @@ class FlextDbtOracleConfigValidationPart:
             materialization_enum.SNAPSHOT,
         ]
         for materialization in valid_materializations:
-            settings = FlextDbtOracleSettings(
-                oracle_host="localhost",
-                oracle_username="testuser",
-                oracle_password=t.SecretStr("testpass").get_secret_value(),
-                oracle_service_name="XEPDB1",
-                materialization=materialization,
-            )
-            assert settings.materialization == materialization
-
-    def test_config_protocol_validation_all_valid_types(self) -> None:
-        """Test all valid protocol types."""
-        valid_protocols: t.SequenceOf[Literal["tcp", "tcps"]] = ["tcp", "tcps"]
-        for protocol in valid_protocols:
-            settings = FlextDbtOracleSettings(
-                oracle_host="localhost",
-                oracle_username="testuser",
-                oracle_password=t.SecretStr("testpass").get_secret_value(),
-                oracle_service_name="XEPDB1",
-                protocol=protocol,
-            )
-            assert settings.protocol == protocol
+            oracle = FlextDbtOracleSettings(
+                DbtOracle={"materialization": materialization}
+            ).DbtOracle
+            tm.that(oracle.materialization, eq=materialization)

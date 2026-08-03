@@ -2,144 +2,61 @@
 
 from __future__ import annotations
 
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
-from tests.constants import c
-from tests.typings import t
+# NOTE (multi-agent): mro-rn88 — settings dedup: connection identifiers/dsn come from
+# the typed m.DbtOracle.OracleConnectionConfig model; schema from settings.DbtOracle.
+from flext_dbt_oracle import FlextDbtOracleSettings, m
+from flext_tests import tm
 
 
 class FlextDbtOracleConfigConnectionPart:
     """Connection string and mapping coverage."""
 
-    def test_connection_string(self) -> None:
-        """Test connection string generation."""
-        settings = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_username="testuser",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            oracle_service_name="XEPDB1",
+    def test_dsn_masks_password_and_uses_service_separator(self) -> None:
+        """Service-name DSN uses '/' and never leaks the password."""
+        credential = "testpass"
+        config = m.DbtOracle.OracleConnectionConfig(
+            host="localhost",
+            username="testuser",
+            password=credential,
+            service_name="XEPDB1",
         )
-        conn_str = settings.connection_string
-        separator = ":" if "sid" in settings.model_fields_set and settings.sid else "/"
-        assert (
-            conn_str
-            == f"oracle://testuser:***@localhost:{settings.port}{separator}{settings.database_identifier}"
+        tm.that(
+            config.dsn,
+            eq=(
+                f"tcp://testuser:***@localhost:{config.port}/{config.database_identifier}"
+            ),
         )
+        tm.that(config.dsn, lacks=credential)
 
-    def test_connection_string_with_sid(self) -> None:
-        """Test connection string generation with SID."""
-        settings = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_username="testuser",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            sid="XE",
+    def test_dsn_uses_colon_separator_with_sid(self) -> None:
+        """SID DSN uses ':' as the identifier separator."""
+        credential = "testpass"
+        config = m.DbtOracle.OracleConnectionConfig(
+            host="localhost", username="testuser", password=credential, sid="XE"
         )
-        conn_str = settings.connection_string
-        assert conn_str == f"oracle://testuser:***@localhost:{settings.port}:XE"
+        tm.that(config.dsn, eq=f"tcp://testuser:***@localhost:{config.port}:XE")
 
-    def test_effective_schema(self) -> None:
-        """Test effective schema retrieval."""
-        settings = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_username="testuser",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            oracle_service_name="XEPDB1",
-            schema_name="TEST_SCHEMA",
-        )
-        assert settings.effective_schema == "TEST_SCHEMA"
+    def test_effective_schema_from_dbt_namespace(self) -> None:
+        """The effective schema is the DbtOracle.schema_name scalar."""
+        oracle = FlextDbtOracleSettings(
+            DbtOracle={"schema_name": "TEST_SCHEMA"}
+        ).DbtOracle
+        tm.that(oracle.schema_name, eq="TEST_SCHEMA")
 
-    def test_database_identifier(self) -> None:
-        """Test database identifier retrieval."""
-        settings = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_username="testuser",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            oracle_service_name="XEPDB1",
+    def test_database_identifier_prefers_sid(self) -> None:
+        """database_identifier resolves from service_name, or SID when present."""
+        config = m.DbtOracle.OracleConnectionConfig(service_name="XEPDB1")
+        tm.that(config.database_identifier, eq="XEPDB1")
+        config_with_sid = m.DbtOracle.OracleConnectionConfig(
+            service_name="XEPDB1", sid="XE"
         )
-        assert settings.database_identifier in {"XEPDB1", "XE"}
-        config_with_sid = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_username="testuser",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            sid="XE",
-        )
-        assert config_with_sid.database_identifier == "XE"
+        tm.that(config_with_sid.database_identifier, eq="XE")
 
-    def test_to_connection_config(self) -> None:
-        """Test conversion to connection configuration."""
-        settings = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_username="testuser",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            oracle_service_name="XEPDB1",
+    def test_connection_config_carries_identity_fields(self) -> None:
+        """The typed connection config exposes the supplied identity fields."""
+        config = m.DbtOracle.OracleConnectionConfig(
+            host="localhost", username="testuser", service_name="XEPDB1"
         )
-        conn_config = settings.to_connection_config()
-        expected_keys = {
-            "host",
-            "port",
-            "service_name",
-            "sid",
-            "username",
-            "password",
-            "protocol",
-        }
-        assert set(conn_config.keys()) == expected_keys
-        assert conn_config["host"] == "localhost"
-        assert conn_config["username"] == "testuser"
-        assert conn_config["service_name"] == "XEPDB1"
-
-    def test_to_oracle_config(self) -> None:
-        """Test conversion to Oracle settings."""
-        settings = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_username="testuser",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            oracle_service_name="XEPDB1",
-            pool_min_size=2,
-            pool_max_size=10,
-        )
-        oracle_config = settings.to_oracle_config()
-        assert oracle_config.host == "localhost"
-        assert oracle_config.username == "testuser"
-        assert oracle_config.service_name == "XEPDB1"
-
-    def test_performance_settings(self) -> None:
-        """Test performance settings retrieval."""
-        settings = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_username="testuser",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            oracle_service_name="XEPDB1",
-            pool_min_size=2,
-            pool_max_size=10,
-            query_timeout=300,
-        )
-        perf_settings = settings.performance_settings
-        expected_keys = {
-            "pool_min_size",
-            "pool_max_size",
-            "pool_increment",
-            "query_timeout",
-            "fetch_size",
-            "connect_timeout",
-            "retry_attempts",
-            "retry_delay",
-        }
-        assert set(perf_settings.keys()) == expected_keys
-        assert perf_settings["pool_min_size"] == 2
-        assert perf_settings["pool_max_size"] == 10
-        assert perf_settings["query_timeout"] == 300
-
-    def test_dbt_settings(self) -> None:
-        """Test DBT settings retrieval."""
-        settings = FlextDbtOracleSettings(
-            oracle_host="localhost",
-            oracle_username="testuser",
-            oracle_password=t.SecretStr("testpass").get_secret_value(),
-            oracle_service_name="XEPDB1",
-            materialization=c.DbtOracle.Dbt.Materialization.TABLE,
-        )
-        dbt_settings = settings.dbt_settings
-        assert "database" in dbt_settings
-        assert "schema" in dbt_settings
-        assert "materialization" in dbt_settings
-        assert dbt_settings["materialization"] == "table"
+        tm.that(config.host, eq="localhost")
+        tm.that(config.username, eq="testuser")
+        tm.that(config.service_name, eq="XEPDB1")

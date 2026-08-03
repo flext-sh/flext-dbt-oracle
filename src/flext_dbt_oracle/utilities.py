@@ -2,11 +2,15 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from flext_db_oracle import FlextDbOracleUtilities
-from flext_dbt_oracle.constants import c
-from flext_dbt_oracle.settings import FlextDbtOracleSettings
-from flext_dbt_oracle.typings import t
+from flext_dbt_oracle import c, m
 from flext_meltano import u
+
+if TYPE_CHECKING:
+    from flext_dbt_oracle import t
+    from flext_dbt_oracle._settings import FlextDbtOracleSettings
 
 
 class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
@@ -18,22 +22,18 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
         class Client:
             """Typed facade for Oracle extraction and DBT pipeline execution."""
 
-            def __init__(
-                self,
-                settings: FlextDbtOracleSettings,
-            ) -> None:
+            def __init__(self, settings: FlextDbtOracleSettings) -> None:
                 """Store runtime settings used by client operations."""
                 super().__init__()
-                self.settings = settings
+                # NOTE (multi-agent): mro-rn88 — retain injected settings (docstring contract; fixes ARG002).
+                self._settings = settings
 
             def discover_tables(self) -> t.StrSequence:
                 """Return static table candidates for modeling flow."""
                 return ["customers", "orders", "order_items"]
 
             def extract_table_data(
-                self,
-                table_name: str,
-                filters: t.ConfigurationMapping | None = None,
+                self, table_name: str, filters: t.ConfigurationMapping | None = None
             ) -> t.SequenceOf[t.ConfigurationMapping]:
                 """Return deterministic sample payload for a table."""
                 _ = filters
@@ -65,6 +65,24 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                     "host": c.LOCALHOST,
                     "database": "XEPDB1",
                 }
+
+        class ModelBuilder:
+            """Deterministic DBT staging-model metadata generation."""
+
+            @staticmethod
+            def generate_staging_models(
+                source_tables: t.StrSequence,
+            ) -> t.SequenceOf[m.DbtOracle.Model]:
+                """Create one staging model definition per source table."""
+                return [
+                    m.DbtOracle.Model(
+                        name=f"stg_oracle_{table}",
+                        table_name=f"stg_{table}",
+                        sql_content=f"select * from {{{{ source('oracle', '{table}') }}}}",  # nosec B608
+                        description=f"Staging model for {table}",
+                    )
+                    for table in source_tables
+                ]
 
 
 __all__: list[str] = ["FlextDbtOracleUtilities", "u"]

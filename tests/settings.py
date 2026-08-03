@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from flext_tests.settings import FlextTestsSettings
-
 from flext_dbt_oracle import FlextDbtOracleSettings
+from flext_tests import FlextTestsSettings
 
 
 class TestsFlextDbtOracleSettings(FlextDbtOracleSettings, FlextTestsSettings):
