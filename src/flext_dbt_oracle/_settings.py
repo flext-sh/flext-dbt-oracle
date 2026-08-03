@@ -14,14 +14,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated
 
-from pydantic import BaseModel, Field
 from pydantic_settings import SettingsConfigDict
 
 # NOTE (multi-agent): mro-rn88 — inherit FlextDbOracleSettings so Oracle connection
 # scalars come from settings.DbOracle.* (SSOT); FlextMeltanoSettings adds the dbt/
 # meltano runtime surface. No duplicated oracle_* / pool_* fields here.
 from flext_db_oracle import FlextDbOracleSettings
-from flext_meltano import FlextMeltanoSettings
+from flext_meltano import FlextMeltanoSettings, m
 
 
 class FlextDbtOracleSettings(FlextDbOracleSettings, FlextMeltanoSettings):
@@ -34,37 +33,37 @@ class FlextDbtOracleSettings(FlextDbOracleSettings, FlextMeltanoSettings):
         populate_by_name=True,
     )
 
-    class _DbtOracle(BaseModel):
+    class _DbtOracle(m.BaseModel):
         """dbt-specific knobs only (Oracle connection lives in ``DbOracle``)."""
 
-        schema_name: Annotated[str, Field(default="", description="Target schema name")]
+        schema_name: Annotated[str, m.Field(default="", description="Target schema name")]
         materialization: Annotated[
-            str, Field(default="table", description="DBT materialization")
+            str, m.Field(default="table", description="DBT materialization")
         ]
         nls_lang: Annotated[
             str,
-            Field(
+            m.Field(
                 default="AMERICAN_AMERICA.AL32UTF8", description="Oracle NLS language"
             ),
         ]
         nls_date_format: Annotated[
-            str, Field(default="YYYY-MM-DD", description="Oracle NLS date format")
+            str, m.Field(default="YYYY-MM-DD", description="Oracle NLS date format")
         ]
-        search_path: Annotated[str, Field(default="", description="Schema search path")]
+        search_path: Annotated[str, m.Field(default="", description="Schema search path")]
         enable_metrics: Annotated[
-            bool, Field(default=False, description="Enable metrics collection")
+            bool, m.Field(default=False, description="Enable metrics collection")
         ]
         dbt_log_level: Annotated[
-            str, Field(default="INFO", description="Runtime log verbosity")
+            str, m.Field(default="INFO", description="Runtime log verbosity")
         ]
         enable_sql_logging: Annotated[
-            bool, Field(default=False, description="Enable SQL query logging")
+            bool, m.Field(default=False, description="Enable SQL query logging")
         ]
 
     if TYPE_CHECKING:
         DbtOracle: _DbtOracle
     else:
-        DbtOracle: _DbtOracle = Field(
+        DbtOracle: _DbtOracle = m.Field(
             default_factory=_DbtOracle, description="Namespaced dbt-specific settings."
         )
 
