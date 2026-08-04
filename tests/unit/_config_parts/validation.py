@@ -17,7 +17,9 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_default_host_applied(self) -> None:
         """Test default host is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings.DbOracleSettings(username="testuser", service_name="XEPDB1")
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
+                username="testuser", service_name="XEPDB1"
+            )
         )
         tm.that(settings.DbOracle.host, is_=str)
         tm.that(settings.DbOracle.host, ne="")
@@ -25,7 +27,9 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_default_username_applied(self) -> None:
         """Test default username is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings.DbOracleSettings(host="localhost", service_name="XEPDB1")
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
+                host="localhost", service_name="XEPDB1"
+            )
         )
         tm.that(settings.DbOracle.username, is_=str)
         tm.that(settings.DbOracle.username, ne="")
@@ -33,7 +37,9 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_default_password_applied(self) -> None:
         """Test default password is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings.DbOracleSettings(host="localhost", username="testuser")
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
+                host="localhost", username="testuser"
+            )
         )
         tm.that(settings.DbOracle.password, is_=str)
 
@@ -65,7 +71,7 @@ class FlextDbtOracleConfigValidationPart:
             materialization_enum.SNAPSHOT,
         ]
         for materialization in valid_materializations:
-            oracle = FlextDbtOracleSettings.model_validate(
-                {"DbtOracle": {"materialization": materialization}}
-            ).DbtOracle
+            oracle = FlextDbtOracleSettings.model_validate({
+                "DbtOracle": {"materialization": materialization}
+            }).DbtOracle
             tm.that(oracle.materialization, eq=materialization)

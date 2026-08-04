@@ -16,9 +16,7 @@ class FlextDbtOracleConfigConstructionPart:
         """Test creating basic Oracle configuration via DbOracle namespace."""
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
-                host="localhost",
-                username="testuser",
-                service_name="XEPDB1",
+                host="localhost", username="testuser", service_name="XEPDB1"
             )
         )
         tm.that(settings.DbOracle.host, eq="localhost")
@@ -30,7 +28,9 @@ class FlextDbtOracleConfigConstructionPart:
     def test_config_with_sid(self) -> None:
         """Test configuration with SID instead of service_name."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings.DbOracleSettings(host="localhost", username="testuser", sid="XE")
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
+                host="localhost", username="testuser", sid="XE"
+            )
         )
         tm.that(settings.DbOracle.host, eq="localhost")
         tm.that(settings.DbOracle.username, eq="testuser")
@@ -57,7 +57,9 @@ class FlextDbtOracleConfigConstructionPart:
     def test_config_defaults_when_no_service_name_or_sid(self) -> None:
         """Test default service name when neither service_name nor sid is provided."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings.DbOracleSettings(host="localhost", username="testuser")
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
+                host="localhost", username="testuser"
+            )
         )
         tm.that(settings.DbOracle.service_name, none=False)
 

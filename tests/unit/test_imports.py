@@ -40,12 +40,12 @@ class TestsFlextDbtOracleImports:
         credential = "topsecret"
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
-                host="db.example.com",
-                password=credential,
-                sid="ORCLSID",
+                host="db.example.com", password=credential, sid="ORCLSID"
             )
         )
-        oracle = FlextDbtOracleSettings.model_validate({"DbtOracle": {"schema_name": "analytics"}}).DbtOracle
+        oracle = FlextDbtOracleSettings.model_validate({
+            "DbtOracle": {"schema_name": "analytics"}
+        }).DbtOracle
 
         tm.that(settings.DbOracle.host, eq="db.example.com")
         tm.that(settings.DbOracle.password, eq=credential)
@@ -53,7 +53,9 @@ class TestsFlextDbtOracleImports:
         tm.that(oracle.schema_name, eq="analytics")
 
     def test_dbt_settings_namespace_exposes_materialization(self) -> None:
-        oracle = FlextDbtOracleSettings.model_validate({"DbtOracle": {"schema_name": "stg", "materialization": "view"}}).DbtOracle
+        oracle = FlextDbtOracleSettings.model_validate({
+            "DbtOracle": {"schema_name": "stg", "materialization": "view"}
+        }).DbtOracle
 
         tm.that(oracle.schema_name, eq="stg")
         tm.that(oracle.materialization, eq="view")
