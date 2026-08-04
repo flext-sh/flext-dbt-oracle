@@ -15,11 +15,11 @@ class FlextDbtOracleConfigConstructionPart:
     def test_basic_config_creation(self) -> None:
         """Test creating basic Oracle configuration via DbOracle namespace."""
         settings = FlextDbOracleSettings(
-            DbOracle={
-                "host": "localhost",
-                "username": "testuser",
-                "service_name": "XEPDB1",
-            }
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
+                host="localhost",
+                username="testuser",
+                service_name="XEPDB1",
+            )
         )
         tm.that(settings.DbOracle.host, eq="localhost")
         tm.that(settings.DbOracle.username, eq="testuser")
@@ -30,7 +30,7 @@ class FlextDbtOracleConfigConstructionPart:
     def test_config_with_sid(self) -> None:
         """Test configuration with SID instead of service_name."""
         settings = FlextDbOracleSettings(
-            DbOracle={"host": "localhost", "username": "testuser", "sid": "XE"}
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(host="localhost", username="testuser", sid="XE")
         )
         tm.that(settings.DbOracle.host, eq="localhost")
         tm.that(settings.DbOracle.username, eq="testuser")
@@ -39,14 +39,14 @@ class FlextDbtOracleConfigConstructionPart:
     def test_config_with_all_dbt_optional_fields(self) -> None:
         """Test dbt configuration with all optional knobs set."""
         oracle = FlextDbtOracleSettings(
-            DbtOracle={
-                "nls_lang": "AMERICAN_AMERICA.AL32UTF8",
-                "nls_date_format": "DD/MM/YYYY",
-                "search_path": "schema1,schema2",
-                "enable_metrics": True,
-                "dbt_log_level": "DEBUG",
-                "enable_sql_logging": True,
-            }
+            FlextDbtOracleSettings._DbtOracle(
+                nls_lang="AMERICAN_AMERICA.AL32UTF8",
+                nls_date_format="DD/MM/YYYY",
+                search_path="schema1,schema2",
+                enable_metrics=True,
+                dbt_log_level="DEBUG",
+                enable_sql_logging=True,
+            )
         ).DbtOracle
         tm.that(oracle.nls_lang, eq="AMERICAN_AMERICA.AL32UTF8")
         tm.that(oracle.nls_date_format, eq="DD/MM/YYYY")
@@ -57,7 +57,7 @@ class FlextDbtOracleConfigConstructionPart:
     def test_config_defaults_when_no_service_name_or_sid(self) -> None:
         """Test default service name when neither service_name nor sid is provided."""
         settings = FlextDbOracleSettings(
-            DbOracle={"host": "localhost", "username": "testuser"}
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(host="localhost", username="testuser")
         )
         tm.that(settings.DbOracle.service_name, none=False)
 

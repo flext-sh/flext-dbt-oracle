@@ -39,14 +39,14 @@ class TestsFlextDbtOracleImports:
     def test_settings_namespace_round_trips_constructor_values(self) -> None:
         credential = "topsecret"
         settings = FlextDbOracleSettings(
-            DbOracle={
-                "host": "db.example.com",
-                "password": credential,
-                "sid": "ORCLSID",
-            }
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
+                host="db.example.com",
+                password=credential,
+                sid="ORCLSID",
+            )
         )
         oracle = FlextDbtOracleSettings(
-            DbtOracle={"schema_name": "analytics"}
+            FlextDbtOracleSettings._DbtOracle(schema_name="analytics")
         ).DbtOracle
 
         tm.that(settings.DbOracle.host, eq="db.example.com")
@@ -56,7 +56,7 @@ class TestsFlextDbtOracleImports:
 
     def test_dbt_settings_namespace_exposes_materialization(self) -> None:
         oracle = FlextDbtOracleSettings(
-            DbtOracle={"schema_name": "stg", "materialization": "view"}
+            FlextDbtOracleSettings._DbtOracle(schema_name="stg", materialization="view")
         ).DbtOracle
 
         tm.that(oracle.schema_name, eq="stg")
@@ -96,7 +96,7 @@ class TestsFlextDbtOracleImports:
         )
 
         tm.that(config.database_identifier, eq="SVC")
-        assert config.dsn.endswith("/SVC")
+        tm.that(config.dsn, ends="/SVC")
         tm.that(config.dsn, has=config.username)
 
     def test_oracle_connection_config_dsn_uses_sid_when_present(self) -> None:
@@ -105,7 +105,7 @@ class TestsFlextDbtOracleImports:
         )
 
         tm.that(config.database_identifier, eq="SID9")
-        assert config.dsn.endswith(":SID9")
+        tm.that(config.dsn, ends=":SID9")
 
     def test_oracle_table_adapter_exposes_qualified_relation(self) -> None:
         adapter = m.DbtOracle.OracleTableAdapter(
