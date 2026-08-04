@@ -65,7 +65,7 @@ class FlextDbtOracleConfigValidationPart:
             materialization_enum.SNAPSHOT,
         ]
         for materialization in valid_materializations:
-            oracle = FlextDbtOracleSettings(
-                DbtOracle=FlextDbtOracleSettings._DbtOracle(materialization=materialization)
+            oracle = FlextDbtOracleSettings.model_validate(
+                {"DbtOracle": {"materialization": materialization}}
             ).DbtOracle
             tm.that(oracle.materialization, eq=materialization)
