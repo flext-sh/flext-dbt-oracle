@@ -36,7 +36,9 @@ class FlextDbtOracleSettings(FlextDbOracleSettings, FlextMeltanoSettings):
     class _DbtOracle(m.BaseModel):
         """dbt-specific knobs only (Oracle connection lives in ``DbOracle``)."""
 
-        schema_name: Annotated[str, m.Field(default="", description="Target schema name")]
+        schema_name: Annotated[
+            str, m.Field(default="", description="Target schema name")
+        ]
         materialization: Annotated[
             str, m.Field(default="table", description="DBT materialization")
         ]
@@ -49,7 +51,9 @@ class FlextDbtOracleSettings(FlextDbOracleSettings, FlextMeltanoSettings):
         nls_date_format: Annotated[
             str, m.Field(default="YYYY-MM-DD", description="Oracle NLS date format")
         ]
-        search_path: Annotated[str, m.Field(default="", description="Schema search path")]
+        search_path: Annotated[
+            str, m.Field(default="", description="Schema search path")
+        ]
         enable_metrics: Annotated[
             bool, m.Field(default=False, description="Enable metrics collection")
         ]
