@@ -27,7 +27,9 @@ class TestsFlextDbtOracleBasic:
 
     def test_explicit_schema_name_is_the_target_schema(self) -> None:
         """An explicit DbtOracle.schema_name is preserved."""
-        settings = FlextDbtOracleSettings.model_validate({"DbtOracle": {}})
+        settings = FlextDbtOracleSettings.model_validate(
+            {"DbtOracle": {"schema_name": "ANALYTICS"}}
+        )
 
         tm.that(settings.DbtOracle.schema_name, eq="ANALYTICS")
 

@@ -91,7 +91,9 @@ class TestsFlextDbtOracleConfig:
         # NOTE (multi-agent): mro-rn88 — per ADR-005 dbt knobs are SIMPLE scalars;
         # materialization is a plain str (domain checks belong at the consumer).
         """Materialization accepts arbitrary strings (scalar settings)."""
-        oracle = FlextDbtOracleSettings.model_validate({"DbtOracle": {}}).DbtOracle
+        oracle = FlextDbtOracleSettings.model_validate(
+            {"DbtOracle": {"materialization": "custom"}}
+        ).DbtOracle
         tm.that(oracle.materialization, eq="custom")
 
     def test_pool_bounds_round_trip_through_dboracle(self) -> None:
@@ -123,7 +125,9 @@ class TestsFlextDbtOracleConfig:
         self, materialization: c.DbtOracle.Dbt.Materialization
     ) -> None:
         """Each supported materialization is preserved on the namespace."""
-        oracle = FlextDbtOracleSettings.model_validate({"DbtOracle": {}}).DbtOracle
+        oracle = FlextDbtOracleSettings.model_validate(
+            {"DbtOracle": {"materialization": materialization}}
+        ).DbtOracle
         tm.that(oracle.materialization, eq=materialization)
 
     def test_sid_and_service_name_coexist_on_dboracle(self) -> None:
@@ -137,7 +141,9 @@ class TestsFlextDbtOracleConfig:
     def test_schema_name_defaults_empty_and_accepts_override(self) -> None:
         """schema_name is an empty-default scalar overridable at construction."""
         tm.that(FlextDbtOracleSettings().DbtOracle.schema_name, eq="")
-        oracle = FlextDbtOracleSettings.model_validate({"DbtOracle": {}}).DbtOracle
+        oracle = FlextDbtOracleSettings.model_validate(
+            {"DbtOracle": {"schema_name": "TEST_SCHEMA"}}
+        ).DbtOracle
         tm.that(oracle.schema_name, eq="TEST_SCHEMA")
 
 
