@@ -16,11 +16,17 @@
   Database` (+2 more)
 - Project class: `integration`
 - Keywords: `data-transformation`, `dbt`, `enterprise`, `flext`, `sql`, `typed`
-- Main facades: _none_
-- Alias exports: _none_
-- Public symbol exports: _none_
+- Main facades: `FlextDbtOracleConfig`, `FlextDbtOracleConstants`,
+  `FlextDbtOracleModels`, `FlextDbtOracleProtocols`,
+  `FlextDbtOracleServiceBase`, `FlextDbtOracleSettings`, `FlextDbtOracleTypes`,
+  `FlextDbtOracleUtilities`
+- Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
+- Public symbol exports: `FlextDbtOracleConfig`, `FlextDbtOracleConstants`,
+  `FlextDbtOracleModels`, `FlextDbtOracleProtocols`,
+  `FlextDbtOracleServiceBase`, `FlextDbtOracleSettings`, `FlextDbtOracleTypes`,
+  `FlextDbtOracleUtilities`, `config`, `settings`
 - Exported module shortcuts: _none_
-- Generated module pages: `0`
+- Generated module pages: `6`
 
 ## Next Pages
 
