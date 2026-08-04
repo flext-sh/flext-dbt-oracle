@@ -17,7 +17,7 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_default_host_applied(self) -> None:
         """Test default host is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle={"username": "testuser", "service_name": "XEPDB1"}
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(username="testuser", service_name="XEPDB1")
         )
         tm.that(settings.DbOracle.host, is_=str)
         tm.that(settings.DbOracle.host, ne="")
@@ -25,7 +25,7 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_default_username_applied(self) -> None:
         """Test default username is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle={"host": "localhost", "service_name": "XEPDB1"}
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(host="localhost", service_name="XEPDB1")
         )
         tm.that(settings.DbOracle.username, is_=str)
         tm.that(settings.DbOracle.username, ne="")
@@ -33,22 +33,22 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_default_password_applied(self) -> None:
         """Test default password is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle={"host": "localhost", "username": "testuser"}
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(host="localhost", username="testuser")
         )
         tm.that(settings.DbOracle.password, is_=str)
 
     def test_config_numeric_ranges_round_trip(self) -> None:
         """Test numeric DbOracle fields accept and preserve valid ranges."""
         settings = FlextDbOracleSettings(
-            DbOracle={
-                "host": "localhost",
-                "username": "testuser",
-                "service_name": "XEPDB1",
-                "port": 1521,
-                "pool_min": 1,
-                "pool_max": 50,
-                "timeout": 60,
-            }
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
+                host="localhost",
+                username="testuser",
+                service_name="XEPDB1",
+                port=1521,
+                pool_min=1,
+                pool_max=50,
+                timeout=60,
+            )
         )
         tm.that(settings.DbOracle.port, eq=1521)
         tm.that(settings.DbOracle.pool_min, eq=1)
@@ -66,6 +66,6 @@ class FlextDbtOracleConfigValidationPart:
         ]
         for materialization in valid_materializations:
             oracle = FlextDbtOracleSettings(
-                DbtOracle={"materialization": materialization}
+                DbtOracle=FlextDbtOracleSettings._DbtOracle(materialization=materialization)
             ).DbtOracle
             tm.that(oracle.materialization, eq=materialization)
