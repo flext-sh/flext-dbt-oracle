@@ -35,6 +35,8 @@ src/flext_dbt_oracle/
 
 - No `api.py` facet — the entry is `FlextDbtOracleServiceBase`. Connection profile is a typed `m.DbtOracle.*` model.
 - DB access via `flext-db-oracle` (`settings.DbOracle.*`).
+- Config/settings canonical pattern: ADR-012.
+- Codemod governance (ast-grep + make mod): ADR-014.
 
 ## Anti-Patterns / Gotchas
 
