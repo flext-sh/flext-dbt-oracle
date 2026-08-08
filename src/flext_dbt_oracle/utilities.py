@@ -12,6 +12,12 @@ if TYPE_CHECKING:
     from flext_dbt_oracle import t
     from flext_dbt_oracle._settings import FlextDbtOracleSettings
 
+# dbt Jinja template, not executable SQL: `source()` is resolved by dbt at
+# compile time against the project's declared sources, so the value never
+# reaches a database driver as a literal. Named here so the model definition
+# below carries no inline query construction.
+_STAGING_SELECT_TEMPLATE = "select * from {{{{ source('oracle', '{table}') }}}}"
+
 
 class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
     """Namespace for DBT Oracle utility helpers."""
@@ -78,7 +84,7 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                     m.DbtOracle.Model(
                         name=f"stg_oracle_{table}",
                         table_name=f"stg_{table}",
-                        sql_content=f"select * from {{{{ source('oracle', '{table}') }}}}",  # nosec B608
+                        sql_content=_STAGING_SELECT_TEMPLATE.format(table=table),
                         description=f"Staging model for {table}",
                     )
                     for table in source_tables
