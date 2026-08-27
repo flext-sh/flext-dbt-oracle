@@ -90,8 +90,7 @@ class TestsFlextDbtOracleImpl:
         """Adapter is a frozen value object; mutation is rejected."""
         adapter = OracleTableAdapter(schema_name="HR", table_name="EMP")
 
-        with pytest.raises(ValidationError):
-            setattr(adapter, "schema_name", "SYS")
+        tm.rejects_assignment(adapter, "schema_name", "SYS", expected=ValidationError)
 
     @pytest.mark.parametrize(
         "kwargs", [{"schema_name": "HR"}, {"table_name": "EMP"}, {}]
