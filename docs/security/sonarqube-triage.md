@@ -40,7 +40,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        22  concurrency:
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 2 · 🟡 MAJOR · VULNERABILITY · `githubactions:S8233`
 **Local**: `.github/workflows/docs.yml:19` · **Effort**: 5min
@@ -59,7 +59,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        23    group: pages
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 3 · 🟡 MAJOR · VULNERABILITY · `githubactions:S8233`
 **Local**: `.github/workflows/docs.yml:20` · **Effort**: 5min
@@ -78,7 +78,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        24    cancel-in-progress: false
 ```
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 4 · 🟡 MAJOR · VULNERABILITY · `text:S8565`
 **Local**: `pyproject.toml:-` · **Effort**: 5min
@@ -86,7 +86,7 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
 > Dependency versions are not predictable if the lock file (uv.lock, poetry.lock, pdm.lock or pylock.toml) is missing.
 
 
-**Decisão**: 
+**Decisão**: pendente
 
 ### 5 · ⚪ MINOR · CODE_SMELL · `python:S7504`
 **Local**: `conftest.py:20` · **Effort**: 5min
@@ -105,5 +105,4 @@ Cada issue traz a **mensagem do SonarQube** (descreve o problema e o impacto), o
        24                  sys.modules.pop(module_name, None)
 ```
 
-**Decisão**: 
-
+**Decisão**: pendente
