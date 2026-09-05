@@ -26,7 +26,7 @@
   `FlextDbtOracleServiceBase`, `FlextDbtOracleSettings`, `FlextDbtOracleTypes`,
   `FlextDbtOracleUtilities`, `config`, `settings`
 - Exported module shortcuts: _none_
-- Generated module pages: `0`
+- Generated module pages: `6`
 
 ## Next Pages
 
