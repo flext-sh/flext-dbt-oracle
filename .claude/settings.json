@@ -15,7 +15,11 @@
       {
         "hooks": [
           {
+<<<<<<< HEAD
             "command": "python3 /home/marlonsc/workspaces/agents-skill-sync/flext/flext-dbt-oracle/.claude/aihub-hooks/claude-sessionstart.py",
+=======
+            "command": "python3 /home/marlonsc/flext/flext-dbt-oracle/.claude/aihub-hooks/claude-sessionstart.py",
+>>>>>>> 48addcc3b91d0d9ca47f164a9d3016df8bbf9861
             "statusMessage": "Applying synchronized governance",
             "timeout": 10,
             "type": "command"
@@ -28,7 +32,11 @@
       {
         "hooks": [
           {
+<<<<<<< HEAD
             "command": "python3 /home/marlonsc/workspaces/agents-skill-sync/flext/flext-dbt-oracle/.claude/aihub-hooks/claude-subagentstart.py",
+=======
+            "command": "python3 /home/marlonsc/flext/flext-dbt-oracle/.claude/aihub-hooks/claude-subagentstart.py",
+>>>>>>> 48addcc3b91d0d9ca47f164a9d3016df8bbf9861
             "statusMessage": "Applying synchronized governance",
             "timeout": 10,
             "type": "command"
@@ -40,7 +48,11 @@
       {
         "hooks": [
           {
+<<<<<<< HEAD
             "command": "python3 /home/marlonsc/workspaces/agents-skill-sync/flext/flext-dbt-oracle/.claude/aihub-hooks/claude-userpromptsubmit.py",
+=======
+            "command": "python3 /home/marlonsc/flext/flext-dbt-oracle/.claude/aihub-hooks/claude-userpromptsubmit.py",
+>>>>>>> 48addcc3b91d0d9ca47f164a9d3016df8bbf9861
             "statusMessage": "Applying synchronized governance",
             "timeout": 10,
             "type": "command"
