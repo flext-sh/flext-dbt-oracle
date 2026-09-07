@@ -19,7 +19,9 @@ from .__version__ import __version__ as __version__
 from .__version__ import __version_info__ as __version_info__
 
 if TYPE_CHECKING:
-    from flext_db_oracle import d, e, h, r, x
+    from enum import StrEnum, unique
+    from flext_db_oracle import FlextDbOracleConstants, d, e, h, r, x
+    from typing import Final
 
     from ._config import FlextDbtOracleConfig, config
     from ._settings import FlextDbtOracleSettings, settings
@@ -30,6 +32,8 @@ if TYPE_CHECKING:
     from .typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
     from .utilities import FlextDbtOracleUtilities, FlextDbtOracleUtilities as u
 __all__: tuple[str, ...] = (
+    "Final",
+    "FlextDbOracleConstants",
     "FlextDbtOracleConfig",
     "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
@@ -38,6 +42,7 @@ __all__: tuple[str, ...] = (
     "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
+    "StrEnum",
     "__author__",
     "__author_email__",
     "__description__",
@@ -58,28 +63,28 @@ __all__: tuple[str, ...] = (
     "settings",
     "t",
     "u",
+    "unique",
     "x",
 )
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    MappingProxyType(
-        build_lazy_import_map(
-            MappingProxyType({
-                "._config": ("FlextDbtOracleConfig", "config"),
-                "._settings": ("FlextDbtOracleSettings", "settings"),
-                ".base": ("FlextDbtOracleServiceBase", "s"),
-                ".constants": ("FlextDbtOracleConstants", "c"),
-                ".models": ("FlextDbtOracleModels", "m"),
-                ".protocols": ("FlextDbtOracleProtocols", "p"),
-                ".typings": ("FlextDbtOracleTypes", "t"),
-                ".utilities": ("FlextDbtOracleUtilities", "u"),
-                "flext_db_oracle": ("d", "e", "h", "r", "x"),
-            }),
-            alias_groups=MappingProxyType({}),
-            sort_keys=False,
-        )
-    ),
-    public_exports=__all__,
+_LAZY_IMPORTS = MappingProxyType(
+    build_lazy_import_map(
+        MappingProxyType({
+            "._config": ("FlextDbtOracleConfig", "config"),
+            "._settings": ("FlextDbtOracleSettings", "settings"),
+            ".base": ("FlextDbtOracleServiceBase", "s"),
+            ".constants": ("FlextDbtOracleConstants", "c"),
+            ".models": ("FlextDbtOracleModels", "m"),
+            ".protocols": ("FlextDbtOracleProtocols", "p"),
+            ".typings": ("FlextDbtOracleTypes", "t"),
+            ".utilities": ("FlextDbtOracleUtilities", "u"),
+            "enum": ("StrEnum", "unique"),
+            "flext_db_oracle": ("FlextDbOracleConstants", "d", "e", "h", "r", "x"),
+            "typing": ("Final",),
+        }),
+        alias_groups=MappingProxyType({}),
+        sort_keys=False,
+    )
 )
+
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, public_exports=__all__)
