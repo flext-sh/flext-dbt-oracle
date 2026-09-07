@@ -46,7 +46,7 @@
   },
   "managed": {
     ".github/hooks/aihub-governance.json": {
-      "digest": "95b9ca9d657b4f03f12e38f3271641d51cdb2e198c2ef4dd32762f474525642c",
+      "digest": "bb8d28b8bbd4d4431c8043941290153d9a2e508e51458314de10f522c060fccf",
       "mode": "0644"
     },
     ".github/hooks/aihub-hooks/copilot-precompact.py": {
@@ -54,11 +54,11 @@
       "mode": "0755"
     },
     ".github/hooks/aihub-hooks/copilot-sessionstart.py": {
-      "digest": "283670595c65c8ade7b299d05e4f6f6a3c3709fc50976210b1e3fe7bb0e0b6ad",
+      "digest": "bc5eb9f809fcfa366e8d2c86299b53ede006c40d389b9bdab0fa132f6706f308",
       "mode": "0755"
     },
     ".github/hooks/aihub-hooks/copilot-subagentstart.py": {
-      "digest": "283670595c65c8ade7b299d05e4f6f6a3c3709fc50976210b1e3fe7bb0e0b6ad",
+      "digest": "bc5eb9f809fcfa366e8d2c86299b53ede006c40d389b9bdab0fa132f6706f308",
       "mode": "0755"
     },
     ".github/hooks/aihub-hooks/copilot-userpromptsubmitted.py": {

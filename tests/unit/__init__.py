@@ -3,35 +3,23 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from types import MappingProxyType
+from typing import TYPE_CHECKING
 
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
-    from . import _config_parts as _config_parts
     from flext_tests import c, d, e, h, m, p, r, s, t, td, tf, tk, tm, tv, u, x
 
-    from ._config_parts.connection import FlextDbtOracleConfigConnectionPart
-    from ._config_parts.construction import FlextDbtOracleConfigConstructionPart
-    from ._config_parts.validation import FlextDbtOracleConfigValidationPart
+    from . import _config_parts as _config_parts
     from .test_basic import TestsFlextDbtOracleBasic
     from .test_config import TestsFlextDbtOracleConfig
-    from .test_connection_profile import (
-        test_connection_profile_returns_typed_oracle_wire_shape,
-    )
-    from .test_connections import TestsFlextDbtOracleConnections
     from .test_impl import TestsFlextDbtOracleImpl
     from .test_imports import TestsFlextDbtOracleImports
     from .test_module_governance import TestsFlextDbtOracleModuleGovernance
 __all__: tuple[str, ...] = (
-    "FlextDbtOracleConfigConnectionPart",
-    "FlextDbtOracleConfigConstructionPart",
-    "FlextDbtOracleConfigValidationPart",
     "TestsFlextDbtOracleBasic",
     "TestsFlextDbtOracleConfig",
-    "TestsFlextDbtOracleConnections",
     "TestsFlextDbtOracleImpl",
     "TestsFlextDbtOracleImports",
     "TestsFlextDbtOracleModuleGovernance",
@@ -46,7 +34,6 @@ __all__: tuple[str, ...] = (
     "s",
     "t",
     "td",
-    "test_connection_profile_returns_typed_oracle_wire_shape",
     "tf",
     "tk",
     "tm",
@@ -59,15 +46,8 @@ _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
         MappingProxyType({
             "._config_parts": ("_config_parts",),
-            "._config_parts.connection": ("FlextDbtOracleConfigConnectionPart",),
-            "._config_parts.construction": ("FlextDbtOracleConfigConstructionPart",),
-            "._config_parts.validation": ("FlextDbtOracleConfigValidationPart",),
             ".test_basic": ("TestsFlextDbtOracleBasic",),
             ".test_config": ("TestsFlextDbtOracleConfig",),
-            ".test_connection_profile": (
-                "test_connection_profile_returns_typed_oracle_wire_shape",
-            ),
-            ".test_connections": ("TestsFlextDbtOracleConnections",),
             ".test_impl": ("TestsFlextDbtOracleImpl",),
             ".test_imports": ("TestsFlextDbtOracleImports",),
             ".test_module_governance": ("TestsFlextDbtOracleModuleGovernance",),
