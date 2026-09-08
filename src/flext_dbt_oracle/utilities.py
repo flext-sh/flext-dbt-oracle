@@ -10,7 +10,8 @@ from flext_meltano import u
 
 if TYPE_CHECKING:
     from flext_dbt_oracle import t
-    from flext_dbt_oracle._settings import FlextDbtOracleSettings
+
+    from ._settings import FlextDbtOracleSettings
 
 # dbt Jinja template, not executable SQL: `source()` is resolved by dbt at
 # compile time against the project's declared sources, so the value never
