@@ -20,7 +20,8 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_db_oracle import FlextDbOracleConstants, d, e, h, r, x
+    from flext_db_oracle import FlextDbOracleConstants
+    from flext_meltano import d, e, h, r, x
 
     from ._config import FlextDbtOracleConfig, config
     from ._settings import FlextDbtOracleSettings, settings
@@ -74,7 +75,8 @@ _LAZY_IMPORTS = MappingProxyType(
             ".protocols": ("FlextDbtOracleProtocols", "p"),
             ".typings": ("FlextDbtOracleTypes", "t"),
             ".utilities": ("FlextDbtOracleUtilities", "u"),
-            "flext_db_oracle": ("FlextDbOracleConstants", "d", "e", "h", "r", "x"),
+            "flext_db_oracle": ("FlextDbOracleConstants",),
+            "flext_meltano": ("d", "e", "h", "r", "x"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
