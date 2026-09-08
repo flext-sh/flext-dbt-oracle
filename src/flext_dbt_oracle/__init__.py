@@ -20,9 +20,6 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from enum import StrEnum, unique
-    from typing import Final
-
     from flext_db_oracle import FlextDbOracleConstants, d, e, h, r, x
 
     from ._config import FlextDbtOracleConfig, config
@@ -34,7 +31,6 @@ if TYPE_CHECKING:
     from .typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
     from .utilities import FlextDbtOracleUtilities, FlextDbtOracleUtilities as u
 __all__: tuple[str, ...] = (
-    "Final",
     "FlextDbOracleConstants",
     "FlextDbtOracleConfig",
     "FlextDbtOracleConstants",
@@ -44,7 +40,6 @@ __all__: tuple[str, ...] = (
     "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
-    "StrEnum",
     "__author__",
     "__author_email__",
     "__description__",
@@ -65,7 +60,6 @@ __all__: tuple[str, ...] = (
     "settings",
     "t",
     "u",
-    "unique",
     "x",
 )
 
@@ -80,9 +74,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".protocols": ("FlextDbtOracleProtocols", "p"),
             ".typings": ("FlextDbtOracleTypes", "t"),
             ".utilities": ("FlextDbtOracleUtilities", "u"),
-            "enum": ("StrEnum", "unique"),
             "flext_db_oracle": ("FlextDbOracleConstants", "d", "e", "h", "r", "x"),
-            "typing": ("Final",),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,

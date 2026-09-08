@@ -11,7 +11,7 @@ from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 if TYPE_CHECKING:
     from flext_tests import c, d, e, h, m, p, r, s, t, td, tf, tk, tm, tv, u, x
 
-    from . import _config_parts as _config_parts
+    from . import _config_parts
     from .test_basic import TestsFlextDbtOracleBasic
     from .test_config import TestsFlextDbtOracleConfig
     from .test_impl import TestsFlextDbtOracleImpl
