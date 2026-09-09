@@ -5,8 +5,9 @@ from __future__ import annotations
 # NOTE (multi-agent): mro-rn88 — settings dedup: Oracle connection scalars via
 # settings.DbOracle.* (inherited); settings.DbtOracle.* holds dbt-only knobs.
 from flext_db_oracle import FlextDbOracleSettings
-from flext_dbt_oracle import FlextDbtOracleSettings
 from flext_tests import tm
+
+from flext_dbt_oracle import FlextDbtOracleSettings
 
 
 class FlextDbtOracleConfigConstructionPart:

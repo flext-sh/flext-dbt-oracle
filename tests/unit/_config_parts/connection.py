@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+from flext_tests import tm
+
 # NOTE (multi-agent): mro-rn88 — settings dedup: connection identifiers/dsn come from
 # the typed m.DbtOracle.OracleConnectionConfig model; schema from settings.DbtOracle.
 from flext_dbt_oracle import FlextDbtOracleSettings, m
-from flext_tests import tm
 
 
 class FlextDbtOracleConfigConnectionPart:

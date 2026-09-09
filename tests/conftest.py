@@ -12,9 +12,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
+from flext_tests import tf, tk
 
 from flext_dbt_oracle import t
-from flext_tests import tf, tk
 from tests import u
 
 if TYPE_CHECKING:

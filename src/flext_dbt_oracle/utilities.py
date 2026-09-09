@@ -5,8 +5,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from flext_db_oracle import FlextDbOracleUtilities
-from flext_dbt_oracle import c, m
 from flext_meltano import u
+
+from flext_dbt_oracle import c, m
 
 if TYPE_CHECKING:
     from flext_dbt_oracle import t

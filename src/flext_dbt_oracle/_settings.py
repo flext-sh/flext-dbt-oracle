@@ -14,13 +14,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated
 
-from pydantic_settings import SettingsConfigDict
-
 # NOTE (multi-agent): mro-rn88 — inherit FlextDbOracleSettings so Oracle connection
 # scalars come from settings.DbOracle.* (SSOT); FlextMeltanoSettings adds the dbt/
 # meltano runtime surface. No duplicated oracle_* / pool_* fields here.
 from flext_db_oracle import FlextDbOracleSettings
 from flext_meltano import FlextMeltanoSettings, m
+from pydantic_settings import SettingsConfigDict
 
 
 class FlextDbtOracleSettings(FlextDbOracleSettings, FlextMeltanoSettings):

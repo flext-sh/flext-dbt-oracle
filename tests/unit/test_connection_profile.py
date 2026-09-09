@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from flext_dbt_oracle import FlextDbtOracleServiceBase, m
 from flext_meltano import p
+
+from flext_dbt_oracle import FlextDbtOracleServiceBase, m
 
 
 def test_connection_profile_returns_typed_oracle_wire_shape() -> None:

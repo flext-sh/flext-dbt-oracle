@@ -5,8 +5,9 @@ from __future__ import annotations
 from typing import Annotated
 
 from flext_db_oracle import m
-from flext_dbt_oracle import c, t
 from flext_meltano import FlextMeltanoModels, u
+
+from flext_dbt_oracle import c, t
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, m):
