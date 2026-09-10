@@ -9,8 +9,9 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_dbt_oracle import FlextDbtOracleConstants
     from flext_tests import FlextTestsConstants, d, e, h, r, td, tf, tk, tm, tv, x
+
+    from flext_dbt_oracle import FlextDbtOracleConstants
 
     from . import unit
     from .base import (
