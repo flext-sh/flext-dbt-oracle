@@ -12,9 +12,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
+from flext_tests import tf, tk
 
 from flext_dbt_oracle import t
-from flext_tests import tf, tk
 from tests import u
 
 if TYPE_CHECKING:
@@ -28,7 +28,7 @@ def pytest_sessionstart(session: pytest.Session) -> None:
     """Start Oracle container and configure session environment variables."""
     _ = session
     docker_control = tk.shared(
-        "flext-oracle-db-test", workspace_root=Path(__file__).resolve().parents[2]
+        "flext-oracle-db-test", repository_root=Path(__file__).resolve().parents[2]
     )
     result = docker_control.execute()
     if result.failure:
@@ -67,7 +67,7 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
             os.environ[key] = original
 
     docker_control = tk.shared(
-        "flext-oracle-db-test", workspace_root=Path(__file__).resolve().parents[2]
+        "flext-oracle-db-test", repository_root=Path(__file__).resolve().parents[2]
     )
     _ = docker_control.down()
 

@@ -5,8 +5,9 @@ from __future__ import annotations
 from typing import Annotated
 
 from flext_db_oracle import m
-from flext_dbt_oracle import c, t
 from flext_meltano import FlextMeltanoModels, u
+
+from flext_dbt_oracle import c, t
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, m):
@@ -81,7 +82,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
             # was never wired as a @field_validator (silent no-op: password stayed str). The
             # field is now typed t.SecretStr, which coerces str->SecretStr declaratively.
 
-            @u.computed_field(return_type=str)
+            @u.computed_field
             @property
             def database_identifier(self) -> str:
                 """Database identifier."""
@@ -89,7 +90,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                     return self.sid
                 return self.service_name
 
-            @u.computed_field(return_type=str)
+            @u.computed_field
             @property
             def dsn(self) -> str:
                 """Connection string in DSN format."""
@@ -133,11 +134,16 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                 u.Field(serialization_alias="table", description="Oracle table name"),
             ]
 
-            @u.computed_field(alias="relation", return_type=str)
+            @u.computed_field
             @property
-            def relation_name(self) -> str:
+            def relation(self) -> str:
                 """Fully qualified relation name."""
                 return f"{self.schema_name}.{self.table_name}"
+
+            @property
+            def relation_name(self) -> str:
+                """Fully qualified relation name under its stable public name."""
+                return self.relation
 
             # NOTE (multi-agent, bead mro-wfc8.1): to_metadata() removed — the
             # {schema,table,relation} mapping is model_dump(by_alias=True) (§1.3: no
