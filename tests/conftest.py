@@ -36,9 +36,7 @@ def _oracle_container() -> Generator[None]:
     )
     result = docker_control.execute()
     if result.failure:
-        pytest.skip(
-            f"Failed to start Oracle container: {result.error}",
-        )
+        pytest.skip(f"Failed to start Oracle container: {result.error}")
     resolved_port = next(
         (
             int(host_port)
@@ -67,8 +65,7 @@ def _oracle_container() -> Generator[None]:
             else:
                 os.environ[key] = original
         down_control = tk.shared(
-            "flext-oracle-db-test",
-            repository_root=Path(__file__).resolve().parents[2],
+            "flext-oracle-db-test", repository_root=Path(__file__).resolve().parents[2]
         )
         _ = down_control.down()
 
