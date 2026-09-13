@@ -24,16 +24,20 @@ if TYPE_CHECKING:
 _ENV_BACKUP: t.MutableMappingKV[str, str | None] = {}
 
 
-def pytest_sessionstart(session: pytest.Session) -> None:
-    """Start Oracle container and configure session environment variables."""
-    _ = session
+@pytest.fixture(scope="session", autouse=True)
+def _oracle_container() -> Generator[None]:
+    """Start Oracle container and configure session environment variables.
+
+    Skips every test cleanly when the container cannot start (e.g. no Docker
+    daemon), so the JUnit XML records skips rather than no-tests-collected.
+    """
     docker_control = tk.shared(
         "flext-oracle-db-test", repository_root=Path(__file__).resolve().parents[2]
     )
     result = docker_control.execute()
     if result.failure:
         pytest.skip(
-            f"Failed to start Oracle container: {result.error}", allow_module_level=True
+            f"Failed to start Oracle container: {result.error}",
         )
     resolved_port = next(
         (
@@ -54,22 +58,19 @@ def pytest_sessionstart(session: pytest.Session) -> None:
     for key, value in env_vars.items():
         _ENV_BACKUP[key] = os.environ.get(key)
         os.environ[key] = value
-
-
-def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
-    """Restore environment variables and stop the Oracle container."""
-    _ = session
-    _ = exitstatus
-    for key, original in _ENV_BACKUP.items():
-        if original is None:
-            os.environ.pop(key, None)
-        else:
-            os.environ[key] = original
-
-    docker_control = tk.shared(
-        "flext-oracle-db-test", repository_root=Path(__file__).resolve().parents[2]
-    )
-    _ = docker_control.down()
+    try:
+        yield
+    finally:
+        for key, original in _ENV_BACKUP.items():
+            if original is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = original
+        down_control = tk.shared(
+            "flext-oracle-db-test",
+            repository_root=Path(__file__).resolve().parents[2],
+        )
+        _ = down_control.down()
 
 
 @pytest.fixture
