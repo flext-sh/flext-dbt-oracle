@@ -4,23 +4,19 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from flext_db_oracle import m
-from flext_meltano import FlextMeltanoModels, u
+from flext_meltano import u
 
 from flext_dbt_oracle import c, t
+from flext_dbt_oracle._models import FlextDbtOracleModelsBase
 
 
-class FlextDbtOracleModels(FlextMeltanoModels, m):
-    """Namespace wrapper for DBT Oracle domain models.
-
-    Inherits from FlextMeltanoModels (Singer/Meltano) and m
-    (Oracle DB) to compose the full DBT Oracle domain namespace.
-    """
+class FlextDbtOracleModels(FlextDbtOracleModelsBase):
+    """Namespace wrapper for DBT Oracle domain models — composes _models parts via MRO."""
 
     class DbtOracle:
         """DbtOracle domain namespace."""
 
-        class Model(m.Value):
+        class Model(u.Value):
             """Typed DBT model metadata payload."""
 
             name: Annotated[str, u.Field(description="DBT model name")]
@@ -53,7 +49,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
         # NOTE (multi-agent, bead mro-wfc8.1): ModelGenerator moved to
         # u.DbtOracle.ModelBuilder (behavior belongs in utilities, not on/among models).
 
-        class OracleConnectionConfig(m.Value):
+        class OracleConnectionConfig(u.Value):
             """Configuration for Oracle database connections."""
 
             host: Annotated[str, u.Field(description="Oracle database host")] = (
@@ -104,7 +100,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
                     f"{self.host}:{self.port}/{self.service_name}"
                 )
 
-        class DbtConnectionProfile(m.Value):
+        class DbtConnectionProfile(u.Value):
             # NOTE (multi-agent): settings-fallout lane (mro-rn88) — typed model for
             # the dbt Oracle connection profile so base.py stops hand-assembling a raw
             # dict (flext-law §1.2/§3a: build a model, emit model_dump at the edge).
@@ -122,7 +118,7 @@ class FlextDbtOracleModels(FlextMeltanoModels, m):
             ]
             project: Annotated[str, u.Field(description="dbt project name")]
 
-        class OracleTableAdapter(m.Value):
+        class OracleTableAdapter(u.Value):
             """Adapter for Oracle table metadata normalization."""
 
             schema_name: Annotated[
