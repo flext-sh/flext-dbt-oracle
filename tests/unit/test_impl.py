@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import pytest
 from flext_tests import tm
-from pydantic import ValidationError
 
 from tests import m
 
@@ -90,7 +89,7 @@ class TestsFlextDbtOracleImpl:
         """Adapter is a frozen value object; mutation is rejected."""
         adapter = OracleTableAdapter(schema_name="HR", table_name="EMP")
 
-        tm.rejects_assignment(adapter, "schema_name", "SYS", expected=ValidationError)
+        tm.rejects_assignment(adapter, "schema_name", "SYS", expected=m.ValidationError)
 
     @pytest.mark.parametrize(
         "kwargs", [{"schema_name": "HR"}, {"table_name": "EMP"}, {}]
@@ -99,5 +98,5 @@ class TestsFlextDbtOracleImpl:
         self, kwargs: dict[str, str]
     ) -> None:
         """Both schema_name and table_name are mandatory."""
-        with pytest.raises(ValidationError):
+        with pytest.raises(m.ValidationError):
             OracleTableAdapter(**kwargs)
