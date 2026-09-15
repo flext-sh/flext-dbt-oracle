@@ -9,6 +9,7 @@ class FlextDbtOracleCliService:
     """CLI service for DBT Oracle — delegates to public facade."""
 
     def __init__(self, service: FlextDbtOracle) -> None:
+        """Initialize the CLI service with the supplied service facade."""
         self.service = service
 
     def main(self, args: list[str]) -> int:
