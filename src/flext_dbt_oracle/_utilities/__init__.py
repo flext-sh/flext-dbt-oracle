@@ -1,5 +1,5 @@
 # AUTO-GENERATED FILE — Regenerate with: make gen
-"""Utilities package."""
+"""Flext Dbt Oracle. Utilities package."""
 
 from __future__ import annotations
 

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from flext_meltano import c
 
-from flext_dbt_oracle._constants import FlextDbtOracleConstantsEnums
+from ._constants import FlextDbtOracleConstantsEnums
 
 
 class FlextDbtOracleConstants(c, FlextDbtOracleConstantsEnums):

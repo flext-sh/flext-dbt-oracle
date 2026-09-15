@@ -20,18 +20,21 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_db_oracle import FlextDbOracleConstants, d, e, h, r, x
+    from flext_meltano import d, e, h, r, x
 
     from ._config import FlextDbtOracleConfig, config
     from ._settings import FlextDbtOracleSettings, settings
+    from .api import FlextDbtOracle, dbt_oracle
     from .base import FlextDbtOracleServiceBase, FlextDbtOracleServiceBase as s
+    from .cli import FlextDbtOracleCliService, main
     from .constants import FlextDbtOracleConstants, FlextDbtOracleConstants as c
     from .models import FlextDbtOracleModels, FlextDbtOracleModels as m
     from .protocols import FlextDbtOracleProtocols, FlextDbtOracleProtocols as p
     from .typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
     from .utilities import FlextDbtOracleUtilities, FlextDbtOracleUtilities as u
 __all__: tuple[str, ...] = (
-    "FlextDbOracleConstants",
+    "FlextDbtOracle",
+    "FlextDbtOracleCliService",
     "FlextDbtOracleConfig",
     "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
@@ -51,9 +54,11 @@ __all__: tuple[str, ...] = (
     "c",
     "config",
     "d",
+    "dbt_oracle",
     "e",
     "h",
     "m",
+    "main",
     "p",
     "r",
     "s",
@@ -68,13 +73,15 @@ _LAZY_IMPORTS = MappingProxyType(
         MappingProxyType({
             "._config": ("FlextDbtOracleConfig", "config"),
             "._settings": ("FlextDbtOracleSettings", "settings"),
+            ".api": ("FlextDbtOracle", "dbt_oracle"),
             ".base": ("FlextDbtOracleServiceBase", "s"),
+            ".cli": ("FlextDbtOracleCliService", "main"),
             ".constants": ("FlextDbtOracleConstants", "c"),
             ".models": ("FlextDbtOracleModels", "m"),
             ".protocols": ("FlextDbtOracleProtocols", "p"),
             ".typings": ("FlextDbtOracleTypes", "t"),
             ".utilities": ("FlextDbtOracleUtilities", "u"),
-            "flext_db_oracle": ("FlextDbOracleConstants", "d", "e", "h", "r", "x"),
+            "flext_meltano": ("d", "e", "h", "r", "x"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,

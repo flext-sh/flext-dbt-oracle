@@ -7,7 +7,8 @@ from typing import Annotated
 from flext_meltano import u
 
 from flext_dbt_oracle import c, t
-from flext_dbt_oracle._models import FlextDbtOracleModelsBase
+
+from ._models import FlextDbtOracleModelsBase
 
 
 class FlextDbtOracleModels(FlextDbtOracleModelsBase):
