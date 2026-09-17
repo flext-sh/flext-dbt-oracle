@@ -12,6 +12,7 @@
 8. Push rejection: FF push rejected on divergence → stop; no autonomous rebase/force-push; escalate with git error + local vs remote SHAs.
 9. Escalation: impossible rule → exact error. Rule conflict → present both with numbers. Unclear → one targeted question. Never guess.
 10. Precedence: NEWEST > OLDEST. USER REQUEST > BEADS > ADRs > SKILLs > DOCS > default. Adjust lower/older to higher/newer. Doubt → ASK USER FIRST.
+
 <!-- /AIHUB-INVIOLABLE-LAW-PRELUDE -->
 
 ## CLAUDE.md
