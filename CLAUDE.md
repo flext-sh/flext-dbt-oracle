@@ -1,4 +1,5 @@
 <!-- AIHUB-INVIOLABLE-LAW-PRELUDE v1 -->
+
 # AI Hub Inviolable Law — Strict Prelude
 
 1. Truth: never claim done/green/resolved without command, exit code, decisive output.
