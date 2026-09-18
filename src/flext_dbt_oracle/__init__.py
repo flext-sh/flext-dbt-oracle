@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 
     from ._config import FlextDbtOracleConfig, config
     from ._settings import FlextDbtOracleSettings, settings
-    from .api import FlextDbtOracle, dbt_oracle
+    from .api import FlextDbtOracle
     from .base import FlextDbtOracleServiceBase, FlextDbtOracleServiceBase as s
     from .cli import FlextDbtOracleCliService, main
     from .constants import FlextDbtOracleConstants, FlextDbtOracleConstants as c
@@ -54,7 +54,6 @@ __all__: tuple[str, ...] = (
     "c",
     "config",
     "d",
-    "dbt_oracle",
     "e",
     "h",
     "m",
@@ -73,7 +72,7 @@ _LAZY_IMPORTS = MappingProxyType(
         MappingProxyType({
             "._config": ("FlextDbtOracleConfig", "config"),
             "._settings": ("FlextDbtOracleSettings", "settings"),
-            ".api": ("FlextDbtOracle", "dbt_oracle"),
+            ".api": ("FlextDbtOracle",),
             ".base": ("FlextDbtOracleServiceBase", "s"),
             ".cli": ("FlextDbtOracleCliService", "main"),
             ".constants": ("FlextDbtOracleConstants", "c"),
