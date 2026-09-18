@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from flext_meltano import u
+from flext_meltano import m, u
 
 from flext_dbt_oracle import c, t
 
@@ -17,7 +17,7 @@ class FlextDbtOracleModels(FlextDbtOracleModelsBase):
     class DbtOracle:
         """DbtOracle domain namespace."""
 
-        class Model(u.Value):
+        class Model(m.Value):
             """Typed DBT model metadata payload."""
 
             name: Annotated[str, u.Field(description="DBT model name")]
@@ -50,7 +50,7 @@ class FlextDbtOracleModels(FlextDbtOracleModelsBase):
         # NOTE (multi-agent, bead mro-wfc8.1): ModelGenerator moved to
         # u.DbtOracle.ModelBuilder (behavior belongs in utilities, not on/among models).
 
-        class OracleConnectionConfig(u.Value):
+        class OracleConnectionConfig(m.Value):
             """Configuration for Oracle database connections."""
 
             host: Annotated[str, u.Field(description="Oracle database host")] = (
@@ -101,7 +101,7 @@ class FlextDbtOracleModels(FlextDbtOracleModelsBase):
                     f"{self.host}:{self.port}/{self.service_name}"
                 )
 
-        class DbtConnectionProfile(u.Value):
+        class DbtConnectionProfile(m.Value):
             # NOTE (multi-agent): settings-fallout lane (mro-rn88) — typed model for
             # the dbt Oracle connection profile so base.py stops hand-assembling a raw
             # dict (flext-law §1.2/§3a: build a model, emit model_dump at the edge).
@@ -119,7 +119,7 @@ class FlextDbtOracleModels(FlextDbtOracleModelsBase):
             ]
             project: Annotated[str, u.Field(description="dbt project name")]
 
-        class OracleTableAdapter(u.Value):
+        class OracleTableAdapter(m.Value):
             """Adapter for Oracle table metadata normalization."""
 
             schema_name: Annotated[
