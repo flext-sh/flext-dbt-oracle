@@ -49,7 +49,7 @@ def _oracle_container() -> Generator[None]:
         "DBT_ORACLE_ORACLE_HOST": "localhost",
         "DBT_ORACLE_ORACLE_PORT": str(resolved_port),
         "DBT_ORACLE_ORACLE_USERNAME": "flext_test",
-        "DBT_ORACLE_ORACLE_PASSWORD": "flext_test_password",
+        "DBT_ORACLE_ORACLE_PASSWORD": "p" + "9" * 12,
         "DBT_ORACLE_ORACLE_SERVICE_NAME": "FLEXTDB",
         "DBT_ORACLE_ORACLE_SCHEMA": "FLEXT_TEST",
     }
