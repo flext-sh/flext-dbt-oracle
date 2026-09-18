@@ -12,7 +12,7 @@
 
 <!-- AUTO-GENERATED — DO NOT EDIT MANUALLY -->
 
-- Version: `0.12.0rc0`
+- Version: `0.12.0`
 - Project class: `integration`
 - Package: `flext_dbt_oracle`
 - Description: FLEXT dbt Oracle - dbt Models for Oracle Database

@@ -9,7 +9,7 @@
 <!-- AUTO-GENERATED — DO NOT EDIT MANUALLY -->
 
 - Package: `flext_dbt_oracle`
-- Version: `0.12.0rc0`
+- Version: `0.12.0`
 - Description: FLEXT dbt Oracle - dbt Models for Oracle Database
 - Doc summary: Flext Dbt Oracle package.
 - Classifiers: `Development Status :: 3 - Alpha`, `Intended Audience :: Developers`,
