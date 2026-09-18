@@ -12,22 +12,19 @@
 - Version: `0.12.0rc0`
 - Description: FLEXT dbt Oracle - dbt Models for Oracle Database
 - Doc summary: Flext Dbt Oracle package.
-- Classifiers: `Development Status :: 3 - Alpha`, `Intended Audience ::
-Developers`, `Operating System :: OS Independent`, `Programming Language ::
-Python :: 3 :: Only`, `Programming Language :: Python :: 3.13`, `Topic ::
-Database` (+2 more)
+- Classifiers: `Development Status :: 3 - Alpha`, `Intended Audience :: Developers`,
+  `Operating System :: OS Independent`, `Programming Language :: Python :: 3 :: Only`,
+  `Programming Language :: Python :: 3.13`, `Topic :: Database` (+2 more)
 - Project class: `integration`
 - Keywords: `data-transformation`, `dbt`, `enterprise`, `flext`, `sql`, `typed`
-- Main facades: `FlextDbtOracle`, `FlextDbtOracleCliService`,
-  `FlextDbtOracleConfig`, `FlextDbtOracleConstants`, `FlextDbtOracleModels`,
-  `FlextDbtOracleProtocols`, `FlextDbtOracleServiceBase`,
-  `FlextDbtOracleSettings` (+2 more)
+- Main facades: `FlextDbtOracle`, `FlextDbtOracleCliService`, `FlextDbtOracleConfig`,
+  `FlextDbtOracleConstants`, `FlextDbtOracleModels`, `FlextDbtOracleProtocols`,
+  `FlextDbtOracleServiceBase`, `FlextDbtOracleSettings` (+2 more)
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
 - Public symbol exports: `FlextDbtOracle`, `FlextDbtOracleCliService`,
   `FlextDbtOracleConfig`, `FlextDbtOracleConstants`, `FlextDbtOracleModels`,
-  `FlextDbtOracleProtocols`, `FlextDbtOracleServiceBase`,
-  `FlextDbtOracleSettings`, `FlextDbtOracleTypes`, `FlextDbtOracleUtilities` (+3
-  more)
+  `FlextDbtOracleProtocols`, `FlextDbtOracleServiceBase`, `FlextDbtOracleSettings`,
+  `FlextDbtOracleTypes`, `FlextDbtOracleUtilities` (+3 more)
 - Exported module shortcuts: _none_
 - Generated module pages: `8`
 
