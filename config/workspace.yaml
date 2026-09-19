@@ -1,0 +1,19 @@
+# Handwritten topology SSOT consumed by `flext-infra codegen conform`.
+# conform never overwrites this input. Declare members/exclusions here, then
+# run the project's canonical generation surface (`make gen`).
+version: 3
+name: flext-dbt-oracle
+repository:
+  name: flext-dbt-oracle
+  distribution: flext-dbt-oracle
+  provider: flext-sh
+  url: https://github.com/flext-sh/flext-dbt-oracle.git
+  path: .
+  role: standalone
+  state: active
+  kind: internal_flext
+  codegen: conform
+  package: true
+  editable: true
+  read_only: false
+members: []
