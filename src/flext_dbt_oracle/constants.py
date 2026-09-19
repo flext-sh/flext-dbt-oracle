@@ -4,14 +4,18 @@ from __future__ import annotations
 
 from flext_meltano import c
 
-from ._constants import FlextDbtOracleConstantsEnums
+from ._constants.base import FlextDbtOracleConstantsBase
+from ._constants.enums import FlextDbtOracleConstantsEnums
 
 
-class FlextDbtOracleConstants(c, FlextDbtOracleConstantsEnums):
+class FlextDbtOracleConstants(c):
     """Domain constants for DBT Oracle workflows — composes _constants parts via MRO."""
 
-    # All domain constants are declared in _constants/enums.py (FlextDbtOracleConstantsEnums)
-    # This facade provides the MRO composition only.
+    class DbtOracle(
+        FlextDbtOracleConstantsEnums.DbtOracle,
+        FlextDbtOracleConstantsBase.DbtOracle,
+    ):
+        """DBT Oracle constants namespace merging enums and project metadata."""
 
 
 c = FlextDbtOracleConstants

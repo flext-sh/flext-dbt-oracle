@@ -12,7 +12,7 @@ from flext_dbt_oracle import FlextDbtOracleSettings
 from tests import c, t
 
 
-class FlextDbtOracleConfigValidationPart:
+class TestsFlextDbtOracleConfigValidationPart:
     """Configuration validation coverage."""
 
     def test_config_default_host_applied(self) -> None:

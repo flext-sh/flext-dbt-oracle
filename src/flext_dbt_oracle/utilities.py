@@ -4,27 +4,22 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from flext_db_oracle import FlextDbOracleUtilities
 from flext_meltano import u
 
 from flext_dbt_oracle import c, m
+
+from ._utilities.base import FlextDbtOracleUtilitiesBase
 
 if TYPE_CHECKING:
     from flext_dbt_oracle import t
 
     from ._settings import FlextDbtOracleSettings
 
-# dbt Jinja template, not executable SQL: `source()` is resolved by dbt at
-# compile time against the project's declared sources, so the value never
-# reaches a database driver as a literal. Named here so the model definition
-# below carries no inline query construction.
-_STAGING_SELECT_TEMPLATE = "select * from {{{{ source('oracle', '{table}') }}}}"
 
-
-class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
+class FlextDbtOracleUtilities(u):
     """Namespace for DBT Oracle utility helpers."""
 
-    class DbtOracle:
+    class DbtOracle(FlextDbtOracleUtilitiesBase, FlextDbtOracleUtilitiesBase.DbOracle):
         """DBT Oracle domain utilities namespace."""
 
         class Client:
@@ -77,8 +72,17 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
         class ModelBuilder:
             """Deterministic DBT staging-model metadata generation."""
 
-            @staticmethod
+            # dbt Jinja template, not executable SQL: `source()` is resolved by
+            # dbt at compile time against the project's declared sources, so the
+            # value never reaches a database driver as a literal. Declared on the
+            # owning class so the module carries no loose data assignment.
+            _STAGING_SELECT_TEMPLATE: str = (
+                "select * from {{{{ source('oracle', '{table}') }}}}"
+            )
+
+            @classmethod
             def generate_staging_models(
+                cls,
                 source_tables: t.StrSequence,
             ) -> t.SequenceOf[m.DbtOracle.Model]:
                 """Create one staging model definition per source table."""
@@ -86,13 +90,13 @@ class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
                     m.DbtOracle.Model(
                         name=f"stg_oracle_{table}",
                         table_name=f"stg_{table}",
-                        sql_content=_STAGING_SELECT_TEMPLATE.format(table=table),
+                        sql_content=cls._STAGING_SELECT_TEMPLATE.format(table=table),
                         description=f"Staging model for {table}",
                     )
                     for table in source_tables
                 ]
 
 
-__all__: list[str] = ["FlextDbtOracleUtilities", "u"]
-
 u = FlextDbtOracleUtilities
+
+__all__: list[str] = ["FlextDbtOracleUtilities", "u"]

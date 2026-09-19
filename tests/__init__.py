@@ -14,10 +14,7 @@ if TYPE_CHECKING:
     from flext_dbt_oracle import FlextDbtOracleConstants
 
     from . import unit
-    from .base import (
-        TestsFlextDbtOracleServiceBase,
-        TestsFlextDbtOracleServiceBase as s,
-    )
+    from .base import TestsFlextDbtOracleServiceBase
     from .constants import (
         TestsFlextDbtOracleConstants,
         TestsFlextDbtOracleConstants as c,
@@ -50,7 +47,6 @@ __all__: tuple[str, ...] = (
     "m",
     "p",
     "r",
-    "s",
     "t",
     "td",
     "tf",
@@ -65,7 +61,7 @@ __all__: tuple[str, ...] = (
 _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
         MappingProxyType({
-            ".base": ("TestsFlextDbtOracleServiceBase", "s"),
+            ".base": ("TestsFlextDbtOracleServiceBase",),
             ".constants": ("TestsFlextDbtOracleConstants", "c"),
             ".models": ("TestsFlextDbtOracleModels", "m"),
             ".protocols": ("TestsFlextDbtOracleProtocols", "p"),

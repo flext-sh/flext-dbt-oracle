@@ -11,11 +11,11 @@ from flext_dbt_oracle import c, t
 from ._models import FlextDbtOracleModelsBase
 
 
-class FlextDbtOracleModels(FlextDbtOracleModelsBase):
+class FlextDbtOracleModels(m, FlextDbtOracleModelsBase):
     """Namespace wrapper for DBT Oracle domain models — composes _models parts via MRO."""
 
-    class DbtOracle:
-        """DbtOracle domain namespace."""
+    class DbtOracle(FlextDbtOracleModelsBase, FlextDbtOracleModelsBase.DbOracle):
+        """DbtOracle domain namespace extending the Oracle model contracts."""
 
         class Model(m.Value):
             """Typed DBT model metadata payload."""

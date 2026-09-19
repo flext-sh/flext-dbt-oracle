@@ -9,8 +9,8 @@ from flext_meltano import p
 class FlextDbtOracleProtocolsBase(p, FlextDbOracleProtocols):
     """Namespace for DBT Oracle protocol contracts."""
 
-    class DbtOracle:
-        """DBT Oracle protocol namespace."""
+    class DbtOracle(FlextDbOracleProtocols.DbOracle):
+        """DBT Oracle protocol namespace extending the Oracle contracts."""
 
 
 __all__: list[str] = ["FlextDbtOracleProtocolsBase"]
