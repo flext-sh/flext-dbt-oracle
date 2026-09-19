@@ -19,13 +19,12 @@ from typing import TYPE_CHECKING, Annotated
 # meltano runtime surface. No duplicated oracle_* / pool_* fields here.
 from flext_db_oracle import FlextDbOracleSettings
 from flext_meltano import FlextMeltanoSettings, m
-from pydantic_settings import SettingsConfigDict
 
 
 class FlextDbtOracleSettings(FlextDbOracleSettings, FlextMeltanoSettings):
     """DBT Oracle settings; connection via ``DbOracle.*``, dbt knobs via ``DbtOracle.*``."""
 
-    model_config = SettingsConfigDict(
+    model_config = m.SettingsConfigDict(
         env_prefix="FLEXT_DBT_ORACLE_",
         env_nested_delimiter="__",
         extra="ignore",
