@@ -1,20 +1,10 @@
-"""Base constants for DBT Oracle — project metadata and DBT constants."""
+"""Base constants for DBT Oracle — family marker for the constants parts."""
 
 from __future__ import annotations
 
-from typing import Final
-
 
 class FlextDbtOracleConstantsBase:
-    """Base DBT Oracle constants: metadata and DBT constants."""
-
-    class DbtOracle:
-        """DBT Oracle constants namespace."""
-
-        class Dbt:
-            """DBT constants and enum values."""
-
-            PROJECT_NAME: Final[str] = "dbt-oracle"
+    """Base DBT Oracle constants part composed by the constants facade."""
 
 
 __all__: list[str] = ["FlextDbtOracleConstantsBase"]

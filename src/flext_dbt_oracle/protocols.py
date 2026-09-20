@@ -7,8 +7,8 @@ The 8 inner ``DbtOracle.*`` Protocol classes that previously lived here
 type-checking sites, only stale generated docs. Per AGENTS.md §3.5 (no dead
 code) + the standing STRICT YAGNI directive they were deleted; the canonical
 ``FlextDbtOracleProtocols`` facade remains intact (re-exported via ``p``) and
-inherits its actual behavior from the parent ``FlextDbOracleProtocols`` +
-``FlextMeltanoProtocols`` MRO chain.
+composes the parent ``FlextDbOracleProtocols.DbOracle`` protocol namespace
+through its own ``DbtOracle`` namespace.
 """
 
 from __future__ import annotations
@@ -16,9 +16,14 @@ from __future__ import annotations
 from flext_db_oracle import p as _db_oracle_p
 from flext_meltano import p
 
+from ._protocols.base import FlextDbtOracleProtocolsBase
+
 
 class FlextDbtOracleProtocols(p, _db_oracle_p):
     """DBT Oracle protocols facade — composes Oracle and Meltano protocols."""
+
+    class DbtOracle(FlextDbtOracleProtocolsBase, _db_oracle_p.DbOracle):
+        """DBT Oracle protocol namespace composing the parent contracts."""
 
 
 __all__: list[str] = ["FlextDbtOracleProtocols", "p"]

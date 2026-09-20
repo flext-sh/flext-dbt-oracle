@@ -10,11 +10,18 @@ from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
     from .base import FlextDbtOracleUtilitiesBase
-__all__: tuple[str, ...] = ("FlextDbtOracleUtilitiesBase",)
+    from .model_builder import FlextDbtOracleUtilitiesModelBuilder
+__all__: tuple[str, ...] = (
+    "FlextDbtOracleUtilitiesBase",
+    "FlextDbtOracleUtilitiesModelBuilder",
+)
 
 _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
-        MappingProxyType({".base": ("FlextDbtOracleUtilitiesBase",)}),
+        MappingProxyType({
+            ".base": ("FlextDbtOracleUtilitiesBase",),
+            ".model_builder": ("FlextDbtOracleUtilitiesModelBuilder",),
+        }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
     )
