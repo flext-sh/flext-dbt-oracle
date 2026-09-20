@@ -13,11 +13,11 @@ inherits its actual behavior from the parent ``FlextDbOracleProtocols`` +
 
 from __future__ import annotations
 
-from flext_db_oracle import FlextDbOracleProtocols
+from flext_db_oracle import p as _db_oracle_p
 from flext_meltano import p
 
 
-class FlextDbtOracleProtocols(p, FlextDbOracleProtocols):
+class FlextDbtOracleProtocols(p, _db_oracle_p):
     """DBT Oracle protocols facade — composes Oracle and Meltano protocols."""
 
 

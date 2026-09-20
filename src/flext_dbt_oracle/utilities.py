@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from flext_db_oracle import FlextDbOracleUtilities
+from flext_db_oracle import u as _db_oracle_u
 from flext_meltano import u
 
 from flext_dbt_oracle import c, m
@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 _STAGING_SELECT_TEMPLATE = "select * from {{{{ source('oracle', '{table}') }}}}"
 
 
-class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
+class FlextDbtOracleUtilities(u, _db_oracle_u):
     """Namespace for DBT Oracle utility helpers."""
 
     class DbtOracle:

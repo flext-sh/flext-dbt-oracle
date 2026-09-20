@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from flext_db_oracle import FlextDbOracleUtilities
+from flext_db_oracle import u as _db_oracle_u
 from flext_meltano import u
 
 
-class FlextDbtOracleUtilitiesBase(u, FlextDbOracleUtilities):
+class FlextDbtOracleUtilitiesBase(u, _db_oracle_u):
     """MRO facade composing Meltano + DbOracle utility namespaces."""
 
     class DbtOracle:
