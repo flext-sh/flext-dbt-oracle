@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from flext_db_oracle import FlextDbOracleTypes
+from flext_db_oracle import t as _db_oracle_t
 from flext_meltano import t
 
 
-class FlextDbtOracleTypesBase(t, FlextDbOracleTypes):
+class FlextDbtOracleTypesBase(t, _db_oracle_t):
     """MRO facade composing Meltano + DbOracle type namespaces."""
 
     # No domain-specific types are actively used via t.DbtOracle.*
