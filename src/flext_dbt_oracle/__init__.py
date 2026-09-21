@@ -20,7 +20,7 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_meltano import d, e, h, r, x
+    from flext_core import d, e, h, r, x
 
     from .__version__ import FlextDbtOracleVersion
     from ._config import FlextDbtOracleConfig, config
@@ -83,7 +83,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".protocols": ("FlextDbtOracleProtocols", "p"),
             ".typings": ("FlextDbtOracleTypes", "t"),
             ".utilities": ("FlextDbtOracleUtilities", "u"),
-            "flext_meltano": ("d", "e", "h", "r", "x"),
+            "flext_core": ("d", "e", "h", "r", "x"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
