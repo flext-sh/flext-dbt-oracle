@@ -8,14 +8,17 @@ from __future__ import annotations
 
 from typing import Annotated, override
 
-from flext_meltano import FlextMeltanoDbtServiceBase, u
+from flext_meltano import (
+    FlextMeltanoDbtServiceBase as _meltano_FlextMeltanoDbtServiceBase,
+    u,
+)
 
 # NOTE (multi-agent): settings-fallout lane (mro-rn88) — import the module `settings`
 # singleton for the strict `from <pkg> import settings` access form (was bare/undefined).
 from flext_dbt_oracle import FlextDbtOracleSettings, c, m, p, settings, t
 
 
-class FlextDbtOracleServiceBase(FlextMeltanoDbtServiceBase):
+class FlextDbtOracleServiceBase(_meltano_FlextMeltanoDbtServiceBase):
     """Base class for flext-dbt-oracle services."""
 
     dbt_project_name: Annotated[
