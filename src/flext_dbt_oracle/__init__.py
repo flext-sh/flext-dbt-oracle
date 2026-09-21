@@ -20,8 +20,9 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_core import d, h, r, x
     from flext_db_oracle import e
+
+    from flext_core import d, h, r, x
 
     from . import services
     from .__version__ import FlextDbtOracleVersion
