@@ -20,7 +20,9 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_core import d, e, h, r, x
+    from flext_db_oracle import e
+
+    from flext_core import d, h, r, x
 
     from . import services
     from .__version__ import FlextDbtOracleVersion
@@ -92,7 +94,8 @@ _LAZY_IMPORTS = MappingProxyType(
             ".services.client": ("FlextDbtOracleServicesClient",),
             ".typings": ("FlextDbtOracleTypes", "t"),
             ".utilities": ("FlextDbtOracleUtilities", "u"),
-            "flext_core": ("d", "e", "h", "r", "x"),
+            "flext_core": ("d", "h", "r", "x"),
+            "flext_db_oracle": ("e",),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
