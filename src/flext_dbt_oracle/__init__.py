@@ -22,6 +22,7 @@ from .__version__ import (
 if TYPE_CHECKING:
     from flext_meltano import d, e, h, r, x
 
+    from .__version__ import FlextDbtOracleVersion
     from ._config import FlextDbtOracleConfig, config
     from ._settings import FlextDbtOracleSettings, settings
     from .api import FlextDbtOracle
@@ -43,6 +44,7 @@ __all__: tuple[str, ...] = (
     "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
+    "FlextDbtOracleVersion",
     "__author__",
     "__author_email__",
     "__description__",
@@ -70,6 +72,7 @@ __all__: tuple[str, ...] = (
 _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
         MappingProxyType({
+            ".__version__": ("FlextDbtOracleVersion",),
             "._config": ("FlextDbtOracleConfig", "config"),
             "._settings": ("FlextDbtOracleSettings", "settings"),
             ".api": ("FlextDbtOracle",),

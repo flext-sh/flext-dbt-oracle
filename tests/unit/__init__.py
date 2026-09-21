@@ -14,12 +14,14 @@ if TYPE_CHECKING:
     from . import _config_parts
     from .test_basic import TestsFlextDbtOracleBasic
     from .test_config import TestsFlextDbtOracleConfig
+    from .test_connections import TestsFlextDbtOracleConnections
     from .test_impl import TestsFlextDbtOracleImpl
     from .test_imports import TestsFlextDbtOracleImports
     from .test_module_governance import TestsFlextDbtOracleModuleGovernance
 __all__: tuple[str, ...] = (
     "TestsFlextDbtOracleBasic",
     "TestsFlextDbtOracleConfig",
+    "TestsFlextDbtOracleConnections",
     "TestsFlextDbtOracleImpl",
     "TestsFlextDbtOracleImports",
     "TestsFlextDbtOracleModuleGovernance",
@@ -48,6 +50,7 @@ _LAZY_IMPORTS = MappingProxyType(
             "._config_parts": ("_config_parts",),
             ".test_basic": ("TestsFlextDbtOracleBasic",),
             ".test_config": ("TestsFlextDbtOracleConfig",),
+            ".test_connections": ("TestsFlextDbtOracleConnections",),
             ".test_impl": ("TestsFlextDbtOracleImpl",),
             ".test_imports": ("TestsFlextDbtOracleImports",),
             ".test_module_governance": ("TestsFlextDbtOracleModuleGovernance",),
