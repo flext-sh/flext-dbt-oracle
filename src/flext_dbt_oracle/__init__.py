@@ -20,7 +20,7 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_meltano import d, e, h, r, x
+    from flext_core import d, e, h, r, x
 
     from .__version__ import FlextDbtOracleVersion
     from ._config import FlextDbtOracleConfig, config
@@ -34,14 +34,38 @@ if TYPE_CHECKING:
     from .typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
     from .utilities import FlextDbtOracleUtilities, FlextDbtOracleUtilities as u
 __all__: tuple[str, ...] = (
-    "FlextDbtOracle", "FlextDbtOracleCliService", "FlextDbtOracleConfig", "FlextDbtOracleConstants",
-    "FlextDbtOracleModels", "FlextDbtOracleProtocols", "FlextDbtOracleServiceBase", "FlextDbtOracleSettings",
-    "FlextDbtOracleTypes", "FlextDbtOracleUtilities", "FlextDbtOracleVersion", "__author__",
-    "__author_email__", "__description__", "__license__", "__title__",
-    "__url__", "__version__", "__version_info__", "c",
-    "config", "d", "e", "h",
-    "m", "main", "p", "r",
-    "s", "settings", "t", "u",
+    "FlextDbtOracle",
+    "FlextDbtOracleCliService",
+    "FlextDbtOracleConfig",
+    "FlextDbtOracleConstants",
+    "FlextDbtOracleModels",
+    "FlextDbtOracleProtocols",
+    "FlextDbtOracleServiceBase",
+    "FlextDbtOracleSettings",
+    "FlextDbtOracleTypes",
+    "FlextDbtOracleUtilities",
+    "FlextDbtOracleVersion",
+    "__author__",
+    "__author_email__",
+    "__description__",
+    "__license__",
+    "__title__",
+    "__url__",
+    "__version__",
+    "__version_info__",
+    "c",
+    "config",
+    "d",
+    "e",
+    "h",
+    "m",
+    "main",
+    "p",
+    "r",
+    "s",
+    "settings",
+    "t",
+    "u",
     "x",
 )
 
@@ -59,7 +83,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".protocols": ("FlextDbtOracleProtocols", "p"),
             ".typings": ("FlextDbtOracleTypes", "t"),
             ".utilities": ("FlextDbtOracleUtilities", "u"),
-            "flext_meltano": ("d", "e", "h", "r", "x"),
+            "flext_core": ("d", "e", "h", "r", "x"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
