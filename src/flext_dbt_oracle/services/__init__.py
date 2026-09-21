@@ -1,5 +1,5 @@
 # AUTO-GENERATED FILE — Regenerate with: make gen
-"""Flext Dbt Oracle. Typings package."""
+"""Flext Dbt Oracle.services package."""
 
 from __future__ import annotations
 
@@ -9,15 +9,18 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
-    from .base import FlextDbtOracleTypesBase
-    from .dbt import FlextDbtOracleTypesDbt
-__all__: tuple[str, ...] = ("FlextDbtOracleTypesBase", "FlextDbtOracleTypesDbt")
+    from .base import FlextDbtOracleServicesBase
+    from .client import FlextDbtOracleServicesClient
+__all__: tuple[str, ...] = (
+    "FlextDbtOracleServicesBase",
+    "FlextDbtOracleServicesClient",
+)
 
 _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
         MappingProxyType({
-            ".base": ("FlextDbtOracleTypesBase",),
-            ".dbt": ("FlextDbtOracleTypesDbt",),
+            ".base": ("FlextDbtOracleServicesBase",),
+            ".client": ("FlextDbtOracleServicesClient",),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
