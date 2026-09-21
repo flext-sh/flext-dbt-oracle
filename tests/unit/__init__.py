@@ -14,34 +14,16 @@ if TYPE_CHECKING:
     from . import _config_parts
     from .test_basic import TestsFlextDbtOracleBasic
     from .test_config import TestsFlextDbtOracleConfig
-    from .test_connections import TestsFlextDbtOracleConnections
     from .test_impl import TestsFlextDbtOracleImpl
     from .test_imports import TestsFlextDbtOracleImports
     from .test_module_governance import TestsFlextDbtOracleModuleGovernance
 __all__: tuple[str, ...] = (
-    "TestsFlextDbtOracleBasic",
-    "TestsFlextDbtOracleConfig",
-    "TestsFlextDbtOracleConnections",
-    "TestsFlextDbtOracleImpl",
-    "TestsFlextDbtOracleImports",
-    "TestsFlextDbtOracleModuleGovernance",
-    "_config_parts",
-    "c",
-    "d",
-    "e",
-    "h",
-    "m",
-    "p",
-    "r",
-    "s",
-    "t",
-    "td",
-    "tf",
-    "tk",
-    "tm",
-    "tv",
-    "u",
-    "x",
+    "TestsFlextDbtOracleBasic", "TestsFlextDbtOracleConfig", "TestsFlextDbtOracleImpl", "TestsFlextDbtOracleImports",
+    "TestsFlextDbtOracleModuleGovernance", "_config_parts", "c", "d",
+    "e", "h", "m", "p",
+    "r", "s", "t", "td",
+    "tf", "tk", "tm", "tv",
+    "u", "x",
 )
 
 _LAZY_IMPORTS = MappingProxyType(
@@ -50,27 +32,12 @@ _LAZY_IMPORTS = MappingProxyType(
             "._config_parts": ("_config_parts",),
             ".test_basic": ("TestsFlextDbtOracleBasic",),
             ".test_config": ("TestsFlextDbtOracleConfig",),
-            ".test_connections": ("TestsFlextDbtOracleConnections",),
             ".test_impl": ("TestsFlextDbtOracleImpl",),
             ".test_imports": ("TestsFlextDbtOracleImports",),
             ".test_module_governance": ("TestsFlextDbtOracleModuleGovernance",),
             "flext_tests": (
-                "c",
-                "d",
-                "e",
-                "h",
-                "m",
-                "p",
-                "r",
-                "s",
-                "t",
-                "td",
-                "tf",
-                "tk",
-                "tm",
-                "tv",
-                "u",
-                "x",
+                "c", "d", "e", "h", "m", "p", "r", "s", "t", "td", "tf", "tk", "tm",
+                "tv", "u", "x",
             ),
         }),
         alias_groups=MappingProxyType({}),
