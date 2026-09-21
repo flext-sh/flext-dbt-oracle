@@ -20,14 +20,8 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-<<<<<<< HEAD
-    from flext_db_oracle import e
-
-    from flext_core import d, h, r, x
-=======
     from flext_core import d, h, r, x
     from flext_db_oracle import e
->>>>>>> refs/remotes/origin/0.12.0-dev
 
     from . import services
     from .__version__ import FlextDbtOracleVersion
