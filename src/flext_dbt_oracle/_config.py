@@ -26,7 +26,9 @@ class FlextDbtOracleConfig(FlextMeltanoConfig):
 
     DbtOracle: Annotated[
         _DbtOracleNamespace,
-        m.Field(description="Open namespace exposing ``config/*.yaml`` under ``DbtOracle``."),
+        m.Field(
+            description="Open namespace exposing ``config/*.yaml`` under ``DbtOracle``."
+        ),
     ] = _DbtOracleNamespace()
 
 
