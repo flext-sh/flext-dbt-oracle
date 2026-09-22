@@ -12,6 +12,8 @@ if TYPE_CHECKING:
     from .base import FlextDbtOracleTypesBase
     from .dbt import FlextDbtOracleTypesDbt
     from .dbt_oracle import FlextDbtOracleTypesDbtOracle
+
+
 __all__: tuple[str, ...] = (
     "FlextDbtOracleTypesBase",
     "FlextDbtOracleTypesDbt",

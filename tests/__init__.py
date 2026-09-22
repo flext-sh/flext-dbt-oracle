@@ -9,25 +9,35 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_tests import c as tests_c, d, e, h, r, s, td, tf, tk, tm, tv, x
+    from flext_cli import cli
+    from flext_meltano import meltano
+    from flext_tests import (
+        active_rules,
+        api,
+        discover_repository_root,
+        install_local_packages,
+        load_infra_report,
+        split_csv,
+        td,
+        tf,
+        tk,
+        tm,
+        tv,
+    )
+
+    from flext_core import core, d, e, h, lazy_attribute, r, x
+    from flext_dbt_oracle import config, main, s, settings
 
     from . import unit
     from .base import TestsFlextDbtOracleServiceBase
-    from .constants import (
-        TestsFlextDbtOracleConstants,
-        TestsFlextDbtOracleConstants as c,
-    )
-    from .models import TestsFlextDbtOracleModels, TestsFlextDbtOracleModels as m
-    from .protocols import (
-        TestsFlextDbtOracleProtocols,
-        TestsFlextDbtOracleProtocols as p,
-    )
+    from .constants import TestsFlextDbtOracleConstants, c
+    from .models import TestsFlextDbtOracleModels, m
+    from .protocols import TestsFlextDbtOracleProtocols, p
     from .settings import TestsFlextDbtOracleSettings
-    from .typings import TestsFlextDbtOracleTypes, TestsFlextDbtOracleTypes as t
-    from .utilities import (
-        TestsFlextDbtOracleUtilities,
-        TestsFlextDbtOracleUtilities as u,
-    )
+    from .typings import TestsFlextDbtOracleTypes, t
+    from .utilities import TestsFlextDbtOracleUtilities, u
+
+
 __all__: tuple[str, ...] = (
     "TestsFlextDbtOracleConstants",
     "TestsFlextDbtOracleModels",
@@ -36,17 +46,29 @@ __all__: tuple[str, ...] = (
     "TestsFlextDbtOracleSettings",
     "TestsFlextDbtOracleTypes",
     "TestsFlextDbtOracleUtilities",
+    "active_rules",
+    "api",
     "c",
+    "cli",
+    "config",
+    "core",
     "d",
+    "discover_repository_root",
     "e",
     "h",
+    "install_local_packages",
+    "lazy_attribute",
+    "load_infra_report",
     "m",
+    "main",
+    "meltano",
     "p",
     "r",
     "s",
+    "settings",
+    "split_csv",
     "t",
     "td",
-    "tests_c",
     "tf",
     "tk",
     "tm",
@@ -67,9 +89,25 @@ _LAZY_IMPORTS = MappingProxyType(
             ".typings": ("TestsFlextDbtOracleTypes", "t"),
             ".unit": ("unit",),
             ".utilities": ("TestsFlextDbtOracleUtilities", "u"),
-            "flext_tests": ("d", "e", "h", "r", "s", "td", "tf", "tk", "tm", "tv", "x"),
+            "flext_cli": ("cli",),
+            "flext_core": ("core", "d", "e", "h", "lazy_attribute", "r", "x"),
+            "flext_dbt_oracle": ("config", "main", "s", "settings"),
+            "flext_meltano": ("meltano",),
+            "flext_tests": (
+                "active_rules",
+                "api",
+                "discover_repository_root",
+                "install_local_packages",
+                "load_infra_report",
+                "split_csv",
+                "td",
+                "tf",
+                "tk",
+                "tm",
+                "tv",
+            ),
         }),
-        alias_groups=MappingProxyType({"flext_tests": (("tests_c", "c"),)}),
+        alias_groups=MappingProxyType({}),
         sort_keys=False,
     )
 )
