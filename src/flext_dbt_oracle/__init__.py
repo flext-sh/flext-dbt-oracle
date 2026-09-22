@@ -20,12 +20,18 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
+<<<<<<< HEAD
     from flext_cli import cli
     from flext_db_oracle import db_oracle, e
     from flext_meltano import meltano
     from pydantic_core import from_json, to_json, to_jsonable_python
 
     from flext_core import core, d, h, lazy_attribute, r, x
+=======
+    from flext_db_oracle import e
+
+    from flext_core import d, h, r, x
+>>>>>>> origin/0.12.0-dev
 
     from . import services
     from ._config import FlextDbtOracleConfig, config
@@ -102,11 +108,16 @@ _LAZY_IMPORTS = MappingProxyType(
             ".services.client": ("FlextDbtOracleServicesClient",),
             ".typings": ("FlextDbtOracleTypes", "t"),
             ".utilities": ("FlextDbtOracleUtilities", "u"),
+<<<<<<< HEAD
             "flext_cli": ("cli",),
             "flext_core": ("core", "d", "h", "lazy_attribute", "r", "x"),
             "flext_db_oracle": ("db_oracle", "e"),
             "flext_meltano": ("meltano",),
             "pydantic_core": ("from_json", "to_json", "to_jsonable_python"),
+=======
+            "flext_core": ("d", "h", "r", "x"),
+            "flext_db_oracle": ("e",),
+>>>>>>> origin/0.12.0-dev
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
