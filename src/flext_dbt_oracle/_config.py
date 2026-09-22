@@ -15,7 +15,6 @@ from typing import Annotated
 from flext_meltano import FlextMeltanoConfig, m
 
 
-
 class _DbtOracleNamespace(m.BaseModel):
     """Open, frozen namespace exposing every ``config/*.yaml`` domain model-less."""
 

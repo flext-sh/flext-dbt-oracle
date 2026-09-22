@@ -7,11 +7,16 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
 from flext_db_oracle import FlextDbOracleSettings
 from flext_tests import tm
 
 from flext_dbt_oracle import FlextDbtOracleSettings, c, m, u
+
+if TYPE_CHECKING:
+    from flext_core import t
 
 
 class TestsFlextDbtOracleImports:
@@ -76,7 +81,7 @@ class TestsFlextDbtOracleImports:
         "source_tables", [(), ("customers",), ("customers", "orders")]
     )
     def test_generate_staging_models_names_one_model_per_table(
-        self, source_tables: tuple[str, ...]
+        self, source_tables: t.VariadicTuple[str]
     ) -> None:
         models = u.DbtOracle.ModelBuilder.generate_staging_models(source_tables)
 
