@@ -14,6 +14,8 @@ from typing import Annotated
 
 from flext_meltano import FlextMeltanoConfig, m
 
+from flext_core import FlextSettings
+
 
 class _DbtOracleNamespace(m.BaseModel):
     """Open, frozen namespace exposing every ``config/*.yaml`` domain model-less."""
@@ -21,7 +23,7 @@ class _DbtOracleNamespace(m.BaseModel):
     model_config = m.ConfigDict(extra="allow", frozen=True)
 
 
-class FlextDbtOracleConfig(FlextMeltanoConfig):
+class FlextDbtOracleConfig(FlextSettings, FlextMeltanoConfig):
     """DbtOracle config auto-loaded model-less from ``config/*.yaml``."""
 
     DbtOracle: Annotated[
