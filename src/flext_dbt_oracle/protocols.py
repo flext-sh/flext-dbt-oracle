@@ -26,6 +26,6 @@ class FlextDbtOracleProtocols(p, _db_oracle_p):
         """DBT Oracle protocol namespace composing the parent contracts."""
 
 
-__all__: list[str] = ["FlextDbtOracleProtocols", "p"]
-
 p = FlextDbtOracleProtocols
+
+__all__: list[str] = ["FlextDbtOracleProtocols", "p"]

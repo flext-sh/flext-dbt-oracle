@@ -1,4 +1,4 @@
-"""Configuration for FLEXT DBT Oracle tests.
+"""Environment fixtures for local DBT Oracle configuration and model tests.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -7,67 +7,15 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import os
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
-from flext_tests import tf, tk
+from flext_tests import tf
 
-from flext_dbt_oracle import t
 from tests import u
 
 if TYPE_CHECKING:
     from collections.abc import Generator
-
-
-_ENV_BACKUP: t.MutableMappingKV[str, str | None] = {}
-
-
-@pytest.fixture(scope="session", autouse=True)
-def _oracle_container() -> Generator[None]:
-    """Start Oracle container and configure session environment variables.
-
-    Skips every test cleanly when the container cannot start (e.g. no Docker
-    daemon), so the JUnit XML records skips rather than no-tests-collected.
-    """
-    docker_control = tk.shared(
-        "flext-oracle-db-test", repository_root=Path(__file__).resolve().parents[2]
-    )
-    result = docker_control.execute()
-    if result.failure:
-        pytest.skip(f"Failed to start Oracle container: {result.error}")
-    resolved_port = next(
-        (
-            int(host_port)
-            for container_port, host_port in result.value.ports.items()
-            if container_port.startswith("1521") and host_port.isdigit()
-        ),
-        1522,
-    )
-    env_vars = {
-        "DBT_ORACLE_ORACLE_HOST": "localhost",
-        "DBT_ORACLE_ORACLE_PORT": str(resolved_port),
-        "DBT_ORACLE_ORACLE_USERNAME": "flext_test",
-        "DBT_ORACLE_ORACLE_PASSWORD": "p" + "9" * 12,
-        "DBT_ORACLE_ORACLE_SERVICE_NAME": "FLEXTDB",
-        "DBT_ORACLE_ORACLE_SCHEMA": "FLEXT_TEST",
-    }
-    for key, value in env_vars.items():
-        _ENV_BACKUP[key] = os.environ.get(key)
-        os.environ[key] = value
-    try:
-        yield
-    finally:
-        for key, original in _ENV_BACKUP.items():
-            if original is None:
-                os.environ.pop(key, None)
-            else:
-                os.environ[key] = original
-        down_control = tk.shared(
-            "flext-oracle-db-test", repository_root=Path(__file__).resolve().parents[2]
-        )
-        _ = down_control.down()
 
 
 @pytest.fixture

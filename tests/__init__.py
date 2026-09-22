@@ -9,15 +9,10 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_tests import FlextTestsConstants, d, e, h, r, td, tf, tk, tm, tv, x
-
-    from flext_dbt_oracle import FlextDbtOracleConstants
+    from flext_tests import c as tests_c, d, e, h, r, s, td, tf, tk, tm, tv, x
 
     from . import unit
-    from .base import (
-        TestsFlextDbtOracleServiceBase,
-        TestsFlextDbtOracleServiceBase as s,
-    )
+    from .base import TestsFlextDbtOracleServiceBase
     from .constants import (
         TestsFlextDbtOracleConstants,
         TestsFlextDbtOracleConstants as c,
@@ -34,8 +29,6 @@ if TYPE_CHECKING:
         TestsFlextDbtOracleUtilities as u,
     )
 __all__: tuple[str, ...] = (
-    "FlextDbtOracleConstants",
-    "FlextTestsConstants",
     "TestsFlextDbtOracleConstants",
     "TestsFlextDbtOracleModels",
     "TestsFlextDbtOracleProtocols",
@@ -53,6 +46,7 @@ __all__: tuple[str, ...] = (
     "s",
     "t",
     "td",
+    "tests_c",
     "tf",
     "tk",
     "tm",
@@ -65,7 +59,7 @@ __all__: tuple[str, ...] = (
 _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
         MappingProxyType({
-            ".base": ("TestsFlextDbtOracleServiceBase", "s"),
+            ".base": ("TestsFlextDbtOracleServiceBase",),
             ".constants": ("TestsFlextDbtOracleConstants", "c"),
             ".models": ("TestsFlextDbtOracleModels", "m"),
             ".protocols": ("TestsFlextDbtOracleProtocols", "p"),
@@ -73,22 +67,9 @@ _LAZY_IMPORTS = MappingProxyType(
             ".typings": ("TestsFlextDbtOracleTypes", "t"),
             ".unit": ("unit",),
             ".utilities": ("TestsFlextDbtOracleUtilities", "u"),
-            "flext_dbt_oracle": ("FlextDbtOracleConstants",),
-            "flext_tests": (
-                "FlextTestsConstants",
-                "d",
-                "e",
-                "h",
-                "r",
-                "td",
-                "tf",
-                "tk",
-                "tm",
-                "tv",
-                "x",
-            ),
+            "flext_tests": ("d", "e", "h", "r", "s", "td", "tf", "tk", "tm", "tv", "x"),
         }),
-        alias_groups=MappingProxyType({}),
+        alias_groups=MappingProxyType({"flext_tests": (("tests_c", "c"),)}),
         sort_keys=False,
     )
 )

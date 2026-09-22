@@ -23,6 +23,4 @@ class TestsFlextDbtOracleServiceBase(tests_s):
         return m.RuntimeBootstrapOptions(settings_type=TestsFlextDbtOracleSettings)
 
 
-s = TestsFlextDbtOracleServiceBase
-
-__all__: list[str] = ["TestsFlextDbtOracleServiceBase", "s"]
+__all__: list[str] = ["TestsFlextDbtOracleServiceBase"]

@@ -16,6 +16,6 @@ class FlextDbtOracleUtilities(u, _db_oracle_u):
         """DBT Oracle domain utilities namespace."""
 
 
-__all__: list[str] = ["FlextDbtOracleUtilities", "u"]
-
 u = FlextDbtOracleUtilities
+
+__all__: list[str] = ["FlextDbtOracleUtilities", "u"]
