@@ -11,13 +11,19 @@ from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 if TYPE_CHECKING:
     from .base import FlextDbtOracleTypesBase
     from .dbt import FlextDbtOracleTypesDbt
-__all__: tuple[str, ...] = ("FlextDbtOracleTypesBase", "FlextDbtOracleTypesDbt")
+    from .dbt_oracle import FlextDbtOracleTypesDbtOracle
+__all__: tuple[str, ...] = (
+    "FlextDbtOracleTypesBase",
+    "FlextDbtOracleTypesDbt",
+    "FlextDbtOracleTypesDbtOracle",
+)
 
 _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
         MappingProxyType({
             ".base": ("FlextDbtOracleTypesBase",),
             ".dbt": ("FlextDbtOracleTypesDbt",),
+            ".dbt_oracle": ("FlextDbtOracleTypesDbtOracle",),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,

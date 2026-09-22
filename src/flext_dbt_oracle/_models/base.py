@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 from flext_db_oracle import FlextDbOracleModels
-from flext_meltano import m
 
 
-class FlextDbtOracleModelsBase(m, FlextDbOracleModels):
-    """MRO facade composing Meltano + DbOracle model namespaces."""
+class FlextDbtOracleModelsBase(FlextDbOracleModels):
+    """MRO facade composing the DbOracle model namespace for DBT Oracle."""
 
 
 __all__: list[str] = ["FlextDbtOracleModelsBase"]

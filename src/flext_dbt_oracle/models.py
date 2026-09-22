@@ -8,7 +8,7 @@ from ._models.base import FlextDbtOracleModelsBase
 from ._models.dbt import FlextDbtOracleModelsDbt
 
 
-class FlextDbtOracleModels(m):
+class FlextDbtOracleModels(m, FlextDbtOracleModelsBase):
     """Namespace wrapper for DBT Oracle domain models — composes _models parts via MRO."""
 
     class DbtOracle(FlextDbtOracleModelsBase, FlextDbtOracleModelsDbt):

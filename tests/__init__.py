@@ -9,33 +9,37 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_tests import FlextTestsConstants, d, e, h, r, td, tf, tk, tm, tv, x
+    from flext_cli import cli
+    from flext_db_oracle import db_oracle, e
+    from flext_infra import docs_main, infra
+    from flext_meltano import meltano
+    from flext_tests import (
+        active_rules,
+        api,
+        discover_repository_root,
+        install_local_packages,
+        load_infra_report,
+        split_csv,
+        td,
+        tf,
+        tk,
+        tm,
+        tv,
+    )
+    from pydantic_core import from_json, to_json, to_jsonable_python
 
-    from flext_dbt_oracle import FlextDbtOracleConstants
+    from flext_core import core, d, h, lazy_attribute, r, x
+    from flext_dbt_oracle import config, main, s, settings
 
     from . import unit
-    from .base import (
-        TestsFlextDbtOracleServiceBase,
-        TestsFlextDbtOracleServiceBase as s,
-    )
-    from .constants import (
-        TestsFlextDbtOracleConstants,
-        TestsFlextDbtOracleConstants as c,
-    )
-    from .models import TestsFlextDbtOracleModels, TestsFlextDbtOracleModels as m
-    from .protocols import (
-        TestsFlextDbtOracleProtocols,
-        TestsFlextDbtOracleProtocols as p,
-    )
+    from .base import TestsFlextDbtOracleServiceBase
+    from .constants import TestsFlextDbtOracleConstants, c
+    from .models import TestsFlextDbtOracleModels, m
+    from .protocols import TestsFlextDbtOracleProtocols, p
     from .settings import TestsFlextDbtOracleSettings
-    from .typings import TestsFlextDbtOracleTypes, TestsFlextDbtOracleTypes as t
-    from .utilities import (
-        TestsFlextDbtOracleUtilities,
-        TestsFlextDbtOracleUtilities as u,
-    )
+    from .typings import TestsFlextDbtOracleTypes, t
+    from .utilities import TestsFlextDbtOracleUtilities, u
 __all__: tuple[str, ...] = (
-    "FlextDbtOracleConstants",
-    "FlextTestsConstants",
     "TestsFlextDbtOracleConstants",
     "TestsFlextDbtOracleModels",
     "TestsFlextDbtOracleProtocols",
@@ -43,19 +47,38 @@ __all__: tuple[str, ...] = (
     "TestsFlextDbtOracleSettings",
     "TestsFlextDbtOracleTypes",
     "TestsFlextDbtOracleUtilities",
+    "active_rules",
+    "api",
     "c",
+    "cli",
+    "config",
+    "core",
     "d",
+    "db_oracle",
+    "discover_repository_root",
+    "docs_main",
     "e",
+    "from_json",
     "h",
+    "infra",
+    "install_local_packages",
+    "lazy_attribute",
+    "load_infra_report",
     "m",
+    "main",
+    "meltano",
     "p",
     "r",
     "s",
+    "settings",
+    "split_csv",
     "t",
     "td",
     "tf",
     "tk",
     "tm",
+    "to_json",
+    "to_jsonable_python",
     "tv",
     "u",
     "unit",
@@ -65,7 +88,7 @@ __all__: tuple[str, ...] = (
 _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
         MappingProxyType({
-            ".base": ("TestsFlextDbtOracleServiceBase", "s"),
+            ".base": ("TestsFlextDbtOracleServiceBase",),
             ".constants": ("TestsFlextDbtOracleConstants", "c"),
             ".models": ("TestsFlextDbtOracleModels", "m"),
             ".protocols": ("TestsFlextDbtOracleProtocols", "p"),
@@ -73,20 +96,26 @@ _LAZY_IMPORTS = MappingProxyType(
             ".typings": ("TestsFlextDbtOracleTypes", "t"),
             ".unit": ("unit",),
             ".utilities": ("TestsFlextDbtOracleUtilities", "u"),
-            "flext_dbt_oracle": ("FlextDbtOracleConstants",),
+            "flext_cli": ("cli",),
+            "flext_core": ("core", "d", "h", "lazy_attribute", "r", "x"),
+            "flext_db_oracle": ("db_oracle", "e"),
+            "flext_dbt_oracle": ("config", "main", "s", "settings"),
+            "flext_infra": ("docs_main", "infra"),
+            "flext_meltano": ("meltano",),
             "flext_tests": (
-                "FlextTestsConstants",
-                "d",
-                "e",
-                "h",
-                "r",
+                "active_rules",
+                "api",
+                "discover_repository_root",
+                "install_local_packages",
+                "load_infra_report",
+                "split_csv",
                 "td",
                 "tf",
                 "tk",
                 "tm",
                 "tv",
-                "x",
             ),
+            "pydantic_core": ("from_json", "to_json", "to_jsonable_python"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,

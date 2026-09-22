@@ -9,13 +9,14 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from flext_db_oracle import t as _db_oracle_t
 from flext_meltano import t
 
 from ._typings.base import FlextDbtOracleTypesBase
 from ._typings.dbt import FlextDbtOracleTypesDbt
 
 
-class FlextDbtOracleTypes(t):
+class FlextDbtOracleTypes(t, _db_oracle_t):
     """MRO facade composing Meltano + DbOracle type namespaces."""
 
     class DbtOracle(FlextDbtOracleTypesBase, FlextDbtOracleTypesDbt):
