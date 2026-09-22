@@ -20,23 +20,24 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_db_oracle import e
-    from flext_meltano import d, h, r, x
+    from flext_cli import cli
+    from flext_meltano import meltano
+
+    from flext_core import core, d, e, h, lazy_attribute, r, x
 
     from . import services
-    from .__version__ import FlextDbtOracleVersion
     from ._config import FlextDbtOracleConfig, config
     from ._settings import FlextDbtOracleSettings, settings
     from .api import FlextDbtOracle
     from .base import FlextDbtOracleServiceBase, FlextDbtOracleServiceBase as s
     from .cli import FlextDbtOracleCliService, main
-    from .constants import FlextDbtOracleConstants, FlextDbtOracleConstants as c
-    from .models import FlextDbtOracleModels, FlextDbtOracleModels as m
-    from .protocols import FlextDbtOracleProtocols, FlextDbtOracleProtocols as p
+    from .constants import FlextDbtOracleConstants, c
+    from .models import FlextDbtOracleModels, m
+    from .protocols import FlextDbtOracleProtocols, p
     from .services.base import FlextDbtOracleServicesBase
     from .services.client import FlextDbtOracleServicesClient
-    from .typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
-    from .utilities import FlextDbtOracleUtilities, FlextDbtOracleUtilities as u
+    from .typings import FlextDbtOracleTypes, t
+    from .utilities import FlextDbtOracleUtilities, u
 __all__: tuple[str, ...] = (
     "FlextDbtOracle",
     "FlextDbtOracleCliService",
@@ -50,7 +51,6 @@ __all__: tuple[str, ...] = (
     "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
-    "FlextDbtOracleVersion",
     "__author__",
     "__author_email__",
     "__description__",
@@ -60,12 +60,16 @@ __all__: tuple[str, ...] = (
     "__version__",
     "__version_info__",
     "c",
+    "cli",
     "config",
+    "core",
     "d",
     "e",
     "h",
+    "lazy_attribute",
     "m",
     "main",
+    "meltano",
     "p",
     "r",
     "s",
@@ -79,7 +83,6 @@ __all__: tuple[str, ...] = (
 _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
         MappingProxyType({
-            ".__version__": ("FlextDbtOracleVersion",),
             "._config": ("FlextDbtOracleConfig", "config"),
             "._settings": ("FlextDbtOracleSettings", "settings"),
             ".api": ("FlextDbtOracle",),
@@ -93,8 +96,9 @@ _LAZY_IMPORTS = MappingProxyType(
             ".services.client": ("FlextDbtOracleServicesClient",),
             ".typings": ("FlextDbtOracleTypes", "t"),
             ".utilities": ("FlextDbtOracleUtilities", "u"),
-            "flext_db_oracle": ("e",),
-            "flext_meltano": ("d", "h", "r", "x"),
+            "flext_cli": ("cli",),
+            "flext_core": ("core", "d", "e", "h", "lazy_attribute", "r", "x"),
+            "flext_meltano": ("meltano",),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
