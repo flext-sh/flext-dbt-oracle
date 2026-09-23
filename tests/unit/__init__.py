@@ -16,6 +16,8 @@ if TYPE_CHECKING:
     from .test_impl import TestsFlextDbtOracleImpl
     from .test_imports import TestsFlextDbtOracleImports
     from .test_module_governance import TestsFlextDbtOracleModuleGovernance
+
+
 __all__: tuple[str, ...] = (
     "TestsFlextDbtOracleBasic",
     "TestsFlextDbtOracleConfig",

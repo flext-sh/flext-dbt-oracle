@@ -38,6 +38,8 @@ if TYPE_CHECKING:
     from .services.client import FlextDbtOracleServicesClient
     from .typings import FlextDbtOracleTypes, t
     from .utilities import FlextDbtOracleUtilities, u
+
+
 __all__: tuple[str, ...] = (
     "FlextDbtOracle",
     "FlextDbtOracleCliService",
