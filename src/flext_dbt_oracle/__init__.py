@@ -28,13 +28,13 @@ if TYPE_CHECKING:
     from .api import FlextDbtOracle
     from .base import FlextDbtOracleServiceBase, FlextDbtOracleServiceBase as s
     from .cli import FlextDbtOracleCliService, main
-    from .constants import FlextDbtOracleConstants, c
-    from .models import FlextDbtOracleModels, m
-    from .protocols import FlextDbtOracleProtocols, p
+    from .constants import FlextDbtOracleConstants, FlextDbtOracleConstants as c
+    from .models import FlextDbtOracleModels, FlextDbtOracleModels as m
+    from .protocols import FlextDbtOracleProtocols, FlextDbtOracleProtocols as p
     from .services.base import FlextDbtOracleServicesBase
     from .services.client import FlextDbtOracleServicesClient
-    from .typings import FlextDbtOracleTypes, t
-    from .utilities import FlextDbtOracleUtilities, u
+    from .typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
+    from .utilities import FlextDbtOracleUtilities, FlextDbtOracleUtilities as u
 
 
 __all__: tuple[str, ...] = (

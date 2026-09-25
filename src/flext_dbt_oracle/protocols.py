@@ -13,16 +13,16 @@ through its own ``DbtOracle`` namespace.
 
 from __future__ import annotations
 
-from flext_db_oracle import p as _db_oracle_p
-from flext_meltano import p
+from flext_db_oracle import FlextDbOracleProtocols
+from flext_meltano import FlextMeltanoProtocols
 
 from ._protocols.base import FlextDbtOracleProtocolsBase
 
 
-class FlextDbtOracleProtocols(p, _db_oracle_p):
+class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
     """DBT Oracle protocols facade — composes Oracle and Meltano protocols."""
 
-    class DbtOracle(FlextDbtOracleProtocolsBase, _db_oracle_p.DbOracle):
+    class DbtOracle(FlextDbtOracleProtocolsBase, FlextDbOracleProtocols.DbOracle):
         """DBT Oracle protocol namespace composing the parent contracts."""
 
 

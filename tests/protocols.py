@@ -9,15 +9,15 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import p as tests_p
+from flext_tests import FlextTestsProtocols
 
-from flext_dbt_oracle import p
+from flext_dbt_oracle import FlextDbtOracleProtocols
 
 
-class TestsFlextDbtOracleProtocols(tests_p, p):
+class TestsFlextDbtOracleProtocols(FlextTestsProtocols, FlextDbtOracleProtocols):
     """Test protocols combining FlextTestsProtocols and FlextDbtOracleProtocols."""
 
-    class Tests(tests_p.Tests):
+    class Tests(FlextTestsProtocols.Tests):
         """Test-scoped protocol contracts facade."""
 
 

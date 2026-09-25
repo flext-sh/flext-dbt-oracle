@@ -9,21 +9,21 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import t as tests_t
+from flext_tests import FlextTestsTypes
 
-from flext_dbt_oracle import t
+from flext_dbt_oracle import FlextDbtOracleTypes
 
 
-class TestsFlextDbtOracleTypes(tests_t, t):
+class TestsFlextDbtOracleTypes(FlextTestsTypes, FlextDbtOracleTypes):
     """Test types combining FlextTestsTypes with flext-dbt-oracle types."""
 
-    class DbtOracle(t.DbtOracle):
+    class DbtOracle(FlextDbtOracleTypes.DbtOracle):
         """DbtOracle test types namespace."""
 
         class Tests:
             """Test-specific type aliases."""
 
-    class Tests(tests_t.Tests):
+    class Tests(FlextTestsTypes.Tests):
         """Test-scoped type aliases facade."""
 
 
