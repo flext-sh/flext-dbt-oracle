@@ -20,10 +20,7 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_cli import cli
-    from flext_meltano import meltano
-
-    from flext_core import core, d, e, h, lazy_attribute, r, x
+    from flext_meltano import d, e, h, r, x
 
     from . import services
     from ._config import FlextDbtOracleConfig, config
@@ -62,16 +59,12 @@ __all__: tuple[str, ...] = (
     "__version__",
     "__version_info__",
     "c",
-    "cli",
     "config",
-    "core",
     "d",
     "e",
     "h",
-    "lazy_attribute",
     "m",
     "main",
-    "meltano",
     "p",
     "r",
     "s",
@@ -98,9 +91,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".services.client": ("FlextDbtOracleServicesClient",),
             ".typings": ("FlextDbtOracleTypes", "t"),
             ".utilities": ("FlextDbtOracleUtilities", "u"),
-            "flext_cli": ("cli",),
-            "flext_core": ("core", "d", "e", "h", "lazy_attribute", "r", "x"),
-            "flext_meltano": ("meltano",),
+            "flext_meltano": ("d", "e", "h", "r", "x"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
