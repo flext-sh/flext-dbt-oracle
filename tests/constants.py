@@ -11,15 +11,15 @@ from __future__ import annotations
 
 from typing import Final
 
-from flext_tests import c as tests_c
+from flext_tests import FlextTestsConstants
 
-from flext_dbt_oracle import c
+from flext_dbt_oracle import FlextDbtOracleConstants
 
 
-class TestsFlextDbtOracleConstants(c, tests_c):
+class TestsFlextDbtOracleConstants(FlextDbtOracleConstants, FlextTestsConstants):
     """Test constants for flext-dbt-oracle."""
 
-    class DbtOracle(c.DbtOracle):
+    class DbtOracle(FlextDbtOracleConstants.DbtOracle):
         """DbtOracle test constants namespace."""
 
         class Tests:
@@ -29,7 +29,7 @@ class TestsFlextDbtOracleConstants(c, tests_c):
             SRC_DIR: Final[str] = "src"
             PACKAGE_DIR: Final[str] = "flext_dbt_oracle"
 
-    class Tests(tests_c.Tests):
+    class Tests(FlextTestsConstants.Tests):
         """Test-scoped constants facade."""
 
 
