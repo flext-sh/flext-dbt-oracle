@@ -10,12 +10,12 @@ not through any private attribute of a unit under test.
 
 from __future__ import annotations
 
-from flext_tests.utilities import ModuleGovernanceMixin
+from flext_tests import FlextTestsModuleGovernanceMixin
 
 from tests import c
 
 
-class TestsFlextDbtOracleModuleGovernance(ModuleGovernanceMixin):
+class TestsFlextDbtOracleModuleGovernance(FlextTestsModuleGovernanceMixin):
     """Behavior contract for the flext_dbt_oracle public module namespace."""
 
     _test_file = __file__
@@ -27,6 +27,3 @@ class TestsFlextDbtOracleModuleGovernance(ModuleGovernanceMixin):
         modules = self._iter_package_modules()
 
         assert modules, "expected flext_dbt_oracle package to expose modules"
-
-
-__all__: list[str] = ["TestsFlextDbtOracleModuleGovernance"]

@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from flext_meltano import m
+from flext_meltano import FlextMeltanoModels
 
 from ._models.base import FlextDbtOracleModelsBase
 from ._models.dbt import FlextDbtOracleModelsDbt
 
 
-class FlextDbtOracleModels(m, FlextDbtOracleModelsBase):
+class FlextDbtOracleModels(FlextMeltanoModels, FlextDbtOracleModelsBase):
     """Namespace wrapper for DBT Oracle domain models — composes _models parts via MRO."""
 
     class DbtOracle(FlextDbtOracleModelsBase, FlextDbtOracleModelsDbt):
