@@ -11,10 +11,13 @@ from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 if TYPE_CHECKING:
     from flext_tests import api, td, tf, tk, tm, tv
 
-    from flext_dbt_oracle import d, e, h, r, s, x
+    from flext_dbt_oracle import d, e, h, r, x
 
     from . import unit
-    from .base import TestsFlextDbtOracleServiceBase
+    from .base import (
+        TestsFlextDbtOracleServiceBase,
+        TestsFlextDbtOracleServiceBase as s,
+    )
     from .constants import (
         TestsFlextDbtOracleConstants,
         TestsFlextDbtOracleConstants as c,
@@ -63,7 +66,7 @@ __all__: tuple[str, ...] = (
 _LAZY_IMPORTS = MappingProxyType(
     build_lazy_import_map(
         MappingProxyType({
-            ".base": ("TestsFlextDbtOracleServiceBase",),
+            ".base": ("TestsFlextDbtOracleServiceBase", "s"),
             ".constants": ("TestsFlextDbtOracleConstants", "c"),
             ".models": ("TestsFlextDbtOracleModels", "m"),
             ".protocols": ("TestsFlextDbtOracleProtocols", "p"),
@@ -71,7 +74,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".typings": ("TestsFlextDbtOracleTypes", "t"),
             ".unit": ("unit",),
             ".utilities": ("TestsFlextDbtOracleUtilities", "u"),
-            "flext_dbt_oracle": ("d", "e", "h", "r", "s", "x"),
+            "flext_dbt_oracle": ("d", "e", "h", "r", "x"),
             "flext_tests": ("api", "td", "tf", "tk", "tm", "tv"),
         }),
         alias_groups=MappingProxyType({}),

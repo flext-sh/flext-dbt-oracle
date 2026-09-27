@@ -70,7 +70,7 @@ class TestsFlextDbtOracleImpl:
 
         tm.that(
             adapter.model_dump(),
-            eq={"schema_name": "HR", "table_name": "JOBS", "relation_name": "HR.JOBS"},
+            eq={"schema_name": "HR", "table_name": "JOBS", "relation": "HR.JOBS"},
         )
 
     def test_value_equality_by_public_state(self) -> None:

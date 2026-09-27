@@ -50,8 +50,8 @@ src/flext_dbt_oracle/
 ## Commands
 
 ```bash
-make check PROJECT=flext-dbt-oracle
-make test PROJECT=flext-dbt-oracle # tests/unit
+make check
+make test # tests/unit
 ```
 
 <!-- AIHUB-AGENTS-SCOPE-LOCAL-END -->
