@@ -91,6 +91,3 @@ class TestsFlextDbtOracleBasic:
         tm.that(
             rebuilt.DbtOracle.materialization, eq=settings.DbtOracle.materialization
         )
-
-
-__all__: list[str] = ["TestsFlextDbtOracleBasic"]

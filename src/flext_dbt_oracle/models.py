@@ -1,10 +1,20 @@
-"""DBT Oracle models — thin MRO facade.
-
-Models are defined in _models.base and re-exported here.
-"""
+"""Core model objects used by DBT Oracle workflows."""
 
 from __future__ import annotations
 
-from ._models.base import FlextDbtOracleModelsBase, FlextDbtOracleModels, m
+from flext_meltano import FlextMeltanoModels
 
-__all__: list[str] = ["FlextDbtOracleModelsBase", "FlextDbtOracleModels", "m"]
+from ._models.base import FlextDbtOracleModelsBase
+from ._models.dbt import FlextDbtOracleModelsDbt
+
+
+class FlextDbtOracleModels(FlextMeltanoModels, FlextDbtOracleModelsBase):
+    """Namespace wrapper for DBT Oracle domain models — composes _models parts via MRO."""
+
+    class DbtOracle(FlextDbtOracleModelsBase, FlextDbtOracleModelsDbt):
+        """DbtOracle domain namespace."""
+
+
+m = FlextDbtOracleModels
+
+__all__: list[str] = ["FlextDbtOracleModels", "m"]

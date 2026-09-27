@@ -9,7 +9,7 @@ from flext_tests import tm
 from flext_dbt_oracle import FlextDbtOracleSettings, m
 
 
-class FlextDbtOracleConfigConnectionPart:
+class TestsFlextDbtOracleConfigConnectionPart:
     """Connection string and mapping coverage."""
 
     def test_dsn_masks_password_and_uses_service_separator(self) -> None:

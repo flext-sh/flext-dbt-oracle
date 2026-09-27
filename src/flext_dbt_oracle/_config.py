@@ -10,6 +10,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import Annotated
+
 from flext_meltano import FlextMeltanoConfig, m
 
 
@@ -22,7 +24,12 @@ class _DbtOracleNamespace(m.BaseModel):
 class FlextDbtOracleConfig(FlextMeltanoConfig):
     """DbtOracle config auto-loaded model-less from ``config/*.yaml``."""
 
-    DbtOracle: _DbtOracleNamespace = _DbtOracleNamespace()
+    DbtOracle: Annotated[
+        _DbtOracleNamespace,
+        m.Field(
+            description="Open namespace exposing ``config/*.yaml`` under ``DbtOracle``."
+        ),
+    ] = _DbtOracleNamespace()
 
 
 config: FlextDbtOracleConfig = FlextDbtOracleConfig.fetch_global()

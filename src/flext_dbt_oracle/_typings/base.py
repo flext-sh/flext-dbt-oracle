@@ -1,33 +1,16 @@
-"""DBT Oracle type definitions — MRO composition of parent type namespaces.
-
-Only OraclePayload and OraclePayloadList are domain-specific and actively used
-(in protocols.py). All other structured data uses Pydantic models via m.
-"""
+"""Base type definitions for DBT Oracle — MRO composition of parent type namespaces."""
 
 from __future__ import annotations
 
-from flext_db_oracle import FlextDbOracleTypes
+from flext_db_oracle import t as _db_oracle_t
 from flext_meltano import t
 
 
-class FlextDbtOracleTypesBase(t):
+class FlextDbtOracleTypesBase(t, _db_oracle_t):
     """MRO facade composing Meltano + DbOracle type namespaces."""
 
-    class DbtOracle:
-        """DbtOracle domain namespace for actively used type definitions."""
-
-        type OraclePayload = t.JsonMapping
-        "Oracle payload type."
-        type OraclePayloadList = t.SequenceOf[OraclePayload]
-        "List of Oracle payloads."
+    # No domain-specific types are actively used via t.DbtOracle.*
+    # All structured data uses Pydantic models via FlextDbtOracleModels (m).
 
 
-class FlextDbtOracleTypes(FlextDbtOracleTypesBase):
-    """Facade re-exporting all type families."""
-
-    class DbtOracle(FlextDbtOracleTypesBase.DbtOracle):
-        pass
-
-
-t = FlextDbtOracleTypes
-__all__: list[str] = ["FlextDbtOracleTypesBase", "FlextDbtOracleTypes", "t"]
+__all__: list[str] = ["FlextDbtOracleTypesBase"]

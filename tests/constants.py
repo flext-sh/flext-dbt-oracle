@@ -16,7 +16,7 @@ from flext_tests import FlextTestsConstants
 from flext_dbt_oracle import FlextDbtOracleConstants
 
 
-class TestsFlextDbtOracleConstants(FlextTestsConstants, FlextDbtOracleConstants):
+class TestsFlextDbtOracleConstants(FlextDbtOracleConstants, FlextTestsConstants):
     """Test constants for flext-dbt-oracle."""
 
     class DbtOracle(FlextDbtOracleConstants.DbtOracle):
@@ -28,6 +28,9 @@ class TestsFlextDbtOracleConstants(FlextTestsConstants, FlextDbtOracleConstants)
             PROJECT_ROOT_PARENT_DEPTH: Final[int] = 1
             SRC_DIR: Final[str] = "src"
             PACKAGE_DIR: Final[str] = "flext_dbt_oracle"
+
+    class Tests(FlextTestsConstants.Tests):
+        """Test-scoped constants facade."""
 
 
 c = TestsFlextDbtOracleConstants

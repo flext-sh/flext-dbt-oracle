@@ -10,7 +10,7 @@ from flext_tests import tm
 from flext_dbt_oracle import FlextDbtOracleSettings
 
 
-class FlextDbtOracleConfigConstructionPart:
+class TestsFlextDbtOracleConfigConstructionPart:
     """Configuration construction coverage."""
 
     def test_basic_config_creation(self) -> None:

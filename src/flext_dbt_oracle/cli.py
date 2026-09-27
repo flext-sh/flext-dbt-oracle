@@ -1,51 +1,26 @@
-"""DBT Oracle CLI — command interface for DBT Oracle workflows.
-
-Thin delegation to FlextDbtOracle facade methods.
-"""
+"""CLI facade for DBT Oracle — thin wrapper over public facade."""
 
 from __future__ import annotations
 
-from typing import override
-
-from flext_cli import c, p, r, t, u
-
-from . import FlextDbtOracleSettings, FlextDbtOracle, c as pkg_c, settings
-from .api import FlextDbtOracle as FlextDbtOracleFacade
+from flext_dbt_oracle import FlextDbtOracle
 
 
-class FlextDbtOracleCli(FlextDbtOracleFacade):
-    """CLI facade for DBT Oracle operations."""
+class FlextDbtOracleCliService:
+    """CLI service for DBT Oracle — delegates to public facade."""
 
-    @classmethod
-    @override
-    def _cli_entry_points(cls) -> t.MappingKV[str, t.Callable[..., p.Result[t.JsonValue]]]:
-        """Map CLI verbs to facade methods returning p.Result."""
-        return {
-            "discover": lambda **_: cls._wrap(lambda api: api.discover()),
-            "extract": lambda table_name, filters=None: cls._wrap(
-                lambda api: api.extract(table_name, filters)
-            ),
-            "run-pipeline": lambda tables=None, filters=None: cls._wrap(
-                lambda api: api.run_pipeline(tables, filters)
-            ),
-            "test-connection": lambda **_: cls._wrap(
-                lambda api: api.test_connection()
-            ),
-            "build-staging": lambda tables: cls._wrap(
-                lambda api: api.build_staging_models(tables)
-            ),
-        }
+    def __init__(self, service: FlextDbtOracle) -> None:
+        """Initialize the CLI service with the supplied service facade."""
+        self.service = service
 
-    @staticmethod
-    def _wrap(fn) -> p.Result[t.JsonValue]:
-        """Execute facade method and return p.Result."""
-        api = FlextDbtOracleFacade()
-        return fn(api)
+    def main(self, args: list[str]) -> int:
+        """Entry point — currently no commands implemented."""
+        _ = args
+        return 0
 
 
-def cli() -> None:
-    """CLI entry point."""
-    FlextDbtOracleCli.execute()
+def main(args: list[str]) -> int:
+    """Module-level entry point."""
+    return FlextDbtOracleCliService(FlextDbtOracle()).main(args)
 
 
-__all__: list[str] = ["FlextDbtOracleCli", "cli"]
+__all__: list[str] = ["FlextDbtOracleCliService", "main"]

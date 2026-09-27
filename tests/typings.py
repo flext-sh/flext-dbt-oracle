@@ -23,6 +23,9 @@ class TestsFlextDbtOracleTypes(FlextTestsTypes, FlextDbtOracleTypes):
         class Tests:
             """Test-specific type aliases."""
 
+    class Tests(FlextTestsTypes.Tests):
+        """Test-scoped type aliases facade."""
+
 
 t = TestsFlextDbtOracleTypes
 
