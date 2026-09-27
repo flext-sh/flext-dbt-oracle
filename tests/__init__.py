@@ -15,12 +15,21 @@ if TYPE_CHECKING:
 
     from . import unit
     from .base import TestsFlextDbtOracleServiceBase
-    from .constants import TestsFlextDbtOracleConstants, c
-    from .models import TestsFlextDbtOracleModels, m
-    from .protocols import TestsFlextDbtOracleProtocols, p
+    from .constants import (
+        TestsFlextDbtOracleConstants,
+        TestsFlextDbtOracleConstants as c,
+    )
+    from .models import TestsFlextDbtOracleModels, TestsFlextDbtOracleModels as m
+    from .protocols import (
+        TestsFlextDbtOracleProtocols,
+        TestsFlextDbtOracleProtocols as p,
+    )
     from .settings import TestsFlextDbtOracleSettings
-    from .typings import TestsFlextDbtOracleTypes, t
-    from .utilities import TestsFlextDbtOracleUtilities, u
+    from .typings import TestsFlextDbtOracleTypes, TestsFlextDbtOracleTypes as t
+    from .utilities import (
+        TestsFlextDbtOracleUtilities,
+        TestsFlextDbtOracleUtilities as u,
+    )
 
 
 __all__: tuple[str, ...] = (

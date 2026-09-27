@@ -15,8 +15,6 @@ from flext_tests import tm
 
 from tests import m, t
 
-__all__: list[str] = ["TestsFlextDbtOracleImpl"]
-
 
 class TestsFlextDbtOracleImpl:
     """Public-contract behavior of OracleTableAdapter."""

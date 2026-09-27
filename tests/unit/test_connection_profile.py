@@ -26,6 +26,3 @@ class TestsFlextDbtOracleConnectionProfile:
             "schema": profile.schema_name,
             "project": "dbt-oracle",
         }
-
-
-__all__: list[str] = ["TestsFlextDbtOracleConnectionProfile"]

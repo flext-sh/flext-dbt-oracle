@@ -120,6 +120,3 @@ class TestsFlextDbtOracleImports:
             adapter.model_dump(by_alias=True),
             eq={"schema": "sales", "table": "orders", "relation": "sales.orders"},
         )
-
-
-__all__: list[str] = ["TestsFlextDbtOracleImports"]

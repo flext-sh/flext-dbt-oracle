@@ -149,6 +149,3 @@ class TestsFlextDbtOracleConfig:
             "DbtOracle": {"schema_name": "TEST_SCHEMA"}
         }).DbtOracle
         tm.that(oracle.schema_name, eq="TEST_SCHEMA")
-
-
-__all__: list[str] = ["TestsFlextDbtOracleConfig"]
