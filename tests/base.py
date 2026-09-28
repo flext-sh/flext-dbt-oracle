@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_tests import s as tests_s
+from flext_tests import FlextTestsServiceBase
 
 from flext_dbt_oracle import m
 from tests.settings import TestsFlextDbtOracleSettings
 
 
-class TestsFlextDbtOracleServiceBase(tests_s):
+class TestsFlextDbtOracleServiceBase(FlextTestsServiceBase):
     """DBT Oracle test service base with source and test settings namespaces."""
 
     # NOTE (multi-agent): flext-tests owns fetch_settings; this project
@@ -23,4 +23,6 @@ class TestsFlextDbtOracleServiceBase(tests_s):
         return m.RuntimeBootstrapOptions(settings_type=TestsFlextDbtOracleSettings)
 
 
-__all__: list[str] = ["TestsFlextDbtOracleServiceBase"]
+s = TestsFlextDbtOracleServiceBase
+
+__all__: list[str] = ["TestsFlextDbtOracleServiceBase", "s"]
