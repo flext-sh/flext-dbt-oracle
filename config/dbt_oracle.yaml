@@ -1,0 +1,22 @@
+DbtOracle:
+  oracle:
+    host: "localhost"
+    port: 1521
+    service_name: "XEPDB1"
+    protocol: "tcp"
+  dbt:
+    target: "dev"
+    profiles_dir: "."
+    materialization: "view"
+    log_level: "INFO"
+  defaults:
+    model_type: "staging"
+    source_name: "oracle"
+    schema_name: "public"
+  formatting:
+    nls_lang: "AMERICAN_AMERICA.AL32UTF8"
+    nls_date_format: "YYYY-MM-DD"
+  runtime:
+    enable_metrics: false
+    enable_sql_logging: false
+    performance_recommendation_threshold: 20
