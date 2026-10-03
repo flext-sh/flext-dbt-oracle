@@ -11,11 +11,11 @@ import pytest
 from flext_db_oracle import FlextDbOracleSettings
 from flext_tests import tm
 
-from flext_dbt_oracle import FlextDbtOracleSettings, m
+from flext_dbt_oracle import FlextDbtOracleSettings
 
 
 class TestsFlextDbtOracleBasic:
-    """Observable public contract for FlextDbtOracle settings + connection model."""
+    """Observable public contract for FlextDbtOracle settings."""
 
     def test_dbt_settings_expose_namespaced_scalar_groups(self) -> None:
         """Dbt settings surface DbOracle connection scalars and DbtOracle knobs."""
@@ -32,40 +32,6 @@ class TestsFlextDbtOracleBasic:
         })
 
         tm.that(settings.DbtOracle.schema_name, eq="ANALYTICS")
-
-    def test_connection_dsn_masks_password_and_uses_service_separator(self) -> None:
-        """Service-name connections use '/' and never leak the password."""
-        credential = "tiger"
-        config = m.DbtOracle.OracleConnectionConfig(
-            host="db.example.com",
-            username="scott",
-            password=credential,
-            port=1521,
-            service_name="ORCLPDB1",
-        )
-
-        tm.that(config.dsn, eq="tcp://scott:***@db.example.com:1521/ORCLPDB1")
-        tm.that(config.dsn, lacks=credential)
-
-    def test_connection_dsn_uses_colon_separator_for_sid(self) -> None:
-        """SID connections use ':' as the identifier separator."""
-        config = m.DbtOracle.OracleConnectionConfig(
-            host="db.example.com", username="scott", port=1521, sid="XE"
-        )
-
-        assert config.dsn.endswith(":XE")
-
-    def test_database_identifier_prefers_service_name(self) -> None:
-        """Without a SID the identifier resolves from the service name."""
-        config = m.DbtOracle.OracleConnectionConfig(service_name="SVC")
-
-        tm.that(config.database_identifier, eq="SVC")
-
-    def test_sid_overrides_service_name_as_identifier(self) -> None:
-        """When a SID is provided it wins over the service name."""
-        config = m.DbtOracle.OracleConnectionConfig(service_name="SVC", sid="XE")
-
-        tm.that(config.database_identifier, eq="XE")
 
     @pytest.mark.parametrize(("pool_min", "pool_max"), [(1, 10), (5, 5), (2, 3)])
     def test_valid_pool_bounds_are_accepted(self, pool_min: int, pool_max: int) -> None:

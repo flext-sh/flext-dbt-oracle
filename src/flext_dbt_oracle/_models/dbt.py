@@ -42,49 +42,6 @@ class FlextDbtOracleModelsDbt:
             default_factory=tuple, description="Upstream DBT model dependencies"
         )
 
-    class OracleConnectionConfig(m.Value):
-        """Configuration for Oracle database connections."""
-
-        host: Annotated[str, u.Field(description="Oracle database host")] = (
-            c.DbtOracle.Oracle.DEFAULT_HOST
-        )
-        port: Annotated[t.PortNumber, u.Field(description="Oracle database port")] = (
-            c.DbtOracle.Oracle.DEFAULT_PORT
-        )
-        username: Annotated[str, u.Field(description="Oracle database username")] = ""
-        password: Annotated[
-            t.SecretStr, u.Field(description="Oracle database password")
-        ] = t.SecretStr("")
-        service_name: Annotated[str, u.Field(description="Oracle service name")] = (
-            c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
-        )
-        sid: Annotated[str | None, u.Field(description="Oracle SID (optional)")] = None
-        protocol: Annotated[str, u.Field(description="Oracle connection protocol")] = (
-            c.DbtOracle.Oracle.DEFAULT_PROTOCOL
-        )
-
-        @u.computed_field
-        @property
-        def database_identifier(self) -> str:
-            """Database identifier."""
-            if self.sid:
-                return self.sid
-            return self.service_name
-
-        @u.computed_field
-        @property
-        def dsn(self) -> str:
-            """Connection string in DSN format."""
-            if self.sid:
-                return (
-                    f"{self.protocol}://{self.username}:***@"
-                    f"{self.host}:{self.port}:{self.sid}"
-                )
-            return (
-                f"{self.protocol}://{self.username}:***@"
-                f"{self.host}:{self.port}/{self.service_name}"
-            )
-
     class DbtConnectionProfile(m.Value):
         """Typed dbt profile for Oracle-backed workflows (JSON wire shape)."""
 

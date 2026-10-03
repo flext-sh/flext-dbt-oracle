@@ -22,31 +22,25 @@ from .__version__ import (
 if TYPE_CHECKING:
     from flext_meltano import d, e, h, r, x
 
-    from . import services
     from ._config import FlextDbtOracleConfig, config
     from ._settings import FlextDbtOracleSettings, settings
     from .api import FlextDbtOracle
     from .base import FlextDbtOracleServiceBase, FlextDbtOracleServiceBase as s
-    from .cli import FlextDbtOracleCliService, main
+    from .cli import main
     from .constants import FlextDbtOracleConstants, FlextDbtOracleConstants as c
     from .models import FlextDbtOracleModels, FlextDbtOracleModels as m
     from .protocols import FlextDbtOracleProtocols, FlextDbtOracleProtocols as p
-    from .services.base import FlextDbtOracleServicesBase
-    from .services.client import FlextDbtOracleServicesClient
     from .typings import FlextDbtOracleTypes, FlextDbtOracleTypes as t
     from .utilities import FlextDbtOracleUtilities, FlextDbtOracleUtilities as u
 
 
 __all__: tuple[str, ...] = (
     "FlextDbtOracle",
-    "FlextDbtOracleCliService",
     "FlextDbtOracleConfig",
     "FlextDbtOracleConstants",
     "FlextDbtOracleModels",
     "FlextDbtOracleProtocols",
     "FlextDbtOracleServiceBase",
-    "FlextDbtOracleServicesBase",
-    "FlextDbtOracleServicesClient",
     "FlextDbtOracleSettings",
     "FlextDbtOracleTypes",
     "FlextDbtOracleUtilities",
@@ -68,7 +62,6 @@ __all__: tuple[str, ...] = (
     "p",
     "r",
     "s",
-    "services",
     "settings",
     "t",
     "u",
@@ -82,13 +75,10 @@ _LAZY_IMPORTS = MappingProxyType(
             "._settings": ("FlextDbtOracleSettings", "settings"),
             ".api": ("FlextDbtOracle",),
             ".base": ("FlextDbtOracleServiceBase", "s"),
-            ".cli": ("FlextDbtOracleCliService", "main"),
+            ".cli": ("main",),
             ".constants": ("FlextDbtOracleConstants", "c"),
             ".models": ("FlextDbtOracleModels", "m"),
             ".protocols": ("FlextDbtOracleProtocols", "p"),
-            ".services": ("services",),
-            ".services.base": ("FlextDbtOracleServicesBase",),
-            ".services.client": ("FlextDbtOracleServicesClient",),
             ".typings": ("FlextDbtOracleTypes", "t"),
             ".utilities": ("FlextDbtOracleUtilities", "u"),
             "flext_meltano": ("d", "e", "h", "r", "x"),

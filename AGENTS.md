@@ -21,8 +21,8 @@ dbt models for Oracle Database. Thin driver over `flext-meltano` dbt runner (ADR
 ```text
 src/flext_dbt_oracle/
 ├── base.py           # FlextDbtOracleServiceBase (.connection_profile) — NO api.py facet
-├── models.py         # DbtOracle.DbtConnectionProfile, OracleConnectionConfig
-├── adapters.py connections.py   # thin/re-export stubs (no operational symbols)
+├── models.py         # DbtOracle.DbtConnectionProfile, Model, OracleTableAdapter
+├── cli.py            # console script → inherited dbt cli_main
 ├── constants.py typings.py protocols.py utilities.py   # AUTO-GENERATED facets
 └── _config.py _settings.py
 ```
@@ -33,8 +33,6 @@ src/flext_dbt_oracle/
 | --------------------------- | ----- | ----------- | ---------------------------------------- |
 | `FlextDbtOracleServiceBase` | class | `base.py`   | service base; `connection_profile` entry |
 | `DbtConnectionProfile`      | model | `models.py` | typed `m.DbtOracle.*` profile            |
-| `OracleConnectionConfig`    | model | `models.py` | connection config                        |
-
 ## Conventions (specific to this package)
 
 - No `api.py` facet — the entry is `FlextDbtOracleServiceBase`. Connection profile is a
@@ -45,8 +43,8 @@ src/flext_dbt_oracle/
 
 ## Anti-Patterns / Gotchas
 
-- `adapters.py` / `connections.py` are thin/re-export stubs with no operational symbols
-  — don't assume behavior lives there.
+- Never declare an Oracle connection model or connection defaults here; the SSOT is
+  `settings.DbOracle.*` from `flext-db-oracle` (ADR-006 rule 2).
 
 ## Commands
 
