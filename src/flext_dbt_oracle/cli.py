@@ -1,26 +1,13 @@
-"""CLI facade for DBT Oracle — thin wrapper over public facade."""
+"""CLI entrypoint for DBT Oracle — dispatches through the meltano dbt base."""
 
 from __future__ import annotations
 
-from flext_dbt_oracle import FlextDbtOracle
+from flext_dbt_oracle import FlextDbtOracle, t
 
 
-class FlextDbtOracleCliService:
-    """CLI service for DBT Oracle — delegates to public facade."""
-
-    def __init__(self, service: FlextDbtOracle) -> None:
-        """Initialize the CLI service with the supplied service facade."""
-        self.service = service
-
-    def main(self, args: list[str]) -> int:
-        """Entry point — currently no commands implemented."""
-        _ = args
-        return 0
+def main(args: t.StrSequence | None = None) -> int:
+    """Console-script entry point delegating to the inherited dbt ``cli_main``."""
+    return FlextDbtOracle().cli_main(args)
 
 
-def main(args: list[str]) -> int:
-    """Module-level entry point."""
-    return FlextDbtOracleCliService(FlextDbtOracle()).main(args)
-
-
-__all__: list[str] = ["FlextDbtOracleCliService", "main"]
+__all__: list[str] = ["main"]

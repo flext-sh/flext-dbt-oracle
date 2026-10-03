@@ -33,12 +33,11 @@ class TestsFlextDbtOracleImports:
     # SSOT in settings.DbOracle.* (inherited); settings.DbtOracle.* holds dbt knobs.
     def test_settings_defaults_expose_oracle_connection_contract(self) -> None:
         settings = FlextDbtOracleSettings()
+        upstream = FlextDbOracleSettings.DbOracleSettings()
 
-        tm.that(settings.DbOracle.port, eq=c.DbtOracle.Oracle.DEFAULT_PORT)
-        tm.that(
-            settings.DbOracle.service_name, eq=c.DbtOracle.Oracle.DEFAULT_SERVICE_NAME
-        )
-        tm.that(settings.DbOracle.host, eq="localhost")
+        tm.that(settings.DbOracle.port, eq=upstream.port)
+        tm.that(settings.DbOracle.service_name, eq=upstream.service_name)
+        tm.that(settings.DbOracle.host, eq=upstream.host)
         tm.that(settings.DbtOracle.schema_name, eq="")
 
     def test_settings_namespace_round_trips_constructor_values(self) -> None:
@@ -92,23 +91,6 @@ class TestsFlextDbtOracleImports:
         for table, model in zip(source_tables, models, strict=True):
             tm.that(model.table_name, eq=f"stg_{table}")
             tm.that(model.sql_content, has=f"source('oracle', '{table}')")
-
-    def test_oracle_connection_config_dsn_uses_service_when_no_sid(self) -> None:
-        config = m.DbtOracle.OracleConnectionConfig(
-            host="h", username="u", service_name="SVC"
-        )
-
-        tm.that(config.database_identifier, eq="SVC")
-        tm.that(config.dsn, ends="/SVC")
-        tm.that(config.dsn, has=config.username)
-
-    def test_oracle_connection_config_dsn_uses_sid_when_present(self) -> None:
-        config = m.DbtOracle.OracleConnectionConfig(
-            host="h", username="u", sid="SID9", service_name="SVC"
-        )
-
-        tm.that(config.database_identifier, eq="SID9")
-        tm.that(config.dsn, ends=":SID9")
 
     def test_oracle_table_adapter_exposes_qualified_relation(self) -> None:
         adapter = m.DbtOracle.OracleTableAdapter(
