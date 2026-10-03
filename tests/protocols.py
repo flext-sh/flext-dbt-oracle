@@ -17,6 +17,9 @@ from flext_dbt_oracle import FlextDbtOracleProtocols
 class TestsFlextDbtOracleProtocols(FlextTestsProtocols, FlextDbtOracleProtocols):
     """Test protocols combining FlextTestsProtocols and FlextDbtOracleProtocols."""
 
+    class Tests(FlextTestsProtocols.Tests):
+        """Test-scoped protocol contracts facade."""
+
 
 p = TestsFlextDbtOracleProtocols
 

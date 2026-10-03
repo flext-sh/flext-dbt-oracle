@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_tests import s as tests_s
+from flext_tests import FlextTestsServiceBase
 
-from flext_dbt_oracle import m, p
+from flext_dbt_oracle import m
 from tests.settings import TestsFlextDbtOracleSettings
 
 
-class TestsFlextDbtOracleServiceBase(tests_s):
+class TestsFlextDbtOracleServiceBase(FlextTestsServiceBase):
     """DBT Oracle test service base with source and test settings namespaces."""
 
     # NOTE (multi-agent): flext-tests owns fetch_settings; this project
@@ -19,7 +19,7 @@ class TestsFlextDbtOracleServiceBase(tests_s):
     # fake that silenced the contract violation — removed at the root.
     @classmethod
     @override
-    def _runtime_bootstrap_options(cls) -> p.RuntimeBootstrapOptions:
+    def runtime_bootstrap_options(cls) -> m.RuntimeBootstrapOptions:
         return m.RuntimeBootstrapOptions(settings_type=TestsFlextDbtOracleSettings)
 
 

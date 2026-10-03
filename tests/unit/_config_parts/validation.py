@@ -2,23 +2,23 @@
 
 from __future__ import annotations
 
-from flext_tests import tm
-
 # NOTE (multi-agent): mro-rn88 — settings dedup: Oracle connection scalars via
 # settings.DbOracle.* (inherited); per ADR-005 materialization/protocol are free
 # scalars (no enum rejection) and pool bounds carry no cross-field validator here.
 from flext_db_oracle import FlextDbOracleSettings
-from flext_dbt_oracle._settings import FlextDbtOracleSettings
+from flext_tests import tm
+
+from flext_dbt_oracle import FlextDbtOracleSettings
 from tests import c, t
 
 
-class FlextDbtOracleConfigValidationPart:
+class TestsFlextDbtOracleConfigValidationPart:
     """Configuration validation coverage."""
 
     def test_config_default_host_applied(self) -> None:
         """Test default host is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
                 username="testuser", service_name="XEPDB1"
             )
         )
@@ -28,7 +28,7 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_default_username_applied(self) -> None:
         """Test default username is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
                 host="localhost", service_name="XEPDB1"
             )
         )
@@ -38,7 +38,7 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_default_password_applied(self) -> None:
         """Test default password is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
                 host="localhost", username="testuser"
             )
         )
@@ -47,7 +47,7 @@ class FlextDbtOracleConfigValidationPart:
     def test_config_numeric_ranges_round_trip(self) -> None:
         """Test numeric DbOracle fields accept and preserve valid ranges."""
         settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings._DbOracle(
+            DbOracle=FlextDbOracleSettings.DbOracleSettings(
                 host="localhost",
                 username="testuser",
                 service_name="XEPDB1",
@@ -72,9 +72,7 @@ class FlextDbtOracleConfigValidationPart:
             materialization_enum.SNAPSHOT,
         ]
         for materialization in valid_materializations:
-            oracle = FlextDbtOracleSettings(
-                DbtOracle=FlextDbtOracleSettings._DbtOracle(
-                    materialization=materialization
-                )
-            ).DbtOracle
+            oracle = FlextDbtOracleSettings.model_validate({
+                "DbtOracle": {"materialization": materialization}
+            }).DbtOracle
             tm.that(oracle.materialization, eq=materialization)

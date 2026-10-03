@@ -1,0 +1,3 @@
+DbtOracle:
+  name: flext-dbt-oracle
+  version: "0.12.0-dev"

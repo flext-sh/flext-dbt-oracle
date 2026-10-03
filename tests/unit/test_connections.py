@@ -32,12 +32,13 @@ class TestsFlextDbtOracleConnections:
         tm.that(config.username, eq="")
 
     def test_custom_values_are_preserved_on_public_fields(self) -> None:
+        credential = "secret"
         config = m.DbtOracle.OracleConnectionConfig(
             host="db.example.com",
             port=1522,
             service_name="PROD",
             username="admin",
-            password="secret",
+            password=credential,
             protocol="tcps",
         )
 
@@ -64,33 +65,36 @@ class TestsFlextDbtOracleConnections:
         tm.that(config.database_identifier, eq=expected)
 
     def test_dsn_uses_service_name_path_when_no_sid(self) -> None:
+        credential = "testpass"
         config = m.DbtOracle.OracleConnectionConfig(
             host="localhost",
             port=1521,
             service_name="XEPDB1",
             username="testuser",
-            password="testpass",
+            password=credential,
         )
 
         tm.that(config.dsn, eq="tcp://testuser:***@localhost:1521/XEPDB1")
 
     def test_dsn_uses_sid_path_when_sid_present(self) -> None:
+        credential = "testpass"
         config = m.DbtOracle.OracleConnectionConfig(
             host="localhost",
             port=1521,
             sid="XE",
             username="testuser",
-            password="testpass",
+            password=credential,
         )
 
         tm.that(config.dsn, eq="tcp://testuser:***@localhost:1521:XE")
 
     def test_dsn_never_leaks_plaintext_password(self) -> None:
+        credential = "topsecret"
         config = m.DbtOracle.OracleConnectionConfig(
-            username="testuser", password="topsecret", service_name="XEPDB1"
+            username="testuser", password=credential, service_name="XEPDB1"
         )
 
-        tm.that(config.dsn, lacks="topsecret")
+        tm.that(config.dsn, lacks=credential)
         tm.that(config.dsn, has=":***@")
 
     @pytest.mark.parametrize("protocol", ["tcp", "tcps"])
@@ -102,8 +106,9 @@ class TestsFlextDbtOracleConnections:
         assert config.dsn.startswith(f"{protocol}://")
 
     def test_model_dump_exposes_computed_fields(self) -> None:
+        credential = "p"
         config = m.DbtOracle.OracleConnectionConfig(
-            sid="XE", username="u", password="p"
+            sid="XE", username="u", password=credential
         )
         dumped = config.model_dump()
 

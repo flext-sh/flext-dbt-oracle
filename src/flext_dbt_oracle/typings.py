@@ -10,19 +10,17 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_db_oracle import FlextDbOracleTypes
-from flext_meltano import t
+from flext_meltano import FlextMeltanoTypes
+
+from ._typings.base import FlextDbtOracleTypesBase
+from ._typings.dbt import FlextDbtOracleTypesDbt
 
 
-class FlextDbtOracleTypes(t, FlextDbOracleTypes):
+class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
     """MRO facade composing Meltano + DbOracle type namespaces."""
 
-    class DbtOracle:
+    class DbtOracle(FlextDbtOracleTypesBase, FlextDbtOracleTypesDbt):
         """DbtOracle domain namespace for actively used type definitions."""
-
-        type OraclePayload = t.JsonMapping
-        "Oracle payload type."
-        type OraclePayloadList = t.SequenceOf[OraclePayload]
-        "List of Oracle payloads."
 
 
 t = FlextDbtOracleTypes

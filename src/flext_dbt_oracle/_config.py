@@ -1,10 +1,8 @@
-"""FlextDbtOracleConfig — frozen, validated config singleton for flext-dbt-oracle.
+"""FlextDbtOracleConfig — frozen config singleton for flext-dbt-oracle (ADR-005 §7).
 
-Every ``config/*.yaml`` file is auto-discovered and deep-merged at first
-``fetch_global`` call (model-less, ``extra="allow"`` at the FlextMeltanoConfig base).
-The flat YAML is then validated into the pure-Pydantic ``_models.config``
-shapes and exposed as typed domain objects under ``config.DbtOracle`` — never a
-model-less dict subscript.
+Model-less: business rules live in ``config/*.yaml`` under the ``DbtOracle:`` key and
+are exposed through the open ``config.DbtOracle`` namespace (``extra="allow"``), with
+no per-domain model. Access is ``config.DbtOracle.<domain>[<key>...]``.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -12,26 +10,26 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from functools import cached_property
-from pathlib import Path
-from typing import ClassVar
+from typing import Annotated
 
-from flext_dbt_oracle._models.config import FlextDbtOracleConfigModels
-from flext_meltano import FlextMeltanoConfig
+from flext_meltano import FlextMeltanoConfig, m
+
+
+class _DbtOracleNamespace(m.BaseModel):
+    """Open, frozen namespace exposing every ``config/*.yaml`` domain model-less."""
+
+    model_config = m.ConfigDict(extra="allow", frozen=True)
 
 
 class FlextDbtOracleConfig(FlextMeltanoConfig):
-    """DbtOracle config auto-loaded from ``config/*.yaml`` and validated via models."""
+    """DbtOracle config auto-loaded model-less from ``config/*.yaml``."""
 
-    CONFIG_DIR: ClassVar[str] = str(Path(__file__).resolve().parents[2] / "config")
-
-    @cached_property
-    def DbtOracle(self) -> FlextDbtOracleConfigModels.DbtOracle:
-        """Validated ``DbtOracle`` business-rule config namespace."""
-        root = FlextDbtOracleConfigModels.Root.model_validate(
-            dict(self.model_extra or {})
-        )
-        return root.DbtOracle
+    DbtOracle: Annotated[
+        _DbtOracleNamespace,
+        m.Field(
+            description="Open namespace exposing ``config/*.yaml`` under ``DbtOracle``."
+        ),
+    ] = _DbtOracleNamespace()
 
 
 config: FlextDbtOracleConfig = FlextDbtOracleConfig.fetch_global()

@@ -23,6 +23,9 @@ class TestsFlextDbtOracleUtilities(FlextTestsUtilities, FlextDbtOracleUtilities)
         class Tests:
             """Test-specific utilities."""
 
+    class Tests(FlextTestsUtilities.Tests):
+        """Test-scoped utilities facade."""
+
 
 u = TestsFlextDbtOracleUtilities
 

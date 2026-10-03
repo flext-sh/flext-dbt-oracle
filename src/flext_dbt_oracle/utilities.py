@@ -2,88 +2,20 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from flext_db_oracle import FlextDbOracleUtilities
-from flext_dbt_oracle import c, m, p, t
-from flext_meltano import u
+from flext_meltano import FlextMeltanoUtilities
 
-if TYPE_CHECKING:
-    from flext_dbt_oracle._settings import FlextDbtOracleSettings
+from ._utilities.base import FlextDbtOracleUtilitiesBase
+from ._utilities.model_builder import FlextDbtOracleUtilitiesModelBuilder
 
 
-class FlextDbtOracleUtilities(u, FlextDbOracleUtilities):
+class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
     """Namespace for DBT Oracle utility helpers."""
 
-    class DbtOracle:
+    class DbtOracle(FlextDbtOracleUtilitiesBase, FlextDbtOracleUtilitiesModelBuilder):
         """DBT Oracle domain utilities namespace."""
 
-        class Client:
-            """Typed facade for Oracle extraction and DBT pipeline execution."""
-
-            def __init__(self, settings: FlextDbtOracleSettings) -> None:
-                """Store runtime settings used by client operations."""
-                super().__init__()
-                # NOTE (multi-agent): mro-rn88 — retain injected settings (docstring contract; fixes ARG002).
-                self._settings = settings
-
-            def discover_tables(self) -> t.StrSequence:
-                """Return static table candidates for modeling flow."""
-                return ["customers", "orders", "order_items"]
-
-            def extract_table_data(
-                self, table_name: str, filters: t.ConfigurationMapping | None = None
-            ) -> t.SequenceOf[t.ConfigurationMapping]:
-                """Return deterministic sample payload for a table."""
-                _ = filters
-                return [{"table": table_name, "id": 1, "status": "sample"}]
-
-            def run_pipeline(
-                self,
-                tables: t.StrSequence | None = None,
-                filters: t.ConfigurationMapping | None = None,
-            ) -> t.JsonMapping:
-                """Run discover and extraction pipeline for selected tables."""
-                selected_tables = tables or self.discover_tables()
-                extracted = {
-                    table: self.extract_table_data(table, filters)
-                    for table in selected_tables
-                }
-                tables_payload: t.JsonValueList = list(selected_tables)
-                result: t.JsonMapping = {
-                    "status": "completed",
-                    "tables": tables_payload,
-                    "record_count": sum(len(rows) for rows in extracted.values()),
-                }
-                return result
-
-            def test_connection(self) -> t.ConfigurationMapping:
-                """Return a basic health payload for Oracle connectivity."""
-                return {
-                    "status": "connected",
-                    "host": c.LOCALHOST,
-                    "database": "XEPDB1",
-                }
-
-        class ModelBuilder:
-            """Deterministic DBT staging-model metadata generation."""
-
-            @staticmethod
-            def generate_staging_models(
-                source_tables: t.StrSequence,
-            ) -> t.SequenceOf[p.DbtOracle.Model]:
-                """Create one staging model definition per source table."""
-                return [
-                    m.DbtOracle.Model(
-                        name=f"stg_oracle_{table}",
-                        table_name=f"stg_{table}",
-                        sql_content=f"select * from {{{{ source('oracle', '{table}') }}}}",  # nosec B608
-                        description=f"Staging model for {table}",
-                    )
-                    for table in source_tables
-                ]
-
-
-__all__: list[str] = ["FlextDbtOracleUtilities", "u"]
 
 u = FlextDbtOracleUtilities
+
+__all__: list[str] = ["FlextDbtOracleUtilities", "u"]
