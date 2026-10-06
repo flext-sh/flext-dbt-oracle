@@ -1,4 +1,9 @@
-"""Base model definitions for DBT Oracle — MRO composition of parent model namespaces."""
+"""Base model definitions for DBT Oracle — MRO composition of parent model namespaces.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_dbt_oracle/_models/base
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 

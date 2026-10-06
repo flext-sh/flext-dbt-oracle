@@ -19,6 +19,7 @@ from tests import m, t
 class TestsFlextDbtOracleImpl:
     """Public-contract behavior of OracleTableAdapter."""
 
+    @staticmethod
     @pytest.mark.parametrize(
         ("schema_name", "table_name", "expected_relation"),
         [
@@ -29,28 +30,35 @@ class TestsFlextDbtOracleImpl:
         ],
     )
     def test_relation_name_is_qualified_schema_dot_table(
-        self, schema_name: str, table_name: str, expected_relation: str
+        schema_name: str,
+        table_name: str,
+        expected_relation: str,
     ) -> None:
         """relation_name qualifies the table with its schema."""
         adapter = m.DbtOracle.OracleTableAdapter(
-            schema_name=schema_name, table_name=table_name
+            schema_name=schema_name,
+            table_name=table_name,
         )
 
         tm.that(adapter.relation_name, eq=expected_relation)
 
-    def test_public_fields_expose_supplied_values(self) -> None:
+    @staticmethod
+    def test_public_fields_expose_supplied_values() -> None:
         """The constructor arguments are readable as public fields."""
         adapter = m.DbtOracle.OracleTableAdapter(
-            schema_name="HR", table_name="EMPLOYEES"
+            schema_name="HR",
+            table_name="EMPLOYEES",
         )
 
         tm.that(adapter.schema_name, eq="HR")
         tm.that(adapter.table_name, eq="EMPLOYEES")
 
-    def test_model_dump_by_alias_returns_full_public_contract(self) -> None:
+    @staticmethod
+    def test_model_dump_by_alias_returns_full_public_contract() -> None:
         """model_dump(by_alias=True) surfaces schema, table and computed relation."""
         adapter = m.DbtOracle.OracleTableAdapter(
-            schema_name="HR", table_name="EMPLOYEES"
+            schema_name="HR",
+            table_name="EMPLOYEES",
         )
 
         tm.that(
@@ -58,13 +66,15 @@ class TestsFlextDbtOracleImpl:
             eq={"schema": "HR", "table": "EMPLOYEES", "relation": "HR.EMPLOYEES"},
         )
 
-    def test_dumped_relation_matches_relation_name(self) -> None:
+    @staticmethod
+    def test_dumped_relation_matches_relation_name() -> None:
         """model_dump(by_alias=True)['relation'] is consistent with relation_name."""
         adapter = m.DbtOracle.OracleTableAdapter(schema_name="FIN", table_name="LEDGER")
 
         tm.that(adapter.model_dump(by_alias=True)["relation"], eq=adapter.relation_name)
 
-    def test_model_dump_includes_computed_relation_name(self) -> None:
+    @staticmethod
+    def test_model_dump_includes_computed_relation_name() -> None:
         """The serialized model carries the computed relation_name."""
         adapter = m.DbtOracle.OracleTableAdapter(schema_name="HR", table_name="JOBS")
 
@@ -73,35 +83,42 @@ class TestsFlextDbtOracleImpl:
             eq={"schema_name": "HR", "table_name": "JOBS", "relation": "HR.JOBS"},
         )
 
-    def test_value_equality_by_public_state(self) -> None:
+    @staticmethod
+    def test_value_equality_by_public_state() -> None:
         """Two adapters with identical fields compare equal."""
         left = m.DbtOracle.OracleTableAdapter(schema_name="HR", table_name="EMP")
         right = m.DbtOracle.OracleTableAdapter(schema_name="HR", table_name="EMP")
 
         tm.that(left, eq=right)
 
-    def test_distinct_state_is_not_equal(self) -> None:
+    @staticmethod
+    def test_distinct_state_is_not_equal() -> None:
         """Adapters differing in any field are not equal."""
         base = m.DbtOracle.OracleTableAdapter(schema_name="HR", table_name="EMP")
 
         tm.that(
-            base, ne=m.DbtOracle.OracleTableAdapter(schema_name="HR", table_name="DEPT")
+            base,
+            ne=m.DbtOracle.OracleTableAdapter(schema_name="HR", table_name="DEPT"),
         )
         tm.that(
-            base, ne=m.DbtOracle.OracleTableAdapter(schema_name="SYS", table_name="EMP")
+            base,
+            ne=m.DbtOracle.OracleTableAdapter(schema_name="SYS", table_name="EMP"),
         )
 
-    def test_adapter_is_immutable(self) -> None:
+    @staticmethod
+    def test_adapter_is_immutable() -> None:
         """Adapter is a frozen value object; mutation is rejected."""
         adapter = m.DbtOracle.OracleTableAdapter(schema_name="HR", table_name="EMP")
 
         tm.rejects_assignment(adapter, "schema_name", "SYS", expected=m.ValidationError)
 
+    @staticmethod
     @pytest.mark.parametrize(
-        "kwargs", [{"schema_name": "HR"}, {"table_name": "EMP"}, {}]
+        "kwargs",
+        [{"schema_name": "HR"}, {"table_name": "EMP"}, {}],
     )
     def test_missing_required_field_raises_validation_error(
-        self, kwargs: t.StrMapping
+        kwargs: t.StrMapping,
     ) -> None:
         """Both schema_name and table_name are mandatory."""
         with pytest.raises(m.ValidationError):

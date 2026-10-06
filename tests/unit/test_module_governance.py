@@ -6,6 +6,10 @@ expose only class-shaped facades — never a module-level logger and never a
 loose top-level function. These assertions exercise that contract through the
 public ``import`` + attribute surface only (the same surface any consumer sees),
 not through any private attribute of a unit under test.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+tests/unit/test_module_governance
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
@@ -24,6 +28,7 @@ class TestsFlextDbtOracleModuleGovernance(FlextTestsModuleGovernanceMixin):
     def test_package_exposes_at_least_one_module(self) -> None:
         # Guards the discovery contract: an empty scan would make every other
         # invariant vacuously true and hide real regressions.
+        """Test package exposes at least one module."""
         modules = self._iter_package_modules()
 
         assert modules, "expected flext_dbt_oracle package to expose modules"

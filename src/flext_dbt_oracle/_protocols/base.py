@@ -1,4 +1,9 @@
-"""Base protocols for DBT Oracle integration points."""
+"""Base protocols for DBT Oracle integration points.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_dbt_oracle/_protocols/base
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 

@@ -35,38 +35,47 @@ class FlextDbtOracleSettings(FlextDbOracleSettings, FlextMeltanoSettings):
         """dbt-specific knobs only (Oracle connection lives in ``DbOracle``)."""
 
         schema_name: Annotated[
-            str, m.Field(default="", description="Target schema name")
+            str,
+            m.Field(default="", description="Target schema name"),
         ]
         materialization: Annotated[
-            str, m.Field(default="table", description="DBT materialization")
+            str,
+            m.Field(default="table", description="DBT materialization"),
         ]
         nls_lang: Annotated[
             str,
             m.Field(
-                default="AMERICAN_AMERICA.AL32UTF8", description="Oracle NLS language"
+                default="AMERICAN_AMERICA.AL32UTF8",
+                description="Oracle NLS language",
             ),
         ]
         nls_date_format: Annotated[
-            str, m.Field(default="YYYY-MM-DD", description="Oracle NLS date format")
+            str,
+            m.Field(default="YYYY-MM-DD", description="Oracle NLS date format"),
         ]
         search_path: Annotated[
-            str, m.Field(default="", description="Schema search path")
+            str,
+            m.Field(default="", description="Schema search path"),
         ]
         enable_metrics: Annotated[
-            bool, m.Field(default=False, description="Enable metrics collection")
+            bool,
+            m.Field(default=False, description="Enable metrics collection"),
         ]
         dbt_log_level: Annotated[
-            str, m.Field(default="INFO", description="Runtime log verbosity")
+            str,
+            m.Field(default="INFO", description="Runtime log verbosity"),
         ]
         enable_sql_logging: Annotated[
-            bool, m.Field(default=False, description="Enable SQL query logging")
+            bool,
+            m.Field(default=False, description="Enable SQL query logging"),
         ]
 
     if TYPE_CHECKING:
         DbtOracle: _DbtOracle
     else:
         DbtOracle: _DbtOracle = m.Field(
-            default_factory=_DbtOracle, description="Namespaced dbt-specific settings."
+            default_factory=_DbtOracle,
+            description="Namespaced dbt-specific settings.",
         )
 
 

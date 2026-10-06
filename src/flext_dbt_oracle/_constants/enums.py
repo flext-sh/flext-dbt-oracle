@@ -1,4 +1,9 @@
-"""DBT Oracle constant enumerations and values."""
+"""DBT Oracle constant enumerations and values.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_dbt_oracle/_constants/enums
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 

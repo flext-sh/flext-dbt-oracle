@@ -12,7 +12,9 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from flext_meltano import FlextMeltanoConfig, m
+from flext_meltano import FlextMeltanoConfig
+
+from flext_dbt_oracle import m
 
 
 class _DbtOracleNamespace(m.BaseModel):
@@ -27,7 +29,7 @@ class FlextDbtOracleConfig(FlextMeltanoConfig):
     DbtOracle: Annotated[
         _DbtOracleNamespace,
         m.Field(
-            description="Open namespace exposing ``config/*.yaml`` under ``DbtOracle``."
+            description="Open namespace exposing ``config/*.yaml`` under ``DbtOracle``.",
         ),
     ] = _DbtOracleNamespace()
 
