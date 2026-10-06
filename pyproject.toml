@@ -441,6 +441,7 @@ runtime-evaluated-base-classes = [
   "flext_db_oracle.FlextDbOracleSettings",
   "flext_dbt_oracle.FlextDbtOracleServiceBase",
   "flext_dbt_oracle.FlextDbtOracleSettings",
+  "flext_dbt_oracle.m.BaseModel",
   "flext_meltano.FlextMeltanoConfig",
   "flext_meltano.FlextMeltanoDbtServiceBase",
   "flext_meltano.FlextMeltanoSettings",
