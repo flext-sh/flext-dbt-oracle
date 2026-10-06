@@ -1,3 +1,10 @@
+"""Dbt oracle namespace module.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_dbt_oracle/_models/_dbt_oracle_namespace
+SPDX-License-Identifier: MIT
+"""
+
 from __future__ import annotations
 
 from flext_dbt_oracle import m
