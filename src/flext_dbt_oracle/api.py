@@ -1,4 +1,9 @@
-"""FlextDbtOracle public facade — thin MRO re-export over service base."""
+"""FlextDbtOracle public facade — thin MRO re-export over service base.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_dbt_oracle/api
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 

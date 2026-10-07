@@ -1,4 +1,9 @@
-"""Validation tests for Oracle DBT settings."""
+"""Validation tests for Oracle DBT settings.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+tests/unit/_config_parts/validation
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
@@ -15,36 +20,43 @@ from tests import c, t
 class TestsFlextDbtOracleConfigValidationPart:
     """Configuration validation coverage."""
 
-    def test_config_default_host_applied(self) -> None:
+    @staticmethod
+    def test_config_default_host_applied() -> None:
         """Test default host is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
-                username="testuser", service_name="XEPDB1"
-            )
+                username="testuser",
+                service_name="XEPDB1",
+            ),
         )
         tm.that(settings.DbOracle.host, is_=str)
         tm.that(settings.DbOracle.host, ne="")
 
-    def test_config_default_username_applied(self) -> None:
+    @staticmethod
+    def test_config_default_username_applied() -> None:
         """Test default username is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
-                host="localhost", service_name="XEPDB1"
-            )
+                host="localhost",
+                service_name="XEPDB1",
+            ),
         )
         tm.that(settings.DbOracle.username, is_=str)
         tm.that(settings.DbOracle.username, ne="")
 
-    def test_config_default_password_applied(self) -> None:
+    @staticmethod
+    def test_config_default_password_applied() -> None:
         """Test default password is applied when not provided explicitly."""
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
-                host="localhost", username="testuser"
-            )
+                host="localhost",
+                username="testuser",
+            ),
         )
         tm.that(settings.DbOracle.password, is_=str)
 
-    def test_config_numeric_ranges_round_trip(self) -> None:
+    @staticmethod
+    def test_config_numeric_ranges_round_trip() -> None:
         """Test numeric DbOracle fields accept and preserve valid ranges."""
         settings = FlextDbOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
@@ -55,14 +67,15 @@ class TestsFlextDbtOracleConfigValidationPart:
                 pool_min=1,
                 pool_max=50,
                 timeout=60,
-            )
+            ),
         )
         tm.that(settings.DbOracle.port, eq=1521)
         tm.that(settings.DbOracle.pool_min, eq=1)
         tm.that(settings.DbOracle.pool_max, eq=50)
         tm.that(settings.DbOracle.timeout, eq=60)
 
-    def test_config_materialization_all_valid_types(self) -> None:
+    @staticmethod
+    def test_config_materialization_all_valid_types() -> None:
         """Test all valid materialization types round-trip on the dbt namespace."""
         materialization_enum = c.DbtOracle.Dbt.Materialization
         valid_materializations: t.SequenceOf[materialization_enum] = [
@@ -73,6 +86,6 @@ class TestsFlextDbtOracleConfigValidationPart:
         ]
         for materialization in valid_materializations:
             oracle = FlextDbtOracleSettings.model_validate({
-                "DbtOracle": {"materialization": materialization}
+                "DbtOracle": {"materialization": materialization},
             }).DbtOracle
             tm.that(oracle.materialization, eq=materialization)

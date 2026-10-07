@@ -1,4 +1,4 @@
-# flext-dbt-oracle Public API
+# flext_dbt_oracle.cli
 
 <!-- TOC START -->
 
@@ -6,7 +6,7 @@
 
 <!-- AUTO-GENERATED — DO NOT EDIT MANUALLY -->
 
-::: flext_dbt_oracle
+::: flext_dbt_oracle.cli
 
     options:
       show_root_heading: true
