@@ -8,6 +8,9 @@ connection fields.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
@@ -22,7 +25,10 @@ from flext_meltano import FlextMeltanoSettings, m
 
 
 class FlextDbtOracleSettings(FlextDbOracleSettings, FlextMeltanoSettings):
-    """DBT Oracle settings; connection via ``DbOracle.*``, dbt knobs via ``DbtOracle.*``."""
+    """DBT Oracle settings; connection via ``DbOracle.*``.
+
+    dbt knobs live under ``DbtOracle.*``.
+    """
 
     model_config = m.SettingsConfigDict(
         env_prefix="FLEXT_DBT_ORACLE_",
@@ -80,6 +86,7 @@ class FlextDbtOracleSettings(FlextDbOracleSettings, FlextMeltanoSettings):
 
 
 settings: FlextDbtOracleSettings = FlextDbtOracleSettings.fetch_global()
-"""Pre-instantiated project settings singleton — ``from flext_dbt_oracle import settings``."""
+"""Pre-instantiated project settings singleton — ``from flext_dbt_oracle``
+import ``settings``."""
 
 __all__: list[str] = ["FlextDbtOracleSettings", "settings"]

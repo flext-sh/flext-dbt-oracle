@@ -2,6 +2,9 @@
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
@@ -14,7 +17,8 @@ from flext_meltano import (
 )
 
 # NOTE (multi-agent): settings-fallout lane (mro-rn88) — import the module `settings`
-# singleton for the strict `from <pkg> import settings` access form (was bare/undefined).
+# singleton for the strict `from <pkg> import settings` access form
+# (was bare/undefined).
 from flext_dbt_oracle import FlextDbtOracleSettings, c, m, p, settings, t
 
 
@@ -42,7 +46,8 @@ class FlextDbtOracleServiceBase(_meltano_FlextMeltanoDbtServiceBase):
     def connection_profile(self) -> p.Meltano.DbtConnectionProfile:
         """Dbt connection profile for Oracle-backed workflows."""
         # NOTE (multi-agent): mro-rn88 ADR-006 thin-driver — connection scalars from
-        # settings.DbOracle.* (SSOT, no duplication); dbt schema from settings.DbtOracle.
+        # settings.DbOracle.* (SSOT, no duplication); dbt schema from
+        # settings.DbtOracle.
         db = settings.DbOracle
         return m.DbtOracle.DbtConnectionProfile(
             host=db.host,

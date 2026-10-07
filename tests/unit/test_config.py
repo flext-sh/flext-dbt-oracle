@@ -3,6 +3,8 @@
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 # NOTE (multi-agent): mro-rn88 — settings dedup: Oracle connection scalars are SSOT
 # in settings.DbOracle.* (inherited from flext-db-oracle); settings.DbtOracle.* holds
