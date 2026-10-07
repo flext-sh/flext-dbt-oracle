@@ -1,11 +1,16 @@
-"""Constants used by the DBT Oracle package."""
+"""Constants used by the DBT Oracle package.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_dbt_oracle/constants
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
 from flext_meltano import FlextMeltanoConstants
 
-from ._constants.base import FlextDbtOracleConstantsBase
-from ._constants.enums import FlextDbtOracleConstantsEnums
+from flext_dbt_oracle._constants.base import FlextDbtOracleConstantsBase
+from flext_dbt_oracle._constants.enums import FlextDbtOracleConstantsEnums
 
 
 class FlextDbtOracleConstants(FlextMeltanoConstants):

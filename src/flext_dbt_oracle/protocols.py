@@ -9,6 +9,10 @@ code) + the standing STRICT YAGNI directive they were deleted; the canonical
 ``FlextDbtOracleProtocols`` facade remains intact (re-exported via ``p``) and
 composes the parent ``FlextDbOracleProtocols.DbOracle`` protocol namespace
 through its own ``DbtOracle`` namespace.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_dbt_oracle/protocols
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
@@ -16,7 +20,7 @@ from __future__ import annotations
 from flext_db_oracle import FlextDbOracleProtocols
 from flext_meltano import FlextMeltanoProtocols
 
-from ._protocols.base import FlextDbtOracleProtocolsBase
+from flext_dbt_oracle._protocols.base import FlextDbtOracleProtocolsBase
 
 
 class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):

@@ -1,4 +1,9 @@
-"""DBT Oracle domain models composed into the models facade."""
+"""DBT Oracle domain models composed into the models facade.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_dbt_oracle/_models/dbt
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
@@ -17,7 +22,8 @@ class FlextDbtOracleModelsDbt:
 
         name: Annotated[str, u.Field(description="DBT model name")]
         dbt_model_type: Annotated[
-            str, u.Field(description="DBT model classification")
+            str,
+            u.Field(description="DBT model classification"),
         ] = c.DbtOracle.DEFAULT_MODEL_TYPE
         schema_name: Annotated[str, u.Field(description="Target schema name")] = (
             c.DbtOracle.DEFAULT_SCHEMA_NAME
@@ -29,7 +35,8 @@ class FlextDbtOracleModelsDbt:
         ] = c.DbtOracle.Dbt.DEFAULT_MATERIALIZATION
         sql_content: Annotated[str, u.Field(description="Model SQL body")]
         description: Annotated[
-            str, u.Field(description="Human-readable model description")
+            str,
+            u.Field(description="Human-readable model description"),
         ] = ""
         source_name: Annotated[str, u.Field(description="Source system name")] = (
             c.DbtOracle.DEFAULT_SOURCE_NAME
@@ -39,7 +46,8 @@ class FlextDbtOracleModelsDbt:
             description="Normalized column metadata for the DBT model",
         )
         dependencies: t.StrSequence = u.Field(
-            default_factory=tuple, description="Upstream DBT model dependencies"
+            default_factory=tuple,
+            description="Upstream DBT model dependencies",
         )
 
     class DbtConnectionProfile(m.Value):
@@ -52,7 +60,8 @@ class FlextDbtOracleModelsDbt:
         password: Annotated[str, u.Field(description="Oracle database password")]
         service_name: Annotated[str, u.Field(description="Oracle service name")]
         schema_name: Annotated[
-            str, u.Field(serialization_alias="schema", description="Target dbt schema")
+            str,
+            u.Field(serialization_alias="schema", description="Target dbt schema"),
         ]
         project: Annotated[str, u.Field(description="dbt project name")]
 
@@ -60,10 +69,12 @@ class FlextDbtOracleModelsDbt:
         """Adapter for Oracle table metadata normalization."""
 
         schema_name: Annotated[
-            str, u.Field(serialization_alias="schema", description="Oracle schema name")
+            str,
+            u.Field(serialization_alias="schema", description="Oracle schema name"),
         ]
         table_name: Annotated[
-            str, u.Field(serialization_alias="table", description="Oracle table name")
+            str,
+            u.Field(serialization_alias="table", description="Oracle table name"),
         ]
 
         @u.computed_field

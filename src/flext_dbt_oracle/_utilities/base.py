@@ -1,4 +1,9 @@
-"""Base utilities for DBT Oracle — MRO composition of parent utility namespaces."""
+"""Base utilities for DBT Oracle — MRO composition of parent utility namespaces.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_dbt_oracle/_utilities/base
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 

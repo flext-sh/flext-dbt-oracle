@@ -1,12 +1,19 @@
-"""Utility helpers for SQL and payload validation."""
+"""Utility helpers for SQL and payload validation.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_dbt_oracle/utilities
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
 from flext_db_oracle import FlextDbOracleUtilities
 from flext_meltano import FlextMeltanoUtilities
 
-from ._utilities.base import FlextDbtOracleUtilitiesBase
-from ._utilities.model_builder import FlextDbtOracleUtilitiesModelBuilder
+from flext_dbt_oracle._utilities.base import FlextDbtOracleUtilitiesBase
+from flext_dbt_oracle._utilities.model_builder import (
+    FlextDbtOracleUtilitiesModelBuilder,
+)
 
 
 class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):

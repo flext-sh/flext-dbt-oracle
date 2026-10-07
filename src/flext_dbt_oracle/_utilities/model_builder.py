@@ -1,4 +1,9 @@
-"""Deterministic DBT staging-model metadata generation for DBT Oracle."""
+"""Deterministic DBT staging-model metadata generation for DBT Oracle.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_dbt_oracle/_utilities/model_builder
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
@@ -20,13 +25,17 @@ class FlextDbtOracleUtilitiesModelBuilder:
         def generate_staging_models(
             source_tables: t.StrSequence,
         ) -> t.SequenceOf[m.DbtOracle.Model]:
-            """Create one staging model definition per source table."""
+            """Create one staging model definition per source table.
+
+            Returns:
+                The resulting ``t.SequenceOf[m.DbtOracle.Model]``.
+            """
             return [
                 m.DbtOracle.Model(
                     name=f"stg_oracle_{table}",
                     table_name=f"stg_{table}",
                     sql_content=c.DbtOracle.Dbt.STAGING_SELECT_TEMPLATE.format(
-                        table=table
+                        table=table,
                     ),
                     description=f"Staging model for {table}",
                 )
