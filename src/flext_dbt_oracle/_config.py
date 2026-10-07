@@ -6,6 +6,9 @@ no per-domain model. Access is ``config.DbtOracle.<domain>[<key>...]``.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
@@ -14,22 +17,30 @@ from typing import Annotated
 
 from flext_meltano import FlextMeltanoConfig
 
-import flext_dbt_oracle._models._dbt_oracle_namespace
 from flext_dbt_oracle import m
+
+
+class _DbtOracleNamespace(m.BaseModel):
+    """Open, frozen namespace exposing every ``config/*.yaml`` domain model-less."""
+
+    model_config = m.ConfigDict(extra="allow", frozen=True)
 
 
 class FlextDbtOracleConfig(FlextMeltanoConfig):
     """DbtOracle config auto-loaded model-less from ``config/*.yaml``."""
 
     DbtOracle: Annotated[
-        flext_dbt_oracle._models._dbt_oracle_namespace._DbtOracleNamespace,
+        _DbtOracleNamespace,
         m.Field(
-            description="Open namespace exposing ``config/*.yaml`` under ``DbtOracle``.",
+            description=(
+                "Open namespace exposing ``config/*.yaml`` under ``DbtOracle``."
+            ),
         ),
-    ] = flext_dbt_oracle._models._dbt_oracle_namespace._DbtOracleNamespace()
+    ] = _DbtOracleNamespace()
 
 
 config: FlextDbtOracleConfig = FlextDbtOracleConfig.fetch_global()
-"""Pre-instantiated frozen config singleton — ``from flext_dbt_oracle import config``."""
+"""Pre-instantiated frozen config singleton — ``from flext_dbt_oracle import``
+``config``."""
 
 __all__: list[str] = ["FlextDbtOracleConfig", "config"]

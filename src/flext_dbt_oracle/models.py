@@ -14,7 +14,7 @@ from flext_dbt_oracle._models.dbt import FlextDbtOracleModelsDbt
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, FlextDbtOracleModelsBase):
-    """Namespace wrapper for DBT Oracle domain models — composes _models parts via MRO."""
+    """Namespace wrapper for DBT Oracle domain models via _models MRO parts."""
 
     class DbtOracle(FlextDbtOracleModelsBase, FlextDbtOracleModelsDbt):
         """DbtOracle domain namespace."""
