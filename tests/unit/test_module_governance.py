@@ -14,16 +14,16 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import FlextTestsModuleGovernanceMixin
+from flext_tests import u
 
 from tests import c
 
 
-class TestsFlextDbtOracleModuleGovernance(FlextTestsModuleGovernanceMixin):
+class TestsFlextDbtOracleModuleGovernance(u.FlextTestsModuleGovernanceMixin):
     """Behavior contract for the flext_dbt_oracle public module namespace."""
 
     _test_file = __file__
-    _tests_config = c.DbtOracle.Tests
+    _tests_config = c.DbtOracle.Tests()
 
     def test_package_exposes_at_least_one_module(self) -> None:
         # Guards the discovery contract: an empty scan would make every other
