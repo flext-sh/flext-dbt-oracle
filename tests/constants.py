@@ -29,8 +29,8 @@ class TestsFlextDbtOracleConstants(FlextDbtOracleConstants, FlextTestsConstants)
             """Test-specific constants."""
 
             PROJECT_ROOT_PARENT_DEPTH: Final[int] = 1
-            SRC_DIR: Final[str] = "src"
-            PACKAGE_DIR: Final[str] = "flext_dbt_oracle"
+            SRC_DIR: str = "src"
+            PACKAGE_DIR: str = "flext_dbt_oracle"
 
     class Tests(FlextTestsConstants.Tests):
         """Test-scoped constants facade."""
