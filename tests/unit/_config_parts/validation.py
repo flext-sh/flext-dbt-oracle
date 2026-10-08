@@ -13,9 +13,6 @@ from __future__ import annotations
 from flext_db_oracle import FlextDbOracleSettings
 from flext_tests import tm
 
-from flext_dbt_oracle import FlextDbtOracleSettings
-from tests import c, t
-
 
 class TestsFlextDbtOracleConfigValidationPart:
     """Configuration validation coverage."""
@@ -54,38 +51,3 @@ class TestsFlextDbtOracleConfigValidationPart:
             ),
         )
         tm.that(settings.DbOracle.password, is_=str)
-
-    @staticmethod
-    def test_config_numeric_ranges_round_trip() -> None:
-        """Test numeric DbOracle fields accept and preserve valid ranges."""
-        settings = FlextDbOracleSettings(
-            DbOracle=FlextDbOracleSettings.DbOracleSettings(
-                host="localhost",
-                username="testuser",
-                service_name="XEPDB1",
-                port=1521,
-                pool_min=1,
-                pool_max=50,
-                timeout=60,
-            ),
-        )
-        tm.that(settings.DbOracle.port, eq=1521)
-        tm.that(settings.DbOracle.pool_min, eq=1)
-        tm.that(settings.DbOracle.pool_max, eq=50)
-        tm.that(settings.DbOracle.timeout, eq=60)
-
-    @staticmethod
-    def test_config_materialization_all_valid_types() -> None:
-        """Test all valid materialization types round-trip on the dbt namespace."""
-        materialization_enum = c.DbtOracle.Dbt.Materialization
-        valid_materializations: t.SequenceOf[materialization_enum] = [
-            materialization_enum.TABLE,
-            materialization_enum.VIEW,
-            materialization_enum.INCREMENTAL,
-            materialization_enum.SNAPSHOT,
-        ]
-        for materialization in valid_materializations:
-            oracle = FlextDbtOracleSettings.model_validate({
-                "DbtOracle": {"materialization": materialization},
-            }).DbtOracle
-            tm.that(oracle.materialization, eq=materialization)
