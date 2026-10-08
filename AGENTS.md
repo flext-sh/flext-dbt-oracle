@@ -20,7 +20,8 @@ dbt models for Oracle Database. Thin driver over `flext-meltano` dbt runner (ADR
 
 ```text
 src/flext_dbt_oracle/
-├── base.py           # FlextDbtOracleServiceBase (.connection_profile) — NO api.py facet
+├── api.py            # FlextDbtOracle public facade over the service base
+├── base.py           # FlextDbtOracleServiceBase (.connection_profile)
 ├── models.py         # DbtOracle.DbtConnectionProfile, Model, OracleTableAdapter
 ├── cli.py            # console script → inherited dbt cli_main
 ├── constants.py typings.py protocols.py utilities.py   # AUTO-GENERATED facets
@@ -31,12 +32,13 @@ src/flext_dbt_oracle/
 
 | Symbol                      | Kind  | Location    | Role                                     |
 | --------------------------- | ----- | ----------- | ---------------------------------------- |
+| `FlextDbtOracle`            | class | `api.py`    | public facade over the service base     |
 | `FlextDbtOracleServiceBase` | class | `base.py`   | service base; `connection_profile` entry |
 | `DbtConnectionProfile`      | model | `models.py` | typed `m.DbtOracle.*` profile            |
 ## Conventions (specific to this package)
 
-- No `api.py` facet — the entry is `FlextDbtOracleServiceBase`. Connection profile is a
-  typed `m.DbtOracle.*` model.
+- `api.py` exposes `FlextDbtOracle` as a thin facade over
+  `FlextDbtOracleServiceBase`. Connection profile is a typed `m.DbtOracle.*` model.
 - DB access via `flext-db-oracle` (`settings.DbOracle.*`).
 - Config/settings canonical pattern: ADR-012.
 - Codemod governance (ast-grep + make mod): ADR-014.
