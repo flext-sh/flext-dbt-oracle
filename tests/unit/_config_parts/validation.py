@@ -11,7 +11,8 @@ from __future__ import annotations
 # settings.DbOracle.* (inherited); per ADR-005 materialization/protocol are free
 # scalars (no enum rejection) and pool bounds carry no cross-field validator here.
 from flext_db_oracle import FlextDbOracleSettings
-from flext_tests import tm
+
+from tests import tm
 
 
 class TestsFlextDbtOracleConfigValidationPart:

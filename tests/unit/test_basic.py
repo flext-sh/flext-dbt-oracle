@@ -11,9 +11,9 @@ from __future__ import annotations
 
 import pytest
 from flext_db_oracle import FlextDbOracleSettings
-from flext_tests import tm
 
 from flext_dbt_oracle import FlextDbtOracleSettings
+from tests import tm
 
 
 class TestsFlextDbtOracleBasic:
