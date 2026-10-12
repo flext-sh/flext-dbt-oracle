@@ -28,7 +28,7 @@ This section is generated from public exports and real docstrings.
 ## Surface Summary
 
 - Primary facades: `FlextDbtOracle`, `FlextDbtOracleConfig`, `FlextDbtOracleConstants`,
-  `FlextDbtOracleModels`, `FlextDbtOracleProtocols`, `FlextDbtOracleServiceBase` (+3
+  `FlextDbtOracleModels`, `FlextDbtOracleProtocols`, `FlextDbtOracleServiceBase` (+4
   more)
 - Generated module pages: `8`
 
