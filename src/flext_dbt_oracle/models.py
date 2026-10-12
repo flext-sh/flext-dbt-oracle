@@ -10,13 +10,16 @@ from __future__ import annotations
 from flext_meltano import FlextMeltanoModels
 
 from flext_dbt_oracle._models.base import FlextDbtOracleModelsBase
+from flext_dbt_oracle._models.config import FlextDbtOracleModelsConfig
 from flext_dbt_oracle._models.dbt import FlextDbtOracleModelsDbt
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, FlextDbtOracleModelsBase):
     """Namespace wrapper for DBT Oracle domain models via _models MRO parts."""
 
-    class DbtOracle(FlextDbtOracleModelsBase, FlextDbtOracleModelsDbt):
+    class DbtOracle(
+        FlextDbtOracleModelsBase, FlextDbtOracleModelsConfig, FlextDbtOracleModelsDbt
+    ):
         """DbtOracle domain namespace."""
 
 

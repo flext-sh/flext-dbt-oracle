@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Final
+from typing import ClassVar
 
 from flext_tests import FlextTestsConstants
 
@@ -22,13 +22,10 @@ class TestsFlextDbtOracleConstants(FlextDbtOracleConstants, FlextTestsConstants)
     class DbtOracle(FlextDbtOracleConstants.DbtOracle):
         """DbtOracle test constants namespace."""
 
-        class Tests:
-            """Test-specific constants."""
+        class Tests(FlextTestsConstants.Tests):
+            """DbtOracle-specific test constants."""
 
-            PROJECT_ROOT_PARENT_DEPTH: Final[int] = 1
-
-    class Tests(FlextTestsConstants.Tests):
-        """Test-scoped constants facade."""
+            PROJECT_ROOT_PARENT_DEPTH: ClassVar[int] = 1
 
 
 c = TestsFlextDbtOracleConstants

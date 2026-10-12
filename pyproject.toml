@@ -459,7 +459,6 @@ runtime-evaluated-base-classes = [
   "flext_meltano.m.Value",
   "flext_tests.FlextTestsServiceBase",
   "flext_tests.FlextTestsSettings",
-  "flext_tests.FlextTestsUtilities.Tests",
   "pydantic.BaseModel",
 ]
 

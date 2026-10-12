@@ -14,16 +14,22 @@ from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
     from flext_dbt_oracle._models.base import FlextDbtOracleModelsBase
+    from flext_dbt_oracle._models.config import FlextDbtOracleModelsConfig
     from flext_dbt_oracle._models.dbt import FlextDbtOracleModelsDbt
 
 
-__all__: tuple[str, ...] = ("FlextDbtOracleModelsBase", "FlextDbtOracleModelsDbt")
+__all__: tuple[str, ...] = (
+    "FlextDbtOracleModelsBase",
+    "FlextDbtOracleModelsConfig",
+    "FlextDbtOracleModelsDbt",
+)
 
 install_lazy_exports(
     __name__,
     globals(),
     MappingProxyType({
         "FlextDbtOracleModelsBase": ".base",
+        "FlextDbtOracleModelsConfig": ".config",
         "FlextDbtOracleModelsDbt": ".dbt",
     }),
     public_exports=__all__,
