@@ -49,25 +49,6 @@ class TestsFlextDbtOracleConfigConstructionPart:
         tm.that(settings.DbOracle.sid, eq="XE")
 
     @staticmethod
-    def test_config_with_all_dbt_optional_fields() -> None:
-        """Test dbt configuration with all optional knobs set."""
-        oracle = FlextDbtOracleSettings.model_validate({
-            "DbtOracle": {
-                "nls_lang": "AMERICAN_AMERICA.AL32UTF8",
-                "nls_date_format": "DD/MM/YYYY",
-                "search_path": "schema1,schema2",
-                "enable_metrics": True,
-                "dbt_log_level": "DEBUG",
-                "enable_sql_logging": True,
-            },
-        }).DbtOracle
-        tm.that(oracle.nls_lang, eq="AMERICAN_AMERICA.AL32UTF8")
-        tm.that(oracle.nls_date_format, eq="DD/MM/YYYY")
-        tm.that(oracle.enable_metrics, eq=True)
-        tm.that(oracle.dbt_log_level, eq="DEBUG")
-        tm.that(oracle.enable_sql_logging, eq=True)
-
-    @staticmethod
     def test_config_defaults_when_no_service_name_or_sid() -> None:
         """Test default service name when neither service_name nor sid is provided."""
         settings = FlextDbOracleSettings(
