@@ -21,6 +21,7 @@ def main(args: t.StrSequence | None = None) -> int:
 
     Returns:
         Process exit code from the dispatched dbt command.
+
     """
     return FlextDbtOracle().cli_main(args)
 

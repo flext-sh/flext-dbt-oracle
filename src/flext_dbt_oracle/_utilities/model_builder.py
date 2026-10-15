@@ -34,6 +34,7 @@ class FlextDbtOracleUtilitiesModelBuilder:
             Returns:
                 One staging model definition per source table, in input
                 order.
+
             """
             return [
                 m.DbtOracle.Model(
