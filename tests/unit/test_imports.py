@@ -11,11 +11,11 @@ from typing import TYPE_CHECKING
 import pytest
 from flext_db_oracle import FlextDbOracleSettings
 
-from flext_dbt_oracle import FlextDbtOracleSettings, c, m, u
-from tests import tm
+from flext_dbt_oracle import FlextDbtOracleSettings
+from tests import c, m, tm, u
 
 if TYPE_CHECKING:
-    from flext_core import t
+    from tests import t
 
 
 class TestsFlextDbtOracleImports:

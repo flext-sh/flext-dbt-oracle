@@ -11,8 +11,7 @@ from typing import override
 
 from flext_tests import FlextTestsServiceBase
 
-from flext_dbt_oracle import m
-from tests.settings import TestsFlextDbtOracleSettings
+from tests import TestsFlextDbtOracleSettings, m
 
 
 class TestsFlextDbtOracleServiceBase(FlextTestsServiceBase):
