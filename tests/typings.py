@@ -3,9 +3,6 @@
 Provides TestsFlextDbtOracleTypes, combining FlextTestsTypes with
 FlextDbtOracleTypes for test-specific type definitions.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
 Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
@@ -25,9 +22,6 @@ class TestsFlextDbtOracleTypes(FlextTestsTypes, FlextDbtOracleTypes):
 
         class Tests:
             """Test-specific type aliases."""
-
-    class Tests(FlextTestsTypes.Tests):
-        """Test-scoped type aliases facade."""
 
 
 t = TestsFlextDbtOracleTypes

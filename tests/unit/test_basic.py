@@ -1,8 +1,5 @@
 """Behavioral tests for FLEXT DBT Oracle settings contract.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
 Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
@@ -11,9 +8,9 @@ from __future__ import annotations
 
 import pytest
 from flext_db_oracle import FlextDbOracleSettings
-from flext_tests import tm
 
 from flext_dbt_oracle import FlextDbtOracleSettings
+from tests import tm
 
 
 class TestsFlextDbtOracleBasic:

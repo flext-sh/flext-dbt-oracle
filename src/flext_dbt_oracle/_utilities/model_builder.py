@@ -27,8 +27,14 @@ class FlextDbtOracleUtilitiesModelBuilder:
         ) -> t.SequenceOf[m.DbtOracle.Model]:
             """Create one staging model definition per source table.
 
+            Args:
+                source_tables: Source table names to derive staging
+                    models from.
+
             Returns:
-                The resulting ``t.SequenceOf[m.DbtOracle.Model]``.
+                One staging model definition per source table, in input
+                order.
+
             """
             return [
                 m.DbtOracle.Model(

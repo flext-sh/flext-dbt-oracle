@@ -1,8 +1,5 @@
 """Behavioral tests for FlextDbtOracleSettings public contract.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
 Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
@@ -14,14 +11,37 @@ from __future__ import annotations
 
 import pytest
 from flext_db_oracle import FlextDbOracleSettings
-from flext_tests import tm
 
-from flext_dbt_oracle import FlextDbtOracleSettings
-from tests import c
+from flext_dbt_oracle import FlextDbtOracleConfig, FlextDbtOracleSettings
+from tests import c, m, t, tm
 
 
 class TestsFlextDbtOracleConfig:
     """Verify the observable configuration contract of FlextDbtOracleSettings."""
+
+    @staticmethod
+    @pytest.mark.parametrize(
+        "payload", [{}, {"policy": None}, {"policy": [False, {"limit": 3}]}]
+    )
+    def test_open_config_namespace_contract(payload: t.JsonDict) -> None:
+        """Shared namespace preserves arbitrary values and rejects mutation."""
+        namespace = FlextDbtOracleConfig.model_validate({
+            "DbtOracle": payload
+        }).DbtOracle
+        tm.that(
+            namespace.model_dump(mode="json"),
+            eq=FlextDbtOracleConfig().DbtOracle.model_dump(mode="json") | payload,
+        )
+        tm.rejects_assignment(
+            namespace, "policy", "changed", expected=m.ValidationError
+        )
+        schemas = (
+            namespace.model_json_schema(),
+            m.Meltano.MeltanoNamespace.model_json_schema(),
+        )
+        for schema in schemas:
+            del schema["title"]
+        tm.that(schemas[0], eq=schemas[1])
 
     @staticmethod
     def setup_method() -> None:

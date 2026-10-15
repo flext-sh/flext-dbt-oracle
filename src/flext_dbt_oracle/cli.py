@@ -11,10 +11,17 @@ from flext_dbt_oracle import FlextDbtOracle, t
 
 
 def main(args: t.StrSequence | None = None) -> int:
-    """Console-script entry point delegating to the inherited dbt ``cli_main``.
+    """Run the flext-dbt-oracle console-script entry point.
+
+    Delegates to the inherited dbt ``cli_main`` dispatcher.
+
+    Args:
+        args: Command-line arguments; defaults to ``sys.argv[1:]`` when
+            omitted.
 
     Returns:
-        The resulting ``int``.
+        Process exit code from the dispatched dbt command.
+
     """
     return FlextDbtOracle().cli_main(args)
 
