@@ -10,13 +10,12 @@ from typing import Annotated, override
 
 from flext_meltano import (
     FlextMeltanoDbtServiceBase as _meltano_FlextMeltanoDbtServiceBase,
-    u,
 )
 
 # NOTE (multi-agent): settings-fallout lane (mro-rn88) — import the module `settings`
 # singleton for the strict `from <pkg> import settings` access form
 # (was bare/undefined).
-from flext_dbt_oracle import FlextDbtOracleSettings, c, m, p, settings, t
+from flext_dbt_oracle import FlextDbtOracleSettings, c, m, p, settings, t, u
 
 
 class FlextDbtOracleServiceBase(_meltano_FlextMeltanoDbtServiceBase):
