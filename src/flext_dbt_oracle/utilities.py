@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """Utility helpers for SQL and payload validation.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
@@ -10,8 +11,8 @@ from __future__ import annotations
 from flext_db_oracle import FlextDbOracleUtilities
 from flext_meltano import FlextMeltanoUtilities
 
-from flext_dbt_oracle._utilities.base import FlextDbtOracleUtilitiesBase
-from flext_dbt_oracle._utilities.model_builder import (
+from flext_dbt_oracle._utilities import (
+    FlextDbtOracleUtilitiesBase,
     FlextDbtOracleUtilitiesModelBuilder,
 )
 
