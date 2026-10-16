@@ -1,8 +1,5 @@
 """Environment fixtures for local DBT Oracle configuration and model tests.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
 Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
@@ -12,9 +9,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
-from flext_tests import tf
 
-from tests import u
+from tests import tf, u
 
 if TYPE_CHECKING:
     from collections.abc import Generator

@@ -6,9 +6,6 @@ service_name/sid/pool_min/pool_max). This module declares ONLY dbt-specific
 knobs under ``settings.DbtOracle.*`` — never a second copy of the Oracle
 connection fields.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
 Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """

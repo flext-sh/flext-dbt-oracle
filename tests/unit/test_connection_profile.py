@@ -7,9 +7,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_meltano import p
-
-from flext_dbt_oracle import FlextDbtOracleServiceBase, m
+from flext_dbt_oracle import FlextDbtOracleServiceBase
+from tests import m, p
 
 
 class TestsFlextDbtOracleConnectionProfile:

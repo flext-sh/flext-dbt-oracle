@@ -1,8 +1,5 @@
 """Behavioral contract tests for the flext_dbt_oracle public surface.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
 Copyright (c) 2026 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
@@ -13,12 +10,12 @@ from typing import TYPE_CHECKING
 
 import pytest
 from flext_db_oracle import FlextDbOracleSettings
-from flext_tests import tm
 
-from flext_dbt_oracle import FlextDbtOracleSettings, c, m, u
+from flext_dbt_oracle import FlextDbtOracleSettings
+from tests import c, m, tm, u
 
 if TYPE_CHECKING:
-    from flext_core import t
+    from tests import t
 
 
 class TestsFlextDbtOracleImports:
