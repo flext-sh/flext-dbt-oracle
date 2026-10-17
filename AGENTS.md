@@ -35,6 +35,7 @@ src/flext_dbt_oracle/
 | `FlextDbtOracle`            | class | `api.py`    | public facade over the service base     |
 | `FlextDbtOracleServiceBase` | class | `base.py`   | service base; `connection_profile` entry |
 | `DbtConnectionProfile`      | model | `models.py` | typed `m.DbtOracle.*` profile            |
+
 ## Conventions (specific to this package)
 
 - `api.py` exposes `FlextDbtOracle` as a thin facade over
