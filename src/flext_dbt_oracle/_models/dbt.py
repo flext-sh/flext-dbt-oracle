@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from flext_meltano import m, t, u
+from flext_meltano import m, t
 
 from flext_dbt_oracle import c
 
@@ -77,7 +77,7 @@ class FlextDbtOracleModelsDbt:
             m.Field(serialization_alias="table", description="Oracle table name"),
         ]
 
-        @u.computed_field
+        @m.computed_field
         @property
         def relation(self) -> str:
             """Fully qualified relation name."""
