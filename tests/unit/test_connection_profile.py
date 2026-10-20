@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_dbt_oracle import FlextDbtOracleServiceBase
-from tests import m, p
+from tests import m, p, tm
 
 
 class TestsFlextDbtOracleConnectionProfile:
@@ -21,13 +21,16 @@ class TestsFlextDbtOracleConnectionProfile:
 
         assert isinstance(profile, m.DbtOracle.DbtConnectionProfile)
         assert isinstance(profile, p.Meltano.DbtConnectionProfile)
-        assert profile.model_dump(by_alias=True) == {
-            "type": "oracle",
-            "host": profile.host,
-            "port": profile.port,
-            "user": profile.user,
-            "password": profile.password,
-            "service_name": profile.service_name,
-            "schema": profile.schema_name,
-            "project": "dbt-oracle",
-        }
+        tm.that(
+            profile.model_dump(by_alias=True),
+            eq={
+                "type": "oracle",
+                "host": profile.host,
+                "port": profile.port,
+                "user": profile.user,
+                "password": profile.password,
+                "service_name": profile.service_name,
+                "schema": profile.schema_name,
+                "project": "dbt-oracle",
+            },
+        )
