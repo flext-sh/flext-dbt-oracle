@@ -101,8 +101,8 @@ class TestsFlextDbtOracleConfig:
         tm.that(oracle.nls_lang, eq="AMERICAN_AMERICA.AL32UTF8")
         tm.that(oracle.nls_date_format, eq="DD/MM/YYYY")
         tm.that(oracle.search_path, eq="schema1,schema2")
-        tm.that(oracle.enable_metrics, eq=True)
-        tm.that(oracle.enable_sql_logging, eq=True)
+        tm.ok(oracle.enable_metrics)
+        tm.ok(oracle.enable_sql_logging)
         tm.that(oracle.dbt_log_level, eq="DEBUG")
 
     @staticmethod
