@@ -1,7 +1,7 @@
 """Validation tests for Oracle DBT settings.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
-tests/unit/_config_parts/validation
+tests/unit/_config/validation
 SPDX-License-Identifier: MIT
 """
 

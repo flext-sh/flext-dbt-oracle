@@ -1,7 +1,7 @@
 """Construction and default settings tests for Oracle DBT settings.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
-tests/unit/_config_parts/construction
+tests/unit/_config/construction
 SPDX-License-Identifier: MIT
 """
 
