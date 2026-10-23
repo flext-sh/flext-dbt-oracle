@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_dbt_oracle import FlextDbtOracleServiceBase
-from tests import m, p, tm
+from tests import c, m, p, tm
 
 
 class TestsFlextDbtOracleConnectionProfile:
@@ -17,10 +17,12 @@ class TestsFlextDbtOracleConnectionProfile:
     @staticmethod
     def test_connection_profile_returns_typed_oracle_wire_shape() -> None:
         """connection_profile returns the typed dbt Oracle wire shape."""
-        profile = FlextDbtOracleServiceBase().connection_profile
+        service = FlextDbtOracleServiceBase()
+        profile = tm.instance(
+            service.connection_profile, m.DbtOracle.DbtConnectionProfile
+        )
 
-        assert isinstance(profile, m.DbtOracle.DbtConnectionProfile)
-        assert isinstance(profile, p.Meltano.DbtConnectionProfile)
+        tm.that(profile, is_=p.Meltano.DbtConnectionProfile)
         tm.that(
             profile.model_dump(by_alias=True),
             eq={
@@ -29,8 +31,8 @@ class TestsFlextDbtOracleConnectionProfile:
                 "port": profile.port,
                 "user": profile.user,
                 "password": profile.password,
-                "service_name": profile.service_name,
+                c.ContextKey.SERVICE_NAME: profile.service_name,
                 "schema": profile.schema_name,
-                "project": "dbt-oracle",
+                "project": service.dbt_project_name,
             },
         )

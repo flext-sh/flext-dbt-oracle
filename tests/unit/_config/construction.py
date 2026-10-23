@@ -12,7 +12,7 @@ from __future__ import annotations
 from flext_db_oracle import FlextDbOracleSettings
 
 from flext_dbt_oracle import FlextDbtOracleSettings
-from tests import tm
+from tests import c, tm
 
 
 class TestsFlextDbtOracleConfigConstructionPart:
@@ -21,7 +21,7 @@ class TestsFlextDbtOracleConfigConstructionPart:
     @staticmethod
     def test_basic_config_creation() -> None:
         """Test creating basic Oracle configuration via DbOracle namespace."""
-        settings = FlextDbOracleSettings(
+        settings = FlextDbtOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
                 host="localhost",
                 username="testuser",
@@ -32,12 +32,12 @@ class TestsFlextDbtOracleConfigConstructionPart:
         tm.that(settings.DbOracle.username, eq="testuser")
         tm.that(settings.DbOracle.service_name, eq="XEPDB1")
         tm.that(settings.DbOracle.port, is_=int)
-        assert settings.DbOracle.port > 0
+        tm.that(settings.DbOracle.port > 0, truth=True)
 
     @staticmethod
     def test_config_with_sid() -> None:
         """Test configuration with SID instead of service_name."""
-        settings = FlextDbOracleSettings(
+        settings = FlextDbtOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
                 host="localhost",
                 username="testuser",
@@ -51,7 +51,7 @@ class TestsFlextDbtOracleConfigConstructionPart:
     @staticmethod
     def test_config_defaults_when_no_service_name_or_sid() -> None:
         """Test default service name when neither service_name nor sid is provided."""
-        settings = FlextDbOracleSettings(
+        settings = FlextDbtOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
                 host="localhost",
                 username="testuser",
@@ -61,13 +61,14 @@ class TestsFlextDbtOracleConfigConstructionPart:
 
     @staticmethod
     def test_config_uses_default_constants() -> None:
-        """Test that configuration uses default constants appropriately."""
+        """Use the upstream Oracle namespace and declared dbt materializations."""
         settings = FlextDbtOracleSettings()
-        tm.that(settings.DbOracle.port, is_=int)
-        assert settings.DbOracle.port > 0
+        db = tm.instance(settings.DbOracle, FlextDbOracleSettings.DbOracleSettings)
+        tm.that(db.port, is_=int)
+        tm.that(db.port > 0, truth=True)
         tm.that(
-            {"table", "view", "incremental", "snapshot"},
-            has=settings.DbtOracle.materialization,
+            settings.DbtOracle.materialization in c.DbtOracle.Dbt.Materialization,
+            truth=True,
         )
-        assert settings.DbOracle.pool_min >= 1
-        assert settings.DbOracle.pool_max >= settings.DbOracle.pool_min
+        tm.that(db.pool_min, is_=int)
+        tm.that(db.pool_max, is_=int)

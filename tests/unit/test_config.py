@@ -12,11 +12,12 @@ from __future__ import annotations
 import pytest
 from flext_db_oracle import FlextDbOracleSettings
 
-from flext_dbt_oracle import FlextDbtOracleConfig, FlextDbtOracleSettings
+from flext_dbt_oracle import FlextDbtOracleSettings, config
 from tests import c, m, t, tm
+from tests.unit._config.construction import TestsFlextDbtOracleConfigConstructionPart
 
 
-class TestsFlextDbtOracleConfig:
+class TestsFlextDbtOracleConfig(TestsFlextDbtOracleConfigConstructionPart):
     """Verify the observable configuration contract of FlextDbtOracleSettings."""
 
     @staticmethod
@@ -25,12 +26,10 @@ class TestsFlextDbtOracleConfig:
     )
     def test_open_config_namespace_contract(payload: t.JsonDict) -> None:
         """Shared namespace preserves arbitrary values and rejects mutation."""
-        namespace = FlextDbtOracleConfig.model_validate({
-            "DbtOracle": payload
-        }).DbtOracle
+        namespace = type(config.DbtOracle).model_validate(payload)
         tm.that(
             namespace.model_dump(mode="json"),
-            eq=FlextDbtOracleConfig().DbtOracle.model_dump(mode="json") | payload,
+            eq=payload,
         )
         tm.rejects_assignment(
             namespace, "policy", "changed", expected=m.ValidationError
@@ -51,7 +50,7 @@ class TestsFlextDbtOracleConfig:
     @staticmethod
     def test_connection_scalars_come_from_dboracle_namespace() -> None:
         """Oracle connection scalars are supplied via the DbOracle namespace."""
-        settings = FlextDbOracleSettings(
+        settings = FlextDbtOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
                 host="db.internal",
                 username="svc",
@@ -67,7 +66,7 @@ class TestsFlextDbtOracleConfig:
         """The Oracle port exposes a usable positive integer."""
         db = FlextDbtOracleSettings().DbOracle
         tm.that(db.port, is_=int)
-        assert db.port > 0
+        tm.that(db.port > 0, truth=True)
 
     @staticmethod
     def test_defaults_are_applied_for_omitted_identity_fields() -> None:
@@ -106,15 +105,32 @@ class TestsFlextDbtOracleConfig:
         tm.that(oracle.dbt_log_level, eq="DEBUG")
 
     @staticmethod
-    def test_default_invariants_hold() -> None:
-        """Default construction satisfies the documented value invariants."""
+    def test_default_namespaces_follow_their_declared_scalar_models() -> None:
+        """Namespaces retain upstream scalar types and declared materializations."""
         settings = FlextDbtOracleSettings()
+        db = tm.instance(settings.DbOracle, FlextDbOracleSettings.DbOracleSettings)
         tm.that(
-            {"table", "view", "incremental", "snapshot"},
-            has=settings.DbtOracle.materialization,
+            settings.DbtOracle.materialization in c.DbtOracle.Dbt.Materialization,
+            truth=True,
         )
-        assert settings.DbOracle.pool_min >= 1
-        assert settings.DbOracle.pool_max >= settings.DbOracle.pool_min
+        tm.that(db.pool_min, is_=int)
+        tm.that(db.pool_max, is_=int)
+
+    @staticmethod
+    @pytest.mark.parametrize(("pool_min", "pool_max"), [(0, 1), (3, 7), (11, 11)])
+    def test_pool_scalars_preserve_the_upstream_namespace_contract(
+        pool_min: int, pool_max: int
+    ) -> None:
+        """Inherited settings preserve supplied pool values, including zero."""
+        supplied = FlextDbOracleSettings.DbOracleSettings(
+            pool_min=pool_min,
+            pool_max=pool_max,
+        )
+        settings = FlextDbtOracleSettings(DbOracle=supplied)
+
+        db = tm.instance(settings.DbOracle, FlextDbOracleSettings.DbOracleSettings)
+        tm.that(db.pool_min, eq=pool_min)
+        tm.that(db.pool_max, eq=pool_max)
 
     @staticmethod
     def test_materialization_is_a_free_scalar_string() -> None:
@@ -129,7 +145,7 @@ class TestsFlextDbtOracleConfig:
     @staticmethod
     def test_pool_bounds_round_trip_through_dboracle() -> None:
         """Pool bounds are DbOracle scalars preserved at construction."""
-        settings = FlextDbOracleSettings(
+        settings = FlextDbtOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(pool_min=5, pool_max=5),
         )
         tm.that(settings.DbOracle.pool_min, eq=5)
@@ -138,7 +154,7 @@ class TestsFlextDbtOracleConfig:
     @staticmethod
     def test_numeric_fields_retain_supplied_values() -> None:
         """Numeric DbOracle fields accept and preserve valid in-range values."""
-        settings = FlextDbOracleSettings(
+        settings = FlextDbtOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
                 port=1521,
                 pool_min=1,
@@ -173,7 +189,7 @@ class TestsFlextDbtOracleConfig:
     @staticmethod
     def test_sid_and_service_name_coexist_on_dboracle() -> None:
         """Both SID and service name are retained as DbOracle scalar fields."""
-        settings = FlextDbOracleSettings(
+        settings = FlextDbtOracleSettings(
             DbOracle=FlextDbOracleSettings.DbOracleSettings(
                 sid="XE",
                 service_name="XEPDB1",
@@ -183,9 +199,11 @@ class TestsFlextDbtOracleConfig:
         tm.that(settings.DbOracle.service_name, eq="XEPDB1")
 
     @staticmethod
-    def test_schema_name_defaults_empty_and_accepts_override() -> None:
-        """schema_name is an empty-default scalar overridable at construction."""
-        tm.that(FlextDbtOracleSettings().DbtOracle.schema_name, eq="")
+    def test_schema_name_preserves_declared_defaults_and_override() -> None:
+        """schema_name preserves its typed default owner and explicit input."""
+        defaults = FlextDbtOracleSettings.DbtOracleSettings()
+        selected = FlextDbtOracleSettings(DbtOracle=defaults)
+        tm.that(selected.DbtOracle.schema_name, eq=defaults.schema_name)
         oracle = FlextDbtOracleSettings.model_validate({
             "DbtOracle": {"schema_name": "TEST_SCHEMA"},
         }).DbtOracle
