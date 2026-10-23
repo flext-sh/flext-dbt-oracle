@@ -131,12 +131,14 @@ package_name = "flext_dbt_oracle"
 scan_dirs = ["src"]
 
 [tool.hatch.build.targets.wheel]
+exclude = ["/src/flext_dbt_oracle/config"]
 only-include = ["src/flext_dbt_oracle"]
 
 [tool.hatch.build.targets.wheel.sources]
 "src/flext_dbt_oracle" = "flext_dbt_oracle"
 
 [tool.hatch.build.targets.wheel.force-include]
+"src/flext_dbt_oracle/config" = "flext_dbt_oracle/config"
 "pyproject.toml" = "flext_dbt_oracle/pyproject.toml"
 
 [tool.hatch.build.targets.sdist]
