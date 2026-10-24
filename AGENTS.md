@@ -41,7 +41,7 @@ src/flext_dbt_oracle/
 - `api.py` exposes `FlextDbtOracle` as a thin facade over
   `FlextDbtOracleServiceBase`. Connection profile is a typed `m.DbtOracle.*` model.
 - DB access via `flext-db-oracle` (`settings.DbOracle.*`).
-- Config/settings canonical pattern: ADR-012.
+- Config/settings canonical pattern: ADR-005 (SSOT) and ADR-024 (DI config contract).
 - Codemod governance (ast-grep + make mod): ADR-014.
 
 ## Anti-Patterns / Gotchas
