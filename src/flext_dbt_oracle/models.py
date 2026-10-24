@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """Core model objects used by DBT Oracle workflows.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
@@ -9,9 +10,11 @@ from __future__ import annotations
 
 from flext_meltano import FlextMeltanoModels
 
-from flext_dbt_oracle._models.base import FlextDbtOracleModelsBase
-from flext_dbt_oracle._models.config import FlextDbtOracleModelsConfig
-from flext_dbt_oracle._models.dbt import FlextDbtOracleModelsDbt
+from flext_dbt_oracle._models import (
+    FlextDbtOracleModelsBase,
+    FlextDbtOracleModelsConfig,
+    FlextDbtOracleModelsDbt,
+)
 
 
 class FlextDbtOracleModels(FlextMeltanoModels, FlextDbtOracleModelsBase):

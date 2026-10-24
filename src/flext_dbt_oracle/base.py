@@ -15,7 +15,7 @@ from flext_meltano import (
 # NOTE (multi-agent): settings-fallout lane (mro-rn88) — import the module `settings`
 # singleton for the strict `from <pkg> import settings` access form
 # (was bare/undefined).
-from flext_dbt_oracle import FlextDbtOracleSettings, c, m, p, settings, t, u
+from flext_dbt_oracle import FlextDbtOracleSettings, c, m, p, settings, t
 
 
 class FlextDbtOracleServiceBase(_meltano_FlextMeltanoDbtServiceBase):
@@ -23,7 +23,7 @@ class FlextDbtOracleServiceBase(_meltano_FlextMeltanoDbtServiceBase):
 
     dbt_project_name: Annotated[
         t.NonEmptyStr,
-        u.Field(description="Canonical dbt project name for DBT Oracle services"),
+        m.Field(description="Canonical dbt project name for DBT Oracle services"),
     ] = "dbt-oracle"
 
     @classmethod

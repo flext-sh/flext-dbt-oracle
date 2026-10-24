@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """Constants used by the DBT Oracle package.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.

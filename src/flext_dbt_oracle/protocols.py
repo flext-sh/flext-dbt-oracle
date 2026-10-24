@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """DBT Oracle protocols for FLEXT ecosystem.
 
 The 8 inner ``DbtOracle.*`` Protocol classes that previously lived here

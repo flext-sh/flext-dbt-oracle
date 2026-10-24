@@ -12,12 +12,9 @@ from typing import TYPE_CHECKING
 
 from flext_core.lazy import install_lazy_exports
 
-from flext_dbt_oracle.__version__ import __version__
-
 if TYPE_CHECKING:
     from flext_meltano import d, e, h, r, x
 
-    from flext_dbt_oracle import _constants, _models, _protocols, _typings, _utilities
     from flext_dbt_oracle.__version__ import (
         FlextDbtOracleVersion,
         __author__,
@@ -26,6 +23,7 @@ if TYPE_CHECKING:
         __license__,
         __title__,
         __url__,
+        __version__,
         __version_info__,
     )
     from flext_dbt_oracle._config import FlextDbtOracleConfig, config
@@ -59,11 +57,6 @@ __all__: tuple[str, ...] = (
     "__url__",
     "__version__",
     "__version_info__",
-    "_constants",
-    "_models",
-    "_protocols",
-    "_typings",
-    "_utilities",
     "c",
     "config",
     "d",
@@ -101,11 +94,6 @@ install_lazy_exports(
         "__title__": ".__version__",
         "__url__": ".__version__",
         "__version_info__": ".__version__",
-        "_constants": "._constants",
-        "_models": "._models",
-        "_protocols": "._protocols",
-        "_typings": "._typings",
-        "_utilities": "._utilities",
         "c": ".constants",
         "config": "._config",
         "d": "flext_meltano",
@@ -123,3 +111,6 @@ install_lazy_exports(
     }),
     public_exports=__all__,
 )
+
+if not TYPE_CHECKING:
+    from flext_dbt_oracle.__version__ import __version__
