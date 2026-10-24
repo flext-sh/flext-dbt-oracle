@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """FLEXT Dbt Oracle Types — MRO composition of parent type namespaces.
 
 Structured data uses Pydantic models via m; no domain-specific aliases are declared.
