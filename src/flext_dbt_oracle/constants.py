@@ -24,5 +24,4 @@ class FlextDbtOracleConstants(FlextMeltanoConstants):
 
 
 c = FlextDbtOracleConstants
-
 __all__: list[str] = ["FlextDbtOracleConstants", "c"]

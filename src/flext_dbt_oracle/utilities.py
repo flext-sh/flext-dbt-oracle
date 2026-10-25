@@ -25,5 +25,4 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
 
 
 u = FlextDbtOracleUtilities
-
 __all__: list[str] = ["FlextDbtOracleUtilities", "u"]

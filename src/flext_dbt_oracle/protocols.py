@@ -32,5 +32,4 @@ class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
 
 
 p = FlextDbtOracleProtocols
-
 __all__: list[str] = ["FlextDbtOracleProtocols", "p"]

@@ -27,5 +27,4 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbtOracleModelsBase):
 
 
 m = FlextDbtOracleModels
-
 __all__: list[str] = ["FlextDbtOracleModels", "m"]
