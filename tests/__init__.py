@@ -13,9 +13,9 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_tests import api, td, tf, tk, tm
+    from flext_tests import api, install_local_packages, td, tf, tk, tm
 
-    from flext_dbt_oracle import d, e, h, r, x
+    from flext_dbt_oracle import config, d, e, h, main, meltano, r, settings, x
     from tests.base import TestsFlextDbtOracleServiceBase, s
     from tests.constants import TestsFlextDbtOracleConstants, c
     from tests.models import TestsFlextDbtOracleModels, m
@@ -35,13 +35,18 @@ __all__: tuple[str, ...] = (
     "TestsFlextDbtOracleUtilities",
     "api",
     "c",
+    "config",
     "d",
     "e",
     "h",
+    "install_local_packages",
     "m",
+    "main",
+    "meltano",
     "p",
     "r",
     "s",
+    "settings",
     "t",
     "td",
     "tf",
@@ -64,13 +69,18 @@ install_lazy_exports(
         "TestsFlextDbtOracleUtilities": ".utilities",
         "api": "flext_tests",
         "c": ".constants",
+        "config": "flext_dbt_oracle",
         "d": "flext_dbt_oracle",
         "e": "flext_dbt_oracle",
         "h": "flext_dbt_oracle",
+        "install_local_packages": "flext_tests",
         "m": ".models",
+        "main": "flext_dbt_oracle",
+        "meltano": "flext_dbt_oracle",
         "p": ".protocols",
         "r": "flext_dbt_oracle",
         "s": ".base",
+        "settings": "flext_dbt_oracle",
         "t": ".typings",
         "td": "flext_tests",
         "tf": "flext_tests",

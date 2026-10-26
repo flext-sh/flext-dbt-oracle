@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_meltano import d, e, h, r, x
+    from flext_meltano import d, e, h, meltano, r, x
 
     from flext_dbt_oracle.__version__ import (
         FlextDbtOracleVersion,
@@ -64,6 +64,7 @@ __all__: tuple[str, ...] = (
     "h",
     "m",
     "main",
+    "meltano",
     "p",
     "r",
     "s",
@@ -101,6 +102,7 @@ install_lazy_exports(
         "h": "flext_meltano",
         "m": ".models",
         "main": ".cli",
+        "meltano": "flext_meltano",
         "p": ".protocols",
         "r": "flext_meltano",
         "s": ".base",
