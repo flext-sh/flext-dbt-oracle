@@ -19,12 +19,12 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_db_oracle import p as flext_db_oracle_p
-from flext_meltano import p
+from flext_meltano import p, p as flext_meltano_p
 
 from flext_dbt_oracle._protocols import FlextDbtOracleProtocolsBase
 
 
-class FlextDbtOracleProtocols(p, flext_db_oracle_p):
+class FlextDbtOracleProtocols(flext_meltano_p, flext_db_oracle_p):
     """DBT Oracle protocols facade — composes Oracle and Meltano protocols."""
 
     class DbtOracle(FlextDbtOracleProtocolsBase, flext_db_oracle_p.DbOracle):

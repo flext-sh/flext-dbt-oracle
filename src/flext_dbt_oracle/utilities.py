@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_db_oracle import u as flext_db_oracle_u
-from flext_meltano import u
+from flext_meltano import u, u as flext_meltano_u
 
 from flext_dbt_oracle._utilities import (
     FlextDbtOracleUtilitiesBase,
@@ -17,7 +17,7 @@ from flext_dbt_oracle._utilities import (
 )
 
 
-class FlextDbtOracleUtilities(u, flext_db_oracle_u):
+class FlextDbtOracleUtilities(flext_meltano_u, flext_db_oracle_u):
     """Namespace for DBT Oracle utility helpers."""
 
     class DbtOracle(FlextDbtOracleUtilitiesBase, FlextDbtOracleUtilitiesModelBuilder):
