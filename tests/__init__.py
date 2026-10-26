@@ -15,7 +15,7 @@ from flext_core.lazy import install_lazy_exports
 if TYPE_CHECKING:
     from flext_tests import api, install_local_packages, td, tf, tk, tm
 
-    from flext_dbt_oracle import config, d, e, h, main, meltano, r, settings, x
+    from flext_dbt_oracle import cli, config, d, e, h, main, meltano, r, settings, x
     from tests.base import TestsFlextDbtOracleServiceBase, s
     from tests.constants import TestsFlextDbtOracleConstants, c
     from tests.models import TestsFlextDbtOracleModels, m
@@ -35,6 +35,7 @@ __all__: tuple[str, ...] = (
     "TestsFlextDbtOracleUtilities",
     "api",
     "c",
+    "cli",
     "config",
     "d",
     "e",
@@ -69,6 +70,7 @@ install_lazy_exports(
         "TestsFlextDbtOracleUtilities": ".utilities",
         "api": "flext_tests",
         "c": ".constants",
+        "cli": "flext_dbt_oracle",
         "config": "flext_dbt_oracle",
         "d": "flext_dbt_oracle",
         "e": "flext_dbt_oracle",
