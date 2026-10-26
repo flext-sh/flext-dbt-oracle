@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_meltano import c, c as flext_meltano_c
+from flext_meltano import c as flext_meltano_c
 
 from flext_dbt_oracle._constants import (
     FlextDbtOracleConstantsBase,

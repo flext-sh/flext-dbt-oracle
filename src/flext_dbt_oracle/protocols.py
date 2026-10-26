@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_db_oracle import p as flext_db_oracle_p
-from flext_meltano import p, p as flext_meltano_p
+from flext_meltano import p as flext_meltano_p
 
 from flext_dbt_oracle._protocols import FlextDbtOracleProtocolsBase
 

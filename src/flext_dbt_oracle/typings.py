@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_db_oracle import t, t as flext_db_oracle_t
+from flext_db_oracle import t as flext_db_oracle_t
 from flext_meltano import t as flext_meltano_t
 
 from flext_dbt_oracle._typings import FlextDbtOracleTypesBase
