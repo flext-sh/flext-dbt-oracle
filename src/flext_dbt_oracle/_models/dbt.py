@@ -9,13 +9,14 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from flext_meltano import m, t
+from flext_core import t
+from flext_meltano import m
 
 from flext_dbt_oracle import c
 
 
 class FlextDbtOracleModelsDbt:
-    """DBT Oracle domain models namespace."""
+    """DBT Oracle models using the public core collection and constrained types."""
 
     class Model(m.Value):
         """Typed DBT model metadata payload."""

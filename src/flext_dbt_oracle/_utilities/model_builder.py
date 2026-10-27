@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING
 from flext_dbt_oracle import c, m
 
 if TYPE_CHECKING:
-    from flext_meltano import t
+    from flext_core import t
 
 
 class FlextDbtOracleUtilitiesModelBuilder:
