@@ -10,7 +10,7 @@ import pytest
 from flext_db_oracle import FlextDbOracleSettings
 
 from flext_dbt_oracle import FlextDbtOracleSettings
-from tests import c, m, t, tm, u
+from tests import c, m, tm, u
 
 
 class TestsFlextDbtOracleImports:
@@ -90,7 +90,7 @@ class TestsFlextDbtOracleImports:
         [(), ("customers",), ("customers", "orders")],
     )
     def test_generate_staging_models_names_one_model_per_table(
-        source_tables: t.VariadicTuple[str],
+        source_tables: tuple[str, ...],
     ) -> None:
         """Test generate staging models names one model per table."""
         models = u.DbtOracle.ModelBuilder.generate_staging_models(source_tables)
