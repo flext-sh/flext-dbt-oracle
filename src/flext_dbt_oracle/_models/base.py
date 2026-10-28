@@ -7,10 +7,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_db_oracle import FlextDbOracleModels
+from flext_db_oracle import FlextModelsDbOracle
 
 
-class FlextDbtOracleModelsBase(FlextDbOracleModels):
+class FlextDbtOracleModelsBase(FlextModelsDbOracle):
     """MRO facade composing the DbOracle model namespace for DBT Oracle."""
 
 

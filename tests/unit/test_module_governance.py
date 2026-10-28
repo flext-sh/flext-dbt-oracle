@@ -17,7 +17,7 @@ from __future__ import annotations
 from tests import tm, u
 
 
-class TestsFlextDbtOracleModuleGovernance(u.FlextTestsModuleGovernanceMixin):
+class TestsFlextDbtOracleModuleGovernance(u.FlextTestsModuleGovernance):
     """Behavior contract for the flext_dbt_oracle public module namespace."""
 
     _test_file = __file__
