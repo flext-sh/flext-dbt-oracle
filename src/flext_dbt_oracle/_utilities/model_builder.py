@@ -7,12 +7,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from collections.abc import Sequence
 
 from flext_dbt_oracle import c, m
-
-if TYPE_CHECKING:
-    from flext_core import t
 
 
 class FlextDbtOracleUtilitiesModelBuilder:
@@ -23,8 +20,8 @@ class FlextDbtOracleUtilitiesModelBuilder:
 
         @staticmethod
         def generate_staging_models(
-            source_tables: t.StrSequence,
-        ) -> t.SequenceOf[m.DbtOracle.Model]:
+            source_tables: Sequence[str],
+        ) -> Sequence[m.DbtOracle.Model]:
             """Create one staging model definition per source table.
 
             Args:

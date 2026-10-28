@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from typing import Annotated
 
 from flext_core import t
@@ -42,11 +43,11 @@ class FlextDbtOracleModelsDbt:
         source_name: Annotated[str, m.Field(description="Source system name")] = (
             c.DbtOracle.DEFAULT_SOURCE_NAME
         )
-        columns: t.SequenceOf[t.StrMapping] = m.Field(
+        columns: Sequence[Mapping[str, str]] = m.Field(
             default_factory=tuple,
             description="Normalized column metadata for the DBT model",
         )
-        dependencies: t.StrSequence = m.Field(
+        dependencies: Sequence[str] = m.Field(
             default_factory=tuple,
             description="Upstream DBT model dependencies",
         )
