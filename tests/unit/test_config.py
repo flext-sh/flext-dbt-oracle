@@ -12,8 +12,8 @@ from __future__ import annotations
 import pytest
 from flext_db_oracle import FlextDbOracleSettings
 
-from flext_dbt_oracle import FlextDbtOracleSettings, config
-from tests import c, m, t, tm
+from flext_dbt_oracle import FlextDbtOracleSettings
+from tests import c, config, m, t, tm
 from tests.unit._config.construction import TestsFlextDbtOracleConfigConstructionPart
 
 

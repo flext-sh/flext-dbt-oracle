@@ -10,10 +10,9 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import Annotated
 
-from flext_core import t
 from flext_meltano import m
 
-from flext_dbt_oracle import c
+from flext_dbt_oracle import c, t
 
 
 class FlextDbtOracleModelsDbt:

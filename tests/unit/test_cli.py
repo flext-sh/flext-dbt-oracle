@@ -9,8 +9,7 @@ from __future__ import annotations
 
 import pytest
 
-from flext_dbt_oracle import main
-from tests import tm
+from tests import main, tm
 
 
 class TestsFlextDbtOracleCli:
