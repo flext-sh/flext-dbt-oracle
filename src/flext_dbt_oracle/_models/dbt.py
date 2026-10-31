@@ -7,45 +7,46 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from typing import Annotated
 
-from flext_meltano import m, t, u
+from flext_meltano import m
 
-from flext_dbt_oracle import c
+from flext_dbt_oracle import c, t
 
 
 class FlextDbtOracleModelsDbt:
-    """DBT Oracle domain models namespace."""
+    """DBT Oracle models using the public core collection and constrained types."""
 
     class Model(m.Value):
         """Typed DBT model metadata payload."""
 
-        name: Annotated[str, u.Field(description="DBT model name")]
+        name: Annotated[str, m.Field(description="DBT model name")]
         dbt_model_type: Annotated[
             str,
-            u.Field(description="DBT model classification"),
+            m.Field(description="DBT model classification"),
         ] = c.DbtOracle.DEFAULT_MODEL_TYPE
-        schema_name: Annotated[str, u.Field(description="Target schema name")] = (
+        schema_name: Annotated[str, m.Field(description="Target schema name")] = (
             c.DbtOracle.DEFAULT_SCHEMA_NAME
         )
-        table_name: Annotated[str, u.Field(description="Target table name")]
+        table_name: Annotated[str, m.Field(description="Target table name")]
         materialization: Annotated[
             c.DbtOracle.Dbt.Materialization,
-            u.Field(description="DBT materialization strategy"),
+            m.Field(description="DBT materialization strategy"),
         ] = c.DbtOracle.Dbt.DEFAULT_MATERIALIZATION
-        sql_content: Annotated[str, u.Field(description="Model SQL body")]
+        sql_content: Annotated[str, m.Field(description="Model SQL body")]
         description: Annotated[
             str,
-            u.Field(description="Human-readable model description"),
+            m.Field(description="Human-readable model description"),
         ] = ""
-        source_name: Annotated[str, u.Field(description="Source system name")] = (
+        source_name: Annotated[str, m.Field(description="Source system name")] = (
             c.DbtOracle.DEFAULT_SOURCE_NAME
         )
-        columns: t.SequenceOf[t.StrMapping] = u.Field(
+        columns: Sequence[Mapping[str, str]] = m.Field(
             default_factory=tuple,
             description="Normalized column metadata for the DBT model",
         )
-        dependencies: t.StrSequence = u.Field(
+        dependencies: Sequence[str] = m.Field(
             default_factory=tuple,
             description="Upstream DBT model dependencies",
         )
@@ -53,31 +54,31 @@ class FlextDbtOracleModelsDbt:
     class DbtConnectionProfile(m.Value):
         """Typed dbt profile for Oracle-backed workflows (JSON wire shape)."""
 
-        type: Annotated[str, u.Field(description="dbt adapter type")] = "oracle"
-        host: Annotated[str, u.Field(description="Oracle database host")]
-        port: Annotated[t.PortNumber, u.Field(description="Oracle database port")]
-        user: Annotated[str, u.Field(description="Oracle database username")]
-        password: Annotated[str, u.Field(description="Oracle database password")]
-        service_name: Annotated[str, u.Field(description="Oracle service name")]
+        type: Annotated[str, m.Field(description="dbt adapter type")] = "oracle"
+        host: Annotated[str, m.Field(description="Oracle database host")]
+        port: Annotated[t.PortNumber, m.Field(description="Oracle database port")]
+        user: Annotated[str, m.Field(description="Oracle database username")]
+        password: Annotated[str, m.Field(description="Oracle database password")]
+        service_name: Annotated[str, m.Field(description="Oracle service name")]
         schema_name: Annotated[
             str,
-            u.Field(serialization_alias="schema", description="Target dbt schema"),
+            m.Field(serialization_alias="schema", description="Target dbt schema"),
         ]
-        project: Annotated[str, u.Field(description="dbt project name")]
+        project: Annotated[str, m.Field(description="dbt project name")]
 
     class OracleTableAdapter(m.Value):
         """Adapter for Oracle table metadata normalization."""
 
         schema_name: Annotated[
             str,
-            u.Field(serialization_alias="schema", description="Oracle schema name"),
+            m.Field(serialization_alias="schema", description="Oracle schema name"),
         ]
         table_name: Annotated[
             str,
-            u.Field(serialization_alias="table", description="Oracle table name"),
+            m.Field(serialization_alias="table", description="Oracle table name"),
         ]
 
-        @u.computed_field
+        @m.computed_field
         @property
         def relation(self) -> str:
             """Fully qualified relation name."""

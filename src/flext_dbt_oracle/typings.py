@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """FLEXT Dbt Oracle Types — MRO composition of parent type namespaces.
 
 Structured data uses Pydantic models via m; no domain-specific aliases are declared.
@@ -8,13 +9,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_db_oracle import FlextDbOracleTypes
-from flext_meltano import FlextMeltanoTypes
+from flext_db_oracle import t as flext_db_oracle_t
+from flext_meltano import t as flext_meltano_t
 
 from flext_dbt_oracle._typings import FlextDbtOracleTypesBase
 
 
-class FlextDbtOracleTypes(FlextMeltanoTypes, FlextDbOracleTypes):
+class FlextDbtOracleTypes(flext_meltano_t, flext_db_oracle_t):
     """MRO facade composing Meltano + DbOracle type namespaces."""
 
     class DbtOracle(FlextDbtOracleTypesBase):

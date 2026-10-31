@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """Utility helpers for SQL and payload validation.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
@@ -7,16 +8,16 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_db_oracle import FlextDbOracleUtilities
-from flext_meltano import FlextMeltanoUtilities
+from flext_db_oracle import u as flext_db_oracle_u
+from flext_meltano import u as flext_meltano_u
 
-from flext_dbt_oracle._utilities.base import FlextDbtOracleUtilitiesBase
-from flext_dbt_oracle._utilities.model_builder import (
+from flext_dbt_oracle._utilities import (
+    FlextDbtOracleUtilitiesBase,
     FlextDbtOracleUtilitiesModelBuilder,
 )
 
 
-class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
+class FlextDbtOracleUtilities(flext_meltano_u, flext_db_oracle_u):
     """Namespace for DBT Oracle utility helpers."""
 
     class DbtOracle(FlextDbtOracleUtilitiesBase, FlextDbtOracleUtilitiesModelBuilder):
@@ -24,5 +25,4 @@ class FlextDbtOracleUtilities(FlextMeltanoUtilities, FlextDbOracleUtilities):
 
 
 u = FlextDbtOracleUtilities
-
 __all__: list[str] = ["FlextDbtOracleUtilities", "u"]

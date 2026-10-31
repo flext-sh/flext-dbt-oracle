@@ -14,10 +14,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from tests import u
+from tests import tm, u
 
 
-class TestsFlextDbtOracleModuleGovernance(u.FlextTestsModuleGovernanceMixin):
+class TestsFlextDbtOracleModuleGovernance(u.FlextTestsModuleGovernance):
     """Behavior contract for the flext_dbt_oracle public module namespace."""
 
     _test_file = __file__
@@ -28,4 +28,8 @@ class TestsFlextDbtOracleModuleGovernance(u.FlextTestsModuleGovernanceMixin):
         """Test package exposes at least one module."""
         modules = self._iter_package_modules()
 
-        assert modules, "expected flext_dbt_oracle package to expose modules"
+        tm.that(
+            modules,
+            truth=True,
+            msg="expected flext_dbt_oracle package to expose modules",
+        )

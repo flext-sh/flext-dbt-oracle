@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """DBT Oracle protocols for FLEXT ecosystem.
 
 The 8 inner ``DbtOracle.*`` Protocol classes that previously lived here
@@ -17,19 +18,18 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_db_oracle import FlextDbOracleProtocols
-from flext_meltano import FlextMeltanoProtocols
+from flext_db_oracle import p as flext_db_oracle_p
+from flext_meltano import p as flext_meltano_p
 
 from flext_dbt_oracle._protocols import FlextDbtOracleProtocolsBase
 
 
-class FlextDbtOracleProtocols(FlextMeltanoProtocols, FlextDbOracleProtocols):
+class FlextDbtOracleProtocols(flext_meltano_p, flext_db_oracle_p):
     """DBT Oracle protocols facade — composes Oracle and Meltano protocols."""
 
-    class DbtOracle(FlextDbtOracleProtocolsBase, FlextDbOracleProtocols.DbOracle):
+    class DbtOracle(FlextDbtOracleProtocolsBase, flext_db_oracle_p.DbOracle):
         """DBT Oracle protocol namespace composing the parent contracts."""
 
 
 p = FlextDbtOracleProtocols
-
 __all__: list[str] = ["FlextDbtOracleProtocols", "p"]

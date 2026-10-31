@@ -9,9 +9,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 import pytest
 
-from tests import m, t, tm
+from tests import m, tm
 
 
 class TestsFlextDbtOracleImpl:
@@ -116,7 +118,7 @@ class TestsFlextDbtOracleImpl:
         [{"schema_name": "HR"}, {"table_name": "EMP"}, {}],
     )
     def test_missing_required_field_raises_validation_error(
-        kwargs: t.StrMapping,
+        kwargs: Mapping[str, str],
     ) -> None:
         """Both schema_name and table_name are mandatory."""
         with pytest.raises(m.ValidationError):
