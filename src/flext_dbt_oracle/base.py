@@ -27,7 +27,7 @@ class FlextDbtOracleServiceBase(_meltano_FlextMeltanoDbtServiceBase):
     ] = "dbt-oracle"
 
     @classmethod
-    def runtime_bootstrap_options(cls) -> m.RuntimeBootstrapOptions:
+    def runtime_bootstrap_options(cls) -> p.RuntimeBootstrapOptions:
         """Return runtime bootstrap options for DBT Oracle services."""
         return m.RuntimeBootstrapOptions(settings_type=FlextDbtOracleSettings)
 

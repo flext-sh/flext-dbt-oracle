@@ -21,7 +21,7 @@ class FlextDbtOracleUtilitiesModelBuilder:
         @staticmethod
         def generate_staging_models(
             source_tables: Sequence[str],
-        ) -> Sequence[m.DbtOracle.Model]:
+        ) -> Sequence[p.DbtOracle.Model]:
             """Create one staging model definition per source table.
 
             Args:

@@ -23,7 +23,7 @@ class TestsFlextDbtOracleServiceBase(FlextTestsServiceBase):
     # fake that silenced the contract violation — removed at the root.
     @classmethod
     @override
-    def runtime_bootstrap_options(cls) -> m.RuntimeBootstrapOptions:
+    def runtime_bootstrap_options(cls) -> p.RuntimeBootstrapOptions:
         return m.RuntimeBootstrapOptions(settings_type=TestsFlextDbtOracleSettings)
 
 
