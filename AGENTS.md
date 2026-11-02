@@ -1,12 +1,13 @@
 # AGENTS.md — flext-dbt-oracle
 
-> **Parent workspace law** lives in [`../AGENTS.md`](../AGENTS.md) — read it first.
-> Universal engineering core: `~/.agents/UNIVERSAL_CORE.md`. Composition: global
-> skills + parent/root `AGENTS.md` + this scope delta. Do not re-embed universal law.
->
-> **Standalone / independent mode:** when `../AGENTS.md` does not resolve, pin the
-> parent raw `AGENTS.md` URL to the same branch/release as this package (never
-> `main`): <https://raw.githubusercontent.com/flext-sh/flext/0.12.0-dev/AGENTS.md>
+Read the branch-matched [FLEXT root](../AGENTS.md) and its local flext-law through
+that root's authority entry point. In standalone mode resolve the same branch or
+release; a coincidental parent instruction file does not establish FLEXT authority.
+This file adds only this package's domain delta. Command routing, architecture
+and universal execution stay with their parent owners.
+
+Embedded AI Hub or Beads generated blocks are retired delivery material, not
+active local rules. Their withdrawal remains the publisher's responsibility.
 
 <!-- AIHUB-AGENTS-SCOPE-LOCAL-BEGIN -->
 
@@ -16,45 +17,16 @@
 
 dbt models for Oracle Database. Thin driver over `flext-meltano` dbt runner (ADR-006).
 
-## Structure
-
-```text
-src/flext_dbt_oracle/
-├── api.py            # FlextDbtOracle public facade over the service base
-├── base.py           # FlextDbtOracleServiceBase (.connection_profile)
-├── models.py         # DbtOracle.DbtConnectionProfile, Model, OracleTableAdapter
-├── cli.py            # console script → inherited dbt cli_main
-├── constants.py typings.py protocols.py utilities.py   # AUTO-GENERATED facets
-└── _config.py _settings.py
-```
-
-## Code Map
-
-| Symbol                      | Kind  | Location    | Role                                     |
-| --------------------------- | ----- | ----------- | ---------------------------------------- |
-| `FlextDbtOracle`            | class | `api.py`    | public facade over the service base     |
-| `FlextDbtOracleServiceBase` | class | `base.py`   | service base; `connection_profile` entry |
-| `DbtConnectionProfile`      | model | `models.py` | typed `m.DbtOracle.*` profile            |
-
 ## Conventions (specific to this package)
 
 - `api.py` exposes `FlextDbtOracle` as a thin facade over
   `FlextDbtOracleServiceBase`. Connection profile is a typed `m.DbtOracle.*` model.
 - DB access via `flext-db-oracle` (`settings.DbOracle.*`).
-- Config/settings canonical pattern: ADR-012.
-- Codemod governance (ast-grep + make mod): ADR-014.
 
 ## Anti-Patterns / Gotchas
 
 - Never declare an Oracle connection model or connection defaults here; the SSOT is
   `settings.DbOracle.*` from `flext-db-oracle` (ADR-006 rule 2).
-
-## Commands
-
-```bash
-make check
-make test # tests/unit
-```
 
 <!-- AIHUB-AGENTS-SCOPE-LOCAL-END -->
 
