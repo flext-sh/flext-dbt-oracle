@@ -12,7 +12,7 @@ from __future__ import annotations
 from flext_db_oracle import t as flext_db_oracle_t
 from flext_meltano import t as flext_meltano_t
 
-from flext_dbt_oracle._typings import FlextDbtOracleTypesBase
+from flext_dbt_oracle._typings.base import FlextDbtOracleTypesBase
 
 
 class FlextDbtOracleTypes(flext_meltano_t, flext_db_oracle_t):

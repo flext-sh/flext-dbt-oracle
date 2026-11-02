@@ -10,11 +10,9 @@ from __future__ import annotations
 
 from flext_meltano import m as flext_meltano_m
 
-from flext_dbt_oracle._models import (
-    FlextDbtOracleModelsBase,
-    FlextDbtOracleModelsConfig,
-    FlextDbtOracleModelsDbt,
-)
+from flext_dbt_oracle._models.base import FlextDbtOracleModelsBase
+from flext_dbt_oracle._models.config import FlextDbtOracleModelsConfig
+from flext_dbt_oracle._models.dbt import FlextDbtOracleModelsDbt
 
 
 class FlextDbtOracleModels(flext_meltano_m, FlextDbtOracleModelsBase):

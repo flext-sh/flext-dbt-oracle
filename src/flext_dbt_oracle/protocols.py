@@ -21,13 +21,18 @@ from __future__ import annotations
 from flext_db_oracle import p as flext_db_oracle_p
 from flext_meltano import p as flext_meltano_p
 
-from flext_dbt_oracle._protocols import FlextDbtOracleProtocolsBase
+from flext_dbt_oracle._protocols.base import FlextDbtOracleProtocolsBase
+from flext_dbt_oracle._protocols.dbt import FlextDbtOracleProtocolsDbt
 
 
 class FlextDbtOracleProtocols(flext_meltano_p, flext_db_oracle_p):
     """DBT Oracle protocols facade — composes Oracle and Meltano protocols."""
 
-    class DbtOracle(FlextDbtOracleProtocolsBase, flext_db_oracle_p.DbOracle):
+    class DbtOracle(
+        flext_db_oracle_p.DbOracle,
+        FlextDbtOracleProtocolsBase,
+        FlextDbtOracleProtocolsDbt,
+    ):
         """DBT Oracle protocol namespace composing the parent contracts."""
 
 
