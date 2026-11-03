@@ -11,22 +11,19 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from flext_dbt_oracle import m, p
+    from flext_dbt_oracle import FlextDbtOracleModels, FlextDbtOracleProtocols
 
-    def _model_protocol_1(value: object) -> p.DbtOracle.DbtConnectionProfile:
-        if not isinstance(value, m.DbtOracle.DbtConnectionProfile):
-            msg = "model protocol witness received another declaring owner"
-            raise TypeError(msg)
+    def model_protocol_1(
+        value: (FlextDbtOracleModels.DbtOracle.DbtConnectionProfile),
+    ) -> FlextDbtOracleProtocols.DbtOracle.DbtConnectionProfile:
         return value
 
-    def _model_protocol_2(value: object) -> p.DbtOracle.Model:
-        if not isinstance(value, m.DbtOracle.Model):
-            msg = "model protocol witness received another declaring owner"
-            raise TypeError(msg)
+    def model_protocol_2(
+        value: (FlextDbtOracleModels.DbtOracle.Model),
+    ) -> FlextDbtOracleProtocols.DbtOracle.Model:
         return value
 
-    def _model_protocol_3(value: object) -> p.DbtOracle.OracleTableAdapter:
-        if not isinstance(value, m.DbtOracle.OracleTableAdapter):
-            msg = "model protocol witness received another declaring owner"
-            raise TypeError(msg)
+    def model_protocol_3(
+        value: (FlextDbtOracleModels.DbtOracle.OracleTableAdapter),
+    ) -> FlextDbtOracleProtocols.DbtOracle.OracleTableAdapter:
         return value
