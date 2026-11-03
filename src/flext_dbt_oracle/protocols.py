@@ -21,8 +21,10 @@ from __future__ import annotations
 from flext_db_oracle import p as flext_db_oracle_p
 from flext_meltano import p as flext_meltano_p
 
-from flext_dbt_oracle._protocols.base import FlextDbtOracleProtocolsBase
-from flext_dbt_oracle._protocols.dbt import FlextDbtOracleProtocolsDbt
+from flext_dbt_oracle._protocols import (
+    FlextDbtOracleProtocolsBase,
+    FlextDbtOracleProtocolsDbt,
+)
 
 
 class FlextDbtOracleProtocols(flext_meltano_p, flext_db_oracle_p):

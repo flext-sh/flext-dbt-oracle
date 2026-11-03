@@ -10,8 +10,10 @@ from __future__ import annotations
 
 from flext_meltano import c as flext_meltano_c
 
-from flext_dbt_oracle._constants.base import FlextDbtOracleConstantsBase
-from flext_dbt_oracle._constants.enums import FlextDbtOracleConstantsEnums
+from flext_dbt_oracle._constants import (
+    FlextDbtOracleConstantsBase,
+    FlextDbtOracleConstantsEnums,
+)
 
 
 class FlextDbtOracleConstants(flext_meltano_c):
