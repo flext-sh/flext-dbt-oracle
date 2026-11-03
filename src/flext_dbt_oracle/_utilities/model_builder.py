@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from flext_dbt_oracle import c, m
+from flext_dbt_oracle import c, m, p
 
 
 class FlextDbtOracleUtilitiesModelBuilder:

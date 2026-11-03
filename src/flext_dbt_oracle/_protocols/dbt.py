@@ -13,9 +13,8 @@ from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
 from flext_meltano import FlextMeltanoProtocols
 
-from flext_dbt_oracle import t
-
 if TYPE_CHECKING:
+    from flext_dbt_oracle import t
     from flext_dbt_oracle._constants import FlextDbtOracleConstantsEnums
 
 
@@ -23,7 +22,7 @@ class FlextDbtOracleProtocolsDbt:
     """Own the structural contracts declared by its model source."""
 
     @runtime_checkable
-    class Model(FlextMeltanoProtocols.Model, Protocol):
+    class Model(FlextMeltanoProtocols.BaseModel, Protocol):
         """Structural data contract projected from the owning model."""
 
         @property
@@ -77,7 +76,7 @@ class FlextDbtOracleProtocolsDbt:
             ...
 
     @runtime_checkable
-    class DbtConnectionProfile(FlextMeltanoProtocols.Model, Protocol):
+    class DbtConnectionProfile(FlextMeltanoProtocols.BaseModel, Protocol):
         """Structural data contract projected from the owning model."""
 
         @property
@@ -121,7 +120,7 @@ class FlextDbtOracleProtocolsDbt:
             ...
 
     @runtime_checkable
-    class OracleTableAdapter(FlextMeltanoProtocols.Model, Protocol):
+    class OracleTableAdapter(FlextMeltanoProtocols.BaseModel, Protocol):
         """Structural data contract projected from the owning model."""
 
         @property
