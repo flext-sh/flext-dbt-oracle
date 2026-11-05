@@ -7,9 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
-
-from tests import main, tm
+from tests import main, tm, u
 
 
 class TestsFlextDbtOracleCli:
@@ -18,7 +16,7 @@ class TestsFlextDbtOracleCli:
     @staticmethod
     def test_unknown_subcommand_exits_with_failure() -> None:
         """An unsupported dbt subcommand propagates the base failure exit."""
-        with pytest.raises(SystemExit) as exit_info:
+        with u.Tests.raises(SystemExit) as exit_info:
             main(["not-a-dbt-command"])
 
         tm.that(exit_info.value.code, eq=1)

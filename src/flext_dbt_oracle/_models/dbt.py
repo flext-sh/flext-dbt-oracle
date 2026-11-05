@@ -12,7 +12,8 @@ from typing import Annotated
 
 from flext_meltano import m
 
-from flext_dbt_oracle import c, t
+from flext_dbt_oracle.constants import c
+from flext_dbt_oracle.typings import t
 
 
 class FlextDbtOracleModelsDbt:

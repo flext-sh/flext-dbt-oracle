@@ -13,7 +13,7 @@ from collections.abc import Mapping
 
 import pytest
 
-from tests import m, tm
+from tests import m, tm, u
 
 
 class TestsFlextDbtOracleImpl:
@@ -121,5 +121,5 @@ class TestsFlextDbtOracleImpl:
         kwargs: Mapping[str, str],
     ) -> None:
         """Both schema_name and table_name are mandatory."""
-        with pytest.raises(m.ValidationError):
+        with u.Tests.raises(m.ValidationError):
             m.DbtOracle.OracleTableAdapter(**kwargs)
