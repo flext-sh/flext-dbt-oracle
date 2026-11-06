@@ -14,20 +14,18 @@ from typing import Annotated
 
 from flext_meltano import FlextMeltanoConfig, m
 
-from flext_dbt_oracle._models.config import FlextDbtOracleModelsConfig
-
 
 class FlextDbtOracleConfig(FlextMeltanoConfig):
     """DbtOracle config auto-loaded model-less from ``config/*.yaml``."""
 
     DbtOracle: Annotated[
-        FlextDbtOracleModelsConfig.DbtOracleNamespace,
+        m.Meltano.MeltanoNamespace,
         m.Field(
             description=(
                 "Open namespace exposing ``config/*.yaml`` under ``DbtOracle``."
             ),
         ),
-    ] = FlextDbtOracleModelsConfig.DbtOracleNamespace()
+    ] = m.Meltano.MeltanoNamespace()
 
 
 config: FlextDbtOracleConfig = FlextDbtOracleConfig.fetch_global()

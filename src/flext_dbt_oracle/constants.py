@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """Constants used by the DBT Oracle package.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
@@ -7,7 +8,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_meltano import FlextMeltanoConstants
+from flext_meltano import c as flext_meltano_c
 
 from flext_dbt_oracle._constants import (
     FlextDbtOracleConstantsBase,
@@ -15,7 +16,7 @@ from flext_dbt_oracle._constants import (
 )
 
 
-class FlextDbtOracleConstants(FlextMeltanoConstants):
+class FlextDbtOracleConstants(flext_meltano_c):
     """Domain constants for DBT Oracle workflows — composes _constants parts via MRO."""
 
     class DbtOracle(FlextDbtOracleConstantsBase, FlextDbtOracleConstantsEnums):
@@ -23,5 +24,4 @@ class FlextDbtOracleConstants(FlextMeltanoConstants):
 
 
 c = FlextDbtOracleConstants
-
 __all__: list[str] = ["FlextDbtOracleConstants", "c"]

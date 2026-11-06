@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """Core model objects used by DBT Oracle workflows.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
@@ -7,14 +8,16 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_meltano import FlextMeltanoModels
+from flext_meltano import m as flext_meltano_m
 
-from flext_dbt_oracle._models.base import FlextDbtOracleModelsBase
-from flext_dbt_oracle._models.config import FlextDbtOracleModelsConfig
-from flext_dbt_oracle._models.dbt import FlextDbtOracleModelsDbt
+from flext_dbt_oracle._models import (
+    FlextDbtOracleModelsBase,
+    FlextDbtOracleModelsConfig,
+    FlextDbtOracleModelsDbt,
+)
 
 
-class FlextDbtOracleModels(FlextMeltanoModels, FlextDbtOracleModelsBase):
+class FlextDbtOracleModels(flext_meltano_m, FlextDbtOracleModelsBase):
     """Namespace wrapper for DBT Oracle domain models via _models MRO parts."""
 
     class DbtOracle(
@@ -24,5 +27,4 @@ class FlextDbtOracleModels(FlextMeltanoModels, FlextDbtOracleModelsBase):
 
 
 m = FlextDbtOracleModels
-
 __all__: list[str] = ["FlextDbtOracleModels", "m"]

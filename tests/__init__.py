@@ -7,7 +7,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from types import MappingProxyType
 from typing import TYPE_CHECKING
 
 from flext_core.lazy import install_lazy_exports
@@ -15,7 +14,7 @@ from flext_core.lazy import install_lazy_exports
 if TYPE_CHECKING:
     from flext_tests import api, td, tf, tk, tm
 
-    from flext_dbt_oracle import d, e, h, r, x
+    from flext_dbt_oracle import config, d, e, h, main, r, settings, x
     from tests.base import TestsFlextDbtOracleServiceBase, s
     from tests.constants import TestsFlextDbtOracleConstants, c
     from tests.models import TestsFlextDbtOracleModels, m
@@ -35,13 +34,16 @@ __all__: tuple[str, ...] = (
     "TestsFlextDbtOracleUtilities",
     "api",
     "c",
+    "config",
     "d",
     "e",
     "h",
     "m",
+    "main",
     "p",
     "r",
     "s",
+    "settings",
     "t",
     "td",
     "tf",
@@ -54,7 +56,7 @@ __all__: tuple[str, ...] = (
 install_lazy_exports(
     __name__,
     globals(),
-    MappingProxyType({
+    {
         "TestsFlextDbtOracleConstants": ".constants",
         "TestsFlextDbtOracleModels": ".models",
         "TestsFlextDbtOracleProtocols": ".protocols",
@@ -64,13 +66,16 @@ install_lazy_exports(
         "TestsFlextDbtOracleUtilities": ".utilities",
         "api": "flext_tests",
         "c": ".constants",
+        "config": "flext_dbt_oracle",
         "d": "flext_dbt_oracle",
         "e": "flext_dbt_oracle",
         "h": "flext_dbt_oracle",
         "m": ".models",
+        "main": "flext_dbt_oracle",
         "p": ".protocols",
         "r": "flext_dbt_oracle",
         "s": ".base",
+        "settings": "flext_dbt_oracle",
         "t": ".typings",
         "td": "flext_tests",
         "tf": "flext_tests",
@@ -78,6 +83,6 @@ install_lazy_exports(
         "tm": "flext_tests",
         "u": ".utilities",
         "x": "flext_dbt_oracle",
-    }),
+    },
     public_exports=__all__,
 )
