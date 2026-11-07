@@ -14,8 +14,7 @@ from typing import TYPE_CHECKING, Protocol, runtime_checkable
 from flext_meltano import FlextMeltanoProtocols
 
 if TYPE_CHECKING:
-    from flext_dbt_oracle import t
-    from flext_dbt_oracle._constants import FlextDbtOracleConstantsEnums
+    from flext_dbt_oracle import c, t
 
 
 class FlextDbtOracleProtocolsDbt:
@@ -46,7 +45,7 @@ class FlextDbtOracleProtocolsDbt:
             ...
 
         @property
-        def materialization(self) -> FlextDbtOracleConstantsEnums.Dbt.Materialization:
+        def materialization(self) -> c.DbtOracle.Dbt.Materialization:
             """DBT materialization strategy."""
             ...
 
