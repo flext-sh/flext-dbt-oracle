@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_meltano import c as flext_meltano_c
+from flext_meltano import FlextMeltanoConstants
 
 from flext_dbt_oracle._constants import (
     FlextDbtOracleConstantsBase,
@@ -16,7 +16,7 @@ from flext_dbt_oracle._constants import (
 )
 
 
-class FlextDbtOracleConstants(flext_meltano_c):
+class FlextDbtOracleConstants(FlextMeltanoConstants):
     """Domain constants for DBT Oracle workflows — composes _constants parts via MRO."""
 
     class DbtOracle(FlextDbtOracleConstantsBase, FlextDbtOracleConstantsEnums):

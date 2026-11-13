@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_meltano import m as flext_meltano_m
+from flext_meltano import FlextMeltanoModels
 
 from flext_dbt_oracle._models import (
     FlextDbtOracleModelsBase,
@@ -17,7 +17,7 @@ from flext_dbt_oracle._models import (
 )
 
 
-class FlextDbtOracleModels(flext_meltano_m, FlextDbtOracleModelsBase):
+class FlextDbtOracleModels(FlextMeltanoModels, FlextDbtOracleModelsBase):
     """Namespace wrapper for DBT Oracle domain models via _models MRO parts."""
 
     class DbtOracle(
