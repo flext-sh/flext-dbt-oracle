@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from enum import StrEnum, unique
-from typing import Final
+from typing import ClassVar
 
 
 class FlextDbtOracleConstantsEnums:
@@ -26,18 +26,18 @@ class FlextDbtOracleConstantsEnums:
             INCREMENTAL = "incremental"
             SNAPSHOT = "snapshot"
 
-        DEFAULT_MATERIALIZATION: Final[Materialization] = Materialization.VIEW
+        DEFAULT_MATERIALIZATION: ClassVar[Materialization] = Materialization.VIEW
 
         # dbt Jinja template, not executable SQL: `source()` is resolved by dbt at
         # compile time against the project's declared sources, so the value never
         # reaches a database driver as a literal.
-        STAGING_SELECT_TEMPLATE: Final[str] = (
+        STAGING_SELECT_TEMPLATE: ClassVar[str] = (
             "select * from {{{{ source('oracle', '{table}') }}}}"
         )
 
-    DEFAULT_MODEL_TYPE: Final[str] = "staging"
-    DEFAULT_SOURCE_NAME: Final[str] = "oracle"
-    DEFAULT_SCHEMA_NAME: Final[str] = "public"
+    DEFAULT_MODEL_TYPE: ClassVar[str] = "staging"
+    DEFAULT_SOURCE_NAME: ClassVar[str] = "oracle"
+    DEFAULT_SCHEMA_NAME: ClassVar[str] = "public"
 
 
 __all__: list[str] = ["FlextDbtOracleConstantsEnums"]
