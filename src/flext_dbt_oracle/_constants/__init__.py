@@ -26,4 +26,12 @@ install_lazy_exports(
     globals(),
     {"FlextDbtOracleConstantsBase": ".base", "FlextDbtOracleConstantsEnums": ".enums"},
     public_exports=__all__,
+    deferred_members={
+        "FlextDbtOracleConstantsEnums": (
+            "Dbt",
+            "DEFAULT_MODEL_TYPE",
+            "DEFAULT_SOURCE_NAME",
+            "DEFAULT_SCHEMA_NAME",
+        ),
+    },
 )

@@ -23,4 +23,11 @@ install_lazy_exports(
     globals(),
     {"FlextDbtOracleProtocolsBase": ".base", "FlextDbtOracleProtocolsDbt": ".dbt"},
     public_exports=__all__,
+    deferred_members={
+        "FlextDbtOracleProtocolsDbt": (
+            "Model",
+            "DbtConnectionProfile",
+            "OracleTableAdapter",
+        ),
+    },
 )

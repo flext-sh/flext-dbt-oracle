@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from flext_core.lazy import install_lazy_exports
+from flext_core.lazy import defer_lazy_bases, install_lazy_exports
 
 if TYPE_CHECKING:
     from flext_dbt_oracle._utilities.base import FlextDbtOracleUtilitiesBase
@@ -31,4 +31,18 @@ install_lazy_exports(
         "FlextDbtOracleUtilitiesModelBuilder": ".model_builder",
     },
     public_exports=__all__,
+    deferred_members={
+        "FlextDbtOracleUtilitiesBase": (),
+        "FlextDbtOracleUtilitiesModelBuilder": ("ModelBuilder",),
+    },
+)
+
+defer_lazy_bases(
+    __name__,
+    {
+        "FlextDbtOracleUtilitiesBase": (
+            ("flext_meltano", "u"),
+            ("flext_db_oracle", "u"),
+        ),
+    },
 )
