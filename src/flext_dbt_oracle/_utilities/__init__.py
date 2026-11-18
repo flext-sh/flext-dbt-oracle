@@ -31,4 +31,8 @@ install_lazy_exports(
         "FlextDbtOracleUtilitiesModelBuilder": ".model_builder",
     },
     public_exports=__all__,
+    deferred_members=(
+        "FlextDbtOracleUtilitiesBase",
+        "FlextDbtOracleUtilitiesModelBuilder",
+    ),
 )
