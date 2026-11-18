@@ -32,4 +32,8 @@ install_lazy_exports(
         "FlextDbtOracleModelsDbt": ".dbt",
     },
     public_exports=__all__,
+    deferred_members=(
+        "FlextDbtOracleModelsBase",
+        "FlextDbtOracleModelsDbt",
+    ),
 )
