@@ -13,19 +13,16 @@ from typing import ClassVar
 
 from flext_tests import FlextTestsConstants
 
-from flext_dbt_oracle import FlextDbtOracleConstants
+from tests import FlextDbtOracleConstants
 
 
 class TestsFlextDbtOracleConstants(FlextDbtOracleConstants, FlextTestsConstants):
     """Test constants for flext-dbt-oracle."""
 
-    class DbtOracle(FlextDbtOracleConstants.DbtOracle):
-        """DbtOracle test constants namespace."""
+    class Tests(FlextTestsConstants.Tests):
+        """DbtOracle-specific test constants."""
 
-        class Tests(FlextTestsConstants.Tests):
-            """DbtOracle-specific test constants."""
-
-            PROJECT_ROOT_PARENT_DEPTH: ClassVar[int] = 1
+        PROJECT_ROOT_PARENT_DEPTH: ClassVar[int] = 1
 
 
 c = TestsFlextDbtOracleConstants
