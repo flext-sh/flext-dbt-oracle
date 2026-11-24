@@ -1,0 +1,1 @@
+{"id":"protocol-model-path","language":"Python","rule":{"regex":"^(?:p|m)\\.(?:BaseModel|DbtOracle\\.BaseModel|DbtOracle\\.RuntimeBootstrapOptions|DbtOracle\\.SettingsConfigDict|DbtOracle\\.Value|RuntimeBootstrapOptions|SettingsConfigDict|Value)$"}}

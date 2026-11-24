@@ -11,17 +11,14 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsUtilities
 
-from flext_dbt_oracle import FlextDbtOracleUtilities
+from tests import FlextDbtOracleUtilities
 
 
 class TestsFlextDbtOracleUtilities(FlextTestsUtilities, FlextDbtOracleUtilities):
     """Test utilities combining FlextTestsUtilities with flext-dbt-oracle utilities."""
 
-    class DbtOracle(FlextDbtOracleUtilities.DbtOracle):
-        """DbtOracle test utilities namespace."""
-
-        class Tests:
-            """Test-specific utilities."""
+    class Tests(FlextTestsUtilities.Tests):
+        """Test-specific utilities."""
 
 
 u = TestsFlextDbtOracleUtilities
