@@ -1,0 +1,25 @@
+{
+  "summary": {
+    "scope": "flext-dbt-oracle",
+    "issues": 0,
+    "checks": [
+      "command-contract",
+      "docstrings",
+      "forbidden-terms",
+      "generated-ownership",
+      "links",
+      "machine-paths",
+      "placeholders",
+      "python-codeblocks",
+      "scope-boundary",
+      "stale-symbols"
+    ],
+    "report_dir": "/home/marlonsc/flext/flext-dbt-oracle/.reports/docs",
+    "docstring_coverage": {
+      "checked": 22,
+      "documented": 22,
+      "percent": 100.0
+    }
+  },
+  "issues": []
+}

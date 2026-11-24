@@ -1,0 +1,87 @@
+================================================= test session starts ==================================================
+platform linux -- Python 3.13.17, pytest-9.2.0, pluggy-1.7.0 -- /home/marlonsc/flext/.venv/bin/python
+cachedir: .pytest_cache
+benchmark: 5.3.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+Using --randomly-seed=2067009177
+testmon: selection deactivated, environment: toolchain-24179a752a3c-ec189a72-5834a665
+hypothesis profile 'default'
+rootdir: /home/marlonsc/flext/flext-dbt-oracle
+configfile: pyproject.toml
+plugins: flext-tests-0.12.0, asyncio-1.4.1.post1, benchmark-5.3.1, cov-7.1.0, markdown-docs-0.9.2, randomly-5.0.0, reportlog-1.0.0, testmon-2.3.0, singer-sdk-0.54.9, timeout-2.4.0, xdist-3.8.0, hypothesis-6.170.14, anyio-4.16.0, platformdirs-4.14.5, flext-infra-0.12.1
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+timeout: 2.0s
+timeout method: signal
+timeout func_only: True
+collecting ... collected 61 items
+run-last-failure: no previously failed tests, not deselecting items.
+
+tests/unit/test_cli.py::TestsFlextDbtOracleCli::test_unknown_subcommand_exits_with_failure PASSED                [  1%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_basic_config_creation PASSED          [  3%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_with_sid PASSED                [  4%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_defaults_when_no_service_name_or_sid PASSED [  6%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_uses_default_constants PASSED  [  8%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_basic_config_creation PASSED                          [  9%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_with_sid PASSED                                [ 11%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_defaults_when_no_service_name_or_sid PASSED    [ 13%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_uses_default_constants PASSED                  [ 14%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload0] PASSED       [ 16%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload1] PASSED       [ 18%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload2] PASSED       [ 19%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_connection_scalars_come_from_dboracle_namespace PASSED [ 21%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_port_is_a_positive_integer PASSED                     [ 22%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_defaults_are_applied_for_omitted_identity_fields PASSED [ 24%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_default_service_name_present PASSED                   [ 26%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_dbt_only_knobs_round_trip_through_namespace PASSED    [ 27%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_default_namespaces_follow_their_declared_scalar_models PASSED [ 29%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[0-1] PASSED [ 31%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[3-7] PASSED [ 32%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[11-11] PASSED [ 34%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_materialization_is_a_free_scalar_string PASSED        [ 36%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_bounds_round_trip_through_dboracle PASSED        [ 37%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_numeric_fields_retain_supplied_values PASSED          [ 39%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[table] PASSED [ 40%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[view] PASSED  [ 42%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[incremental] PASSED [ 44%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[snapshot] PASSED [ 45%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_sid_and_service_name_coexist_on_dboracle PASSED       [ 47%]
+tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_schema_name_preserves_declared_defaults_and_override PASSED [ 49%]
+tests/unit/test_connection_profile.py::TestsFlextDbtOracleConnectionProfile::test_connection_profile_returns_typed_oracle_wire_shape PASSED [ 50%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[HR-EMPLOYEES-HR.EMPLOYEES] PASSED [ 52%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[SYS-DUAL-SYS.DUAL] PASSED [ 54%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[scott-emp-scott.emp] PASSED [ 55%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[S-T-S.T] PASSED [ 57%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_public_fields_expose_supplied_values PASSED               [ 59%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_model_dump_by_alias_returns_full_public_contract PASSED   [ 60%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_dumped_relation_matches_relation_name PASSED              [ 62%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_model_dump_includes_computed_relation_name PASSED         [ 63%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_value_equality_by_public_state PASSED                     [ 65%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_distinct_state_is_not_equal PASSED                        [ 67%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_adapter_is_immutable PASSED                               [ 68%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs0] PASSED [ 70%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs1] PASSED [ 72%]
+tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs2] PASSED [ 73%]
+tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_materialization_enum_members_are_dbt_values PASSED  [ 75%]
+tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_settings_defaults_expose_oracle_connection_contract PASSED [ 77%]
+tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_settings_namespace_round_trips_constructor_values PASSED [ 78%]
+tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_dbt_settings_namespace_exposes_materialization PASSED [ 80%]
+tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_model_defaults_apply_domain_constants PASSED        [ 81%]
+tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables0] PASSED [ 83%]
+tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables1] PASSED [ 85%]
+tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables2] PASSED [ 86%]
+tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_oracle_table_adapter_exposes_qualified_relation PASSED [ 88%]
+tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers PASSED [ 90%]
+tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions PASSED [ 91%]
+tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module PASSED [ 93%]
+tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[1-10] PASSED             [ 95%]
+tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[5-5] PASSED              [ 96%]
+tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[2-3] PASSED              [ 98%]
+tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_settings_are_idempotent_under_model_dump_roundtrip PASSED [100%]
+
+-- generated xml file: /home/marlonsc/flext/flext-dbt-oracle/.reports/tests/20261116T010052.781603Z-1897776/junit.xml --
+- generated report log file: /home/marlonsc/flext/flext-dbt-oracle/.reports/tests/20261116T010052.781603Z-1897776/events.jsonl -
+--------------------------------------------------- flext slow tests ---------------------------------------------------
+no test near the ordinary or slow limit
+================================================= slowest 25 durations =================================================
+
+(25 durations < 2s hidden.)
+================================================== 61 passed in 2.42s ==================================================

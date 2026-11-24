@@ -1,0 +1,7 @@
+{
+  "execution_mode": "full",
+  "testmon_db": "/home/marlonsc/flext/flext-dbt-oracle/.testmondata",
+  "deadline_monotonic": null,
+  "report_directory": "/home/marlonsc/flext/flext-dbt-oracle/.reports/tests/20261122T155906.100151Z-2568757",
+  "profile_sha256": null
+}

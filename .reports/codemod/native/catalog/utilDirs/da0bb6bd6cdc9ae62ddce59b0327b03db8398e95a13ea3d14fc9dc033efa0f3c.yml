@@ -1,0 +1,1 @@
+{"id":"f7b0854146a7bea16a01882d78d97fdc752fc85b7331904c24f641a7ca8d6854","language":"python","rule":{"kind":"import_from_statement","has":{"field":"module_name","regex":"^flext_infra$"}}}

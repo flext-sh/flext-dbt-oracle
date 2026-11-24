@@ -1,0 +1,1 @@
+{"id":"ban-library-named-facade-member--flext_dbt_oracle","language":"Python","severity":"error","rule":{"kind":"attribute","regex":"^(?:c|m|p|t|u)\\.","has":{"field":"attribute","regex":"^(?:(?:pytest)(?:_|$)|(?:Pytest)(?:[A-Z]|$))"}},"message":"Facade member prefixed by a library name: export it under its capability prefix instead."}

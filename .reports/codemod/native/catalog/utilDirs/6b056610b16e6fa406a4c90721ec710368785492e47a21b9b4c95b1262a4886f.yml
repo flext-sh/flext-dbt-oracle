@@ -1,0 +1,1 @@
+{"id":"d0b3f95b6dcff1823675a45a1492c76c10f4deaa9bfc80e1e9e5238534153d10","language":"python","rule":{"kind":"assignment","has":{"field":"left","kind":"identifier","regex":"^[A-Za-z]"},"inside":{"kind":"expression_statement","inside":{"kind":"block","inside":{"kind":"class_definition"}}}}}

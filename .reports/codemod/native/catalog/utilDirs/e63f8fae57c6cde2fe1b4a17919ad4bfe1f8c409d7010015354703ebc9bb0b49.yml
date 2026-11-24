@@ -1,0 +1,1 @@
+{"id":"exports--flext_dbt_oracle._protocols","language":"Python","rule":{"regex":"^(?:FlextDbtOracleProtocolsBase|FlextDbtOracleProtocolsDbt)$"}}

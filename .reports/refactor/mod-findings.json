@@ -1,0 +1,99 @@
+{
+  "entries": [],
+  "schema_version": 5,
+  "inputs": {
+    "states": []
+  },
+  "native_artifacts": [
+    {
+      "path": "/home/marlonsc/flext/flext-dbt-oracle/.reports/refactor/native/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "parent_device": 68,
+      "parent_inode": 1062643173,
+      "mode": 420,
+      "device": 68,
+      "inode": 1062643170,
+      "link_count": 1,
+      "file_attributes": null,
+      "reparse_tag": null,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "version_key": [
+        68,
+        1062643170,
+        33188,
+        1,
+        1000,
+        1000,
+        0,
+        1794210577778219667,
+        1794210577825219482,
+        0,
+        0
+      ]
+    }
+  ],
+  "command": "scan",
+  "root": "/home/marlonsc/flext/flext-dbt-oracle",
+  "scope": [
+    "conftest.py",
+    "src/flext_dbt_oracle/__init__.py",
+    "src/flext_dbt_oracle/__version__.py",
+    "src/flext_dbt_oracle/_config.py",
+    "src/flext_dbt_oracle/_constants/__init__.py",
+    "src/flext_dbt_oracle/_constants/base.py",
+    "src/flext_dbt_oracle/_constants/enums.py",
+    "src/flext_dbt_oracle/_models/__init__.py",
+    "src/flext_dbt_oracle/_models/base.py",
+    "src/flext_dbt_oracle/_models/config.py",
+    "src/flext_dbt_oracle/_models/dbt.py",
+    "src/flext_dbt_oracle/_protocols/__init__.py",
+    "src/flext_dbt_oracle/_protocols/base.py",
+    "src/flext_dbt_oracle/_protocols/dbt.py",
+    "src/flext_dbt_oracle/_settings.py",
+    "src/flext_dbt_oracle/_typings/__init__.py",
+    "src/flext_dbt_oracle/_typings/base.py",
+    "src/flext_dbt_oracle/_utilities/__init__.py",
+    "src/flext_dbt_oracle/_utilities/base.py",
+    "src/flext_dbt_oracle/_utilities/model_builder.py",
+    "src/flext_dbt_oracle/api.py",
+    "src/flext_dbt_oracle/base.py",
+    "src/flext_dbt_oracle/cli.py",
+    "src/flext_dbt_oracle/constants.py",
+    "src/flext_dbt_oracle/models.py",
+    "src/flext_dbt_oracle/protocols.py",
+    "src/flext_dbt_oracle/typings.py",
+    "src/flext_dbt_oracle/utilities.py",
+    "tests/__init__.py",
+    "tests/base.py",
+    "tests/conftest.py",
+    "tests/constants.py",
+    "tests/models.py",
+    "tests/protocols.py",
+    "tests/settings.py",
+    "tests/typings.py",
+    "tests/unit/__init__.py",
+    "tests/unit/_config/__init__.py",
+    "tests/unit/_config/construction.py",
+    "tests/unit/_config/validation.py",
+    "tests/unit/test_basic.py",
+    "tests/unit/test_cli.py",
+    "tests/unit/test_config.py",
+    "tests/unit/test_connection_profile.py",
+    "tests/unit/test_impl.py",
+    "tests/unit/test_imports.py",
+    "tests/unit/test_module_governance.py",
+    "tests/utilities.py"
+  ],
+  "totals_by_class": {
+    "actionable": 0,
+    "detection_only": 0,
+    "non_actionable_with_fix": 0,
+    "deferred_source_drift": 0
+  },
+  "totals_by_repository": {
+    "flext-dbt-oracle": 0
+  },
+  "totals_by_rule": {
+    "rewire-deep-import-to-package": 0
+  }
+}

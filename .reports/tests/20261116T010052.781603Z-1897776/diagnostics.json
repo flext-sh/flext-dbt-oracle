@@ -1,0 +1,1060 @@
+{
+  "failed_count": 0,
+  "error_count": 0,
+  "warning_count": 0,
+  "skipped_count": 0,
+  "connectivity_skip_cases": [],
+  "collection_failed_count": 0,
+  "collection_skipped_count": 0,
+  "collection_failed_cases": [],
+  "collection_skip_cases": [],
+  "reported_node_ids": [
+    "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_settings_are_idempotent_under_model_dump_roundtrip",
+    "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[1-10]",
+    "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[2-3]",
+    "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[5-5]",
+    "tests/unit/test_cli.py::TestsFlextDbtOracleCli::test_unknown_subcommand_exits_with_failure",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_basic_config_creation",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_defaults_when_no_service_name_or_sid",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_uses_default_constants",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_with_sid",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_connection_scalars_come_from_dboracle_namespace",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_dbt_only_knobs_round_trip_through_namespace",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_default_namespaces_follow_their_declared_scalar_models",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_default_service_name_present",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_defaults_are_applied_for_omitted_identity_fields",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[incremental]",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[snapshot]",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[table]",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[view]",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_materialization_is_a_free_scalar_string",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_numeric_fields_retain_supplied_values",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload0]",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload1]",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload2]",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_bounds_round_trip_through_dboracle",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[0-1]",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[11-11]",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[3-7]",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_port_is_a_positive_integer",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_schema_name_preserves_declared_defaults_and_override",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_sid_and_service_name_coexist_on_dboracle",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_basic_config_creation",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_defaults_when_no_service_name_or_sid",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_uses_default_constants",
+    "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_with_sid",
+    "tests/unit/test_connection_profile.py::TestsFlextDbtOracleConnectionProfile::test_connection_profile_returns_typed_oracle_wire_shape",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_adapter_is_immutable",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_distinct_state_is_not_equal",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_dumped_relation_matches_relation_name",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs0]",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs1]",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs2]",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_model_dump_by_alias_returns_full_public_contract",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_model_dump_includes_computed_relation_name",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_public_fields_expose_supplied_values",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[HR-EMPLOYEES-HR.EMPLOYEES]",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[S-T-S.T]",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[SYS-DUAL-SYS.DUAL]",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[scott-emp-scott.emp]",
+    "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_value_equality_by_public_state",
+    "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_dbt_settings_namespace_exposes_materialization",
+    "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables0]",
+    "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables1]",
+    "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables2]",
+    "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_materialization_enum_members_are_dbt_values",
+    "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_model_defaults_apply_domain_constants",
+    "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_oracle_table_adapter_exposes_qualified_relation",
+    "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_settings_defaults_expose_oracle_connection_contract",
+    "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_settings_namespace_round_trips_constructor_values",
+    "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module",
+    "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers",
+    "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions"
+  ],
+  "phase_outcomes": [
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_settings_are_idempotent_under_model_dump_roundtrip",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_settings_are_idempotent_under_model_dump_roundtrip",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_settings_are_idempotent_under_model_dump_roundtrip",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[1-10]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[1-10]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[1-10]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[2-3]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[2-3]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[2-3]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[5-5]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[5-5]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[5-5]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_cli.py::TestsFlextDbtOracleCli::test_unknown_subcommand_exits_with_failure",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_cli.py::TestsFlextDbtOracleCli::test_unknown_subcommand_exits_with_failure",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_cli.py::TestsFlextDbtOracleCli::test_unknown_subcommand_exits_with_failure",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_basic_config_creation",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_basic_config_creation",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_basic_config_creation",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_defaults_when_no_service_name_or_sid",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_defaults_when_no_service_name_or_sid",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_defaults_when_no_service_name_or_sid",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_uses_default_constants",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_uses_default_constants",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_uses_default_constants",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_with_sid",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_with_sid",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_config_with_sid",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_connection_scalars_come_from_dboracle_namespace",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_connection_scalars_come_from_dboracle_namespace",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_connection_scalars_come_from_dboracle_namespace",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_dbt_only_knobs_round_trip_through_namespace",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_dbt_only_knobs_round_trip_through_namespace",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_dbt_only_knobs_round_trip_through_namespace",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_default_namespaces_follow_their_declared_scalar_models",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_default_namespaces_follow_their_declared_scalar_models",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_default_namespaces_follow_their_declared_scalar_models",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_default_service_name_present",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_default_service_name_present",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_default_service_name_present",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_defaults_are_applied_for_omitted_identity_fields",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_defaults_are_applied_for_omitted_identity_fields",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_defaults_are_applied_for_omitted_identity_fields",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[incremental]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[incremental]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[incremental]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[snapshot]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[snapshot]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[snapshot]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[table]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[table]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[table]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[view]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[view]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[view]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_materialization_is_a_free_scalar_string",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_materialization_is_a_free_scalar_string",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_materialization_is_a_free_scalar_string",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_numeric_fields_retain_supplied_values",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_numeric_fields_retain_supplied_values",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_numeric_fields_retain_supplied_values",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload0]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload0]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload0]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload1]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload1]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload1]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload2]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload2]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload2]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_bounds_round_trip_through_dboracle",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_bounds_round_trip_through_dboracle",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_bounds_round_trip_through_dboracle",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[0-1]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[0-1]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[0-1]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[11-11]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[11-11]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[11-11]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[3-7]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[3-7]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[3-7]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_port_is_a_positive_integer",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_port_is_a_positive_integer",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_port_is_a_positive_integer",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_schema_name_preserves_declared_defaults_and_override",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_schema_name_preserves_declared_defaults_and_override",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_schema_name_preserves_declared_defaults_and_override",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_sid_and_service_name_coexist_on_dboracle",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_sid_and_service_name_coexist_on_dboracle",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfig::test_sid_and_service_name_coexist_on_dboracle",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_basic_config_creation",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_basic_config_creation",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_basic_config_creation",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_defaults_when_no_service_name_or_sid",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_defaults_when_no_service_name_or_sid",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_defaults_when_no_service_name_or_sid",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_uses_default_constants",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_uses_default_constants",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_uses_default_constants",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_with_sid",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_with_sid",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart::test_config_with_sid",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_connection_profile.py::TestsFlextDbtOracleConnectionProfile::test_connection_profile_returns_typed_oracle_wire_shape",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_connection_profile.py::TestsFlextDbtOracleConnectionProfile::test_connection_profile_returns_typed_oracle_wire_shape",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_connection_profile.py::TestsFlextDbtOracleConnectionProfile::test_connection_profile_returns_typed_oracle_wire_shape",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_adapter_is_immutable",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_adapter_is_immutable",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_adapter_is_immutable",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_distinct_state_is_not_equal",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_distinct_state_is_not_equal",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_distinct_state_is_not_equal",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_dumped_relation_matches_relation_name",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_dumped_relation_matches_relation_name",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_dumped_relation_matches_relation_name",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs0]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs0]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs0]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs1]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs1]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs1]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs2]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs2]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs2]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_model_dump_by_alias_returns_full_public_contract",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_model_dump_by_alias_returns_full_public_contract",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_model_dump_by_alias_returns_full_public_contract",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_model_dump_includes_computed_relation_name",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_model_dump_includes_computed_relation_name",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_model_dump_includes_computed_relation_name",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_public_fields_expose_supplied_values",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_public_fields_expose_supplied_values",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_public_fields_expose_supplied_values",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[HR-EMPLOYEES-HR.EMPLOYEES]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[HR-EMPLOYEES-HR.EMPLOYEES]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[HR-EMPLOYEES-HR.EMPLOYEES]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[S-T-S.T]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[S-T-S.T]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[S-T-S.T]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[SYS-DUAL-SYS.DUAL]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[SYS-DUAL-SYS.DUAL]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[SYS-DUAL-SYS.DUAL]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[scott-emp-scott.emp]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[scott-emp-scott.emp]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[scott-emp-scott.emp]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_value_equality_by_public_state",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_value_equality_by_public_state",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl::test_value_equality_by_public_state",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_dbt_settings_namespace_exposes_materialization",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_dbt_settings_namespace_exposes_materialization",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_dbt_settings_namespace_exposes_materialization",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables0]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables0]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables0]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables1]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables1]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables1]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables2]",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables2]",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables2]",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_materialization_enum_members_are_dbt_values",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_materialization_enum_members_are_dbt_values",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_materialization_enum_members_are_dbt_values",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_model_defaults_apply_domain_constants",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_model_defaults_apply_domain_constants",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_model_defaults_apply_domain_constants",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_oracle_table_adapter_exposes_qualified_relation",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_oracle_table_adapter_exposes_qualified_relation",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_oracle_table_adapter_exposes_qualified_relation",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_settings_defaults_expose_oracle_connection_contract",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_settings_defaults_expose_oracle_connection_contract",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_settings_defaults_expose_oracle_connection_contract",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_settings_namespace_round_trips_constructor_values",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_settings_namespace_round_trips_constructor_values",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_imports.py::TestsFlextDbtOracleImports::test_settings_namespace_round_trips_constructor_values",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions",
+      "phase": "teardown",
+      "outcome": "passed"
+    }
+  ],
+  "markdown_attempts": [],
+  "markdown_items": [],
+  "failed_cases": [],
+  "error_traces": [],
+  "warning_lines": [],
+  "skip_cases": [],
+  "slow_entries": [
+    "0.168000s | tests.unit.test_cli.TestsFlextDbtOracleCli::test_unknown_subcommand_exits_with_failure",
+    "0.062000s | tests.unit.test_module_governance.TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions",
+    "0.040000s | tests.unit.test_module_governance.TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers",
+    "0.028000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_schema_name_preserves_declared_defaults_and_override",
+    "0.025000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[3-7]",
+    "0.025000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_basic_config_creation",
+    "0.025000s | tests.unit.test_basic.TestsFlextDbtOracleBasic::test_settings_are_idempotent_under_model_dump_roundtrip",
+    "0.024000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_port_is_a_positive_integer",
+    "0.024000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_defaults_are_applied_for_omitted_identity_fields",
+    "0.024000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_connection_scalars_come_from_dboracle_namespace",
+    "0.023000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_sid_and_service_name_coexist_on_dboracle",
+    "0.023000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[0-1]",
+    "0.023000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_pool_bounds_round_trip_through_dboracle",
+    "0.023000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload2]",
+    "0.023000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_materialization_is_a_free_scalar_string",
+    "0.023000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[snapshot]",
+    "0.023000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_default_service_name_present",
+    "0.023000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_dbt_only_knobs_round_trip_through_namespace",
+    "0.023000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_config_with_sid",
+    "0.023000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_config_defaults_when_no_service_name_or_sid",
+    "0.022000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload1]",
+    "0.022000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_config_uses_default_constants",
+    "0.020000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_open_config_namespace_contract[payload0]",
+    "0.019000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_pool_scalars_preserve_the_upstream_namespace_contract[11-11]",
+    "0.019000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[incremental]",
+    "0.018000s | tests.unit.test_config.TestsFlextDbtOracleConfigConstructionPart::test_basic_config_creation",
+    "0.017000s | tests.unit.test_imports.TestsFlextDbtOracleImports::test_settings_defaults_expose_oracle_connection_contract",
+    "0.017000s | tests.unit.test_basic.TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[2-3]",
+    "0.016000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[S-T-S.T]",
+    "0.016000s | tests.unit.test_config.TestsFlextDbtOracleConfigConstructionPart::test_config_uses_default_constants",
+    "0.016000s | tests.unit.test_config.TestsFlextDbtOracleConfigConstructionPart::test_config_defaults_when_no_service_name_or_sid",
+    "0.016000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_numeric_fields_retain_supplied_values",
+    "0.016000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[view]",
+    "0.015000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[scott-emp-scott.emp]",
+    "0.015000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[SYS-DUAL-SYS.DUAL]",
+    "0.015000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_every_valid_materialization_is_accepted[table]",
+    "0.015000s | tests.unit.test_config.TestsFlextDbtOracleConfig::test_default_namespaces_follow_their_declared_scalar_models",
+    "0.014000s | tests.unit.test_imports.TestsFlextDbtOracleImports::test_settings_namespace_round_trips_constructor_values",
+    "0.014000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_public_fields_expose_supplied_values",
+    "0.013000s | tests.unit.test_config.TestsFlextDbtOracleConfigConstructionPart::test_config_with_sid",
+    "0.012000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_value_equality_by_public_state",
+    "0.012000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_model_dump_includes_computed_relation_name",
+    "0.012000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_model_dump_by_alias_returns_full_public_contract",
+    "0.012000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_dumped_relation_matches_relation_name",
+    "0.011000s | tests.unit.test_imports.TestsFlextDbtOracleImports::test_dbt_settings_namespace_exposes_materialization",
+    "0.011000s | tests.unit.test_connection_profile.TestsFlextDbtOracleConnectionProfile::test_connection_profile_returns_typed_oracle_wire_shape",
+    "0.011000s | tests.unit.test_basic.TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[5-5]",
+    "0.011000s | tests.unit.test_basic.TestsFlextDbtOracleBasic::test_valid_pool_bounds_are_accepted[1-10]",
+    "0.010000s | tests.unit.test_module_governance.TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module",
+    "0.010000s | tests.unit.test_imports.TestsFlextDbtOracleImports::test_materialization_enum_members_are_dbt_values",
+    "0.010000s | tests.unit.test_imports.TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables1]",
+    "0.010000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_relation_name_is_qualified_schema_dot_table[HR-EMPLOYEES-HR.EMPLOYEES]",
+    "0.010000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_distinct_state_is_not_equal",
+    "0.009000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs0]",
+    "0.008000s | tests.unit.test_imports.TestsFlextDbtOracleImports::test_model_defaults_apply_domain_constants",
+    "0.008000s | tests.unit.test_imports.TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables2]",
+    "0.008000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs2]",
+    "0.007000s | tests.unit.test_imports.TestsFlextDbtOracleImports::test_oracle_table_adapter_exposes_qualified_relation",
+    "0.007000s | tests.unit.test_imports.TestsFlextDbtOracleImports::test_generate_staging_models_names_one_model_per_table[source_tables0]",
+    "0.007000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_missing_required_field_raises_validation_error[kwargs1]",
+    "0.007000s | tests.unit.test_impl.TestsFlextDbtOracleImpl::test_adapter_is_immutable"
+  ]
+}

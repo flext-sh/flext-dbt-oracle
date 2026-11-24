@@ -1,0 +1,81 @@
+{
+  "eligible": [],
+  "selected": [],
+  "deselected": [],
+  "diagnostics": {
+    "failed_count": 0,
+    "error_count": 0,
+    "warning_count": 0,
+    "skipped_count": 0,
+    "connectivity_skip_cases": [],
+    "collection_failed_count": 0,
+    "collection_skipped_count": 0,
+    "collection_failed_cases": [],
+    "collection_skip_cases": [],
+    "reported_node_ids": [
+      "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module",
+      "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers",
+      "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions"
+    ],
+    "phase_outcomes": [
+      {
+        "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module",
+        "phase": "setup",
+        "outcome": "passed"
+      },
+      {
+        "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module",
+        "phase": "call",
+        "outcome": "passed"
+      },
+      {
+        "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module",
+        "phase": "teardown",
+        "outcome": "passed"
+      },
+      {
+        "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers",
+        "phase": "setup",
+        "outcome": "passed"
+      },
+      {
+        "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers",
+        "phase": "call",
+        "outcome": "passed"
+      },
+      {
+        "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers",
+        "phase": "teardown",
+        "outcome": "passed"
+      },
+      {
+        "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions",
+        "phase": "setup",
+        "outcome": "passed"
+      },
+      {
+        "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions",
+        "phase": "call",
+        "outcome": "passed"
+      },
+      {
+        "node_id": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions",
+        "phase": "teardown",
+        "outcome": "passed"
+      }
+    ],
+    "markdown_attempts": [],
+    "markdown_items": [],
+    "failed_cases": [],
+    "error_traces": [],
+    "warning_lines": [],
+    "skip_cases": [],
+    "slow_entries": [
+      "1.198000s | tests.unit.test_module_governance.TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions",
+      "0.074000s | tests.unit.test_module_governance.TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module",
+      "0.012000s | tests.unit.test_module_governance.TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers"
+    ]
+  },
+  "cache_hit": false,
+  "violations": []
+}

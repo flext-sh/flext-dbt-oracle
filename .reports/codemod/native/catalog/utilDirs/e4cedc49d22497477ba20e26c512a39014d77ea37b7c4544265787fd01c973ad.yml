@@ -1,0 +1,1 @@
+{"id":"6d1e3f6f3292ae814f06841016918e26568ef2c2c58ee596ae698cb68d50f512","language":"Python","rule":{"kind":"assert_statement","pattern":"assert $COND, $MSG"}}

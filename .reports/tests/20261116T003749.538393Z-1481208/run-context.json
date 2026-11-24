@@ -1,0 +1,8 @@
+{
+  "execution_mode": "global-incremental",
+  "testmon_db": "/home/marlonsc/.cache/flext/infra/testmon/flext-dbt-oracle/.testmondata",
+  "testmon_lease_acquired": true,
+  "deadline_monotonic": 1066908.014810365,
+  "report_directory": "/home/marlonsc/flext/flext-dbt-oracle/.reports/tests/20261116T003749.538393Z-1481208",
+  "profile_sha256": null
+}

@@ -1,0 +1,2 @@
+0.030000s | tests.unit.test_basic.TestsFlextDbtOracleBasic::test_dbt_settings_expose_namespaced_scalar_groups
+0.010000s | tests.unit.test_basic.TestsFlextDbtOracleBasic::test_explicit_schema_name_is_the_target_schema

@@ -1,0 +1,57 @@
+{
+  "failed_count": 0,
+  "error_count": 0,
+  "warning_count": 0,
+  "skipped_count": 0,
+  "connectivity_skip_cases": [],
+  "collection_failed_count": 0,
+  "collection_skipped_count": 0,
+  "collection_failed_cases": [],
+  "collection_skip_cases": [],
+  "reported_node_ids": [
+    "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_dbt_settings_expose_namespaced_scalar_groups",
+    "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_explicit_schema_name_is_the_target_schema"
+  ],
+  "phase_outcomes": [
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_dbt_settings_expose_namespaced_scalar_groups",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_dbt_settings_expose_namespaced_scalar_groups",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_dbt_settings_expose_namespaced_scalar_groups",
+      "phase": "teardown",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_explicit_schema_name_is_the_target_schema",
+      "phase": "setup",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_explicit_schema_name_is_the_target_schema",
+      "phase": "call",
+      "outcome": "passed"
+    },
+    {
+      "node_id": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_explicit_schema_name_is_the_target_schema",
+      "phase": "teardown",
+      "outcome": "passed"
+    }
+  ],
+  "markdown_attempts": [],
+  "markdown_items": [],
+  "failed_cases": [],
+  "error_traces": [],
+  "warning_lines": [],
+  "skip_cases": [],
+  "slow_entries": [
+    "0.030000s | tests.unit.test_basic.TestsFlextDbtOracleBasic::test_dbt_settings_expose_namespaced_scalar_groups",
+    "0.010000s | tests.unit.test_basic.TestsFlextDbtOracleBasic::test_explicit_schema_name_is_the_target_schema"
+  ]
+}

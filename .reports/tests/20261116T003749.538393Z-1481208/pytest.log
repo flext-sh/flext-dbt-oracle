@@ -1,0 +1,30 @@
+================================================= test session starts ==================================================
+platform linux -- Python 3.13.17, pytest-9.2.0, pluggy-1.7.0 -- /home/marlonsc/flext/.venv/bin/python
+cachedir: .pytest_cache
+benchmark: 5.3.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+Using --randomly-seed=349600263
+testmon: selection deactivated, environment: toolchain-24179a752a3c-ec189a72-5834a665
+Help shape testmon! Tell us what saves you time and what we can improve: https://testmon.org/survey
+hypothesis profile 'default'
+rootdir: /home/marlonsc/flext/flext-dbt-oracle
+configfile: pyproject.toml
+plugins: flext-tests-0.12.0, asyncio-1.4.1.post1, benchmark-5.3.1, cov-7.1.0, markdown-docs-0.9.2, randomly-5.0.0, reportlog-1.0.0, testmon-2.3.0, singer-sdk-0.54.9, timeout-2.4.0, xdist-3.8.0, hypothesis-6.170.14, anyio-4.16.0, platformdirs-4.14.5, flext-infra-0.12.1
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+timeout: 2.0s
+timeout method: signal
+timeout func_only: False
+collecting ... collected 63 items
+run-last-failure: no previously failed tests, not deselecting items.
+
+tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_dbt_settings_expose_namespaced_scalar_groups PASSED     [  1%]
+tests/unit/test_basic.py::TestsFlextDbtOracleBasic::test_explicit_schema_name_is_the_target_schema PASSED        [  3%]
+
+-- generated xml file: /home/marlonsc/flext/flext-dbt-oracle/.reports/tests/20261116T003749.538393Z-1481208/junit.xml --
+- generated report log file: /home/marlonsc/flext/flext-dbt-oracle/.reports/tests/20261116T003749.538393Z-1481208/events.jsonl -
+--------------------------------------------------- flext slow tests ---------------------------------------------------
+no test near the ordinary or slow limit
+================================================= slowest 25 durations =================================================
+
+(6 durations < 2s hidden.)
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Interrupted: suite stop instant 1066886.015 reached !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+================================================== 2 passed in 0.93s ===================================================

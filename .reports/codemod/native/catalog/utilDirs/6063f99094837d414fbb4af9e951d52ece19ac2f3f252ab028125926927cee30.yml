@@ -1,0 +1,1 @@
+{"id":"2f5fc53996f7fb1f446db0958397de7736db8e7fc686c6a086bef1c65c983e8e","language":"python","rule":{"any":[{"all":[{"kind":"dotted_name"},{"inside":{"stopBy":"end","kind":"import_statement"}}]},{"all":[{"kind":"dotted_name"},{"inside":{"field":"module_name","kind":"import_from_statement"}}]}],"not":{"matches":"1bde9eed56945af78e9df623b9ae79930a654365bc3b5cd9d6b05e52c47abda2"}}}

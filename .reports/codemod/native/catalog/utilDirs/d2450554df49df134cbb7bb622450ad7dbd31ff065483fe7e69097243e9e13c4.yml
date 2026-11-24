@@ -1,0 +1,1 @@
+{"id":"583a62c4601d4fcdb23c1c2d00cc756231c1328c7c0e6cef13a392fda4425bee","language":"python","rule":{"kind":"import_from_statement","all":[{"has":{"pattern":"r","stopBy":"end"}},{"has":{"field":"module_name","regex":"^flext(?:_[a-z0-9_]+)?$"}},{"not":{"has":{"kind":"aliased_import","stopBy":"end","has":{"pattern":"r","stopBy":"end"}}}}]}}

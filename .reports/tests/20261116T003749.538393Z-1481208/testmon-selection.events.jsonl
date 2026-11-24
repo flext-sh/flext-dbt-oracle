@@ -1,0 +1,41 @@
+{"pytest_version": "9.2.0", "$report_type": "SessionStart"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/__init__.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [["Captured stderr", "2026-11-16T00:37:52.685000Z [warning  ] meltano      Could not find line number offset for docstring: Provide the runtime bootstrap options bound to the test settings type.\n\nReturns:\n    The runtime bootstrap capability consumed by the core service.\n"]], "nodeid": "tests/base.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/conftest.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/constants.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/models.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/protocols.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/settings.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/typings.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/__init__.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/_config/__init__.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/_config/construction.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/_config/validation.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/_config", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_basic.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_basic.py::TestsFlextDbtOracleBasic", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_basic.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_cli.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_cli.py::TestsFlextDbtOracleCli", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_cli.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_config.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_config.py::TestsFlextDbtOracleConfigConstructionPart", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_config.py::TestsFlextDbtOracleConfig", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_config.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_connection_profile.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_connection_profile.py::TestsFlextDbtOracleConnectionProfile", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_connection_profile.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_impl.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_impl.py::TestsFlextDbtOracleImpl", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_impl.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_imports.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_imports.py::TestsFlextDbtOracleImports", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_imports.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_module_governance.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_module_governance.py::TestsFlextDbtOracleModuleGovernance", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit/test_module_governance.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/unit", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests/utilities.py", "$report_type": "CollectReport"}
+{"outcome": "passed", "longrepr": null, "result": null, "sections": [], "nodeid": "tests", "$report_type": "CollectReport"}
+{"exitstatus": 0, "$report_type": "SessionFinish"}

@@ -1,0 +1,3 @@
+1.198000s | tests.unit.test_module_governance.TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_unapproved_top_level_functions
+0.074000s | tests.unit.test_module_governance.TestsFlextDbtOracleModuleGovernance::test_package_exposes_at_least_one_module
+0.012000s | tests.unit.test_module_governance.TestsFlextDbtOracleModuleGovernance::test_package_modules_do_not_define_module_level_loggers
